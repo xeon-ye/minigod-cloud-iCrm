@@ -1,0 +1,5 @@
+com\minigod\auth\config\ResourceServerConfiguration.class
+com\minigod\auth\controller\UserController.class
+com\minigod\auth\AuthApplication.class
+com\minigod\auth\config\OAuthConfiguration$AuthenticationManagerConfiguration.class
+com\minigod\auth\config\OAuthConfiguration.class

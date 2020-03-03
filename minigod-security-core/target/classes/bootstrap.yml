@@ -1,0 +1,9 @@
+security.basic.enabled: false
+
+server:
+  context-path: /security
+  port: 8153
+
+management:
+  security:
+    enabled: false

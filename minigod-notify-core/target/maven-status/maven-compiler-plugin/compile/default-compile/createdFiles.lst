@@ -1,0 +1,14 @@
+com\minigod\notify\helper\SmsResult.class
+com\minigod\notify\mapper\CaptchaSmsMapper.class
+com\minigod\notify\service\impl\CaptchaSmsServiceImpl.class
+com\minigod\notify\config\NotifyProperties$Mail.class
+com\minigod\notify\mapper\CaptchaEmailMapper.class
+com\minigod\notify\NotifyServiceApplication.class
+META-INF\spring-configuration-metadata.json
+com\minigod\notify\helper\TencentSmsSender.class
+com\minigod\notify\config\NotifyProperties.class
+com\minigod\notify\config\NotifyProperties$Sms.class
+com\minigod\notify\helper\NotifyService.class
+com\minigod\notify\helper\SmsSender.class
+com\minigod\notify\service\impl\CaptchaEmailServiceImpl.class
+com\minigod\notify\config\NotifyAutoConfiguration.class

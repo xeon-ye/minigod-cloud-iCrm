@@ -1,0 +1,31 @@
+
+minigod:
+  #通知相关配置
+  notify:
+    mail:
+      # 邮件通知配置,邮箱一般用于接收业务通知例如收到新的订单，sendto 定义邮件接收者，通常为商城运营人员
+      enable: false
+      expiresTime: 300 # 5*60
+      host: smtp.exmail.qq.com
+      username: ex@ex.com.cn
+      password: XXXXXXXXXXXXX
+      sendfrom: ex@ex.com.cn
+      sendto: ex@qq.com
+
+    # 短消息模版通知配置
+    # 短信息用于通知客户，例如发货短信通知，注意配置格式；template-name，template-templateId 请参考 CaptchaType 枚举值
+    sms:
+      enable: false
+      intervalTime: 30
+      expiresTime: 300 # 5*60
+      appid: 1400181092
+      appkey: 208d9ff8538b630dce7b6195ea4fc0e7
+      template:
+        - name: captchaRegister
+          templateId: 373945
+        - name: captchaResetPassword
+          templateId: 373945
+        - name: captchaLoginSms
+          templateId: 373945
+        - name: captchaModifyMobile
+          templateId: 373945

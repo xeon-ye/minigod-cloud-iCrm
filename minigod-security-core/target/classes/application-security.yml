@@ -1,0 +1,26 @@
+minigod:
+  cubp:
+    isRemote: true
+    url: http://192.168.31.87:6888/cubp
+  openAccount:
+    isVerifyOpenData: true
+    images:
+      app:
+        type: 101,102,201,301,302,401
+        count: 6
+        apply: 101,102,201,301,302,401,601,602,603
+      h5:
+        type: 101,102,301,401,402,501,502,503,504,505
+        count: 5
+        apply: 101,102,201,301,302,401,402,501,502,503,504,505,601,602,603
+  tencentApi:
+    region: ap-guangzhou
+    secretId: AKIDwc4HEUuuzrY1FGtcS5ThgRwZxFI4Zvzp
+    secretKey: 3seBShhX8G91g7KH2X1IZbImHZaNtGON
+  szca:
+    host: http://218.17.161.11:18008
+    getToken: /SecuritiesAccount/service/reqGetToKenService
+    getCert: /SecuritiesAccount/service/reqGetCertDN
+    getPDFInfoForSign: /SecuritiesAccount/service/reqGetPDFInfoForSign
+
+

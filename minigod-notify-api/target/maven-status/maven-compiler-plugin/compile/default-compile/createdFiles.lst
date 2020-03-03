@@ -1,0 +1,8 @@
+com\minigod\notify\protocol\vo\request\params\CaptchaReqParams.class
+com\minigod\notify\protocol\enums\CaptchaValidEnum.class
+com\minigod\notify\service\CaptchaEmailService.class
+com\minigod\notify\protocol\model\CaptchaSms.class
+com\minigod\notify\service\CaptchaSmsService.class
+com\minigod\notify\protocol\enums\CaptchaSmsTypeEnum.class
+com\minigod\notify\protocol\vo\response\CaptchaResVo.class
+com\minigod\notify\protocol\model\CaptchaEmail.class

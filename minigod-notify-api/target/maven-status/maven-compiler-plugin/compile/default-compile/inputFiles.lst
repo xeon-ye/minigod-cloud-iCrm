@@ -1,0 +1,8 @@
+E:\zsdp-work\zsdp_code\product_minigod\v2\server\minigod-cloud\minigod-notify-api\src\main\java\com\minigod\notify\protocol\vo\request\params\CaptchaReqParams.java
+E:\zsdp-work\zsdp_code\product_minigod\v2\server\minigod-cloud\minigod-notify-api\src\main\java\com\minigod\notify\service\CaptchaSmsService.java
+E:\zsdp-work\zsdp_code\product_minigod\v2\server\minigod-cloud\minigod-notify-api\src\main\java\com\minigod\notify\protocol\model\CaptchaSms.java
+E:\zsdp-work\zsdp_code\product_minigod\v2\server\minigod-cloud\minigod-notify-api\src\main\java\com\minigod\notify\protocol\model\CaptchaEmail.java
+E:\zsdp-work\zsdp_code\product_minigod\v2\server\minigod-cloud\minigod-notify-api\src\main\java\com\minigod\notify\service\CaptchaEmailService.java
+E:\zsdp-work\zsdp_code\product_minigod\v2\server\minigod-cloud\minigod-notify-api\src\main\java\com\minigod\notify\protocol\enums\CaptchaSmsTypeEnum.java
+E:\zsdp-work\zsdp_code\product_minigod\v2\server\minigod-cloud\minigod-notify-api\src\main\java\com\minigod\notify\protocol\enums\CaptchaValidEnum.java
+E:\zsdp-work\zsdp_code\product_minigod\v2\server\minigod-cloud\minigod-notify-api\src\main\java\com\minigod\notify\protocol\vo\response\CaptchaResVo.java

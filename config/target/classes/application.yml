@@ -1,0 +1,41 @@
+server:
+  port: 8888
+
+eureka:
+  instance:
+    hostname: eureka
+    prefer-ip-address: true
+    metadata-map:
+      user.name: ${security.user.name}
+      user.password: ${security.user.password}
+  client:
+    service-url:
+      defaultZone: http://user:${REGISTRY_SERVER_PASSWORD:password}@eureka:8601/eureka/
+
+spring:
+  cloud:
+    config:
+      enabled: true
+      server:
+        svn:
+          uri: svn://10.1.2.251/SNS_CLOUD/
+          username: kouyandong
+          password: kouyandong
+        #git:
+        #  uri: https://github.com/pcf-guides/configuration-server-config-repo
+        default-label: /trunk/minigod-cloud/config-repo
+  profiles:
+    active: subversion
+  rabbitmq:
+    host: 10.1.2.52
+    username: rabbitmq
+    password: rabbitmq
+
+    #addresses: 10.1.2.52
+
+
+security:
+  user:
+    name: user
+    password: ${CONFIG_SERVER_PASSWORD:password}
+    #password: user

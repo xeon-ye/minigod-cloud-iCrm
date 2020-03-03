@@ -1,0 +1,95 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties",
+      "name": "minigod.notify",
+      "type": "com.minigod.notify.config.NotifyProperties"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties",
+      "name": "minigod.notify.mail",
+      "sourceMethod": "getMail()",
+      "type": "com.minigod.notify.config.NotifyProperties$Mail"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties",
+      "name": "minigod.notify.sms",
+      "sourceMethod": "getSms()",
+      "type": "com.minigod.notify.config.NotifyProperties$Sms"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Mail",
+      "defaultValue": false,
+      "name": "minigod.notify.mail.enable",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Mail",
+      "defaultValue": 0,
+      "name": "minigod.notify.mail.expires-time",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Mail",
+      "name": "minigod.notify.mail.host",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Mail",
+      "name": "minigod.notify.mail.password",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Mail",
+      "name": "minigod.notify.mail.sendfrom",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Mail",
+      "name": "minigod.notify.mail.sendto",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Mail",
+      "name": "minigod.notify.mail.username",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Sms",
+      "defaultValue": 0,
+      "name": "minigod.notify.sms.appid",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Sms",
+      "name": "minigod.notify.sms.appkey",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Sms",
+      "defaultValue": false,
+      "name": "minigod.notify.sms.enable",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Sms",
+      "defaultValue": 0,
+      "name": "minigod.notify.sms.expires-time",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Sms",
+      "defaultValue": 0,
+      "name": "minigod.notify.sms.interval-time",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.minigod.notify.config.NotifyProperties$Sms",
+      "name": "minigod.notify.sms.template",
+      "type": "java.util.List<java.util.Map<java.lang.String,java.lang.String>>"
+    }
+  ]
+}

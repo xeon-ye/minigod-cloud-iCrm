@@ -1,0 +1,35 @@
+package com.minigod.common.exception;
+
+import com.minigod.common.pojo.StaticType;
+import lombok.Data;
+
+/**
+ * 自定义 异常
+ */
+
+@Data
+public class WebApiException extends RuntimeException {
+
+
+    private Integer code;
+    private String messageResource;
+
+    public WebApiException(Integer status, String message, String messageResource) {
+        super(message);
+        this.code = status;
+        this.messageResource = messageResource;
+    }
+
+    public WebApiException(String messageResource) {
+        super(StaticType.CodeType.DISPLAY_ERROR.getMessage());
+        this.code = StaticType.CodeType.DISPLAY_ERROR.getCode();
+        this.messageResource = messageResource;
+    }
+
+
+    public WebApiException(StaticType.CodeType codeType, String messageResource) {
+        super(codeType.getMessage());
+        this.code = codeType.getCode();
+        this.messageResource = messageResource;
+    }
+}
