@@ -13,5 +13,4 @@ public class BaseBeanFactory<T extends BaseRequestParams> {
         String langKey = params.getLangKey();
         return messageI18NHelper.getLocaleMessage(langKey, messageResource);
     }
-
 }

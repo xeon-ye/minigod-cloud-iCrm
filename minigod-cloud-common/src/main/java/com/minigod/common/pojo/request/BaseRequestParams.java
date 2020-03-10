@@ -16,7 +16,5 @@ import java.io.Serializable;
 @Data
 public class BaseRequestParams implements Serializable {
     private static final long serialVersionUID = -5486921710717030131L;
-    private String sessionId;
-    private Integer userId; //通过会话找到的用户ID
     private String langKey;
 }

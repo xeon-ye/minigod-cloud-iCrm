@@ -21,19 +21,16 @@
         <module>zuul</module>
         <module>monitor</module>
         <module>zipkin</module>
-        <module>minigod-cloud-protocol</module>
-        <module>minigod-cloud-persist</module>
         <module>minigod-cloud-common</module>
         <module>minigod-cloud-feign</module>
         <module>minigod-cloud-auth</module>
-        <module>minigod-security-api</module>
-        <module>minigod-security-core</module>
-        <module>minigod-security-web</module>
-        <module>minigod-notify-api</module>
-        <module>minigod-notify-core</module>
-        <module>minigod-storage-service</module>
-        <!--<module>minigod-xxljob-service</module>-->
-        <!--<module>minigod-storage-service</module>-->
+        <module>minigod-cloud-persist</module>
+        <module>minigod-cloud-protocol</module>
+        <module>minigod-service-account</module>
+        <module>minigod-service-notify</module>
+        <module>minigod-service-storage</module>
+        <!--<module>minigod-service-xxljob</module>-->
+        <module>minigod-web-securities</module>
     </modules>
 
     <!-- 配置maven地址 -->

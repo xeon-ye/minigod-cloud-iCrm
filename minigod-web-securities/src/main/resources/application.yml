@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: notify, storage, account, db, redis, web
+  i18n:
+    basename: i18n/messages
+    encoding: UTF-8
+  messages:
+    encoding: UTF-8
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+server:
+  context-path: /securities
+  port: 8153
+
+logging:
+  level:
+    root:  DEBUG
+    org.springframework:  DEBUG
+    org.mybatis:  DEBUG
+    com.zsdp.loan.core:  ERROR
+    com.zsdp.loan.db:  ERROR
+    com.zsdp.loan.admin:  DEBUG
+    com.zsdp.loan.app:  ERROR
+    com.zsdp.loan:  ERROR
+
+
+

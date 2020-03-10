@@ -1,0 +1,36 @@
+minigod:
+  cubp:
+    isRemote: true
+    url: http://192.168.0.112:6888/cubp
+  config:
+    # 权限密钥失效时间 s
+    authCode.expireSecond: 7200 # 2*60*60
+    # 用户token失效时间 s
+    userToken.expireSecond: 7200 # 2*60*60
+  openAccount:
+    isVerifyOpenData: true
+    images:
+      app:
+        type: 101,102,201,301,302,401
+        count: 6
+        apply: 101,102,201,301,302,401,601,602,603
+      h5:
+        type: 101,102,301,401,402,501,502,503,504,505
+        count: 5
+        apply: 101,102,201,301,302,401,402,501,502,503,504,505,601,602,603
+  tencentApi:
+    region: ap-guangzhou
+    secretId: AKIDwc4HEUuuzrY1FGtcS5ThgRwZxFI4Zvzp
+    secretKey: 3seBShhX8G91g7KH2X1IZbImHZaNtGON
+  szca:
+    host: http://218.17.161.11:18008
+    getToken: /SecuritiesAccount/com.minigod.notify.service/reqGetToKenService
+    getCert: /SecuritiesAccount/com.minigod.notify.service/reqGetCertDN
+    getPDFInfoForSign: /SecuritiesAccount/com.minigod.notify.service/reqGetPDFInfoForSign
+  proxy:
+    isSyncOpen: false
+    host: http://192.168.0.112:6888/cubp
+    checkUser: /checkUser
+    syncData: /checkUser
+
+

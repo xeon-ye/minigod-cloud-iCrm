@@ -5,16 +5,21 @@ package com.minigod.common.pojo;
  */
 
 public enum CertTypeEnum {
+    other("其他系统账号", 0),
 
-    // 0-手机
-    // 1-邮箱
-    // 2-用户账号
-    // 3-session
+    // 1-手机
+    // 2-邮箱
+    // 3-用户账号
+    // 4-交易账号
+    phone("手机", 1),
+    email("邮箱", 2),
+    userId("用户号", 3),
+    tradeAccount("交易账号", 4),
 
-    phone("手机", 0),
-    email("邮箱", 1),
-    userId("用户号", 2),
-    session("session", 3);
+    // 第三方授权登录
+    thirdAccountByWX("微信授权登录", 10),
+    thirdAccountByQQ("QQ授权登录", 11),
+    thirdAccountByWB("微博授权登录", 12);
 
     private String typeName;
     private Integer typeValue;

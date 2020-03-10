@@ -27,7 +27,7 @@ public class AnnUtils {
 		Set<String> strClasses = getClassName(packageName, true);
 		Set<Class<?>> set = new HashSet<Class<?>>();
 		for (String c : strClasses) {
-			//替换类似的路径com/yiminigod/sequence/service/SequenceService
+			//替换类似的路径com/yiminigod/sequence/com.minigod.notify.service/SequenceService
 			if (c.indexOf("/") > 0) {
 				c = c.replace("/", ".");
 			}

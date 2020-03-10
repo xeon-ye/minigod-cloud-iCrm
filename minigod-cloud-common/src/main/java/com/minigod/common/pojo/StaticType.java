@@ -38,6 +38,8 @@ public class StaticType {
         BAD_SOCKET(404, "网络异常"),
         BAD_PARAM_KEY(405, "签名参数KEY错误"),
         BAD_PARAM_SESSION(406, "参数SESSION_ID错误"),
+        BAD_PROXY_SECRET(407, "参数SECRET错误"),
+        BAD_PROXY_AUTH_CODE(408, "参数AUTH_CODE错误"),
         INTERNAL_ERROR(500, "请求异常,请重试"),
         NONE_DATA(501, "无满足条件的数据"),
         EXIST_DATA(502, "有重复值存在"),

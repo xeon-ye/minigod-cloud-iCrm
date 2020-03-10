@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.minigod.account.mapper.VerifyBankCardMapper">
+  <resultMap id="BaseResultMap" type="com.minigod.protocol.account.model.VerifyBankCard">
+    <!--@mbg.generated-->
+    <!--@Table verify_bank_card-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="is_valid" jdbcType="BOOLEAN" property="isValid" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="check_count" jdbcType="INTEGER" property="checkCount" />
+    <result column="check_date" jdbcType="TIMESTAMP" property="checkDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_name, id_card, bank_card, phone, is_valid, remark, check_count, check_date, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from verify_bank_card
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from verify_bank_card
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.VerifyBankCard" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into verify_bank_card (user_name, id_card, bank_card, 
+      phone, is_valid, remark, 
+      check_count, check_date, create_time, 
+      update_time)
+    values (#{userName,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{bankCard,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{isValid,jdbcType=BOOLEAN}, #{remark,jdbcType=VARCHAR}, 
+      #{checkCount,jdbcType=INTEGER}, #{checkDate,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.VerifyBankCard" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into verify_bank_card
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="bankCard != null">
+        bank_card,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="isValid != null">
+        is_valid,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="checkCount != null">
+        check_count,
+      </if>
+      <if test="checkDate != null">
+        check_date,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null">
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        #{isValid,jdbcType=BOOLEAN},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkCount != null">
+        #{checkCount,jdbcType=INTEGER},
+      </if>
+      <if test="checkDate != null">
+        #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.minigod.protocol.account.model.VerifyBankCard">
+    <!--@mbg.generated-->
+    update verify_bank_card
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCard != null">
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null">
+        is_valid = #{isValid,jdbcType=BOOLEAN},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkCount != null">
+        check_count = #{checkCount,jdbcType=INTEGER},
+      </if>
+      <if test="checkDate != null">
+        check_date = #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.minigod.protocol.account.model.VerifyBankCard">
+    <!--@mbg.generated-->
+    update verify_bank_card
+    set user_name = #{userName,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      bank_card = #{bankCard,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=BOOLEAN},
+      remark = #{remark,jdbcType=VARCHAR},
+      check_count = #{checkCount,jdbcType=INTEGER},
+      check_date = #{checkDate,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+<!--auto generated by MybatisCodeHelper on 2020-01-05-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from verify_bank_card
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-01-05-->
+  <select id="selectByAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from verify_bank_card
+    <where>
+      <if test="id != null">
+        and id=#{id,jdbcType=BIGINT}
+      </if>
+      <if test="userName != null">
+        and user_name=#{userName,jdbcType=VARCHAR}
+      </if>
+      <if test="idCard != null">
+        and id_card=#{idCard,jdbcType=VARCHAR}
+      </if>
+      <if test="bankCard != null">
+        and bank_card=#{bankCard,jdbcType=VARCHAR}
+      </if>
+      <if test="mobile != null">
+        and mobile=#{mobile,jdbcType=VARCHAR}
+      </if>
+      <if test="isValid != null">
+        and is_valid=#{isValid,jdbcType=BOOLEAN}
+      </if>
+      <if test="remark != null">
+        and remark=#{remark,jdbcType=VARCHAR}
+      </if>
+      <if test="checkCount != null">
+        and check_count=#{checkCount,jdbcType=INTEGER}
+      </if>
+      <if test="checkDate != null">
+        and check_date=#{checkDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="createTime != null">
+        and create_time=#{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updateTime != null">
+        and update_time=#{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-01-05-->
+  <select id="selectByBankCardAndIsValid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from verify_bank_card
+    <where>bank_card=#{bankCard,jdbcType=VARCHAR}
+      <if test="isValid != null">
+        and is_valid=#{isValid,jdbcType=BOOLEAN}
+      </if>
+    </where>
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-01-17-->
+  <select id="selectByIdCardAndIsValidTrue" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from verify_bank_card
+    where id_card=#{idCard,jdbcType=VARCHAR} and is_valid = true
+  </select>
+
+</mapper>
