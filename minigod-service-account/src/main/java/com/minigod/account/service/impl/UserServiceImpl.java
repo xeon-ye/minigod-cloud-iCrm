@@ -11,8 +11,8 @@ import com.minigod.protocol.account.other.vo.response.OtherUserInfoResVo;
 import com.minigod.protocol.notify.enums.CaptchaSmsTypeEnum;
 import com.minigod.protocol.notify.vo.request.params.CaptchaReqParams;
 import com.minigod.notify.service.CaptchaSmsService;
-import com.minigod.account.mapper.CustomOpenInfoMapper;
-import com.minigod.account.mapper.CustomSessionMapper;
+import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
+import com.minigod.persist.account.mapper.CustomSessionMapper;
 import com.minigod.protocol.account.enums.PasswordTypeEnum;
 import com.minigod.protocol.account.model.CustomOpenInfo;
 import com.minigod.protocol.account.model.CustomSession;
@@ -28,8 +28,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
 @Slf4j
+@RestController
 public class UserServiceImpl extends BaseBeanFactory implements UserService {
 
     @Autowired
@@ -112,7 +112,7 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
 
         // 非其他系统账号，直接走内部系统账号登录逻辑
         if (params.getCertType() != null && !params.getCertType().equals(otherType)) {
-            return loginByOther(params);
+            return login(params);
         }
 
         // 参数校验 - 基本
@@ -128,7 +128,7 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
             String phoneNumber = otherUserInfoResVo.getPhoneNumber();
 
             // 手机号校验
-            if (StringUtils.isNotEmpty(phoneNumber) || !VerifyUtil.verifyMobile(certCode)) {
+            if (StringUtils.isEmpty(phoneNumber) || !VerifyUtil.verifyMobile(phoneNumber)) {
                 log.error("手机号格式异常." + certCode);
                 throw new InternalApiException(CodeType.BAD_ARGS, CubpMessageResource.BAD_FORMAT_PHONE);
             }

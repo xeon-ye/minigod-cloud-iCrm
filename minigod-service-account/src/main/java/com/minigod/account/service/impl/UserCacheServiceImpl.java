@@ -3,7 +3,7 @@ package com.minigod.account.service.impl;
 import com.minigod.common.utils.DateUtils;
 import com.minigod.common.bean.BaseBeanFactory;
 import com.minigod.account.helper.RedisTokenManager;
-import com.minigod.account.mapper.CustomSessionMapper;
+import com.minigod.persist.account.mapper.CustomSessionMapper;
 import com.minigod.protocol.account.model.CustomSession;
 import com.minigod.account.service.UserCacheService;
 import lombok.extern.slf4j.Slf4j;

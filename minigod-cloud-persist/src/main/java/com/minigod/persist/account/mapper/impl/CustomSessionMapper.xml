@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.minigod.persist.account.mapper.CustomSessionMapper">
+  <resultMap id="BaseResultMap" type="com.minigod.protocol.account.model.CustomSession">
+    <!--@mbg.generated-->
+    <!--@Table custom_session-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="device_id" jdbcType="INTEGER" property="deviceId" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
+    <result column="is_status" jdbcType="BOOLEAN" property="isStatus" />
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_id, device_id, token, expire_time, is_status, msg, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from custom_session
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from custom_session
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.CustomSession" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into custom_session (user_id, device_id, token, 
+      expire_time, is_status, msg, 
+      create_time, update_time)
+    values (#{userId,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, 
+      #{expireTime,jdbcType=TIMESTAMP}, #{isStatus,jdbcType=BOOLEAN}, #{msg,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.CustomSession" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into custom_session
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="token != null">
+        token,
+      </if>
+      <if test="expireTime != null">
+        expire_time,
+      </if>
+      <if test="isStatus != null">
+        is_status,
+      </if>
+      <if test="msg != null">
+        msg,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=INTEGER},
+      </if>
+      <if test="token != null">
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="expireTime != null">
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStatus != null">
+        #{isStatus,jdbcType=BOOLEAN},
+      </if>
+      <if test="msg != null">
+        #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.minigod.protocol.account.model.CustomSession">
+    <!--@mbg.generated-->
+    update custom_session
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=INTEGER},
+      </if>
+      <if test="token != null">
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="expireTime != null">
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isStatus != null">
+        is_status = #{isStatus,jdbcType=BOOLEAN},
+      </if>
+      <if test="msg != null">
+        msg = #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.minigod.protocol.account.model.CustomSession">
+    <!--@mbg.generated-->
+    update custom_session
+    set user_id = #{userId,jdbcType=INTEGER},
+      device_id = #{deviceId,jdbcType=INTEGER},
+      token = #{token,jdbcType=VARCHAR},
+      expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      is_status = #{isStatus,jdbcType=BOOLEAN},
+      msg = #{msg,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

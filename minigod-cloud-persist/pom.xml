@@ -6,10 +6,49 @@
         <artifactId>minigod-cloud</artifactId>
         <groupId>com.minigod</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath />
     </parent>
+    <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>minigod-cloud-persist</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+        </dependency>
+        <!-- MySql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.minigod</groupId>
+            <artifactId>minigod-cloud-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.minigod</groupId>
+            <artifactId>minigod-cloud-protocol</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
 </project>

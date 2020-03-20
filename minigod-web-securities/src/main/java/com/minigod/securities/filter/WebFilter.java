@@ -1,5 +1,6 @@
 package com.minigod.securities.filter;
 
+import com.minigod.common.i18n.MessageI18NHelper;
 import com.minigod.common.security.SignUtil;
 import com.minigod.common.utils.JSONUtil;
 import com.minigod.common.pojo.StaticType;
@@ -25,6 +26,8 @@ import java.util.*;
 public class WebFilter implements Filter {
     @Autowired
     RedisTokenManager redisTokenManager;
+    @Autowired
+    MessageI18NHelper messageI18NHelper;
 
     private static Set<String> noSigns = new HashSet<String>();
     private static Set<String> noProxySigns = new HashSet<String>();
@@ -32,7 +35,7 @@ public class WebFilter implements Filter {
 
     //不需要签名的接口
     static {
-        noSigns.add("/securities/test/open_task");
+        noSigns.add("/securities/test/checkUser");
     }
 
     //不需要签名的接口
@@ -42,7 +45,7 @@ public class WebFilter implements Filter {
 
     //不需要验证Session的接口
     static {
-        noTokens.add("/securities/test/open_task");
+        noTokens.add("/securities/test/checkUser");
         noTokens.add("/securities/sign/fetch_captcha");
         noTokens.add("/securities/sign/login");
         noTokens.add("/securities/sign/register");
@@ -65,7 +68,9 @@ public class WebFilter implements Filter {
             return;
         }
 
+        ResResult resResult = new ResResult();
         BaseRequestWrapper requestWrapper = new BaseRequestWrapper(request);
+
 
         byte[] wrapperBody = requestWrapper.getBody();
         String body = new String(wrapperBody);
@@ -77,15 +82,32 @@ public class WebFilter implements Filter {
             filterChain.doFilter(requestWrapper, response);
             return;
         }
+
+        // 回调接口
+        // TODO: 限制ip
+        if (url.startsWith("/securities/callback")) {
+            filterChain.doFilter(requestWrapper, response);
+            return;
+        }
+
+        String langKey = requestWrapper.getLanguage();
+
+        if (StringUtils.isEmpty(langKey)) {
+            resResult.setCode(StaticType.CodeType.BAD_PARAMS.getCode());
+            resResult.setMessage(getLocaleMessage(StaticType.MessageResource.BAD_PARAMS, langKey));
+            buildErrorResponseVO(response, resResult);
+            return;
+        }
+
         String token = request.getHeader(SecuritiesConst.H5_TOKEN_KEY);
 
         // 校验签名
-        ResResult resResult = checkSign(url, body, token);
+        resResult = checkSign(langKey, url, body, token);
 
         // 签名通过，校验token
         if (resResult == null) {
             // 校验token
-            resResult = checkWebToken(url, token);
+            resResult = checkWebToken(langKey, url, token);
         }
 
         // 存在错误信息，直接退回
@@ -94,11 +116,12 @@ public class WebFilter implements Filter {
             return;
         }
 
+        requestWrapper.updateParams();
         filterChain.doFilter(requestWrapper, response);
     }
 
     // 内外部系统不同签名策略
-    private ResResult checkSign(String url, String body, String token) {
+    private ResResult checkSign(String langKey, String url, String body, String token) {
         // 是否外部系统接口
         Boolean isProxy = url.startsWith("/securities/proxy");
 
@@ -111,7 +134,7 @@ public class WebFilter implements Filter {
             if (args == null) {
                 log.error("params签名参数异常.");
                 resResult.setCode(StaticType.CodeType.BAD_ARGS.getCode());
-                resResult.setMessage(StaticType.CodeType.BAD_ARGS.getMessage());
+                resResult.setMessage(getLocaleMessage(StaticType.MessageResource.BAD_ARGS, langKey));
                 return resResult;
             }
 
@@ -127,7 +150,7 @@ public class WebFilter implements Filter {
                         //参数错误,验证不通过
                         log.warn("无效的sign请求,参数不能为空:" + JSONUtil.toJson(maps));
                         resResult.setCode(StaticType.CodeType.ERROR_SIGN.getCode());
-                        resResult.setMessage(StaticType.CodeType.ERROR_SIGN.getMessage());
+                        resResult.setMessage(getLocaleMessage(StaticType.MessageResource.ERROR_SIGN, langKey));
                         return resResult;
                     }
                     Object key = null;
@@ -139,14 +162,14 @@ public class WebFilter implements Filter {
                             if (secret == null) {
                                 log.error("外部系统授权错误.");
                                 resResult.setCode(StaticType.CodeType.BAD_PROXY_SECRET.getCode());
-                                resResult.setMessage(StaticType.CodeType.BAD_PROXY_SECRET.getMessage());
+                                resResult.setMessage(getLocaleMessage(StaticType.MessageResource.BAD_PROXY_SECRET, langKey));
                                 return resResult;
                             }
                             key = secret;
                         }
                         // 外部系统除授权接口外，统一使用授权码作为key
                         else {
-                            key = params.get("authCode");
+                            key = maps.get("authCode");
                         }
                     }
                     // 内部系统接口签名key
@@ -167,7 +190,7 @@ public class WebFilter implements Filter {
                     if (StringUtils.isBlank(_key)) {
                         log.error("key签名参数异常." + key + "," + params);
                         resResult.setCode(StaticType.CodeType.BAD_PARAM_KEY.getCode());
-                        resResult.setMessage(StaticType.CodeType.BAD_PARAM_KEY.getMessage());
+                        resResult.setMessage(getLocaleMessage(StaticType.MessageResource.BAD_PARAM_KEY, langKey));
                         return resResult;
                     }
 
@@ -178,13 +201,13 @@ public class WebFilter implements Filter {
                     if (!SignUtil.validateSign(SignUtil.getParams(_args), _key, _sign)) {
                         log.error("签名错误参数:" + _key + ">>>" + _args + ">>>" + _sign);
                         resResult.setCode(StaticType.CodeType.ERROR_SIGN.getCode());
-                        resResult.setMessage(StaticType.CodeType.ERROR_SIGN.getMessage());
+                        resResult.setMessage(getLocaleMessage(StaticType.MessageResource.ERROR_SIGN, langKey));
                         return resResult;
                     }
                 } catch (Exception e) {
                     log.warn("无效的签名参数:", e);
                     resResult.setCode(StaticType.CodeType.ERROR_SIGN.getCode());
-                    resResult.setMessage(StaticType.CodeType.ERROR_SIGN.getMessage());
+                    resResult.setMessage(getLocaleMessage(StaticType.MessageResource.ERROR_SIGN, langKey));
                     return resResult;
                 }
             }
@@ -192,7 +215,7 @@ public class WebFilter implements Filter {
         return null;
     }
 
-    private ResResult checkWebToken(String url, String token) {
+    private ResResult checkWebToken(String langKey, String url, String token) {
         ResResult resResult = new ResResult();
         // session校验
         if (!noTokens.contains(url)) {
@@ -201,19 +224,19 @@ public class WebFilter implements Filter {
                     //参数错误,验证不通过
                     log.warn("sessionId参数异常");
                     resResult.setCode(StaticType.CodeType.BAD_PARAM_SESSION.getCode());
-                    resResult.setMessage(StaticType.CodeType.BAD_PARAM_SESSION.getMessage());
+                    resResult.setMessage(getLocaleMessage(StaticType.MessageResource.BAD_PARAM_SESSION, langKey));
                     return resResult;
                 }
 
                 if (!redisTokenManager.checkToken(token)) {
                     resResult.setCode(StaticType.CodeType.SESSION_INVALID.getCode());
-                    resResult.setMessage(StaticType.CodeType.SESSION_INVALID.getMessage());
+                    resResult.setMessage(getLocaleMessage(StaticType.MessageResource.SESSION_INVALID, langKey));
                     return resResult;
                 }
             } catch (Exception e) {
-                log.warn("无效的签名参数:", e);
-                resResult.setCode(StaticType.CodeType.SESSION_INVALID.getCode());
-                resResult.setMessage(StaticType.CodeType.SESSION_INVALID.getMessage());
+                log.warn("无效的token参数:", e);
+                resResult.setCode(StaticType.CodeType.BAD_PARAM_SESSION.getCode());
+                resResult.setMessage(getLocaleMessage(StaticType.MessageResource.BAD_PARAM_SESSION, langKey));
                 return resResult;
             }
         }
@@ -235,6 +258,11 @@ public class WebFilter implements Filter {
                 out.close();
             }
         }
+    }
+
+
+    public String getLocaleMessage(String messageResource, String langKey) {
+        return messageI18NHelper.getLocaleMessage(langKey, messageResource);
     }
 
     @Override

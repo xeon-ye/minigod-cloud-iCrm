@@ -6,8 +6,9 @@ import com.minigod.common.utils.JSONUtil;
 import com.minigod.account.helper.ImageStorageHelper;
 import com.minigod.account.helper.RestCubpHelper;
 import com.minigod.account.helper.TencentApiOcrHelper;
-import com.minigod.account.mapper.CustomOpenCnImgMapper;
-import com.minigod.account.mapper.CustomOpenInfoMapper;
+import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
+import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
+import com.minigod.protocol.account.cubp.vo.callback.CubpOpenInfoCallbackVo;
 import com.minigod.protocol.account.cubp.vo.request.CubpOpenAccountAppointmentReqVo;
 import com.minigod.protocol.account.cubp.vo.request.CubpOpenAccountUserInfoReqVo;
 import com.minigod.protocol.account.cubp.vo.response.CubpOpenAccountUserInfoResVo;
@@ -33,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -242,16 +244,23 @@ public class OpenAccountServiceImpl extends BaseBeanFactory implements OpenAccou
     }
 
     @Override
+    public void updateOpenInfo(CubpOpenInfoCallbackVo cubpOpenInfoCallbackVo) {
+        log.info("请求 /callback/update_open_info：" + JSONUtil.toCompatibleJson(cubpOpenInfoCallbackVo));
+        
+    }
+
+    @Override
     public OpenUserInfoResVo getOpenProgress(Integer userId, OpenProgressReqParams params) {
         // 参数校验
-        if (params == null) {
+        if (params == null || params.getFlag() == null) {
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
 
         OpenUserInfoResVo response = new OpenUserInfoResVo();
-
         // 查询本地用户数据
-        CustomOpenInfo customOpenInfo = customOpenInfoMapper.selectOneById(userId);
+        CustomOpenInfo customOpenInfo = null;
+        customOpenInfo = customOpenInfoMapper.selectOneById(userId);
+
         String phone = "";
         if (customOpenInfo != null) {
             phone = customOpenInfo.getPhone();

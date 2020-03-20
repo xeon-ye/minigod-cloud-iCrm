@@ -9,9 +9,9 @@ import java.util.*;
 import com.minigod.common.utils.JSONUtil;
 import com.minigod.common.bean.BaseBeanFactory;
 import com.minigod.account.helper.ImageStorageHelper;
-import com.minigod.account.mapper.CustomOpenCnCacheInfoMapper;
-import com.minigod.account.mapper.CustomOpenCnImgMapper;
-import com.minigod.account.mapper.CustomOpenInfoMapper;
+import com.minigod.persist.account.mapper.CustomOpenCnCacheInfoMapper;
+import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
+import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
 import com.minigod.protocol.account.enums.CubpMessageResource;
 import com.minigod.protocol.account.model.CustomOpenCnCacheInfo;
 import com.minigod.protocol.account.model.CustomOpenCnImg;
@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements OpenAccountOnlineCnService {
-
 
     @Autowired
     CustomOpenCnCacheInfoMapper openCnCacheInfoMapper;

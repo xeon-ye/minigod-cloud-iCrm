@@ -35,6 +35,10 @@ public class BaseRequestWrapper extends HttpServletRequestWrapper {
         return body;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
     public void updateParams() {
         String json = new String(body);
 

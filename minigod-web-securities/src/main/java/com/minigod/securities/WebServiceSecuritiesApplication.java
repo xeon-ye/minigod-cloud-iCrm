@@ -10,16 +10,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
-@SpringBootApplication(scanBasePackages = {"com.minigod.common","com.minigod.protocol", "com.minigod.notify", "com.minigod.storage", "com.minigod.account",  "com.minigod.securities"})
+@SpringBootApplication(scanBasePackages = "com.minigod")
+@MapperScan(basePackages = "com.minigod.persist.*.mapper")
 @EnableDiscoveryClient
-@MapperScan("com.minigod.*.mapper")
-@ServletComponentScan
-@EnableWebMvc
 public class WebServiceSecuritiesApplication {
-
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(WebServiceSecuritiesApplication.class, args);
         System.out.println(context);
     }
-
 }

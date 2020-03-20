@@ -1,12 +1,12 @@
 minigod:
-  cubp:
-    isRemote: true
-    url: http://192.168.0.112:6888/cubp
   config:
     # 权限密钥失效时间 s
     authCode.expireSecond: 7200 # 2*60*60
     # 用户token失效时间 s
     userToken.expireSecond: 7200 # 2*60*60
+  cubp:
+    isRemote: true
+    url: http://192.168.0.112:6888/cubp
   openAccount:
     isVerifyOpenData: true
     images:
@@ -29,8 +29,8 @@ minigod:
     getPDFInfoForSign: /SecuritiesAccount/com.minigod.notify.service/reqGetPDFInfoForSign
   proxy:
     isSyncOpen: false
-    host: http://192.168.0.112:6888/cubp
-    checkUser: /checkUser
+    host: http://192.168.0.112:8901/securities
+    checkUser: /test/checkUser
     syncData: /checkUser
 
 

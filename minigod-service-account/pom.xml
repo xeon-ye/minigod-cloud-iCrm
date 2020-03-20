@@ -1,117 +1,31 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.minigod</groupId>
         <artifactId>minigod-cloud</artifactId>
+        <groupId>com.minigod</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath />
     </parent>
+    <packaging>jar</packaging>
+    <modelVersion>4.0.0</modelVersion>
+
     <artifactId>minigod-service-account</artifactId>
     <description>cubp系统中台</description>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-commons</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>2.2.24</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
+        <!-- Ailibaba Json处理工具包 -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
-        <dependency>
-            <groupId>dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.minigod</groupId>
-            <artifactId>minigod-cloud-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.minigod</groupId>
-            <artifactId>minigod-cloud-protocol</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-        </dependency>
-        <!-- MySql -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.qcloudsms</groupId>
-            <artifactId>qcloudsms</artifactId>
-            <version>1.0.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.minigod</groupId>
-            <artifactId>minigod-service-notify</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+        <!-- 腾讯云认证相关 -->
         <!-- https://mvnrepository.com/artifact/com.tencentcloudapi/tencentcloud-sdk-java -->
         <dependency>
             <groupId>com.tencentcloudapi</groupId>
             <artifactId>tencentcloud-sdk-java</artifactId>
             <version>3.0.125</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.minigod</groupId>
-            <artifactId>minigod-service-storage</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minigod</groupId>
-            <artifactId>minigod-cloud-protocol</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minigod</groupId>
-            <artifactId>minigod-cloud-protocol</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minigod</groupId>
-            <artifactId>minigod-cloud-protocol</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.auth0</groupId>
@@ -119,22 +33,43 @@
             <version>3.4.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.minigod</groupId>
+            <artifactId>minigod-cloud-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.minigod</groupId>
+            <artifactId>minigod-cloud-protocol</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.minigod</groupId>
+            <artifactId>minigod-cloud-persist</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.minigod</groupId>
+            <artifactId>minigod-service-storage</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.minigod</groupId>
+            <artifactId>minigod-service-notify</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <classifier>exe</classifier>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
@@ -143,5 +78,4 @@
             </resource>
         </resources>
     </build>
-
 </project>

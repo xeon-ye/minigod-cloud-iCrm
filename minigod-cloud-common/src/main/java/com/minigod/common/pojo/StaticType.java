@@ -86,6 +86,8 @@ public class StaticType {
         public static final String BAD_SOCKET = "BAD_SOCKET";
         public static final String BAD_PARAM_KEY = "BAD_PARAM_KEY";
         public static final String BAD_PARAM_SESSION = "BAD_PARAM_SESSION";
+        public static final String BAD_PROXY_SECRET = "BAD_PROXY_SECRET";
+        public static final String BAD_PROXY_AUTH_CODE = "BAD_PROXY_AUTH_CODE";
         public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
         public static final String NONE_DATA = "NONE_DATA";
         public static final String EXIST_DATA = "EXIST_DATA";

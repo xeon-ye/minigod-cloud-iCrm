@@ -43,7 +43,7 @@ public class OpenAccountController {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_VERIFY_EMAIL);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_OPEN_PROGRESS);
         }
     }
 

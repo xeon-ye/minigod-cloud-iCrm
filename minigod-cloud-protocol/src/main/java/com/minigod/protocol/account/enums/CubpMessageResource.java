@@ -27,7 +27,11 @@ public class CubpMessageResource {
     public static final String FAIL_VERIFY_ID_CARD = "FAIL_VERIFY_ID_CARD";// 身份证校验失败
     public static final String FAIL_VERIFY_ID_CARD_COUNT = "FAIL_VERIFY_ID_CARD_COUNT";// 身份证校验每日次数上限
 
+    // OCR识别
     public static final String FAIL_OCR = "FAIL_OCR"; // 身份证/银行卡识别失败
+
+    // 获取开户进度
+    public static final String FAIL_OPEN_PROGRESS = "FAIL_OPEN_PROGRESS"; // 开户进度
 
     // 银行卡校验
     public static final String BAD_FORMAT_BANK_CARD = "BAD_FORMAT_BANK_CARD";//银行卡格式错误

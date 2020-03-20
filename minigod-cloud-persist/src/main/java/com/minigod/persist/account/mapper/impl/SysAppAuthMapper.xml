@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.minigod.persist.account.mapper.SysAppAuthMapper">
+  <resultMap id="BaseResultMap" type="com.minigod.protocol.account.model.SysAppAuth">
+    <!--@mbg.generated-->
+    <!--@Table sys_app_auth-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="app_key" jdbcType="VARCHAR" property="appKey" />
+    <result column="app_secret" jdbcType="VARCHAR" property="appSecret" />
+    <result column="app_version" jdbcType="VARCHAR" property="appVersion" />
+    <result column="device_types" jdbcType="VARCHAR" property="deviceTypes" />
+    <result column="os_types" jdbcType="VARCHAR" property="osTypes" />
+    <result column="believe_ips" jdbcType="VARCHAR" property="believeIps" />
+    <result column="is_enabled" jdbcType="BOOLEAN" property="isEnabled" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="deleted" jdbcType="BOOLEAN" property="deleted" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, app_key, app_secret, app_version, device_types, os_types, believe_ips, is_enabled, 
+    remarks, create_time, update_time, deleted
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from sys_app_auth
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from sys_app_auth
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.SysAppAuth" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into sys_app_auth (app_key, app_secret, app_version, 
+      device_types, os_types, believe_ips, 
+      is_enabled, remarks, create_time, 
+      update_time, deleted)
+    values (#{appKey,jdbcType=VARCHAR}, #{appSecret,jdbcType=VARCHAR}, #{appVersion,jdbcType=VARCHAR}, 
+      #{deviceTypes,jdbcType=VARCHAR}, #{osTypes,jdbcType=VARCHAR}, #{believeIps,jdbcType=VARCHAR}, 
+      #{isEnabled,jdbcType=BOOLEAN}, #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BOOLEAN})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.SysAppAuth" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into sys_app_auth
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="appKey != null">
+        app_key,
+      </if>
+      <if test="appSecret != null">
+        app_secret,
+      </if>
+      <if test="appVersion != null">
+        app_version,
+      </if>
+      <if test="deviceTypes != null">
+        device_types,
+      </if>
+      <if test="osTypes != null">
+        os_types,
+      </if>
+      <if test="believeIps != null">
+        believe_ips,
+      </if>
+      <if test="isEnabled != null">
+        is_enabled,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleted != null">
+        deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="appKey != null">
+        #{appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="appSecret != null">
+        #{appSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null">
+        #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceTypes != null">
+        #{deviceTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="osTypes != null">
+        #{osTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="believeIps != null">
+        #{believeIps,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnabled != null">
+        #{isEnabled,jdbcType=BOOLEAN},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BOOLEAN},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.minigod.protocol.account.model.SysAppAuth">
+    <!--@mbg.generated-->
+    update sys_app_auth
+    <set>
+      <if test="appKey != null">
+        app_key = #{appKey,jdbcType=VARCHAR},
+      </if>
+      <if test="appSecret != null">
+        app_secret = #{appSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null">
+        app_version = #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceTypes != null">
+        device_types = #{deviceTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="osTypes != null">
+        os_types = #{osTypes,jdbcType=VARCHAR},
+      </if>
+      <if test="believeIps != null">
+        believe_ips = #{believeIps,jdbcType=VARCHAR},
+      </if>
+      <if test="isEnabled != null">
+        is_enabled = #{isEnabled,jdbcType=BOOLEAN},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=BOOLEAN},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.minigod.protocol.account.model.SysAppAuth">
+    <!--@mbg.generated-->
+    update sys_app_auth
+    set app_key = #{appKey,jdbcType=VARCHAR},
+      app_secret = #{appSecret,jdbcType=VARCHAR},
+      app_version = #{appVersion,jdbcType=VARCHAR},
+      device_types = #{deviceTypes,jdbcType=VARCHAR},
+      os_types = #{osTypes,jdbcType=VARCHAR},
+      believe_ips = #{believeIps,jdbcType=VARCHAR},
+      is_enabled = #{isEnabled,jdbcType=BOOLEAN},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      deleted = #{deleted,jdbcType=BOOLEAN}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+<!--auto generated by MybatisCodeHelper on 2020-03-06-->
+  <select id="selectOneByAppKeyAndDeletedFalse" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_app_auth
+    where app_key=#{appKey,jdbcType=VARCHAR} and deleted = false
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-03-06-->
+  <select id="selectOneByAppKeyAndAppSecretAndDeletedFalse" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_app_auth
+    where app_key=#{appKey,jdbcType=VARCHAR} and app_secret=#{appSecret,jdbcType=VARCHAR} and deleted = false
+  </select>
+
+</mapper>

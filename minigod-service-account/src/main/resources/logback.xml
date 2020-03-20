@@ -4,10 +4,10 @@
 
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>d:/logs/trade-rest-server/trade-rest-server.log</file>
+		<file>d:/logs/service-account/service-account.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
-			<fileNamePattern>trade-rest-server.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+			<fileNamePattern>service-account.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
 
 			<!-- keep 30 days' worth of history capped at 3GB total size -->
 			<maxHistory>30</maxHistory>
@@ -19,7 +19,7 @@
 	</appender>
 
 	<logger name="org.springframework.cloud" level="INFO" />
-	<logger name="com.minigod.trade" level="DEBUG" />
+	<logger name="com.minigod.account" level="DEBUG" />
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />

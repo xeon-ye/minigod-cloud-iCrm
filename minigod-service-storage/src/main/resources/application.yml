@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: db, redis, storage
+  messages:
+    encoding: UTF-8
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+server:
+  context-path: /storage
+  port: 8001

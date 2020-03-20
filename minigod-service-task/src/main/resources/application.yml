@@ -1,0 +1,24 @@
+spring:
+  profiles:
+    active: db, redis, task
+  messages:
+    encoding: UTF-8
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+server:
+  context-path:
+  port: 8801
+
+logging:
+  level:
+    root:  DEBUG
+    org.springframework:  DEBUG
+    org.mybatis:  DEBUG
+    com.zsdp.loan.core:  ERROR
+    com.zsdp.loan.db:  ERROR
+    com.zsdp.loan.admin:  DEBUG
+    com.zsdp.loan.app:  ERROR
+    com.zsdp.loan:  ERROR
+

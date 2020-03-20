@@ -22,11 +22,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.minigod</groupId>
-            <artifactId>minigod-common-pojo</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <!-- 时间操作组件 -->
         <dependency>
             <groupId>joda-time</groupId>

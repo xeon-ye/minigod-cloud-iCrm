@@ -1,6 +1,6 @@
 package com.minigod.storage.service;
 
-import com.minigod.storage.mapper.SysStorageMapper;
+import com.minigod.persist.storage.mapper.SysStorageMapper;
 import com.minigod.protocol.storage.model.SysStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

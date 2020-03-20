@@ -7,7 +7,7 @@ import com.minigod.common.pojo.StaticType;
 import com.minigod.common.utils.CharUtil;
 import com.minigod.common.verify.utils.VerifyUtil;
 import com.minigod.notify.helper.NotifyService;
-import com.minigod.notify.mapper.CaptchaSmsMapper;
+import com.minigod.persist.notify.mapper.CaptchaSmsMapper;
 import com.minigod.protocol.notify.enums.CaptchaSmsTypeEnum;
 import com.minigod.protocol.notify.enums.CaptchaValidEnum;
 import com.minigod.protocol.notify.model.CaptchaSms;

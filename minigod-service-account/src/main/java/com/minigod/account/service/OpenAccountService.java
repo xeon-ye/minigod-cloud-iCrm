@@ -1,5 +1,6 @@
 package com.minigod.account.service;
 
+import com.minigod.protocol.account.cubp.vo.callback.CubpOpenInfoCallbackVo;
 import com.minigod.protocol.account.vo.request.params.*;
 import com.minigod.protocol.account.vo.response.OpenUserInfoResVo;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -13,6 +14,8 @@ public interface OpenAccountService {
     public Boolean isCanUpdateOpenInfo(Integer userId);
 
     public void saveOrUpdateOpenInfo(Integer userId, OpenInfoReqParams params);
+
+    public void updateOpenInfo(CubpOpenInfoCallbackVo callbackVo);
 
     public OpenUserInfoResVo getOpenProgress(Integer userId, OpenProgressReqParams params);
 

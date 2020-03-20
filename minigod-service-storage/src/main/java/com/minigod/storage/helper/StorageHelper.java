@@ -1,10 +1,11 @@
 package com.minigod.storage.helper;
 
 import com.minigod.common.utils.FileUtils;
-import com.minigod.storage.mapper.SysStorageMapper;
+import com.minigod.persist.storage.mapper.SysStorageMapper;
 import com.minigod.protocol.storage.model.SysStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.nio.file.Path;

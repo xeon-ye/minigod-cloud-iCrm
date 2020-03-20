@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: notify, storage, account, db, redis, web
+    active: db, redis, notify, storage, account, web
   i18n:
     basename: i18n/messages
     encoding: UTF-8
@@ -12,7 +12,7 @@ spring:
 
 server:
   context-path: /securities
-  port: 8153
+  port: 8901
 
 logging:
   level:
@@ -24,6 +24,4 @@ logging:
     com.zsdp.loan.admin:  DEBUG
     com.zsdp.loan.app:  ERROR
     com.zsdp.loan:  ERROR
-
-
 

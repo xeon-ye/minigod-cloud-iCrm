@@ -1,8 +1,8 @@
 package com.minigod.account.service.impl;
 
 import com.minigod.account.helper.JwtHelper;
-import com.minigod.account.mapper.CustomDeviceMapper;
-import com.minigod.account.mapper.SysAppAuthMapper;
+import com.minigod.persist.account.mapper.CustomDeviceMapper;
+import com.minigod.persist.account.mapper.SysAppAuthMapper;
 import com.minigod.account.service.OpenAccountService;
 import com.minigod.account.service.ProxyService;
 import com.minigod.account.service.UserService;
@@ -168,12 +168,12 @@ public class ProxyServiceImpl extends BaseBeanFactory implements ProxyService {
         String password = params.getPassword();
 
         // 参数校验 - 基本
-        if (StringUtils.isEmpty(account) || StringUtils.isEmpty(password)) {
+        if (StringUtils.isEmpty(account) && StringUtils.isEmpty(password)) {
             throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
         }
 
         LoginReqParams loginReqParams = new LoginReqParams();
-        loginReqParams.setCertType(CertTypeEnum.phone.getTypeValue());
+        loginReqParams.setCertType(CertTypeEnum.other.getTypeValue());
         loginReqParams.setCertCode(account);
         loginReqParams.setPasswordType(PasswordTypeEnum.other.getTypeValue());
         loginReqParams.setPassword(password);
@@ -183,7 +183,13 @@ public class ProxyServiceImpl extends BaseBeanFactory implements ProxyService {
 
     @Override
     public OpenUserInfoResVo getOpenProgress(Integer userId, OpenProgressProxyReqParams params) {
+        // 参数校验
+        if (params == null || params.getFlag() == null) {
+            log.error("参数异常: LoginProxyReqParams");
+            throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
+        }
         OpenProgressReqParams openProgressReqParams = new OpenProgressReqParams();
+        openProgressReqParams.setFlag(params.getFlag());
         return openAccountService.getOpenProgress(userId, openProgressReqParams);
     }
 }
