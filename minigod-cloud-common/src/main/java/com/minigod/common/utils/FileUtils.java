@@ -229,4 +229,15 @@ public class FileUtils {
         }
         return size + B;
     }
+
+    public static byte[] Base64ToByte(String str) {
+        byte[] b = null;
+        try {
+            b = org.apache.commons.codec.binary.Base64.decodeBase64(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return b;
+
+    }
 }

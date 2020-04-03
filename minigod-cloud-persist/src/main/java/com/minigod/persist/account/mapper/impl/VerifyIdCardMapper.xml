@@ -1,157 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.minigod.persist.account.mapper.VerifyIdCardMapper">
-    <resultMap id="BaseResultMap" type="com.minigod.protocol.account.model.VerifyIdCard">
-        <!--@mbg.generated-->
-        <!--@Table verify_id_card-->
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
-        <result column="id_card" jdbcType="VARCHAR" property="idCard"/>
-        <result column="is_valid" jdbcType="BOOLEAN" property="isValid"/>
-        <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <result column="check_count" jdbcType="INTEGER" property="checkCount"/>
-        <result column="check_date" jdbcType="TIMESTAMP" property="checkDate"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--@mbg.generated-->
-        id, user_name, id_card, is_valid, remark, check_count, check_date, create_time, update_time
-    </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        <!--@mbg.generated-->
-        select
-        <include refid="Base_Column_List"/>
-        from verify_id_card
-        where id = #{id,jdbcType=BIGINT}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        <!--@mbg.generated-->
-        delete from verify_id_card
-        where id = #{id,jdbcType=BIGINT}
-    </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id"
-            parameterType="com.minigod.protocol.account.model.VerifyIdCard" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into verify_id_card (user_name, id_card, is_valid,
-        remark, check_count, check_date,
-        create_time, update_time)
-        values (#{userName,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{isValid,jdbcType=BOOLEAN},
-        #{remark,jdbcType=VARCHAR}, #{checkCount,jdbcType=INTEGER}, #{checkDate,jdbcType=TIMESTAMP},
-        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
-    </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id"
-            parameterType="com.minigod.protocol.account.model.VerifyIdCard" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into verify_id_card
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="userName != null">
-                user_name,
-            </if>
-            <if test="idCard != null">
-                id_card,
-            </if>
-            <if test="isValid != null">
-                is_valid,
-            </if>
-            <if test="remark != null">
-                remark,
-            </if>
-            <if test="checkCount != null">
-                check_count,
-            </if>
-            <if test="checkDate != null">
-                check_date,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="userName != null">
-                #{userName,jdbcType=VARCHAR},
-            </if>
-            <if test="idCard != null">
-                #{idCard,jdbcType=VARCHAR},
-            </if>
-            <if test="isValid != null">
-                #{isValid,jdbcType=BOOLEAN},
-            </if>
-            <if test="remark != null">
-                #{remark,jdbcType=VARCHAR},
-            </if>
-            <if test="checkCount != null">
-                #{checkCount,jdbcType=INTEGER},
-            </if>
-            <if test="checkDate != null">
-                #{checkDate,jdbcType=TIMESTAMP},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.minigod.protocol.account.model.VerifyIdCard">
-        <!--@mbg.generated-->
-        update verify_id_card
-        <set>
-            <if test="userName != null">
-                user_name = #{userName,jdbcType=VARCHAR},
-            </if>
-            <if test="idCard != null">
-                id_card = #{idCard,jdbcType=VARCHAR},
-            </if>
-            <if test="isValid != null">
-                is_valid = #{isValid,jdbcType=BOOLEAN},
-            </if>
-            <if test="remark != null">
-                remark = #{remark,jdbcType=VARCHAR},
-            </if>
-            <if test="checkCount != null">
-                check_count = #{checkCount,jdbcType=INTEGER},
-            </if>
-            <if test="checkDate != null">
-                check_date = #{checkDate,jdbcType=TIMESTAMP},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        where id = #{id,jdbcType=BIGINT}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.minigod.protocol.account.model.VerifyIdCard">
-        <!--@mbg.generated-->
-        update verify_id_card
-        set user_name = #{userName,jdbcType=VARCHAR},
+  <resultMap id="BaseResultMap" type="com.minigod.protocol.account.model.VerifyIdCard">
+    <!--@mbg.generated-->
+    <!--@Table verify_id_card-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="check_count" jdbcType="INTEGER" property="checkCount" />
+    <result column="check_date" jdbcType="TIMESTAMP" property="checkDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_name, id_card, `status`, remark, check_count, check_date, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from verify_id_card
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from verify_id_card
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.VerifyIdCard" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into verify_id_card (user_name, id_card, `status`, 
+      remark, check_count, check_date, 
+      create_time, update_time)
+    values (#{userName,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{checkCount,jdbcType=INTEGER}, #{checkDate,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.VerifyIdCard" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into verify_id_card
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="idCard != null">
+        id_card,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="checkCount != null">
+        check_count,
+      </if>
+      <if test="checkDate != null">
+        check_date,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkCount != null">
+        #{checkCount,jdbcType=INTEGER},
+      </if>
+      <if test="checkDate != null">
+        #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.minigod.protocol.account.model.VerifyIdCard">
+    <!--@mbg.generated-->
+    update verify_id_card
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
         id_card = #{idCard,jdbcType=VARCHAR},
-        is_valid = #{isValid,jdbcType=BOOLEAN},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkCount != null">
         check_count = #{checkCount,jdbcType=INTEGER},
+      </if>
+      <if test="checkDate != null">
         check_date = #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
-        update_time = #{updateTime,jdbcType=TIMESTAMP}
-        where id = #{id,jdbcType=BIGINT}
-    </update>
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.minigod.protocol.account.model.VerifyIdCard">
+    <!--@mbg.generated-->
+    update verify_id_card
+    set user_name = #{userName,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      check_count = #{checkCount,jdbcType=INTEGER},
+      check_date = #{checkDate,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 
-<!--auto generated by MybatisCodeHelper on 2020-01-05-->
-    <select id="selectByIdCardAndIsValid" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from verify_id_card
-        <where>id_card=#{idCard,jdbcType=VARCHAR}
-            <if test="isValid != null">
-                and is_valid=#{isValid,jdbcType=BOOLEAN}
-            </if>
-        </where>
-    </select>
+<!--auto generated by MybatisCodeHelper on 2020-03-27-->
+  <select id="selectByIdCardAndStatus" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from verify_id_card
+    where id_card=#{idCard,jdbcType=VARCHAR} and `status`=#{status,jdbcType=INTEGER}
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-03-27-->
+  <select id="selectOneByIdCardAndUserName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from verify_id_card
+    where id_card=#{idCard,jdbcType=VARCHAR} and user_name=#{userName,jdbcType=VARCHAR}
+  </select>
+
 
 </mapper>

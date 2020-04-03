@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.common.pojo.response.ResResult;
-import com.minigod.protocol.account.cubp.vo.request.CubpOpenAccountUserInfoReqVo;
-import com.minigod.protocol.account.cubp.vo.response.CubpOpenAccountUserInfoResVo;
+import com.minigod.protocol.account.cubp.request.CubpOpenAccountUserInfoReqVo;
+import com.minigod.protocol.account.cubp.response.CubpOpenAccountUserInfoResVo;
 import com.minigod.account.utils.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -68,6 +68,7 @@ public class RestCubpHelper {
 
         if (responseResult.getCode() == 0) {
             Object res = responseResult.getResult();
+            log.debug("RestCubpHelper回包解析：", res);
             if (res != null) {
                 T obj = JSON.parseObject(res.toString(), clazz);
                 if (null != obj) {

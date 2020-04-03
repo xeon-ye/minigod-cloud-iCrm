@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: db, redis, task
+    active: db, redis, task, account, storage, notify
   messages:
     encoding: UTF-8
   jackson:

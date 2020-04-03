@@ -1,5 +1,6 @@
 package com.minigod.securities.filter;
 
+import com.minigod.common.exception.WebApiException;
 import com.minigod.common.i18n.MessageI18NHelper;
 import com.minigod.common.security.SignUtil;
 import com.minigod.common.utils.JSONUtil;
@@ -63,6 +64,15 @@ public class WebFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        request.getSession();
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Methods", "*");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Connection, User-Agent, Cookie, X-Accept-Token, X-Accept-Language");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Content-type", "application/json");
+        response.setHeader("Cache-Control", "no-cache, must-revalidate");
+
         if (request.getMethod().equals(HttpMethod.OPTIONS.toString())) {
             filterChain.doFilter(request, response);
             return;
@@ -78,7 +88,7 @@ public class WebFilter implements Filter {
         String url = request.getRequestURI();
 
         // 读取文件接口，不受限制
-        if (url.indexOf("/storage/file") > -1) {
+        if (url.startsWith("/storage/file")) {
             filterChain.doFilter(requestWrapper, response);
             return;
         }
@@ -93,6 +103,7 @@ public class WebFilter implements Filter {
         String langKey = requestWrapper.getLanguage();
 
         if (StringUtils.isEmpty(langKey)) {
+            log.error("未指定语言环境");
             resResult.setCode(StaticType.CodeType.BAD_PARAMS.getCode());
             resResult.setMessage(getLocaleMessage(StaticType.MessageResource.BAD_PARAMS, langKey));
             buildErrorResponseVO(response, resResult);
@@ -244,6 +255,8 @@ public class WebFilter implements Filter {
     }
 
     private void buildErrorResponseVO(ServletResponse response, ResResult resResult) {
+
+
         String json = com.alibaba.fastjson.JSONObject.toJSONString(resResult);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");

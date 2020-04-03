@@ -2,12 +2,11 @@ package com.minigod.securities.web.controller;
 
 
 import com.minigod.common.pojo.response.ResResult;
-import com.minigod.protocol.account.vo.request.params.*;
-import com.minigod.protocol.account.vo.response.OpenUserInfoResVo;
-import com.minigod.protocol.account.vo.response.VerifyResVo;
+import com.minigod.protocol.account.request.params.*;
+import com.minigod.protocol.account.response.OpenUserInfoResVo;
+import com.minigod.protocol.account.response.VerifyResVo;
 import com.minigod.securities.annotation.LoginUser;
-import com.minigod.protocol.account.enums.CubpMessageResource;
-import com.minigod.account.service.OpenAccountService;
+import com.minigod.account.service.OpenAccountOnlineService;
 import com.minigod.account.service.VerifyService;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.exception.WebApiException;
@@ -28,7 +27,7 @@ public class OpenAccountController {
     @Autowired
     private VerifyService verifyService;
     @Autowired
-    private OpenAccountService openAccountService;
+    private OpenAccountOnlineService openAccountOnlineService;
 
     /**
      * 获取用户开户进度
@@ -38,48 +37,46 @@ public class OpenAccountController {
         try {
             OpenProgressReqParams params = requestVo.getParams();
 
-            OpenUserInfoResVo rt = openAccountService.getOpenProgress(userId, params);
+            OpenUserInfoResVo rt = openAccountOnlineService.getOpenProgress(userId, params);
             return ResResult.success(rt);
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_OPEN_PROGRESS);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_OPEN_PROGRESS);
         }
     }
 
     /**
-     * ocr识别 TODO
+     * ocr识别
      */
     @PostMapping("/ocr_by_image")
     public ResResult ocrByImage(@LoginUser Integer userId, @RequestBody BaseRequest<OpenImgReqParams> requestVo) {
-        // TODO: 身份证、银行卡等识别
         try {
             OpenImgReqParams params = requestVo.getParams();
 
-            Object rt = openAccountService.ocrByImage(userId, params);
+            Object rt = openAccountOnlineService.ocrByImage(userId, params);
             return ResResult.success(rt);
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_OCR);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_OCR);
         }
     }
 
     /**
-     * ocr识别 TODO
+     * ocr识别
      */
     @PostMapping("/ocr_by_card_type")
     public ResResult ocrByCardType(@LoginUser Integer userId, @RequestBody BaseRequest<OcrReqParams> requestVo) {
-        // TODO: 身份证、银行卡等识别
         try {
             OcrReqParams params = requestVo.getParams();
 
-            Object rt = openAccountService.ocrByCardType(userId, params);
+            Object rt = openAccountOnlineService.ocrByCardType(userId, params);
             return ResResult.success(rt);
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_OCR);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_OCR);
         }
     }
 
@@ -96,7 +93,7 @@ public class OpenAccountController {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_VERIFY_PHONE);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_VERIFY_PHONE);
         }
     }
 
@@ -113,7 +110,7 @@ public class OpenAccountController {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_VERIFY_EMAIL);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_VERIFY_EMAIL);
         }
     }
 
@@ -134,7 +131,7 @@ public class OpenAccountController {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_VERIFY_ID_CARD);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_VERIFY_ID_CARD);
         }
     }
 
@@ -153,7 +150,7 @@ public class OpenAccountController {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_VERIFY_PHONE);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_VERIFY_PHONE);
         }
     }
 
@@ -164,12 +161,12 @@ public class OpenAccountController {
     public ResResult getDictionary(@RequestBody BaseRequest<DictionaryDataReqParams> requestVo) {
         try {
             DictionaryDataReqParams params = requestVo.getParams();
-            List<Object> rt = openAccountService.getDictionaryData(params);
+            List<Object> rt = openAccountOnlineService.getDictionaryData(params);
             return ResResult.success(rt);
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_VERIFY_PHONE);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_VERIFY_PHONE);
         }
 
     }

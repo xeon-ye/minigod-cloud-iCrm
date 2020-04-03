@@ -3,8 +3,10 @@ package com.minigod.protocol.account.model;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class CustomOpenCnImg implements Serializable {
     private Integer id;
 
@@ -30,7 +32,7 @@ public class CustomOpenCnImg implements Serializable {
     /**
      * 标识错误图片，1:图片错误
      */
-    private Integer errorStatus;
+    private Boolean isError;
 
     private static final long serialVersionUID = 1L;
 }

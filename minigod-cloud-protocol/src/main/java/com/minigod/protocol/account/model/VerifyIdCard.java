@@ -3,13 +3,15 @@ package com.minigod.protocol.account.model;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class VerifyIdCard implements Serializable {
     /**
      * 主键
      */
-    private Long id;
+    private Integer id;
 
     /**
      * 用户名称
@@ -22,9 +24,9 @@ public class VerifyIdCard implements Serializable {
     private String idCard;
 
     /**
-     * 状态(0:不通过 1:通过)
+     * 状态(-1:未校验，0:不通过 1:通过)
      */
-    private Boolean isValid;
+    private Integer status;
 
     private String remark;
 

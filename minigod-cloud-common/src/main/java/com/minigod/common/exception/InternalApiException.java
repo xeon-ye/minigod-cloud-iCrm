@@ -25,7 +25,6 @@ public class InternalApiException extends RuntimeException {
         this.messageResource = messageResource;
     }
 
-
     public InternalApiException(StaticType.CodeType codeType, String messageResource) {
         super(codeType.getMessage());
         this.code = codeType.getCode();

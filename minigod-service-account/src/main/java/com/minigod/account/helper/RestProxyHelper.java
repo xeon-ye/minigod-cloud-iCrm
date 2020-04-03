@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.minigod.account.utils.CommonUtil;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.common.pojo.response.ResResult;
-import com.minigod.protocol.account.other.vo.response.OtherUserInfoResVo;
+import com.minigod.protocol.account.other.response.OtherUserInfoResVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,6 +63,7 @@ public class RestProxyHelper {
         // 构建回包
         if (responseResult.getCode() == 0) {
             Object res = responseResult.getResult();
+            log.debug("RestProxyHelper回包解析：", res);
             if (res != null) {
                 T obj = JSON.parseObject(res.toString(), clazz);
                 if (null != obj) {

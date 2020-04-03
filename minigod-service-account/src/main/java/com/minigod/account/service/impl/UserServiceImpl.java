@@ -3,25 +3,24 @@ package com.minigod.account.service.impl;
 import com.minigod.account.helper.RestProxyHelper;
 import com.minigod.common.odps.service.RedisMapService;
 import com.minigod.common.pojo.CertTypeEnum;
+import com.minigod.common.pojo.StaticType;
 import com.minigod.common.verify.utils.VerifyUtil;
-//import RedisMapService;
 import com.minigod.common.pojo.StaticType.*;
 import com.minigod.common.bean.BaseBeanFactory;
-import com.minigod.protocol.account.other.vo.response.OtherUserInfoResVo;
+import com.minigod.protocol.account.other.response.OtherUserInfoResVo;
 import com.minigod.protocol.notify.enums.CaptchaSmsTypeEnum;
-import com.minigod.protocol.notify.vo.request.params.CaptchaReqParams;
+import com.minigod.protocol.notify.request.params.CaptchaReqParams;
 import com.minigod.notify.service.CaptchaSmsService;
 import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
 import com.minigod.persist.account.mapper.CustomSessionMapper;
 import com.minigod.protocol.account.enums.PasswordTypeEnum;
 import com.minigod.protocol.account.model.CustomOpenInfo;
 import com.minigod.protocol.account.model.CustomSession;
-import com.minigod.protocol.account.vo.request.params.LoginReqParams;
-import com.minigod.protocol.account.vo.request.params.RetisterReqParams;
-import com.minigod.protocol.account.vo.response.LoginResVo;
+import com.minigod.protocol.account.request.params.LoginReqParams;
+import com.minigod.protocol.account.request.params.RetisterReqParams;
+import com.minigod.protocol.account.response.LoginResVo;
 import com.minigod.account.service.UserCacheService;
 import com.minigod.account.service.UserService;
-import com.minigod.protocol.account.enums.CubpMessageResource;
 import com.minigod.common.exception.InternalApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -61,7 +60,7 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
         return false;
     }
 
-    // TODO 校验验证码
+    // 校验验证码
     private Boolean verifyCaptcha(Integer certType, String certCode, Integer captchaId, String captchaCode, CaptchaSmsTypeEnum smsType) {
         CaptchaReqParams captchaInfo = new CaptchaReqParams();
         captchaInfo.setCertType(certType);
@@ -130,7 +129,7 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
             // 手机号校验
             if (StringUtils.isEmpty(phoneNumber) || !VerifyUtil.verifyMobile(phoneNumber)) {
                 log.error("手机号格式异常." + certCode);
-                throw new InternalApiException(CodeType.BAD_ARGS, CubpMessageResource.BAD_FORMAT_PHONE);
+                throw new InternalApiException(CodeType.BAD_ARGS, MessageResource.BAD_FORMAT_PHONE);
             }
 
             // 根据手机号码获取用户
@@ -148,7 +147,7 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
             CustomSession session = saveLogin(userInfo);
 
             if (session == null) {
-                throw new InternalApiException(CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_LOGIN_BY_OTHER);
+                throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.FAIL_LOGIN_BY_OTHER);
             }
 
             LoginResVo loginResVo = new LoginResVo();
@@ -169,7 +168,7 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
     public LoginResVo login(LoginReqParams params) {
         // 参数校验
         if (params == null) {
-            log.error("参数异常: LoginReqParams");
+            log.error("参数异常: LoginReqParams = {}", params);
             throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
         }
         Integer certType = params.getCertType();
@@ -180,6 +179,12 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
 
         // 参数校验 - 基本
         if (certType == null || passwordType == null || StringUtils.isEmpty(certCode)) {
+            throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
+        }
+
+        // 参数校验 - 合法性
+        if (!CertTypeEnum.isContainCertType(certType) || !PasswordTypeEnum.isContainCertType(passwordType)) {
+            // 非法的 账号| 密码类型
             throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
         }
 
@@ -197,16 +202,17 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
 
         // 用户ID登录
         if (certType.equals(userIdType)) {
-            // TODO: 暂不支持用户ID登录
-            throw new Error("暂不支持用户ID登录");
+            // 暂不支持用户ID登录
 //            userInfo = customOpenInfoMapper.selectOneById(Integer.valueOf(certCode));
+            throw new InternalApiException(MessageResource.SERVICE_UN_SUPPORT);
         }
         // 手机号登录
         else if (certType.equals(phoneType)) {
             // 手机号校验
             if (!VerifyUtil.verifyMobile(certCode)) {
                 log.error("手机号格式异常." + certCode);
-                throw new InternalApiException(CodeType.BAD_ARGS, CubpMessageResource.BAD_FORMAT_PHONE);
+//                throw new InternalApiException(CodeType.BAD_ARGS, MessageResource.BAD_FORMAT_PHONE);
+                throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.BAD_OR_EXPIRE_CAPTCHA);
             }
 
             // 根据手机号码获取用户
@@ -214,52 +220,57 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
         }
         // 邮箱登录
         else if (certCode.equals(emailType)) {
-            // TODO: 暂不支持邮箱登录
-            throw new Error("暂不支持邮箱登录");
+            // 暂不支持邮箱登录
+            throw new InternalApiException(MessageResource.SERVICE_UN_SUPPORT);
 //            if (!VerifyUtil.isEmail(certCode)) {
 //                log.error("邮箱格式异常." + certCode);
-//                throw new InternalApiException(StaticType.CodeType.BAD_ARGS, CubpMessageResource.BAD_FORMAT_EMAIL);
+//                throw new InternalApiException(StaticType.CodeType.BAD_ARGS, MessageResource.BAD_FORMAT_EMAIL);
 //            }
 //            // 通过邮箱获取用户信息
 //            userInfo = customOpenInfoMapper.selectOneByEmail(certCode);
         }
         // 交易账号登录
         else if (certType.equals(tradeAccountType)) {
-            // TODO: 暂不支持交易账号登录
-            throw new Error("暂不支持交易账号登录");
+            // 暂不支持交易账号登录
+            throw new InternalApiException(MessageResource.SERVICE_UN_SUPPORT);
         }
         // 其他内部系统账号登录
         else {
             // 暂不支持其他账号类型登录
-            throw new Error("暂不支持其他账号类型登录");
+            throw new InternalApiException(MessageResource.SERVICE_UN_SUPPORT);
         }
 
         if (userInfo == null) {
             log.error("用户不存在: {}", certCode);
-            throw new InternalApiException(CodeType.BAD_ARGS, CubpMessageResource.NO_USER);
+            throw new InternalApiException(CodeType.BAD_ARGS, MessageResource.NO_USER);
         }
 
         // 校验密码登录 && 校验密码准确性
         if (passwordType.equals(passwordTypePwd) && !verifyPwd(certCode, pwd, userInfo.getPassword())) {
-            throw new InternalApiException(CodeType.BAD_ARGS, CubpMessageResource.BAD_ACCOUNT_OR_PWD);
+            throw new InternalApiException(CodeType.BAD_ARGS, MessageResource.BAD_ACCOUNT_OR_PWD);
         }
 
         // 校验验证码登录 & 校验验证码准确性
         if (passwordType.equals(passwordTypeCaptcha) && !verifyCaptcha(certType, certCode, captchaId, pwd, CaptchaSmsTypeEnum.loginSms)) {
-            throw new InternalApiException(CodeType.BAD_ARGS, CubpMessageResource.BAD_OR_EXPIRE_CAPTCHA);
+            throw new InternalApiException(CodeType.BAD_ARGS, MessageResource.BAD_OR_EXPIRE_CAPTCHA);
+        }
+
+        if (passwordType.equals(passwordTypeOther)) {
+            // 暂不其他密码类型登录
+            throw new InternalApiException(MessageResource.SERVICE_UN_SUPPORT);
         }
 
         CustomSession session = saveLogin(userInfo);
 
         if (session == null) {
-            throw new InternalApiException(CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_LOGIN);
+            throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.FAIL_LOGIN);
         }
 
         LoginResVo loginResVo = new LoginResVo();
         loginResVo.setToken(session.getToken());
 
         //登录成功打印日志，把userId打印出来，方便统计日活量
-        log.info("登录成功-login success --- user_id:" + userInfo.getId());
+        log.info("登录成功, user_id:" + userInfo.getId());
 
         return loginResVo;
     }

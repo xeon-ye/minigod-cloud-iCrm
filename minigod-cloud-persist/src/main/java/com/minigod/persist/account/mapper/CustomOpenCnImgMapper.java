@@ -1,9 +1,6 @@
 package com.minigod.persist.account.mapper;
-import org.apache.ibatis.annotations.Param;
-import java.util.List;
 
-import com.minigod.protocol.account.model.CustomOpenCnImg;
-import org.apache.ibatis.annotations.Mapper;
+import com.minigod.protocol.account.model.CustomOpenCnImg;import org.apache.ibatis.annotations.Param;import java.util.List;
 
 public interface CustomOpenCnImgMapper {
     /**
@@ -54,13 +51,11 @@ public interface CustomOpenCnImgMapper {
      */
     int updateByPrimaryKey(CustomOpenCnImg record);
 
-    List<CustomOpenCnImg> selectByUserId(@Param("userId")Integer userId);
+    List<CustomOpenCnImg> selectByUserId(@Param("userId") Integer userId);
 
-    Integer selectOneIdByUserIdAndLocationType(@Param("userId")Integer userId,@Param("locationType")String locationType);
+    Integer selectOneIdByUserIdAndLocationType(@Param("userId") Integer userId, @Param("locationType") String locationType);
 
-    CustomOpenCnImg selectOneByUserIdAndLocationType(@Param("userId")Integer userId,@Param("locationType")String locationType);
+    CustomOpenCnImg selectOneByUserIdAndLocationType(@Param("userId") Integer userId, @Param("locationType") String locationType);
 
-    List<CustomOpenCnImg> selectByUserIdAndLocationKeyInAndLocationTypeIn(@Param("userId")Integer userId,@Param("locationKeyCollection")String[] locationKeyCollection,@Param("locationTypeCollection")String[] locationTypeCollection);
-
-
+    List<CustomOpenCnImg> selectByUserIdAndLocationKeyInAndLocationTypeIn(@Param("userId") Integer userId, @Param("locationKeyCollection") String[] locationKeyCollection, @Param("locationTypeCollection") String[] locationTypeCollection);
 }

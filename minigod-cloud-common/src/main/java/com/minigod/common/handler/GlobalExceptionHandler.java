@@ -24,7 +24,6 @@ public class GlobalExceptionHandler {
      * 外部接口服务异常统一处理方法，
      * 返回httpStatus 200
      * 返回数据 ResResult {code: [错误码], message: [错误信息]}
-     * TODO: 国际化
      */
     @ExceptionHandler(WebApiException.class)
     @ResponseBody

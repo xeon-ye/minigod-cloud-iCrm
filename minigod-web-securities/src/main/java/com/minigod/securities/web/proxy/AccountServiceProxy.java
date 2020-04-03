@@ -5,14 +5,13 @@ import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.exception.WebApiException;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.common.pojo.response.ResResult;
-import com.minigod.protocol.account.enums.CubpMessageResource;
-import com.minigod.protocol.account.vo.response.LoginResVo;
-import com.minigod.protocol.account.vo.response.OpenUserInfoResVo;
-import com.minigod.protocol.account.vo.request.ProxyBaseRequest;
-import com.minigod.protocol.account.vo.request.params.OpenProgressProxyReqParams;
-import com.minigod.protocol.account.vo.request.params.AuthProxyReqParams;
-import com.minigod.protocol.account.vo.request.params.LoginProxyReqParams;
-import com.minigod.protocol.account.vo.response.AuthProxyResVo;
+import com.minigod.protocol.account.response.LoginResVo;
+import com.minigod.protocol.account.response.OpenUserInfoResVo;
+import com.minigod.protocol.account.request.ProxyBaseRequest;
+import com.minigod.protocol.account.request.params.OpenProgressProxyReqParams;
+import com.minigod.protocol.account.request.params.AuthProxyReqParams;
+import com.minigod.protocol.account.request.params.LoginProxyReqParams;
+import com.minigod.protocol.account.response.AuthProxyResVo;
 import com.minigod.securities.annotation.LoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,7 @@ public class AccountServiceProxy {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_LOGIN);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_LOGIN);
         }
     }
 
@@ -62,7 +61,7 @@ public class AccountServiceProxy {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_LOGIN);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_LOGIN);
         }
     }
 
@@ -78,7 +77,7 @@ public class AccountServiceProxy {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_LOGIN);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_LOGIN);
         }
     }
 

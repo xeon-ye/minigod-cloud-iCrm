@@ -1,8 +1,6 @@
 package com.minigod.persist.account.mapper;
 
-import com.minigod.protocol.account.model.CustomOpenInfo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;import java.util.List;
+import com.minigod.protocol.account.model.CustomOpenInfo;import org.apache.ibatis.annotations.Param;import java.util.List;
 
 public interface CustomOpenInfoMapper {
     /**
@@ -58,4 +56,6 @@ public interface CustomOpenInfoMapper {
     CustomOpenInfo selectOneById(@Param("id") Integer id);
 
     CustomOpenInfo selectOneByPhone(@Param("phone") String phone);
+
+    List<CustomOpenInfo> selectByCaStatus(@Param("caStatus") Byte caStatus);
 }

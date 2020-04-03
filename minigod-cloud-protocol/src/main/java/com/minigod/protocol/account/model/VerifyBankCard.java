@@ -9,55 +9,55 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VerifyBankCard implements Serializable {
     /**
-    * 主键
-    */
-    private Long id;
+     * 主键
+     */
+    private Integer id;
 
     /**
-    * 用户名称
-    */
+     * 用户名称
+     */
     private String userName;
 
     /**
-    * 身份证
-    */
+     * 身份证
+     */
     private String idCard;
 
     /**
-    * 银行卡号
-    */
+     * 银行卡号
+     */
     private String bankCard;
 
     /**
-    * 手机号
-    */
+     * 手机号
+     */
     private String phone;
 
     /**
-    * 状态(0:不通过 1:通过)
-    */
-    private Boolean isValid;
+     * 状态(-1: 未校验，0:不通过 1:通过)
+     */
+    private Integer status;
 
     private String remark;
 
     /**
-    * 验证次数
-    */
+     * 验证次数
+     */
     private Integer checkCount;
 
     /**
-    * 验证时间
-    */
+     * 验证时间
+     */
     private Date checkDate;
 
     /**
-    * 创建时间
-    */
+     * 创建时间
+     */
     private Date createTime;
 
     /**
-    * 最后修改时间
-    */
+     * 最后修改时间
+     */
     private Date updateTime;
 
     private static final long serialVersionUID = 1L;

@@ -1,13 +1,12 @@
 package com.minigod.securities.web.controller;
 
 import com.minigod.common.pojo.response.ResResult;
-import com.minigod.protocol.notify.vo.request.params.CaptchaReqParams;
-import com.minigod.protocol.notify.vo.response.CaptchaResVo;
+import com.minigod.protocol.notify.request.params.CaptchaReqParams;
+import com.minigod.protocol.notify.response.CaptchaResVo;
 import com.minigod.notify.service.CaptchaSmsService;
 import com.minigod.securities.annotation.LoginUser;
-import com.minigod.protocol.account.enums.CubpMessageResource;
-import com.minigod.protocol.account.vo.request.params.LoginReqParams;
-import com.minigod.protocol.account.vo.response.LoginResVo;
+import com.minigod.protocol.account.request.params.LoginReqParams;
+import com.minigod.protocol.account.response.LoginResVo;
 import com.minigod.account.service.UserService;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.exception.WebApiException;
@@ -40,7 +39,7 @@ public class SignController {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_FETCH_CAPTCHA);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_FETCH_CAPTCHA);
         }
     }
 
@@ -56,7 +55,7 @@ public class SignController {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_LOGIN);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_LOGIN);
         }
     }
 }

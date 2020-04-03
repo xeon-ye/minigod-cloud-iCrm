@@ -8,25 +8,24 @@ import java.util.*;
 
 import com.minigod.common.utils.JSONUtil;
 import com.minigod.common.bean.BaseBeanFactory;
-import com.minigod.account.helper.ImageStorageHelper;
+import com.minigod.account.helper.FileStorageHelper;
 import com.minigod.persist.account.mapper.CustomOpenCnCacheInfoMapper;
 import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
 import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
-import com.minigod.protocol.account.enums.CubpMessageResource;
+import com.minigod.protocol.account.cubp.request.CubpOpenAccountImageInfoReqVo;
 import com.minigod.protocol.account.model.CustomOpenCnCacheInfo;
 import com.minigod.protocol.account.model.CustomOpenCnImg;
-import com.minigod.protocol.account.vo.request.params.OpenCacheDataReqParams;
-import com.minigod.protocol.account.vo.request.params.OpenImgReqParams;
-import com.minigod.protocol.account.vo.request.params.OpenCacheInfoReqParams;
-import com.minigod.protocol.account.vo.request.params.OpenInfoReqParams;
-import com.minigod.protocol.account.vo.response.OpenImgResVo;
-import com.minigod.protocol.account.vo.response.OpenCacheDataResVo;
+import com.minigod.protocol.account.request.params.OpenCacheDataReqParams;
+import com.minigod.protocol.account.request.params.OpenImgReqParams;
+import com.minigod.protocol.account.request.params.OpenCacheInfoReqParams;
+import com.minigod.protocol.account.response.OpenImgResVo;
+import com.minigod.protocol.account.response.OpenCacheDataResVo;
 import com.minigod.account.service.OpenAccountOnlineCnService;
-import com.minigod.account.service.OpenAccountService;
-import com.minigod.storage.helper.StorageHelper;
+import com.minigod.account.service.OpenAccountOnlineService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.mortbay.util.ajax.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,15 +43,12 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
     CustomOpenInfoMapper openInfoMapper;
 
     @Autowired
-    OpenAccountService openAccountService;
+    OpenAccountOnlineService openAccountOnlineService;
 
     @Autowired
-    ImageStorageHelper imageStorageHelper;
+    FileStorageHelper fileStorageHelper;
 
-    @Autowired
-    StorageHelper storageService;
-
-    private void saveOrUpdateStepInfo(Integer userId, Integer step, Object json) {
+    private void saveOrUpdateCnStepInfo(Integer userId, Integer step, Object json) {
         // 查询当前步骤缓存数据
         Integer cacheId = openCnCacheInfoMapper.selectOneIdByUserIdAndStep(userId, step);
 
@@ -75,18 +71,18 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
         }
     }
 
-    private void saveOrUpdateLastStepInfo(Integer userId, Integer step) {
+    private void saveOrUpdateCnLastStepInfo(Integer userId, Integer step) {
         Integer baseStep = -1;
         Map<String, Integer> lastStepInfo = new HashMap<>();
         lastStepInfo.put("lastStep", step);
-        saveOrUpdateStepInfo(userId, baseStep, lastStepInfo);
+        saveOrUpdateCnStepInfo(userId, baseStep, lastStepInfo);
     }
 
     @Override
     public void saveOrUpdateCacheInfoStep(Integer userId, OpenCacheInfoReqParams params) {
         // 参数校验
         if (params == null) {
-            log.error("参数异常: OpenCacheInfoReqParams");
+            log.error("参数异常: OpenCacheInfoReqParams_CN", JSON.toString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
         Integer step = params.getStep();
@@ -94,22 +90,23 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
 
         // 参数校验 - 基本
         if (step == null || info == null || step < 1) {
+            log.error("参数异常: OpenCacheInfoReqParams_Value_CN");
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
-        if (!openAccountService.isCanUpdateOpenInfo(userId)) {
-            throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.NO_SUBMIT_OPEN_INFO_REPEAT);
+        if (!openAccountOnlineService.isCanUpdateOpenInfo(userId)) {
+            throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.NO_SUBMIT_OPEN_INFO_REPEAT);
         }
 
-        saveOrUpdateStepInfo(userId, step, info);
-        saveOrUpdateLastStepInfo(userId, step);
+        saveOrUpdateCnStepInfo(userId, step, info);
+        saveOrUpdateCnLastStepInfo(userId, step);
     }
 
     @Override
     public OpenImgResVo saveOrUpdateCnImg(Integer userId, OpenImgReqParams params) {
         // 参数校验
         if (userId == null || params == null) {
-            log.error("参数异常: OpenImgResVo");
+            log.error("参数异常: OpenImgResVo_CN", JSON.toString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -119,16 +116,18 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
 
         // 参数校验 - 基本
         if (StringUtils.isBlank(location) || StringUtils.isBlank(type) || StringUtils.isBlank(base64Img)) {
+            log.error("参数异常: OpenImgResVo_Value_CN");
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
-        if (!openAccountService.isCanUpdateOpenInfo(userId)) {
-            throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.NO_SUBMIT_OPEN_INFO_REPEAT);
+        if (!openAccountOnlineService.isCanUpdateOpenInfo(userId)) {
+            log.error("重复提交：saveOrUpdateImg_CN");
+            throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.NO_SUBMIT_OPEN_INFO_REPEAT);
         }
 
         String fileName = userId + "_" + type + System.currentTimeMillis() + ".jpg";
 
-        String imgPath = imageStorageHelper.uploadImage(fileName, base64Img);
+        String imgPath = fileStorageHelper.uploadImage(fileName, base64Img);
 
         // 查询当前步骤缓存数据
         Integer cacheId = openCnImgMapper.selectOneIdByUserIdAndLocationType(userId, type);
@@ -138,7 +137,7 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
         openCnImg.setLocationKey(location);
         openCnImg.setLocationType(type);
         openCnImg.setUrl(imgPath);
-        openCnImg.setErrorStatus(0);
+        openCnImg.setIsError(false);
         openCnImg.setCreateTime(new Date());
 
         if (cacheId != null) {
@@ -152,6 +151,34 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
         resVo.setImgId(openCnImg.getId());
         resVo.setImgUrl(imgPath);
         return resVo;
+    }
+
+    @Override
+    public void saveErrorImg(Integer userId, CubpOpenAccountImageInfoReqVo params) {
+        // 参数校验
+        if (userId == null || params == null) {
+            log.error("saveErrorImg参数异常: OpenImgResVo_CN", JSON.toString(params));
+            throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
+        }
+
+        Integer location = params.getImageLocation();
+        Integer type = params.getImageLocationType();
+
+        // 参数校验 - 基本
+        if (location == null || type == null) {
+            log.error("saveErrorImg参数异常: OpenImgResVo_Value_CN");
+            throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
+        }
+
+        CustomOpenCnImg openCnImg = openCnImgMapper.selectOneByUserIdAndLocationType(userId, String.valueOf(type));
+
+        if (openCnImg != null) {
+            openCnImg.setLocationKey(String.valueOf(location));
+            openCnImg.setLocationType(String.valueOf(type));
+            openCnImg.setCreateTime(new Date());
+            openCnImg.setIsError(true);
+            openCnImgMapper.updateByPrimaryKeySelective(openCnImg);
+        }
     }
 
     @Override
@@ -177,7 +204,7 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
 
         // 参数校验
         if (params == null) {
-            log.error("参数异常: OpenCacheDataReqParams");
+            log.error("参数异常: OpenCacheDataReqParams_CN", JSON.toString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -185,6 +212,7 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
 
         // 参数校验 - 基本
         if (step == null || step < 0) {
+            log.error("参数异常: OpenCacheDataReqParams_Value_CN");
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -230,12 +258,13 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
         //查询图片信息
         List<CustomOpenCnImg> imgList = openCnImgMapper.selectByUserId(userId);
         for (CustomOpenCnImg img : imgList) {
-            OpenImgResVo imgResVo = new OpenImgResVo();
-            imgResVo.setImgUrl(img.getUrl());
-            imgResVo.setLocation(img.getLocationKey());
-            imgResVo.setType(img.getLocationType());
-
-            resImgList.add(imgResVo);
+            if (!img.getIsError()) {
+                OpenImgResVo imgResVo = new OpenImgResVo();
+                imgResVo.setImgUrl(img.getUrl());
+                imgResVo.setLocation(img.getLocationKey());
+                imgResVo.setType(img.getLocationType());
+                resImgList.add(imgResVo);
+            }
         }
 
         resVo.setCacheImages(resImgList);
@@ -245,29 +274,5 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
 
     private boolean verifyOpenInfoData() {
         return true;
-    }
-
-    @Override
-    public void saveOrUpdateOpenInfo(Integer userId, OpenInfoReqParams params) {
-        // 参数校验
-        if (params == null) {
-            log.error("参数异常: OpenCacheDataReqParams");
-            throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
-        }
-
-//        Integer openType = params.getOpenType();
-//        Object info = params.getInfo();
-//
-//        CustomOpenAccountEnum.OpenType openWayInfo = CustomOpenAccountEnum.OpenType.getType(openType);
-//
-//        // 参数校验 - 基本
-//        if (info == null || openWayInfo == null) {
-//            throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
-//        }
-
-
-        // String info, String infoSt, Integer openType , Integer actId
-
-
     }
 }

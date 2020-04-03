@@ -22,7 +22,7 @@ public class FilterConfig {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(authFilter());
         registration.addUrlPatterns("/*");
-        registration.setName("streamFilter");
+        registration.setName("authFilter");
         return registration;
     }
 

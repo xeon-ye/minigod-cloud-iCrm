@@ -1,6 +1,6 @@
 package com.minigod.securities.web.controller;
 
-import com.minigod.account.helper.ImageStorageHelper;
+import com.minigod.account.helper.FileStorageHelper;
 import com.minigod.storage.helper.StorageHelper;
 import com.minigod.protocol.storage.model.SysStorage;
 import com.minigod.storage.service.SysStorageService;
@@ -24,7 +24,7 @@ import java.util.Map;
 @Slf4j
 public class StorageController {
     @Autowired
-    ImageStorageHelper imageStorageHelper;
+    FileStorageHelper fileStorageHelper;
     @Autowired
     private StorageHelper storageHelper;
     @Autowired

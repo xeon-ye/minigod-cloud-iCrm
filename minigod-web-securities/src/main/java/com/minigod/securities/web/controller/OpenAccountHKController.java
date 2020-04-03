@@ -6,16 +6,15 @@ import com.minigod.common.exception.WebApiException;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.common.pojo.request.BaseRequest;
 import com.minigod.common.pojo.response.ResResult;
-import com.minigod.protocol.account.vo.request.params.OpenCacheDataReqParams;
-import com.minigod.protocol.account.vo.request.params.OpenCacheInfoReqParams;
-import com.minigod.protocol.account.vo.request.params.OpenImgReqParams;
-import com.minigod.protocol.account.vo.request.params.OpenInfoReqParams;
+import com.minigod.protocol.account.request.params.OpenCacheDataReqParams;
+import com.minigod.protocol.account.request.params.OpenCacheInfoReqParams;
+import com.minigod.protocol.account.request.params.OpenImgReqParams;
+import com.minigod.protocol.account.request.params.OpenInfoReqParams;
 import com.minigod.securities.annotation.LoginUser;
-import com.minigod.protocol.account.enums.CubpMessageResource;
-import com.minigod.protocol.account.vo.response.OpenCacheDataResVo;
-import com.minigod.protocol.account.vo.response.OpenImgResVo;
+import com.minigod.protocol.account.response.OpenCacheDataResVo;
+import com.minigod.protocol.account.response.OpenImgResVo;
 import com.minigod.account.service.OpenAccountOnlineHkService;
-import com.minigod.account.service.OpenAccountService;
+import com.minigod.account.service.OpenAccountOnlineService;
 import com.minigod.account.service.VerifyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class OpenAccountHKController {
     @Autowired
     private VerifyService verifyService;
     @Autowired
-    private OpenAccountService openAccountService;
+    private OpenAccountOnlineService openAccountOnlineService;
     @Autowired
     private OpenAccountOnlineHkService openAccountOnlineHkService;
 
@@ -49,7 +48,7 @@ public class OpenAccountHKController {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_SAVE_CACHE_INFO);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_SAVE_CACHE_INFO);
         }
     }
 
@@ -65,7 +64,7 @@ public class OpenAccountHKController {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_SAVE_CACHE_IMG);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_SAVE_CACHE_IMG);
         }
     }
 
@@ -81,7 +80,7 @@ public class OpenAccountHKController {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_GET_CACHE_DATA);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_GET_CACHE_DATA);
         }
     }
 
@@ -92,12 +91,12 @@ public class OpenAccountHKController {
     public ResResult submitOpenInfo(@LoginUser Integer userId, @RequestBody BaseRequest<OpenInfoReqParams> requestVo) {
         try {
             OpenInfoReqParams params = requestVo.getParams();
-            openAccountService.saveOrUpdateOpenInfo(userId, params);
+            openAccountOnlineService.saveOrUpdateOpenInfo(userId, params);
             return ResResult.success();
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, CubpMessageResource.FAIL_SUBMIT_OPEN_INFO);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_SUBMIT_OPEN_INFO);
         }
     }
 }

@@ -23,14 +23,14 @@ public class CustomOpenInfo implements Serializable {
     private String password;
 
     /**
+     * 身份证号
+     */
+    private String idCard;
+
+    /**
      * 银行卡号
      */
     private String bankCard;
-
-    /**
-     * 身份证号码
-     */
-    private String idCard;
 
     /**
      * 0:未提交（默认），1:开户中，2:已取消,3:开户成功，4:开户失败，5:销户
@@ -86,6 +86,11 @@ public class CustomOpenInfo implements Serializable {
      * 远程开户系统ID
      */
     private String remoteId;
+
+    /**
+     * CA认证状态， 0:无，1:需要认证，2:认证完成（待推送），3:已推送
+     */
+    private Byte caStatus;
 
     /**
      * 开户日期

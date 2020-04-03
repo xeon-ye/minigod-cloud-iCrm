@@ -16,7 +16,8 @@ public class VerifyUtil {
 	public static int uniqueKey = 1;
 
 	public static boolean isMobNO(String mobiles) {
-		Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-9])|(147)|(145))\\d{8}$");
+//		Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0-9])|(147)|(145))\\d{8}$");
+		Pattern p = Pattern.compile("\\d{11}"); // 新规则，放宽为11位纯数字
 		Matcher m = p.matcher(mobiles);
 		return m.matches();
 	}

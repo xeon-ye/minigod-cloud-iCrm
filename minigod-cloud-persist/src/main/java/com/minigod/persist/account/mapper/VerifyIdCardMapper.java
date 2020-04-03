@@ -1,7 +1,6 @@
 package com.minigod.persist.account.mapper;
 
-import com.minigod.protocol.account.model.VerifyIdCard;
-import org.apache.ibatis.annotations.Mapper;import org.apache.ibatis.annotations.Param;import java.util.List;
+import com.minigod.protocol.account.model.VerifyIdCard;import org.apache.ibatis.annotations.Param;import java.util.List;
 
 public interface VerifyIdCardMapper {
     /**
@@ -10,7 +9,7 @@ public interface VerifyIdCardMapper {
      * @param id primaryKey
      * @return deleteCount
      */
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Integer id);
 
     /**
      * insert record to table
@@ -34,7 +33,7 @@ public interface VerifyIdCardMapper {
      * @param id primary key
      * @return object by primary key
      */
-    VerifyIdCard selectByPrimaryKey(Long id);
+    VerifyIdCard selectByPrimaryKey(Integer id);
 
     /**
      * update record
@@ -52,5 +51,7 @@ public interface VerifyIdCardMapper {
      */
     int updateByPrimaryKey(VerifyIdCard record);
 
-    List<VerifyIdCard> selectByIdCardAndIsValid(@Param("idCard") String idCard, @Param("isValid") Boolean isValid);
+    List<VerifyIdCard> selectByIdCardAndStatus(@Param("idCard") String idCard, @Param("status") Integer status);
+
+    VerifyIdCard selectOneByIdCardAndUserName(@Param("idCard") String idCard, @Param("userName") String userName);
 }

@@ -1,8 +1,6 @@
 package com.minigod.persist.account.mapper;
 
-import com.minigod.protocol.account.model.VerifyBankCard;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;import java.util.List;
+import com.minigod.protocol.account.model.VerifyBankCard;import org.apache.ibatis.annotations.Param;import java.util.List;
 
 public interface VerifyBankCardMapper {
     /**
@@ -11,7 +9,7 @@ public interface VerifyBankCardMapper {
      * @param id primaryKey
      * @return deleteCount
      */
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(Integer id);
 
     /**
      * insert record to table
@@ -35,7 +33,7 @@ public interface VerifyBankCardMapper {
      * @param id primary key
      * @return object by primary key
      */
-    VerifyBankCard selectByPrimaryKey(Long id);
+    VerifyBankCard selectByPrimaryKey(Integer id);
 
     /**
      * update record
@@ -53,7 +51,12 @@ public interface VerifyBankCardMapper {
      */
     int updateByPrimaryKey(VerifyBankCard record);
 
-    List<VerifyBankCard> selectByBankCardAndIsValid(@Param("bankCard") String bankCard, @Param("isValid") Boolean isValid);
+    List<VerifyBankCard> selectByBankCardAndStatus(@Param("bankCard") String bankCard, @Param("status") Integer status);
 
-    List<VerifyBankCard> selectByIdCardAndIsValidTrue(@Param("idCard") String idCard);
+    VerifyBankCard selectOneByIdCardAndUserNameAndBankCardAndPhone(@Param("idCard") String idCard, @Param("userName") String userName, @Param("bankCard") String bankCard, @Param("phone") String phone);
+
+    List<VerifyBankCard> selectByIdCard(@Param("idCard")String idCard);
+
+
+
 }

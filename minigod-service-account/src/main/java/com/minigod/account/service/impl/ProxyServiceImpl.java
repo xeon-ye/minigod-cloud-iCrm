@@ -3,7 +3,7 @@ package com.minigod.account.service.impl;
 import com.minigod.account.helper.JwtHelper;
 import com.minigod.persist.account.mapper.CustomDeviceMapper;
 import com.minigod.persist.account.mapper.SysAppAuthMapper;
-import com.minigod.account.service.OpenAccountService;
+import com.minigod.account.service.OpenAccountOnlineService;
 import com.minigod.account.service.ProxyService;
 import com.minigod.account.service.UserService;
 import com.minigod.common.bean.BaseBeanFactory;
@@ -14,10 +14,10 @@ import com.minigod.common.pojo.StaticType.MessageResource;
 import com.minigod.protocol.account.enums.PasswordTypeEnum;
 import com.minigod.protocol.account.model.CustomDevice;
 import com.minigod.protocol.account.model.SysAppAuth;
-import com.minigod.protocol.account.vo.request.params.*;
-import com.minigod.protocol.account.vo.response.LoginResVo;
-import com.minigod.protocol.account.vo.response.AuthProxyResVo;
-import com.minigod.protocol.account.vo.response.OpenUserInfoResVo;
+import com.minigod.protocol.account.request.params.*;
+import com.minigod.protocol.account.response.LoginResVo;
+import com.minigod.protocol.account.response.AuthProxyResVo;
+import com.minigod.protocol.account.response.OpenUserInfoResVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class ProxyServiceImpl extends BaseBeanFactory implements ProxyService {
     @Autowired
     UserService userService;
     @Autowired
-    OpenAccountService openAccountService;
+    OpenAccountOnlineService openAccountOnlineService;
 
     @Override
     public AuthProxyResVo getAuthCode(AuthProxyReqParams params) {
@@ -75,17 +75,17 @@ public class ProxyServiceImpl extends BaseBeanFactory implements ProxyService {
 
         if (appAuthInfo == null) {
             // appId不存在
-            throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
+            throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.PROXY_ERROR_UN_KNOW_APPID);
         }
 
         if (!appAuthInfo.getIsEnabled()) {
             // appId被禁用
-            throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
+            throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.PROXY_ERROR_UN_SUPPORT_APPID);
         }
 
         if (!appAuthInfo.getAppSecret().equals(appSecret)) {
             // 密钥错误
-            throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
+            throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.PROXY_ERROR_BAD_SECRET);
         }
 
         String authDeviceTypes = appAuthInfo.getDeviceTypes();
@@ -93,30 +93,29 @@ public class ProxyServiceImpl extends BaseBeanFactory implements ProxyService {
         String authAppVersion = appAuthInfo.getAppVersion();
 
         if (StringUtils.isNotEmpty(authDeviceTypes) && authDeviceTypes.contains(deviceType.toString())) {
-            // TODO:不符合设备类型限制
-            throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
+            // 不符合设备类型限制
+            throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.PROXY_ERROR_UN_SUPPORT_DEVICE);
 
         }
 
         if (StringUtils.isNotEmpty(authOsTypes) && authOsTypes.contains(osType.toString())) {
-            // TODO:不符合终端类型限制
-            throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
-
+            // 不符合终端类型限制
+            throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.PROXY_ERROR_UN_SUPPORT_OS_TYPE);
         }
 
         if (StringUtils.isNotEmpty(authAppVersion) && !authAppVersion.equals(appVersion)) {
-            // TODO:不符合版本限制
-            throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
+            // 不符合版本限制
+            throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.PROXY_ERROR_UN_SUPPORT_APP_VERSION);
 
         }
 
         CustomDevice customDevice = customDeviceMapper.selectOneByDeviceCodeAndOsType(deviceCode, osType);
         Date now = new Date();
         if (customDevice != null) {
-            // 已经登记过，更新。
+            // 已经登记过，更新
             if (!customDevice.getStatus()) {
-                // TODO:设备被锁定
-                throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
+                // 设备被锁定
+                throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.PROXY_ERROR_LOCKED_DEVICE);
             }
 
             // 设备名称、版本号等可能会更新
@@ -143,8 +142,8 @@ public class ProxyServiceImpl extends BaseBeanFactory implements ProxyService {
         }
 
         if (customDevice == null) {
-            // TODO: 插入数据错误
-            throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
+            // 插入数据错误
+            throw new InternalApiException(CodeType.DISPLAY_ERROR, MessageResource.PROXY_ERROR_SYS_ERROR);
         }
 
         String authCode = jwtHelper.createAuthCode(customDevice.getId());
@@ -190,6 +189,6 @@ public class ProxyServiceImpl extends BaseBeanFactory implements ProxyService {
         }
         OpenProgressReqParams openProgressReqParams = new OpenProgressReqParams();
         openProgressReqParams.setFlag(params.getFlag());
-        return openAccountService.getOpenProgress(userId, openProgressReqParams);
+        return openAccountOnlineService.getOpenProgress(userId, openProgressReqParams);
     }
 }
