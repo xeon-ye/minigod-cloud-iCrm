@@ -37,10 +37,10 @@ public class CubpOpenInfoHelper {
             }
         }
         if ("1".equals(openInfo.getBankType())) {
-            if (StringUtils.isBlank(openInfo.getBankAccountName())) {
-                log.info("【开户预约接口数据完整性校验】：请填写银行户名");
-                return false;
-            }
+//            if (StringUtils.isBlank(openInfo.getBankAccountName())) {
+//                log.info("【开户预约接口数据完整性校验】：请填写银行户名");
+//                return false;
+//            }
             if (StringUtils.isBlank(openInfo.getBankNo())) {
                 log.info("【开户预约接口数据完整性校验】：请填写银行卡号");
                 return false;

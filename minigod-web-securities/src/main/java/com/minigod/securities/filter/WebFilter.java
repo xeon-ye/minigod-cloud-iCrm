@@ -1,7 +1,6 @@
 package com.minigod.securities.filter;
 
-import com.minigod.common.exception.WebApiException;
-import com.minigod.common.i18n.MessageI18NHelper;
+import com.minigod.helper.i18n.MessageI18NHelper;
 import com.minigod.common.security.SignUtil;
 import com.minigod.common.utils.JSONUtil;
 import com.minigod.common.pojo.StaticType;
@@ -37,6 +36,7 @@ public class WebFilter implements Filter {
     //不需要签名的接口
     static {
         noSigns.add("/securities/test/checkUser");
+        noSigns.add("/securities/sign/logout");
     }
 
     //不需要签名的接口
@@ -46,6 +46,7 @@ public class WebFilter implements Filter {
 
     //不需要验证Session的接口
     static {
+        noTokens.add("/securities/sign/logout");
         noTokens.add("/securities/test/checkUser");
         noTokens.add("/securities/sign/fetch_captcha");
         noTokens.add("/securities/sign/login");
@@ -78,7 +79,7 @@ public class WebFilter implements Filter {
             return;
         }
 
-        ResResult resResult = new ResResult();
+        ResResult resResult = null;
         BaseRequestWrapper requestWrapper = new BaseRequestWrapper(request);
 
 
@@ -104,13 +105,12 @@ public class WebFilter implements Filter {
 
         if (StringUtils.isEmpty(langKey)) {
             log.error("未指定语言环境");
-            resResult.setCode(StaticType.CodeType.BAD_PARAMS.getCode());
-            resResult.setMessage(getLocaleMessage(StaticType.MessageResource.BAD_PARAMS, langKey));
-            buildErrorResponseVO(response, resResult);
-            return;
+//            resResult.setCode(StaticType.CodeType.BAD_PARAMS.getCode());
+//            resResult.setMessage(getLocaleMessage(StaticType.MessageResource.BAD_PARAMS, langKey));
+//            buildErrorResponseVO(response, resResult);
+//            return;
         }
-
-        String token = request.getHeader(SecuritiesConst.H5_TOKEN_KEY);
+        String token = requestWrapper.getToken();
 
         // 校验签名
         resResult = checkSign(langKey, url, body, token);

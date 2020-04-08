@@ -1,6 +1,6 @@
 package com.minigod.notify.service.impl;
 
-import com.minigod.common.bean.BaseBeanFactory;
+import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.pojo.CertTypeEnum;
 import com.minigod.common.pojo.StaticType;
@@ -125,7 +125,7 @@ public class CaptchaSmsServiceImpl extends BaseBeanFactory implements CaptchaSms
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
-        CaptchaSms captchaSms = smsMapper.selectOneByIdAndPhoneAndExpiresTimeBefore(captchaId, certCode, new Date());
+        CaptchaSms captchaSms = smsMapper.selectOneByIdAndPhoneAndExpiresTimeAfter(captchaId, certCode, new Date());
 
         // 验证码不存在
         if (captchaSms == null) {

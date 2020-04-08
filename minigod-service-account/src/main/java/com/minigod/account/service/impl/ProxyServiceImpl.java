@@ -6,7 +6,7 @@ import com.minigod.persist.account.mapper.SysAppAuthMapper;
 import com.minigod.account.service.OpenAccountOnlineService;
 import com.minigod.account.service.ProxyService;
 import com.minigod.account.service.UserService;
-import com.minigod.common.bean.BaseBeanFactory;
+import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.pojo.CertTypeEnum;
 import com.minigod.common.pojo.StaticType.CodeType;

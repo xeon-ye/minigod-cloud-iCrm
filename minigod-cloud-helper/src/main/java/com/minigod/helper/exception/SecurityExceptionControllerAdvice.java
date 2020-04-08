@@ -1,6 +1,6 @@
-package com.minigod.protocol.account.exception;
+package com.minigod.helper.exception;
 
-import com.minigod.common.handler.GlobalExceptionHandler;
+import com.minigod.helper.handler.GlobalExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice

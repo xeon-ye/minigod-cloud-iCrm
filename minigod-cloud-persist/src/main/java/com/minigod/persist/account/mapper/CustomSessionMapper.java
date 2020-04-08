@@ -1,4 +1,5 @@
 package com.minigod.persist.account.mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.minigod.protocol.account.model.CustomSession;
 import org.apache.ibatis.annotations.Mapper;
@@ -45,4 +46,9 @@ public interface CustomSessionMapper {
      * @return update count
      */
     int updateByPrimaryKey(CustomSession record);
+
+
+    CustomSession selectOneByUserIdAndToken(@Param("userId")Integer userId,@Param("token")String token);
+
+
 }

@@ -46,6 +46,14 @@ public class RedisTokenManager {
         return token;
     }
 
+    public void expireToken(String token) {
+        CustomSession customSession = redisMapService.findObject(CustomSession.class, token);
+        if (customSession != null) {
+            customSession.setIsStatus(false);
+            redisMapService.saveUpdate(customSession, token);
+        }
+    }
+
     public Integer getUserId(String token) {
         try {
             if (StringUtils.isBlank(token)) {
@@ -54,7 +62,7 @@ public class RedisTokenManager {
 
             CustomSession customSession = redisMapService.findObject(CustomSession.class, token);
 
-            if (customSession == null || !customSession.getIsStatus()) {
+            if (customSession == null || !customSession.getIsStatus() || DateUtils.isBeforeNow(customSession.getExpireTime())) {
                 return null;
             }
 
@@ -68,7 +76,7 @@ public class RedisTokenManager {
 
         CustomSession customSession = redisMapService.findObject(CustomSession.class, userToken);
 
-        if (customSession == null || !customSession.getIsStatus()) {
+        if (customSession == null || !customSession.getIsStatus() || DateUtils.isBeforeNow(customSession.getExpireTime())) {
             return false;
         }
 

@@ -3,11 +3,11 @@ package com.minigod.account.service.impl;
 import com.minigod.account.helper.RestProxyHelper;
 import com.minigod.common.odps.service.RedisMapService;
 import com.minigod.common.pojo.CertTypeEnum;
-import com.minigod.common.pojo.StaticType;
 import com.minigod.common.verify.utils.VerifyUtil;
 import com.minigod.common.pojo.StaticType.*;
-import com.minigod.common.bean.BaseBeanFactory;
+import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.protocol.account.other.response.OtherUserInfoResVo;
+import com.minigod.protocol.account.request.params.LogoutParams;
 import com.minigod.protocol.notify.enums.CaptchaSmsTypeEnum;
 import com.minigod.protocol.notify.request.params.CaptchaReqParams;
 import com.minigod.notify.service.CaptchaSmsService;
@@ -57,7 +57,7 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
     // TODO 校验密码
     private Boolean verifyPwd(String key, String checkPwd, String realPwd) {
 
-        return false;
+        return checkPwd.equals(realPwd);
     }
 
     // 校验验证码
@@ -217,6 +217,12 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
 
             // 根据手机号码获取用户
             userInfo = customOpenInfoMapper.selectOneByPhone(certCode);
+
+            if (userInfo == null) {
+                userInfo = new CustomOpenInfo();
+                userInfo.setPhone(certCode);
+                customOpenInfoMapper.insertSelective(userInfo);
+            }
         }
         // 邮箱登录
         else if (certCode.equals(emailType)) {
@@ -273,5 +279,14 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
         log.info("登录成功, user_id:" + userInfo.getId());
 
         return loginResVo;
+    }
+
+    @Override
+    public void logout(Integer userId, LogoutParams logoutParams) {
+        if (logoutParams == null || StringUtils.isEmpty(logoutParams.getToken())) {
+            throw new InternalApiException(CodeType.BAD_ARGS, MessageResource.NO_USER);
+        }
+        userCacheService.expireCustomSession(userId, logoutParams.getToken());
+
     }
 }

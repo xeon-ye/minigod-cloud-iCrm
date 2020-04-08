@@ -23,9 +23,17 @@ public interface VerifyService {
     @PostMapping("/is_email_used")
     public Boolean isEmailUsed(String email);
 
-    // 邮箱是否使用
+    // 身份证是否使用
     @PostMapping("/is_id_card_used")
     public Boolean isIdCardUsed(String idCard);
+
+    // 身份证是否认证
+    @PostMapping("/is_id_card_valid")
+    public Boolean isIdCardValid(String idCard, String userName);
+
+    // 银行卡是否认证
+    @PostMapping("/is_bank_card_valid")
+    public Boolean isBankCardValid(String idCard, String userName, String bankCard);
 
     // 邮箱校验
     @PostMapping("/verify_phone")

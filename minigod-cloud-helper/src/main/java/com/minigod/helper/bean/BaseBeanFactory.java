@@ -1,7 +1,7 @@
-package com.minigod.common.bean;
+package com.minigod.helper.bean;
 
-import com.minigod.common.i18n.MessageI18NHelper;
 import com.minigod.common.pojo.request.BaseRequestParams;
+import com.minigod.helper.i18n.MessageI18NHelper;
 
 import javax.annotation.Resource;
 

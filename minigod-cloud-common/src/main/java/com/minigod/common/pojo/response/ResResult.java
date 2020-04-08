@@ -1,10 +1,7 @@
 package com.minigod.common.pojo.response;
 
-import com.minigod.common.i18n.MessageI18NHelper;
 import com.minigod.common.pojo.StaticType;
 import lombok.Data;
-
-import javax.annotation.Resource;
 
 /**
  * 自定义响应结构

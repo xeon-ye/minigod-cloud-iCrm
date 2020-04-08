@@ -146,6 +146,28 @@ public final class  DateUtils extends org.apache.commons.lang.time.DateUtils  {
 	}
 
 	/**
+	 * 检测时间是否在现在之前
+	 * @param date
+	 * @return
+	 */
+	public static boolean isBeforeNow(Date date) {
+		long todayStart = nowTimeMillis();
+		long d = date.getTime();
+		return d < todayStart;
+	}
+
+	/**
+	 * 检测时间是否在现在之前
+	 * @param date
+	 * @return
+	 */
+	public static boolean isAfterNow(Date date) {
+		long todayStart = nowTimeMillis();
+		long d = date.getTime();
+		return d > todayStart;
+	}
+
+	/**
 	 * 添小时
 	 * @param date
 	 * @param hours

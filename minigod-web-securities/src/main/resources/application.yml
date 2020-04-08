@@ -1,9 +1,6 @@
 spring:
   profiles:
     active: db, redis, notify, storage, account, web
-  i18n:
-    basename: i18n/messages
-    encoding: UTF-8
   messages:
     encoding: UTF-8
   jackson:

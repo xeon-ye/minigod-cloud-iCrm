@@ -3,6 +3,7 @@ package com.minigod.task.service.jobhandler.account;
 import com.minigod.account.service.OpenAccountOnlineService;
 import com.minigod.account.service.VerifyService;
 import com.minigod.persist.account.mapper.*;
+import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.enums.VerifyAuthCaStatusEnum;
 import com.minigod.protocol.account.model.*;
 import com.minigod.protocol.account.pojo.VerifySzcaPojo;
@@ -36,7 +37,7 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
     @Autowired
     OpenAccountOnlineService openAccountOnlineService;
 
-    private final Byte CA_STATUS_NEED_VERIFY = 1;
+    private final Integer CA_STATUS_NEED_VERIFY = CustomOpenAccountEnum.CaStatus.IS_NEED_VERIFY.getCode();
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -84,7 +85,6 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
                     log.error("*********************【开户CA认证】申请证书失败**************************, userId = {}", userId);
                     continue;
                 }
-
 
                 // step4 签名pdf文件
                 openAccountOnlineService.getPdfInfoForSignBySzca(verifySzcaPojo, customOpenInfo);

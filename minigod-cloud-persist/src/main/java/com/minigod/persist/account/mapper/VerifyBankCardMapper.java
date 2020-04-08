@@ -51,12 +51,10 @@ public interface VerifyBankCardMapper {
      */
     int updateByPrimaryKey(VerifyBankCard record);
 
-    List<VerifyBankCard> selectByBankCardAndStatus(@Param("bankCard") String bankCard, @Param("status") Integer status);
+    List<VerifyBankCard> selectByBankCardAndStatus(@Param("bankCard")String bankCard,@Param("status")Integer status);
 
     VerifyBankCard selectOneByIdCardAndUserNameAndBankCardAndPhone(@Param("idCard") String idCard, @Param("userName") String userName, @Param("bankCard") String bankCard, @Param("phone") String phone);
 
     List<VerifyBankCard> selectByIdCard(@Param("idCard")String idCard);
-
-
 
 }

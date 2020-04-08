@@ -153,6 +153,8 @@ public class StaticType {
         // 提交数据
         public static final String FAIL_SUBMIT_OPEN_INFO = "FAIL_SUBMIT_OPEN_INFO"; // 提交开户数据异常
         public static final String NO_SUBMIT_OPEN_INFO_REPEAT = "NO_SUBMIT_OPEN_INFO_REPEAT"; // 不可重复提交
+        public static final String MISSING_IMAGES = "MISSING_IMAGES"; // 影像资源不完整
+        public static final String MISSING_DATAS = "MISSING_DATAS "; // 资料不完整
         public static final String ABO_ACCOUNT = "ABO_ACCOUNT"; // 账号异常
 
         // 外部调用接口

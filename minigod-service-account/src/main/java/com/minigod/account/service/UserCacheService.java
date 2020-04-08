@@ -7,4 +7,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 public interface UserCacheService {
     // 保存用户会话
     CustomSession saveCustomSession(Integer userId);
+
+    // 保存用户会话
+    void expireCustomSession(Integer userId, String token);
 }

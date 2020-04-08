@@ -5,11 +5,7 @@ import com.minigod.protocol.account.model.CustomOpenInfo;
 import com.minigod.protocol.account.pojo.VerifySzcaPojo;
 import com.minigod.protocol.account.request.params.*;
 import com.minigod.protocol.account.response.OpenUserInfoResVo;
-import com.minigod.protocol.account.response.VerifyResVo;
-import com.minigod.protocol.account.szca.request.*;
-import com.minigod.protocol.account.szca.response.*;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 

@@ -58,7 +58,7 @@ public class PushVerifiedAuthCaInfoJobHandler extends IJobHandler {
     @Value("${minigod.cubp.url}")
     private String CUBP_API_URL;
 
-    private final Byte CA_STATUS_NEED_PUSH = 2;
+    private final Integer CA_STATUS_NEED_PUSH = CustomOpenAccountEnum.CaStatus.IS_NEED_PUSH.getCode();
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -77,17 +77,18 @@ public class PushVerifiedAuthCaInfoJobHandler extends IJobHandler {
         for (CustomOpenInfo customOpenInfo : openInfoList) {
             Integer userId = customOpenInfo.getId();
 
-            if (customOpenInfo.getCaStatus() != 2) {
+            if (!customOpenInfo.getCaStatus().equals(CustomOpenAccountEnum.CaStatus.IS_NEED_PUSH.getCode())) {
                 continue;
             }
 
             VerifyAuthCa verifyAuthCa = verifyAuthCaMapper.selectOneByIdCard(customOpenInfo.getIdCard());
             if (verifyAuthCa == null) {
-                log.error("*********************【客户CA证书上传】CA认证数据为空**************************");
-                // 重置开户状态
-                customOpenInfo.setCaStatus((byte) 1);
-                customOpenInfoMapper.updateByPrimaryKeySelective(customOpenInfo);
-                continue;
+//                log.error("*********************【客户CA证书上传】CA认证数据为空**************************");
+//                // 重置开户状态
+//                customOpenInfo.setCaStatus((byte) 1);
+//                customOpenInfoMapper.updateByPrimaryKeySelective(customOpenInfo);
+//                continue;
+                verifyAuthCa = new VerifyAuthCa();
             }
 
             String applicationId = customOpenInfo.getRemoteId();
@@ -135,7 +136,7 @@ public class PushVerifiedAuthCaInfoJobHandler extends IJobHandler {
                         } else {
                             customOpenInfo.setPendingType(CustomOpenAccountEnum.PendingStatusType.DOING.getCode());
                         }
-                        customOpenInfo.setCaStatus((byte) 3);
+                        customOpenInfo.setCaStatus(CustomOpenAccountEnum.CaStatus.IS_PUSHED.getCode());
                         customOpenInfoMapper.updateByPrimaryKeySelective(customOpenInfo);
                         log.info("【预批客户上传BPM】上传成功：" + userId);
                     } else {

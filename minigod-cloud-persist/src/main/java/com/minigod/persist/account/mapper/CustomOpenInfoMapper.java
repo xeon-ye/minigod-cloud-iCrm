@@ -57,5 +57,7 @@ public interface CustomOpenInfoMapper {
 
     CustomOpenInfo selectOneByPhone(@Param("phone") String phone);
 
-    List<CustomOpenInfo> selectByCaStatus(@Param("caStatus") Byte caStatus);
+    List<CustomOpenInfo> selectByCaStatus(@Param("caStatus")Integer caStatus);
+
+
 }

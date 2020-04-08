@@ -2,7 +2,43 @@ package com.minigod.protocol.account.enums;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
+
 public final class CustomOpenAccountEnum {
+    @Getter
+    public enum OpenType {
+        ONLINE_CN(1, "线上内地开户"),
+        ONLINE_HK(2, "线上香港开户"),
+        OFFLINE(3, "线下（开户宝）");
+
+        private Integer code;
+        private String message;
+
+        private OpenType(Integer code, String message) {
+            this.code = code;
+            this.message = message;
+        }
+
+        public static OpenType getType(Integer code) {
+            for (OpenType c : OpenType.values()) {
+                if (c.getCode().equals(code)) {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+        public static boolean isContainCertType(Integer code) {
+            boolean bool = false;
+            for (OpenType way : OpenType.values()) {
+                if (code.equals(way.getCode())) {
+                    bool = true;
+                }
+            }
+            return bool;
+        }
+    }
+
     @Getter
     public enum OpenAccessWay {
         H5(1, "H5开户"),
@@ -37,21 +73,20 @@ public final class CustomOpenAccountEnum {
     }
 
     @Getter
-    public enum OpenType {
-        ONLINE_CN(1, "线上内地开户"),
-        OFFLINE(2, "线下（开户宝）"),
-        ONLINE_HK(3, "线上香港开户");
+    public enum FundAccountType {
+        CASH(1, "现金账户"),
+        MARGIN(2, "融资账户");
 
         private Integer code;
         private String message;
 
-        private OpenType(Integer code, String message) {
+        private FundAccountType(Integer code, String message) {
             this.code = code;
             this.message = message;
         }
 
-        public static OpenType getType(Integer code) {
-            for (OpenType c : OpenType.values()) {
+        public static FundAccountType getType(Integer code) {
+            for (FundAccountType c : FundAccountType.values()) {
                 if (c.getCode().equals(code)) {
                     return c;
                 }
@@ -61,9 +96,34 @@ public final class CustomOpenAccountEnum {
 
         public static boolean isContainCertType(Integer code) {
             boolean bool = false;
-            for (OpenType way : OpenType.values()) {
+            for (FundAccountType way : FundAccountType.values()) {
                 if (code.equals(way.getCode())) {
                     bool = true;
+                }
+            }
+            return bool;
+        }
+    }
+
+    @Getter
+    public enum OpenAccountMarket {
+        HK_TRADE(1, "港股交易"),
+        US_TRADE(2, "美股交易"),
+        NORTH_TRADE(3, "中华通交易");
+
+        private Integer code;
+        private String message;
+
+        private OpenAccountMarket(Integer code, String message) {
+            this.code = code;
+            this.message = message;
+        }
+
+        public static Integer getFlag(ArrayList<Integer> codes, OpenAccountMarket market) {
+            Integer bool = 0;
+            for (FundAccountType way : FundAccountType.values()) {
+                if (codes.contains(market.getCode())) {
+                    bool = 1;
                 }
             }
             return bool;
@@ -159,5 +219,31 @@ public final class CustomOpenAccountEnum {
         }
     }
 
+    @Getter
+    public enum CaStatus {
+        //        CA认证状态， 0:无，1:需要认证，2:认证完成（待推送），3:已推送
+        NONE(0, "无"),
+        IS_NEED_VERIFY(1, "需要认证"),
+        IS_NEED_PUSH(2, "认证完成（待推送）"),
+        IS_PUSHED(3, "已推送");
+
+        private Integer code;
+        private String message;
+
+        private CaStatus(Integer code, String message) {
+            this.code = code;
+            this.message = message;
+        }
+
+
+        public static CaStatus getStatus(Integer code) {
+            for (CaStatus c : CaStatus.values()) {
+                if (c.getCode().equals(code)) {
+                    return c;
+                }
+            }
+            return CaStatus.NONE;
+        }
+    }
 
 }

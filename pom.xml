@@ -26,6 +26,7 @@
         <module>minigod-cloud-auth</module>
         <module>minigod-cloud-protocol</module>
         <module>minigod-cloud-persist</module>
+        <module>minigod-cloud-helper</module>
         <module>minigod-service-xxl-job</module>
         <module>minigod-service-notify</module>
         <module>minigod-service-storage</module>

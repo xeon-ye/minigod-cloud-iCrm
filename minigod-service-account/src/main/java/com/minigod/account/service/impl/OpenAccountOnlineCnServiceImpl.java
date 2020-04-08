@@ -7,7 +7,7 @@ import com.minigod.common.pojo.StaticType;
 import java.util.*;
 
 import com.minigod.common.utils.JSONUtil;
-import com.minigod.common.bean.BaseBeanFactory;
+import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.account.helper.FileStorageHelper;
 import com.minigod.persist.account.mapper.CustomOpenCnCacheInfoMapper;
 import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;

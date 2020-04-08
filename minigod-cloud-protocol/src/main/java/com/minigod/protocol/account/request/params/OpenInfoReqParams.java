@@ -5,11 +5,15 @@ import com.minigod.common.pojo.request.BaseRequestParams;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @Data
 public class OpenInfoReqParams extends BaseRequestParams implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer openType;
-    private JSONObject info;
+    private Integer accessWay;
+    private Integer fundAccountType;
+    private ArrayList<Integer> accountMarkets;
+    private JSONObject formData;
 }

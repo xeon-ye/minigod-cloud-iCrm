@@ -4,7 +4,7 @@ import com.minigod.account.helper.FileStorageHelper;
 import com.minigod.account.utils.SzcaHttpClient;
 import com.minigod.common.utils.JSONUtil;
 import com.minigod.common.verify.utils.VerifyUtil;
-import com.minigod.common.bean.BaseBeanFactory;
+import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.account.helper.RestCubpHelper;
 import com.minigod.account.helper.TencentApiFaceIdHelper;
 import com.minigod.persist.account.mapper.*;
@@ -174,6 +174,69 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
     }
 
     @Override
+    public Boolean isIdCardValid(String idCard, String userName) {
+        // 参数校验
+        if (StringUtils.isBlank(idCard) || !VerifyUtil.isIDNo(idCard)) {
+            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_FORMAT_ID_CARD);
+        }
+
+        List<VerifyIdCard> localVerifyIdCards = verifyIdCardMapper.selectByIdCardAndStatus(idCard, null);
+
+        // 本地无记录
+        if (localVerifyIdCards.size() == 0) {
+            return false;
+        }
+
+        // 启用身份证公安校验，判断本地记录是否认证通过
+        if (IS_VERIFY_ID_CARD_FROM_THIRD) {
+            // 本地唯一数据
+            VerifyIdCard localVerifiedIdCard = null;
+            for (VerifyIdCard localVerifyIdCard : localVerifyIdCards) {
+                if (localVerifyIdCard.getStatus().equals(1)) {
+                    localVerifiedIdCard = localVerifyIdCard;
+                }
+            }
+
+            return (localVerifiedIdCard != null && localVerifiedIdCard.getUserName().equals(userName));
+        }
+
+        return true;
+    }
+
+    @Override
+    public Boolean isBankCardValid(String idCard, String userName, String bankCard) {
+        // 参数校验
+        if (StringUtils.isBlank(idCard) || !VerifyUtil.isIDNo(idCard)) {
+            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_FORMAT_ID_CARD);
+        }
+        if (StringUtils.isBlank(bankCard) || !VerifyUtil.isNumber(bankCard)) {
+            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_FORMAT_ID_CARD);
+        }
+
+        List<VerifyBankCard> localVerifyBankCards = verifyBankCardMapper.selectByBankCardAndStatus(bankCard, null);
+
+        // 本地无记录
+        if (localVerifyBankCards.size() == 0) {
+            return false;
+        }
+
+        // 启用银行卡公安校验，判断本地记录是否认证通过
+        if (IS_VERIFY_BANK_CARD_FROM_THIRD) {
+            // 本地唯一数据
+            VerifyBankCard localVerifiedBankCard = null;
+            for (VerifyBankCard localVerifyBankCard : localVerifyBankCards) {
+                if (localVerifyBankCard.getStatus().equals(1)) {
+                    localVerifiedBankCard = localVerifyBankCard;
+                }
+            }
+
+            return (localVerifiedBankCard != null && localVerifiedBankCard.getIdCard().equals(idCard) && localVerifiedBankCard.getUserName().equals(userName));
+        }
+
+        return true;
+    }
+
+    @Override
     public VerifyResVo verifyPhone(VerifyReqParams params) {
         // 参数校验
         if (params == null || StringUtils.isBlank(params.getPhone())) {
@@ -265,13 +328,13 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
             // 本地无相关记录，直接插入
             if (localVerifyIdCard == null) {
                 localVerifyIdCard = new VerifyIdCard();
+                localVerifyIdCard.setIdCard(idCard);
+                localVerifyIdCard.setUserName(userName);
                 localVerifyIdCard.setCreateTime(new Date());
                 localVerifyIdCard.setUpdateTime(new Date());
                 localVerifyIdCard.setStatus(-1);
                 verifyIdCardMapper.insertSelective(localVerifyIdCard);
             }
-
-            verifyResVo.setId(localVerifyIdCard.getId());
 
             // 不启用身份证公安校验，直接返回成功，并记录本地记录
             if (!IS_VERIFY_ID_CARD_FROM_THIRD) {
@@ -414,13 +477,15 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
             // 本地无相关记录，直接插入
             if (localVerifyBankCard == null) {
                 localVerifyBankCard = new VerifyBankCard();
+                localVerifyBankCard.setIdCard(idCard);
+                localVerifyBankCard.setUserName(userName);
+                localVerifyBankCard.setBankCard(bankCard);
+                localVerifyBankCard.setPhone(phone);
                 localVerifyBankCard.setCreateTime(new Date());
                 localVerifyBankCard.setUpdateTime(new Date());
                 localVerifyBankCard.setStatus(-1);
                 verifyBankCardMapper.insertSelective(localVerifyBankCard);
             }
-
-            verifyResVo.setId(localVerifyBankCard.getId());
 
             // 不启用银行卡四要素公安校验，直接返回成功，并记录本地记录
             if (!IS_VERIFY_BANK_CARD_FROM_THIRD) {

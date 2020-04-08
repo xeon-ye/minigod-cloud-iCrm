@@ -1,14 +1,13 @@
-package com.minigod.common.handler;
+package com.minigod.helper.handler;
 
 import com.minigod.common.constant.Const;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.exception.WebApiException;
-import com.minigod.common.i18n.MessageI18NHelper;
 import com.minigod.common.pojo.response.ResResult;
+import com.minigod.helper.i18n.MessageI18NHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import sun.security.util.SecurityConstants;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

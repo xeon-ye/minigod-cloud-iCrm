@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.minigod.common.constant.Const;
+import com.minigod.protocol.account.constant.SecuritiesConst;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -19,11 +21,16 @@ public class BaseRequestWrapper extends HttpServletRequestWrapper {
 
     private byte[] body;
     private String language;
+    private String token;
 
     public BaseRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
         body = IOUtils.toByteArray(request.getInputStream());
+        token = request.getHeader(SecuritiesConst.H5_TOKEN_KEY);
         language = request.getHeader(Const.H5_LANGUAGE_KEY);
+        if(StringUtils.isEmpty(language)){
+            language = "zh_CN";
+        }
     }
 
     @Override
@@ -37,6 +44,10 @@ public class BaseRequestWrapper extends HttpServletRequestWrapper {
 
     public String getLanguage() {
         return language;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public void updateParams() {
@@ -58,6 +69,7 @@ public class BaseRequestWrapper extends HttpServletRequestWrapper {
             ObjectNode newParams = mapper.createObjectNode();
             newParams.setAll((ObjectNode) params);
             newParams.put("langKey", language);
+            newParams.put("token", token);
 
             // 创建新节点
             ObjectNode newNode = mapper.createObjectNode();

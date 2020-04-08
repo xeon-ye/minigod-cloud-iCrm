@@ -1,7 +1,7 @@
 package com.minigod.notify.service.impl;
 
 
-import com.minigod.common.bean.BaseBeanFactory;
+import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.notify.service.CaptchaEmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.netflix.feign.FeignClient;

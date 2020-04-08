@@ -1,7 +1,7 @@
 package com.minigod.account.service.impl;
 
 import com.minigod.common.utils.DateUtils;
-import com.minigod.common.bean.BaseBeanFactory;
+import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.account.helper.RedisTokenManager;
 import com.minigod.persist.account.mapper.CustomSessionMapper;
 import com.minigod.protocol.account.model.CustomSession;
@@ -33,7 +33,7 @@ public class UserCacheServiceImpl extends BaseBeanFactory implements UserCacheSe
         sessionInfo.setDeviceId(-1);//未知
         sessionInfo.setToken("");
         sessionInfo.setIsStatus(true);
-        sessionInfo.setExpireTime(SESSION_ERPIRE_TIME);
+        sessionInfo.setExpireTime(DateUtils.addHour(date, 2));
         sessionInfo.setCreateTime(date);
         sessionInfo.setUpdateTime(date);
         customSessionMapper.insertSelective(sessionInfo);
@@ -45,5 +45,15 @@ public class UserCacheServiceImpl extends BaseBeanFactory implements UserCacheSe
         customSessionMapper.updateByPrimaryKeySelective(sessionInfo);
 
         return sessionInfo;
+    }
+
+    @Override
+    public void expireCustomSession(Integer userId, String token) {
+        CustomSession sessionInfo = customSessionMapper.selectOneByUserIdAndToken(userId, token);
+        if (sessionInfo != null) {
+            sessionInfo.setIsStatus(false);
+            customSessionMapper.updateByPrimaryKeySelective(sessionInfo);
+            redisTokenManager.expireToken(token);
+        }
     }
 }

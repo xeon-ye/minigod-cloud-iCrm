@@ -51,7 +51,7 @@ public interface VerifyIdCardMapper {
      */
     int updateByPrimaryKey(VerifyIdCard record);
 
-    List<VerifyIdCard> selectByIdCardAndStatus(@Param("idCard") String idCard, @Param("status") Integer status);
+    List<VerifyIdCard> selectByIdCardAndStatus(@Param("idCard")String idCard,@Param("status")Integer status);
 
     VerifyIdCard selectOneByIdCardAndUserName(@Param("idCard") String idCard, @Param("userName") String userName);
 }

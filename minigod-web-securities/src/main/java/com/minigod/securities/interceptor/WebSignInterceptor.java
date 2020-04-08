@@ -1,14 +1,8 @@
 package com.minigod.securities.interceptor;
 
-import com.alibaba.fastjson.JSON;
 import com.minigod.account.helper.RedisTokenManager;
-import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.exception.WebApiException;
-import com.minigod.common.i18n.MessageI18NHelper;
 import com.minigod.common.pojo.StaticType;
-import com.minigod.common.pojo.request.BaseRequest;
-import com.minigod.common.pojo.request.BaseRequestParams;
-import com.minigod.common.pojo.response.ResResult;
 import com.minigod.common.security.SignUtil;
 import com.minigod.common.utils.JSONUtil;
 import com.minigod.securities.filter.BaseRequestWrapper;
@@ -19,11 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;

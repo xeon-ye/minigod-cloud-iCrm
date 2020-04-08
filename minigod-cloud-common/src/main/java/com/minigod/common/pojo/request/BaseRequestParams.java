@@ -17,4 +17,5 @@ import java.io.Serializable;
 public class BaseRequestParams implements Serializable {
     private static final long serialVersionUID = -5486921710717030131L;
     private String langKey;
+    private String token;
 }

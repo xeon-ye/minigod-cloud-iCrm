@@ -14,5 +14,4 @@ public class LoginReqParams extends BaseRequestParams implements Serializable {
     private Integer captchaId; // 验证码ID
     private Integer passwordType; // 密码类型 0-其他 1-验证码 2-密码
     private String password; // 登录密码/验证码/第三方登录凭证
-
 }

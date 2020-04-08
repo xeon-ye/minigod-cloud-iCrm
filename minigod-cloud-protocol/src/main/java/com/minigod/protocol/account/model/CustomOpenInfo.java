@@ -23,6 +23,11 @@ public class CustomOpenInfo implements Serializable {
     private String password;
 
     /**
+     * 证件类型：0=未知 1=大陆居民身份证 2=香港居民身份证 3=护照 4=香港临时身份证 5=其他
+     */
+    private Integer idKind;
+
+    /**
      * 身份证号
      */
     private String idCard;
@@ -33,9 +38,9 @@ public class CustomOpenInfo implements Serializable {
     private String bankCard;
 
     /**
-     * 0:未提交（默认），1:开户中，2:已取消,3:开户成功，4:开户失败，5:销户
+     * 开户方式：0:未知，1:线上内地开户，2:线上香港开户，3:线下（开户宝）
      */
-    private Integer status;
+    private Integer openType;
 
     /**
      * 开户接入方式: 1:H5开户 2:APP开户
@@ -45,17 +50,17 @@ public class CustomOpenInfo implements Serializable {
     /**
      * 账户类型 1：现金账户 2：融资账户
      */
-    private Integer accountType;
-
-    /**
-     * 开户方式：0:未知，1:线上内地开户，2:线下（开户宝），3:线上香港开户
-     */
-    private Integer openType;
+    private Integer fundAccountType;
 
     /**
      * 账户类型：1：港股 2：美股 3：中华通
      */
     private String accountMarkets;
+
+    /**
+     * 0:未提交（默认），1:开户中，2:已取消,3:开户成功，4:开户失败，5:销户
+     */
+    private Integer status;
 
     /**
      * 0:预批中，1:审批中，2:CA认证中,3:柜台开户中
@@ -68,9 +73,9 @@ public class CustomOpenInfo implements Serializable {
     private Integer failType;
 
     /**
-     * 开户结果
+     * 失败原因
      */
-    private String openResult;
+    private String failReason;
 
     /**
      * 是否需要推送
@@ -90,7 +95,7 @@ public class CustomOpenInfo implements Serializable {
     /**
      * CA认证状态， 0:无，1:需要认证，2:认证完成（待推送），3:已推送
      */
-    private Byte caStatus;
+    private Integer caStatus;
 
     /**
      * 开户日期
@@ -110,7 +115,7 @@ public class CustomOpenInfo implements Serializable {
     /**
      * 开户数据
      */
-    private String info;
+    private String formdata;
 
     /**
      * 开户PDF文件地址

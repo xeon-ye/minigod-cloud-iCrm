@@ -160,7 +160,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
             String idCard = customOpenInfo.getIdCard();
             String bankCard = customOpenInfo.getBankCard();
             Integer openType = customOpenInfo.getOpenType(); // 开户方式：1、线上预约开户，2、线下（开户宝）3、香港预约开户
-            CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getInfo(), CubpOpenAccountAppointmentReqVo.class);
+            CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
 
             // 完善开户数据
             openInfo.setOpenAccountAccessWay(customOpenInfo.getAccessWay());
@@ -200,11 +200,11 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
                         }
 
                         // 图片校验
-                        if (isRealImg(imgUrl, userId) == null) {
-                            isErrorImage = true;
-                            // 记录错误图片
-                            errorImages.append(imgUrl).append(split);
-                        }
+//                        if (isRealImg(imgUrl, userId) == null) {
+//                            isErrorImage = true;
+//                            // 记录错误图片
+//                            errorImages.append(imgUrl).append(split);
+//                        }
 
                         openAccountImageInfoProtocol.setImageLocation(locationKey);
                         openAccountImageInfoProtocol.setImageLocationType(locationType);
@@ -228,13 +228,12 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
 
                         String imgUrl = customOpenImg.getUrl();
 
-                        FileInputStream realImg = isRealImg(imgUrl, userId);
-                        // 图片校验
-                        if (realImg == null) {
-                            isErrorImage = true;
-                            // 记录错误图片
-                            errorImages.append(imgUrl).append(split);
-                        }
+//                        // 图片校验
+//                        if (isRealImg(imgUrl, userId) == null) {
+//                            isErrorImage = true;
+//                            // 记录错误图片
+//                            errorImages.append(imgUrl).append(split);
+//                        }
 
                         Integer locationKey = Integer.parseInt(customOpenImg.getLocationKey());
                         Integer locationType = Integer.parseInt(customOpenImg.getLocationType());
@@ -299,6 +298,8 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
                         String applicationId = JSONObject.parseObject(responseVO.getResult().toString()).get("applicationId").toString();
                         customOpenInfo.setRemoteId(applicationId);
                         customOpenInfo.setIsNeedPush(false);
+                        customOpenInfo.setPendingType(CustomOpenAccountEnum.PendingStatusType.APPROVE.getCode());
+                        customOpenInfo.setUpdateTime(new Date());
                         customOpenInfoMapper.updateByPrimaryKeySelective(customOpenInfo);
                         log.info("【预批客户上传BPM】上传成功：" + userId);
                     } else {

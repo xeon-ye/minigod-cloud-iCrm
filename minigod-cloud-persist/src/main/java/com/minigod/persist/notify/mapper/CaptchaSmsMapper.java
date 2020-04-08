@@ -52,5 +52,6 @@ public interface CaptchaSmsMapper {
 
     CaptchaSms selectOneByIdAndPhoneAndExpiresTimeBefore(@Param("id")Integer id,@Param("phone")String phone,@Param("maxExpiresTime")Date maxExpiresTime);
 
-    CaptchaSms selectOneByIdAndPhoneAndExpiresTimeBeforeAndIsCheckedFalseAndIsUsedFalse(@Param("id")Integer id,@Param("phone")String phone,@Param("maxExpiresTime")Date maxExpiresTime);
+    CaptchaSms selectOneByIdAndPhoneAndExpiresTimeAfter(@Param("id")Integer id,@Param("phone")String phone,@Param("minExpiresTime")Date minExpiresTime);
+
 }

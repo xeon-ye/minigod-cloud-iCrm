@@ -1,6 +1,7 @@
 package com.minigod.account.service;
 
         import com.minigod.protocol.account.request.params.LoginReqParams;
+        import com.minigod.protocol.account.request.params.LogoutParams;
         import com.minigod.protocol.account.request.params.RetisterReqParams;
         import com.minigod.protocol.account.response.LoginResVo;
         import org.springframework.cloud.netflix.feign.FeignClient;
@@ -17,4 +18,7 @@ public interface UserService {
 
     @PostMapping("/register")
     public LoginResVo register(RetisterReqParams retisterReqParams);
+
+    @PostMapping("/logout")
+    public void logout(Integer userId, LogoutParams logoutParams);
 }

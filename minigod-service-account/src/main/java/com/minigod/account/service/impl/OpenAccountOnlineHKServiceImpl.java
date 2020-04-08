@@ -1,7 +1,7 @@
 package com.minigod.account.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.minigod.common.bean.BaseBeanFactory;
+import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.common.utils.JSONUtil;

@@ -29,7 +29,7 @@ public class OpenAccountCallback {
      * @param callbackVo
      * @return
      */
-    @PostMapping("/updateOpenInfo")
+    @PostMapping("/update_open_info")
     public ResResult fetchCaptcha(@RequestBody CubpOpenInfoCallbackVo callbackVo) {
         try {
             openAccountOnlineService.updateOpenInfo(callbackVo);

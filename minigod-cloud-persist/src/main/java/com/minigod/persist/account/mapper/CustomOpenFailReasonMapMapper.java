@@ -1,10 +1,9 @@
 package com.minigod.persist.account.mapper;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.minigod.protocol.account.model.CustomOpenBackErrorMap;
+import com.minigod.protocol.account.model.CustomOpenFailReasonMap;
 
-public interface CustomOpenBackErrorMapMapper {
+public interface CustomOpenFailReasonMapMapper {
     /**
      * delete by primary key
      * @param id primaryKey
@@ -17,36 +16,37 @@ public interface CustomOpenBackErrorMapMapper {
      * @param record the record
      * @return insert count
      */
-    int insert(CustomOpenBackErrorMap record);
+    int insert(CustomOpenFailReasonMap record);
 
     /**
      * insert record to table selective
      * @param record the record
      * @return insert count
      */
-    int insertSelective(CustomOpenBackErrorMap record);
+    int insertSelective(CustomOpenFailReasonMap record);
 
     /**
      * select by primary key
      * @param id primary key
      * @return object by primary key
      */
-    CustomOpenBackErrorMap selectByPrimaryKey(Long id);
+    CustomOpenFailReasonMap selectByPrimaryKey(Long id);
 
     /**
      * update record
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKeySelective(CustomOpenBackErrorMap record);
+    int updateByPrimaryKeySelective(CustomOpenFailReasonMap record);
 
     /**
      * update record selective
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKey(CustomOpenBackErrorMap record);
+    int updateByPrimaryKey(CustomOpenFailReasonMap record);
 
     String selectOneConfigKeyByCode(@Param("code")Integer code);
+
 
 }

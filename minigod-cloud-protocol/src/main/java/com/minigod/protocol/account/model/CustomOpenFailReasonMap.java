@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CustomOpenBackErrorMap implements Serializable {
+public class CustomOpenFailReasonMap implements Serializable {
     /**
     * 配置id（自增主键）
     */
