@@ -6,7 +6,7 @@ minigod:
     userToken.expireSecond: 7200 # 2*60*60
   cubp:
     isRemote: true
-    url: http://10.1.2.99:6888/bpm
+    url: http://192.168.0.112:6888/bpm
   openAccount:
     isVerifyFromCubp: true
     isVerifyIdCardFromThird: true
@@ -42,7 +42,7 @@ minigod:
     getSignP7ForPdf: /SecuritiesAccount/service/reqSignP7ForPdf
   proxy:
     isSyncOpen: false
-    host: http://10.1.2.99:8901/securities
+    host: http://192.168.0.112:8901/securities
     checkUser: /test/checkUser
     syncData: /checkUser
 

@@ -4,7 +4,7 @@
 
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>d:/logs/service-notify/service-notify.log</file>
+		<file>./logs/service-notify.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
 			<fileNamePattern>service-notify.%d{yyyy-MM-dd}.log.zip</fileNamePattern>

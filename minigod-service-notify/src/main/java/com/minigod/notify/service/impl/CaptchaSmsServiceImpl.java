@@ -72,6 +72,23 @@ public class CaptchaSmsServiceImpl extends BaseBeanFactory implements CaptchaSms
 
         smsMapper.insert(captchaSms);
 
+
+        if (captchaSms.getId() != null) {
+            if (!notifyService.isSmsEnable()) {
+                log.error("暂不支持短信验证码服务");
+            } else {
+                String[] params;
+                if (StringUtils.isNotEmpty(captchaType.getMessageInfo())) {
+                    params = new String[]{captcha, captchaType.getMessageInfo()};
+                } else {
+                    params = new String[]{captcha};
+                }
+                notifyService.notifySmsTemplate(phone, captchaType, params);
+            }
+        } else {
+            throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.NONE_DATA);
+        }
+
         captchaResVo.setCaptchaId(captchaSms.getId());
         captchaResVo.setExpiresTime(captchaSms.getExpiresTime());
 
@@ -81,6 +98,7 @@ public class CaptchaSmsServiceImpl extends BaseBeanFactory implements CaptchaSms
     @Override
     public CaptchaResVo saveCaptcha(CaptchaReqParams params) {
         if (params == null) {
+            log.error("参数错误：CaptchaReqParams= {}", params);
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 

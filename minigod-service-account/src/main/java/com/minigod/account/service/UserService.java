@@ -1,11 +1,11 @@
 package com.minigod.account.service;
 
-        import com.minigod.protocol.account.request.params.LoginReqParams;
-        import com.minigod.protocol.account.request.params.LogoutParams;
-        import com.minigod.protocol.account.request.params.RetisterReqParams;
-        import com.minigod.protocol.account.response.LoginResVo;
-        import org.springframework.cloud.netflix.feign.FeignClient;
-        import org.springframework.web.bind.annotation.*;
+import com.minigod.protocol.account.request.params.LoginReqParams;
+import com.minigod.protocol.account.request.params.LogoutParams;
+import com.minigod.protocol.account.request.params.RetisterReqParams;
+import com.minigod.protocol.account.response.LoginResVo;
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(value = "minigod-account-service")
 public interface UserService {
