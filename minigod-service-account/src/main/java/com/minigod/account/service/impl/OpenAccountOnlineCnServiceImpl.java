@@ -1,6 +1,7 @@
 package com.minigod.account.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.minigod.account.service.VerifyService;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.pojo.StaticType;
 
@@ -18,10 +19,12 @@ import com.minigod.protocol.account.model.CustomOpenCnImg;
 import com.minigod.protocol.account.request.params.OpenCacheDataReqParams;
 import com.minigod.protocol.account.request.params.OpenImgReqParams;
 import com.minigod.protocol.account.request.params.OpenCacheInfoReqParams;
+import com.minigod.protocol.account.request.params.VerifyReqParams;
 import com.minigod.protocol.account.response.OpenImgResVo;
 import com.minigod.protocol.account.response.OpenCacheDataResVo;
 import com.minigod.account.service.OpenAccountOnlineCnService;
 import com.minigod.account.service.OpenAccountOnlineService;
+import com.minigod.protocol.account.response.VerifyResVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -47,6 +50,8 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
 
     @Autowired
     FileStorageHelper fileStorageHelper;
+    @Autowired
+    VerifyService verifyService;
 
     private void saveOrUpdateCnStepInfo(Integer userId, Integer step, Object json) {
         // 查询当前步骤缓存数据
@@ -128,6 +133,18 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
         String fileName = userId + "_" + type + System.currentTimeMillis() + ".jpg";
 
         String imgPath = fileStorageHelper.uploadImage(fileName, base64Img);
+
+        // 活体照片校验(指定动作照、手持身份证照、正面照）
+        if (location.equals("4") || location.equals("5")) {
+            VerifyReqParams verifyReqParams = new VerifyReqParams();
+            verifyReqParams.setLiveImage(imgPath);
+            VerifyResVo verifyResVo = verifyService.verifyLiveFace(verifyReqParams, userId);
+
+            if (verifyResVo == null || !verifyResVo.getIsValid()) {
+                log.error("活体校验失败");
+                throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_VERIFY_LIVE_FACE);
+            }
+        }
 
         // 查询当前步骤缓存数据
         Integer cacheId = openCnImgMapper.selectOneIdByUserIdAndLocationType(userId, type);

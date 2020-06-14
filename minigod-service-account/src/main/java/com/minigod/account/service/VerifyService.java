@@ -51,6 +51,10 @@ public interface VerifyService {
     @PostMapping("/verify_bank_card_4e")
     public VerifyResVo verifyBankCard4E(VerifyReqParams bankCardReqParams);
 
+    // 静态活体检验
+    @PostMapping("/verify_live_face")
+    VerifyResVo verifyLiveFace(VerifyReqParams params, Integer userId);
+
      // 获取操作标示（SZCA）
     public VerifySzcaPojo getTokenBySzca();
 
@@ -65,6 +69,8 @@ public interface VerifyService {
 
     // 针对 PDF 文件生成签名域接口-推送 pdf
     public VerifyAuthCa getPdfInfoForSignBySzca(SzcaPdfInfoForSignReqVo reqVo, InputStream fileInput);
+
+    public void clearLocalVerifyCa(String idCard);
 
 //    public SzcaSealPdfResVo getSealPdfBySzca(Integer userId);
 }

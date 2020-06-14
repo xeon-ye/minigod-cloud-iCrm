@@ -27,6 +27,9 @@ public class CubpOpenInfoCallbackVo implements Serializable {
     @JSONField(name = "userId")
     private Integer userId;
 
+    @JSONField(name = "phoneNumber")
+    private String phoneNumber;
+
     @JSONField(name = "clientId")
     private String clientId;
 

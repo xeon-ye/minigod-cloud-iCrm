@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class OtherUserInfoResVo implements Serializable {
     private static final long serialVersionUID = 1L;
     private Boolean isRealUser;
+    private Integer thirdCode;
     private String phoneNumber;
     private String email;
     private String remarks;

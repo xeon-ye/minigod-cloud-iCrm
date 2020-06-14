@@ -5,6 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.minigod.account.utils.CommonUtil;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.common.pojo.response.ResResult;
+import com.minigod.common.security.SignUtil;
+import com.minigod.common.utils.JSONUtil;
+import com.minigod.protocol.account.other.response.MinigodUserInfoResVo;
 import com.minigod.protocol.account.other.response.OtherUserInfoResVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -40,9 +43,8 @@ public class RestProxyHelper {
 
     private ResResult connectProxy(String server, Object json) {
         try {
-            String jsonStrReq = CommonUtil.getRequestJson(json);
-            log.info("请求外部系统传入参数：" + jsonStrReq);
-            String jsonStrRes = CommonUtil.httpPost(server, jsonStrReq);
+            log.info("请求外部系统传入参数：" + JSONUtil.toJson(json));
+            String jsonStrRes = CommonUtil.httpPost(server, JSONUtil.toJson(json));
             log.info("请求外部系统返回信息：" + jsonStrRes);
 
             if (StringUtils.isNotBlank(jsonStrRes)) {
@@ -83,6 +85,40 @@ public class RestProxyHelper {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("account", account);
         map.put("password", password);
+        Map<String, Object> req = new HashMap<String, Object>();
+
+        req.put("params", map);
+
         return getResult(CHECK_USER, map, OtherUserInfoResVo.class);
+    }
+
+    public OtherUserInfoResVo checkUser(String session) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("flag", 1);
+        map.put("sessionId", session);
+
+        String paramsStr = SignUtil.getParams(JSONUtil.toJson(map));
+        String sign = SignUtil.sign(paramsStr, session);
+
+        Map<String, Object> req = new HashMap<String, Object>();
+
+        req.put("version", "1.0");
+        req.put("src", "h5");
+        req.put("id", "1571799293451000509");
+        req.put("sign", sign);
+        req.put("params", map);
+
+        MinigodUserInfoResVo res = getResult(CHECK_USER, req, MinigodUserInfoResVo.class);
+        OtherUserInfoResVo realRes = new OtherUserInfoResVo();
+        if (res.getUserCode() != null && res.getUserCode() > 0) {
+            realRes.setThirdCode(res.getUserCode());
+        }
+        if (StringUtils.isNotEmpty(res.getPhoneNum())) {
+            realRes.setPhoneNumber(res.getPhoneNum());
+            realRes.setIsRealUser(true);
+        } else {
+            realRes.setIsRealUser(false);
+        }
+        return realRes;
     }
 }

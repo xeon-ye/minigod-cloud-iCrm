@@ -5,9 +5,9 @@ minigod:
     active: tencent
     # 本地对象存储配置信息
     local:
-      storagePath: E:\home\datas\
+      storagePath: /home/apps/datas
       # 这个地方应该是wx模块的WxStorageController的fetch方法对应的地址
-      address: http://192.168.0.112:8153/security/storage/file/
+      address: http://192.168.0.141:8153/security/storage/file/
     # 阿里云对象存储配置信息
     aliyun:
       endpoint: oss-cn-shenzhen.aliyuncs.com

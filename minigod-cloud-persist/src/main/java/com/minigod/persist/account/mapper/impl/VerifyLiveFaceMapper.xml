@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.minigod.persist.account.mapper.VerifyLiveFaceMapper">
+  <resultMap id="BaseResultMap" type="com.minigod.protocol.account.model.VerifyLiveFace">
+    <!--@mbg.generated-->
+    <!--@Table verify_live_face-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+    <result column="score" jdbcType="FLOAT" property="score" />
+    <result column="is_liveness" jdbcType="BOOLEAN" property="isLiveness" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="check_date" jdbcType="TIMESTAMP" property="checkDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_id, img_url, score, is_liveness, remark, check_date, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from verify_live_face
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from verify_live_face
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.VerifyLiveFace" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into verify_live_face (user_id, img_url, score, 
+      is_liveness, remark, check_date, 
+      create_time, update_time)
+    values (#{userId,jdbcType=INTEGER}, #{imgUrl,jdbcType=VARCHAR}, #{score,jdbcType=FLOAT}, 
+      #{isLiveness,jdbcType=BOOLEAN}, #{remark,jdbcType=VARCHAR}, #{checkDate,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.VerifyLiveFace" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into verify_live_face
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="imgUrl != null">
+        img_url,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="isLiveness != null">
+        is_liveness,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="checkDate != null">
+        check_date,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="imgUrl != null">
+        #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=FLOAT},
+      </if>
+      <if test="isLiveness != null">
+        #{isLiveness,jdbcType=BOOLEAN},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDate != null">
+        #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.minigod.protocol.account.model.VerifyLiveFace">
+    <!--@mbg.generated-->
+    update verify_live_face
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="imgUrl != null">
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=FLOAT},
+      </if>
+      <if test="isLiveness != null">
+        is_liveness = #{isLiveness,jdbcType=BOOLEAN},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDate != null">
+        check_date = #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.minigod.protocol.account.model.VerifyLiveFace">
+    <!--@mbg.generated-->
+    update verify_live_face
+    set user_id = #{userId,jdbcType=INTEGER},
+      img_url = #{imgUrl,jdbcType=VARCHAR},
+      score = #{score,jdbcType=FLOAT},
+      is_liveness = #{isLiveness,jdbcType=BOOLEAN},
+      remark = #{remark,jdbcType=VARCHAR},
+      check_date = #{checkDate,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+<!--auto generated by MybatisCodeHelper on 2020-06-05-->
+  <select id="selectOneByUserIdAndImgUrl" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from verify_live_face
+    where user_id=#{userId,jdbcType=INTEGER} and img_url=#{imgUrl,jdbcType=VARCHAR}
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-06-05-->
+  <select id="selectByUserIdAndCheckDate" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from verify_live_face
+    where user_id=#{userId,jdbcType=INTEGER} and check_date=#{checkDate,jdbcType=TIMESTAMP}
+  </select>
+
+</mapper>

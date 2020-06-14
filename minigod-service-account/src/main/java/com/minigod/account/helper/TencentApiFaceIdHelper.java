@@ -6,10 +6,7 @@ import com.tencentcloudapi.common.exception.TencentCloudSDKException;
 import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.faceid.v20180301.FaceidClient;
-import com.tencentcloudapi.faceid.v20180301.models.BankCard4EVerificationRequest;
-import com.tencentcloudapi.faceid.v20180301.models.BankCard4EVerificationResponse;
-import com.tencentcloudapi.faceid.v20180301.models.IdCardVerificationRequest;
-import com.tencentcloudapi.faceid.v20180301.models.IdCardVerificationResponse;
+import com.tencentcloudapi.faceid.v20180301.models.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -76,6 +73,26 @@ public class TencentApiFaceIdHelper {
             BankCard4EVerificationRequest req = BankCard4EVerificationRequest.fromJsonString(params, BankCard4EVerificationRequest.class);
 
             BankCard4EVerificationResponse resp = FACEID_CLIENT.BankCard4EVerification(req);
+            return resp;
+
+        } catch (TencentCloudSDKException e) {
+            System.out.println(e.toString());
+            return null;
+        }
+    }
+
+    public ImageRecognitionResponse verifyImageRecognition(String idCard, String userName, String imgBase64) {
+        try {
+            Map<String, Object> data = new HashMap<>();
+
+            data.put("IdCard", idCard);
+            data.put("Name", userName);
+            data.put("ImageBase64", imgBase64);
+
+            String params = JSON.toJSONString(data);
+            ImageRecognitionRequest req = ImageRecognitionRequest.fromJsonString(params, ImageRecognitionRequest.class);
+
+            ImageRecognitionResponse resp = FACEID_CLIENT.ImageRecognition(req);
             return resp;
 
         } catch (TencentCloudSDKException e) {

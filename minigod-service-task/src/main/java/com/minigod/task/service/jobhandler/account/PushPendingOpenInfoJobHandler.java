@@ -2,10 +2,14 @@ package com.minigod.task.service.jobhandler.account;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.minigod.account.helper.TencentApiFaceIdHelper;
+import com.minigod.account.helper.TencentApiIaiHelper;
+import com.minigod.account.helper.TencentApiOcrHelper;
 import com.minigod.account.service.OpenAccountOnlineService;
 import com.minigod.account.service.VerifyService;
 import com.minigod.common.pojo.response.ResResult;
 import com.minigod.common.utils.HttpClientUtils;
+import com.minigod.common.utils.ImageUtils;
 import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
 import com.minigod.persist.account.mapper.CustomOpenHkImgMapper;
 import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
@@ -18,6 +22,8 @@ import com.minigod.protocol.account.model.CustomOpenCnImg;
 import com.minigod.protocol.account.model.CustomOpenHkImg;
 import com.minigod.protocol.account.model.CustomOpenInfo;
 import com.minigod.protocol.account.model.VerifyBankCard;
+import com.tencentcloudapi.faceid.v20180301.models.ImageRecognitionResponse;
+import com.tencentcloudapi.iai.v20180301.models.CompareFaceResponse;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.IJobHandler;
 import com.xxl.job.core.handler.annotation.JobHandler;
@@ -54,42 +60,58 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
     CustomOpenHkImgMapper customOpenHkImgMapper;
     @Autowired
     VerifyBankCardMapper verifyBankCardMapper;
+    @Autowired
+    TencentApiFaceIdHelper tencentApiFaceIdHelper;
 
     @Value("${minigod.cubp.url}")
     private String CUBP_API_URL;
 
+    @Value("${minigod.openAccount.isVerifyBankCardFromThird}")
+    private Boolean IS_VERIFY_BANK_CARD_FROM_THIRD;
     @Value("${minigod.openAccount.isVerifyOpenData}")
     private Boolean IS_VERIFY_OPEN_DATA;
 
     @Value("${minigod.openAccount.validConfidence}")
     private Double VALID_CONFIDENCE_VALUE;
 
-    @Value("${minigod.openAccount.images.h5.type}")
-    private String H5_OPEN_IMG_TYPE;
-
-    @Value("${minigod.openAccount.images.h5.count}")
-    private Integer H5_OPEN_IMG_COUNT;
-
-    @Value("${minigod.openAccount.images.app.type}")
-    private String APP_OPEN_IMG_TYPE;
-
-    @Value("${minigod.openAccount.images.app.count}")
-    private Integer APP_OPEN_IMG_COUNT;
+    @Value("${minigod.openAccount.images.idCardCn}")
+    private String OPEN_IMG_TYPE_ID_CARD_CN;
+    @Value("${minigod.openAccount.images.idCardHk}")
+    private String OPEN_IMG_TYPE_ID_CARD_HK;
+    @Value("${minigod.openAccount.images.idCardHkTemp}")
+    private String OPEN_IMG_TYPE_ID_CARD_HK_TEMP;
+    @Value("${minigod.openAccount.images.idCardPassport}")
+    private String OPEN_IMG_TYPE_ID_CARD_PASSPORT;
+    @Value("${minigod.openAccount.images.bankCard}")
+    private String OPEN_IMG_TYPE_BANK_CARD;
+    @Value("${minigod.openAccount.images.signature}")
+    private String OPEN_IMG_TYPE_SIGNATURE;
+    @Value("${minigod.openAccount.images.avatar}")
+    private String OPEN_IMG_TYPE_AVATAR;
+    @Value("${minigod.openAccount.images.cnH5ImageCount}")
+    private Integer OPEN_IMG_COUNT_CN_H5;
+    @Value("${minigod.openAccount.images.cnAppImageCount}")
+    private Integer OPEN_IMG_COUNT_CN_APP;
 
     private static final String split = " | ";
 
     private void updageIdentityInfo(CubpOpenAccountAppointmentReqVo openInfo, String imgUrl) {
+        String imgBase64 = ImageUtils.loadImgBase64ByUrl(imgUrl);
 
-        // TODO: 调用公安系统，进行身份相识度识别
-//        double confidence = IMAHttpClient.faceCompare(ST_IMG_UPLOAD , ST_IMG_FACECOMPARE , AUTHORIZATION , obj.getIdNo() , obj.getClientName() , imgUrl);
-//        if (confidence < VALID_CONFIDENCE_VALUE) {
-//            openInfo.setIsPassIdentityAuthentication(0);
-//        } else {
-//            openInfo.setIsPassIdentityAuthentication(1);
-//        }
+        // 调用公安系统，进行身份相识度识别
+        ImageRecognitionResponse recognitionResponse = tencentApiFaceIdHelper.verifyImageRecognition(openInfo.getIdNo(), openInfo.getClientName(), imgBase64);
 
-        openInfo.setIdentitySimilarityPercent(VALID_CONFIDENCE_VALUE);
-        openInfo.setIsPassIdentityAuthentication(1);
+        double confidence = 0;
+        if (recognitionResponse != null && recognitionResponse.getSim() != null) {
+            confidence = recognitionResponse.getSim();
+        }
+        if (confidence < VALID_CONFIDENCE_VALUE) {
+            openInfo.setIsPassIdentityAuthentication(0);
+        } else {
+            openInfo.setIsPassIdentityAuthentication(1);
+        }
+
+        openInfo.setIdentitySimilarityPercent(confidence);
     }
 
     private void saveErrorInfo(CustomOpenInfo customOpenInfo, String errorMsg, String body) {
@@ -135,7 +157,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
         log.info("执行【预批客户上传BPM】调度任务");
 
         //查询开户信息
-        List<CustomOpenInfo> openInfoList = customOpenInfoMapper.selectByIsNeedPush(true);
+        List<CustomOpenInfo> openInfoList = customOpenInfoMapper.selectByIsPushedFalse();
         if (null == openInfoList || openInfoList.size() <= 0) {
             log.info("*********************【预批客户上传BPM】为空**************************");
             return FAIL;
@@ -143,7 +165,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
 
         for (CustomOpenInfo customOpenInfo : openInfoList) {
 
-            Integer userId = customOpenInfo.getId();
+            Integer userId = customOpenInfo.getUserId();
             Integer openStatus = customOpenInfo.getStatus();
 
             // 非开户中的跳出循环
@@ -152,7 +174,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
             }
 
             // 同步错误次数过多
-            if (customOpenInfo.getPushErrCount() >= 3 && customOpenInfo.getIsSend()) {
+            if (customOpenInfo.getPushErrCount() != null && customOpenInfo.getPushErrCount() >= 3 && customOpenInfo.getIsSend()) {
                 log.error("*********************【预批客户上传BPM】开户同步异常超过3次**************************, userId = {}", userId);
                 continue;
             }
@@ -166,25 +188,33 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
             openInfo.setOpenAccountAccessWay(customOpenInfo.getAccessWay());
             openInfo.setApplicationTime(customOpenInfo.getUpdateTime());
 
-
             Integer accessWay = customOpenInfo.getAccessWay();
+            Integer idKind = customOpenInfo.getIdKind();
 
+            StringBuilder locationTypeB = new StringBuilder();
+            String[] locationTypes = null;
+            Integer imageCount = 0;
             // 开户图片数据
             List<CubpOpenAccountImageInfoReqVo> openAccountImageInfoProtocolList = Lists.newArrayList();
-            String[] locationTypes = null;
-            if (accessWay.equals(CustomOpenAccountEnum.OpenAccessWay.H5.getCode())) {
-                locationTypes = H5_OPEN_IMG_TYPE.split(",");
-            }
-            if (accessWay.equals(CustomOpenAccountEnum.OpenAccessWay.APP.getCode())) {
-                locationTypes = APP_OPEN_IMG_TYPE.split(",");
-            }
-
             boolean isErrorImage = false;
             StringBuffer errorImages = new StringBuffer();
 
             // 处理图片数据-内地身份开户
             if (openType.equals(CustomOpenAccountEnum.OpenType.ONLINE_CN.getCode())) {
+                locationTypeB.append(OPEN_IMG_TYPE_ID_CARD_CN);
+                locationTypeB.append(",");
+                locationTypeB.append(OPEN_IMG_TYPE_AVATAR);
+                locationTypeB.append(",");
+                locationTypeB.append(OPEN_IMG_TYPE_SIGNATURE);
+                locationTypes = locationTypeB.toString().split(",");
+                if (accessWay.equals(CustomOpenAccountEnum.OpenAccessWay.H5.getCode())) {
+                    imageCount = OPEN_IMG_COUNT_CN_H5;
+                } else if (accessWay.equals(CustomOpenAccountEnum.OpenAccessWay.APP.getCode())) {
+                    imageCount = OPEN_IMG_COUNT_CN_APP;
+                }
+
                 List<CustomOpenCnImg> customOpenImgs = customOpenCnImgMapper.selectByUserIdAndLocationKeyInAndLocationTypeIn(userId, null, locationTypes);
+
                 if (CollectionUtils.isNotEmpty(customOpenImgs)) {
                     for (CustomOpenCnImg customOpenImg : customOpenImgs) {
                         CubpOpenAccountImageInfoReqVo openAccountImageInfoProtocol = new CubpOpenAccountImageInfoReqVo();
@@ -210,17 +240,37 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
                         openAccountImageInfoProtocol.setImageLocationType(locationType);
                         openAccountImageInfoProtocol.setImageUrl(imgUrl);
                         openAccountImageInfoProtocolList.add(openAccountImageInfoProtocol);
-
                     }
-                } else {
-                    log.error("*********************【预批客户上传BPM】CN开户图片数据不完整**************************, userId = {}", userId);
-                    saveErrorInfo(customOpenInfo, "【预批客户上传BPM】开户图片数据不完整", "");
-                    continue;
                 }
-
             }
             // 处理图片数据-香港银行卡开户
             else if (openType.equals(CustomOpenAccountEnum.OpenType.ONLINE_HK.getCode())) {
+                locationTypeB.append(OPEN_IMG_TYPE_SIGNATURE);
+                // 证件类型[0=未知 1=大陆居民身份证 2=香港居民身份证 3=护照 4=香港临时身份证]
+                // 1=大陆居民身份证
+                if (idKind == 1) {
+                    locationTypeB.append(",");
+                    locationTypeB.append(OPEN_IMG_TYPE_ID_CARD_CN);
+                }
+                // 2=香港居民身份证
+                else if (idKind == 2) {
+                    locationTypeB.append(",");
+                    locationTypeB.append(OPEN_IMG_TYPE_ID_CARD_HK);
+                }
+                // 3=护照
+                else if (idKind == 3) {
+                    locationTypeB.append(",");
+                    locationTypeB.append(OPEN_IMG_TYPE_ID_CARD_PASSPORT);
+                }
+                // 4=香港临时身份证
+                else if (idKind == 4) {
+                    locationTypeB.append(",");
+                    locationTypeB.append(OPEN_IMG_TYPE_ID_CARD_HK_TEMP);
+                }
+
+                locationTypes = locationTypeB.toString().split(",");
+                imageCount = locationTypes.length;
+
                 List<CustomOpenHkImg> customOpenImgs = customOpenHkImgMapper.selectByUserIdAndLocationKeyInAndLocationTypeIn(userId, null, locationTypes);
                 if (CollectionUtils.isNotEmpty(customOpenImgs)) {
                     for (CustomOpenHkImg customOpenImg : customOpenImgs) {
@@ -242,14 +292,16 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
                         openAccountImageInfoProtocol.setImageLocationType(locationType);
                         openAccountImageInfoProtocol.setImageUrl(imgUrl);
                         openAccountImageInfoProtocolList.add(openAccountImageInfoProtocol);
-
                     }
-                } else {
-                    log.error("*********************【预批客户上传BPM】HK开户图片数据不完整**************************, userId = {}", userId);
-                    saveErrorInfo(customOpenInfo, "【预批客户上传BPM】开户图片数据不完整", "");
-                    continue;
                 }
             }
+
+            if (openAccountImageInfoProtocolList.size() < imageCount) {
+                log.error("*********************【预批客户上传BPM】开户图片数据不完整**************************, userId = {}, locationType = {}", userId, locationTypeB);
+                saveErrorInfo(customOpenInfo, "【预批客户上传BPM】开户图片数据不完整", "");
+                continue;
+            }
+
             if (isErrorImage) {
                 log.error("*********************【预批客户上传BPM】图片错误**************************, userId = {}", userId);
                 // 记录操作日志
@@ -266,20 +318,21 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
                 List<VerifyBankCard> verifyBankCards = verifyBankCardMapper.selectByIdCard(idCard);
                 if (CollectionUtils.isNotEmpty(verifyBankCards)) {
                     for (VerifyBankCard verifyBankCard : verifyBankCards) {
-                        CubpOpenAccountBankVerityInfoReqVo openAccountBankVerityInfoProtocol = new CubpOpenAccountBankVerityInfoReqVo();
-                        openAccountBankVerityInfoProtocol.setClientName(verifyBankCard.getUserName());
-                        openAccountBankVerityInfoProtocol.setIdNo(verifyBankCard.getIdCard());
-                        openAccountBankVerityInfoProtocol.setBankCard(verifyBankCard.getBankCard());
-                        openAccountBankVerityInfoProtocol.setPhoneNumber(verifyBankCard.getPhone());
-                        openAccountBankVerityInfoProtocol.setVerifyCount(verifyBankCard.getCheckCount());
-                        openAccountBankVerityInfoProtocol.setVerifyStatus(verifyBankCard.getStatus());
-                        openAccountBankVerityInfoProtocol.setVerityTime(new Date());
-                        openAccountBankVerityInfoProtocols.add(openAccountBankVerityInfoProtocol);
+                        if(verifyBankCard.getStatus().equals(1) || !IS_VERIFY_BANK_CARD_FROM_THIRD){
+                            CubpOpenAccountBankVerityInfoReqVo openAccountBankVerityInfoProtocol = new CubpOpenAccountBankVerityInfoReqVo();
+                            openAccountBankVerityInfoProtocol.setClientName(verifyBankCard.getUserName());
+                            openAccountBankVerityInfoProtocol.setIdNo(verifyBankCard.getIdCard());
+                            openAccountBankVerityInfoProtocol.setBankCard(verifyBankCard.getBankCard());
+                            openAccountBankVerityInfoProtocol.setPhoneNumber(verifyBankCard.getPhone());
+                            openAccountBankVerityInfoProtocol.setVerifyCount(verifyBankCard.getCheckCount());
+                            openAccountBankVerityInfoProtocol.setVerifyStatus(verifyBankCard.getStatus());
+                            openAccountBankVerityInfoProtocol.setVerityTime(new Date());
+                            openAccountBankVerityInfoProtocols.add(openAccountBankVerityInfoProtocol);
+                        }
                     }
                     openInfo.setBankVerityInfo(openAccountBankVerityInfoProtocols);
                 }
             }
-
 
             try {
                 log.info("*********************【预批客户上传BPM】回调开始**************************, userId = {}", userId);
@@ -297,7 +350,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
                     if (responseVO.getCode() == 0) {
                         String applicationId = JSONObject.parseObject(responseVO.getResult().toString()).get("applicationId").toString();
                         customOpenInfo.setRemoteId(applicationId);
-                        customOpenInfo.setIsNeedPush(false);
+                        customOpenInfo.setIsPushed(true);
                         customOpenInfo.setPendingType(CustomOpenAccountEnum.PendingStatusType.APPROVE.getCode());
                         customOpenInfo.setUpdateTime(new Date());
                         customOpenInfoMapper.updateByPrimaryKeySelective(customOpenInfo);

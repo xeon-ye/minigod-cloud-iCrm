@@ -6,6 +6,8 @@ import com.minigod.common.pojo.CertTypeEnum;
 import com.minigod.common.verify.utils.VerifyUtil;
 import com.minigod.common.pojo.StaticType.*;
 import com.minigod.helper.bean.BaseBeanFactory;
+import com.minigod.persist.account.mapper.CustomInfoMapper;
+import com.minigod.protocol.account.model.CustomInfo;
 import com.minigod.protocol.account.other.response.OtherUserInfoResVo;
 import com.minigod.protocol.account.request.params.LogoutParams;
 import com.minigod.protocol.notify.enums.CaptchaSmsTypeEnum;
@@ -27,12 +29,14 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 @Slf4j
 @RestController
 public class UserServiceImpl extends BaseBeanFactory implements UserService {
 
     @Autowired
-    CustomOpenInfoMapper customOpenInfoMapper;
+    CustomInfoMapper customInfoMapper;
     @Autowired
     CustomSessionMapper customSessionMapper;
     @Autowired
@@ -73,7 +77,7 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
     }
 
     // 保存登录信息
-    private CustomSession saveLogin(CustomOpenInfo user) {
+    private CustomSession saveLogin(CustomInfo user) {
         try {
             if (user == null) {
                 return null;
@@ -119,12 +123,18 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
             throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
         }
 
-        OtherUserInfoResVo otherUserInfoResVo = restProxyHelper.checkUser(certCode, pwd);
+        OtherUserInfoResVo otherUserInfoResVo;
+        if (StringUtils.isNotEmpty(pwd)) {
+            otherUserInfoResVo = restProxyHelper.checkUser(certCode, pwd);
+        } else {
+            otherUserInfoResVo = restProxyHelper.checkUser(certCode);
+        }
 
         if (otherUserInfoResVo != null && otherUserInfoResVo.getIsRealUser()) {
-            CustomOpenInfo userInfo = null;
+            CustomInfo userInfo = null;
 
             String phoneNumber = otherUserInfoResVo.getPhoneNumber();
+            Integer thirdCode = otherUserInfoResVo.getThirdCode();
 
             // 手机号校验
             if (StringUtils.isEmpty(phoneNumber) || !VerifyUtil.verifyMobile(phoneNumber)) {
@@ -132,16 +142,24 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
                 throw new InternalApiException(CodeType.BAD_ARGS, MessageResource.BAD_FORMAT_PHONE);
             }
 
+
             // 根据手机号码获取用户
-            userInfo = customOpenInfoMapper.selectOneByPhone(phoneNumber);
+            userInfo = customInfoMapper.selectOneByPhone(phoneNumber);
 
             if (userInfo == null) {
                 log.info("外部系统用户不存在本地：", phoneNumber);
-                userInfo = new CustomOpenInfo();
+                userInfo = new CustomInfo();
 
-                userInfo.setPhone(otherUserInfoResVo.getPhoneNumber());
+                userInfo.setPhone(phoneNumber);
+                userInfo.setCreateTime(new Date());
+                userInfo.setUpdateTime(new Date());
+                customInfoMapper.insertSelective(userInfo);
+            }
 
-                customOpenInfoMapper.insertSelective(userInfo);
+            if (thirdCode != null && !thirdCode.equals(userInfo.getThirdCode())) {
+                userInfo.setThirdCode(thirdCode);
+                userInfo.setUpdateTime(new Date());
+                customInfoMapper.updateByPrimaryKeySelective(userInfo);
             }
 
             CustomSession session = saveLogin(userInfo);
@@ -177,6 +195,11 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
         String pwd = params.getPassword();
         Integer captchaId = params.getCaptchaId();
 
+        // 其他系统账号，直接走外部系统账号登录逻辑
+        if (certType != null && certType.equals(otherType)) {
+            return loginByOther(params);
+        }
+
         // 参数校验 - 基本
         if (certType == null || passwordType == null || StringUtils.isEmpty(certCode)) {
             throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
@@ -188,17 +211,14 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
             throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
         }
 
-        // 其他系统账号，直接走外部系统账号登录逻辑
-        if (certType.equals(otherType)) {
-            return loginByOther(params);
-        }
+
 
         // 参数校验 - 非其他密码类型（即密码|验证码登录)，必须有密码
         if (!passwordType.equals(passwordTypeOther) && StringUtils.isEmpty(pwd)) {
             throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
         }
 
-        CustomOpenInfo userInfo = null;
+        CustomInfo userInfo = null;
 
         // 用户ID登录
         if (certType.equals(userIdType)) {
@@ -216,12 +236,14 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
             }
 
             // 根据手机号码获取用户
-            userInfo = customOpenInfoMapper.selectOneByPhone(certCode);
+            userInfo = customInfoMapper.selectOneByPhone(certCode);
 
             if (userInfo == null) {
-                userInfo = new CustomOpenInfo();
+                userInfo = new CustomInfo();
                 userInfo.setPhone(certCode);
-                customOpenInfoMapper.insertSelective(userInfo);
+                userInfo.setUpdateTime(new Date());
+                userInfo.setCreateTime(new Date());
+                customInfoMapper.insertSelective(userInfo);
             }
         }
         // 邮箱登录

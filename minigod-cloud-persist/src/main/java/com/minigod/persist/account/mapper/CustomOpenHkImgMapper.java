@@ -58,4 +58,8 @@ public interface CustomOpenHkImgMapper {
     List<CustomOpenHkImg> selectByUserIdAndLocationKeyInAndLocationTypeIn(@Param("userId") Integer userId, @Param("locationKeyCollection") String[] locationKeyCollection, @Param("locationTypeCollection") String[] locationTypeCollection);
 
     CustomOpenHkImg selectOneByUserIdAndLocationType(@Param("userId") Integer userId, @Param("locationType") String locationType);
+
+    int deleteByUserId(@Param("userId")Integer userId);
+
+
 }

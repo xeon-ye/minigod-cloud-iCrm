@@ -58,4 +58,8 @@ public interface CustomOpenCnImgMapper {
     CustomOpenCnImg selectOneByUserIdAndLocationType(@Param("userId") Integer userId, @Param("locationType") String locationType);
 
     List<CustomOpenCnImg> selectByUserIdAndLocationKeyInAndLocationTypeIn(@Param("userId") Integer userId, @Param("locationKeyCollection") String[] locationKeyCollection, @Param("locationTypeCollection") String[] locationTypeCollection);
+
+    int deleteByUserId(@Param("userId")Integer userId);
+
+
 }

@@ -141,6 +141,11 @@ public class StaticType {
         public static final String FAIL_VERIFY_BANK_CARD = "FAIL_VERIFY_BANK_CARD";// 银行卡校验失败
         public static final String FAIL_VERIFY_BANK_CARD_COUNT = "FAIL_VERIFY_BANK_CARD_COUNT";// 银行卡校验每日次数上限
 
+
+        // 活体校验次数
+        public static final String FAIL_VERIFY_LIVE_FACE = "FAIL_VERIFY_LIVE_FACE";//  活体校验失败
+        public static final String FAIL_VERIFY_LIVE_FACE_COUNT = "FAIL_VERIFY_LIVE_FACE_COUNT";//  活体校验每日次数上限
+
         // SZCA校验
         public static final String FAIL_VERIFY_SZCA = "FAIL_VERIFY_SZCA";// SZCA校验失败
         public static final String FAIL_VERIFY_SZCA_COUNT = "FAIL_VERIFY_SZCA_COUNT";// SZCA校验每日次数上限

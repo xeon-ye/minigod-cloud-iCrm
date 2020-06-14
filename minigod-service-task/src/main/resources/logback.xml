@@ -7,10 +7,10 @@
 		<file>./logs/service-task.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
-			<fileNamePattern>service-task.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+			<fileNamePattern>./logs/service-task.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
 
 			<!-- keep 30 days' worth of history capped at 3GB total size -->
-			<maxHistory>30</maxHistory>
+			<maxHistory>3</maxHistory>
 			<totalSizeCap>3GB</totalSizeCap>
 		</rollingPolicy>
 		<encoder>
@@ -19,7 +19,7 @@
 	</appender>
 
 	<logger name="org.springframework.cloud" level="INFO" />
-	<logger name="com.minigod.task" level="DEBUG" />
+	<logger name="com.minigod.task" level="INFO" />
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />

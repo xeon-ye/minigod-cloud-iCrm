@@ -9,18 +9,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CustomOpenInfo implements Serializable {
     /**
-     * 自增主键
+     * 主键
      */
     private Integer id;
 
-    private String phone;
+    /**
+     * 用户ID
+     */
+    private Integer userId;
 
     /**
-     * 邮箱
+     * 开户接入方式: 1:H5开户 2:APP开户
      */
-    private String email;
-
-    private String password;
+    private Integer accessWay;
 
     /**
      * 证件类型：0=未知 1=大陆居民身份证 2=香港居民身份证 3=护照 4=香港临时身份证 5=其他
@@ -33,19 +34,14 @@ public class CustomOpenInfo implements Serializable {
     private String idCard;
 
     /**
-     * 银行卡号
-     */
-    private String bankCard;
-
-    /**
      * 开户方式：0:未知，1:线上内地开户，2:线上香港开户，3:线下（开户宝）
      */
     private Integer openType;
 
     /**
-     * 开户接入方式: 1:H5开户 2:APP开户
+     * 银行卡号
      */
-    private Integer accessWay;
+    private String bankCard;
 
     /**
      * 账户类型 1：现金账户 2：融资账户
@@ -78,9 +74,19 @@ public class CustomOpenInfo implements Serializable {
     private String failReason;
 
     /**
-     * 是否需要推送
+     * 是否已下发
      */
-    private Boolean isNeedPush;
+    private Boolean isNoticed;
+
+    /**
+     * 下发失败次数
+     */
+    private Integer noticeErrCount;
+
+    /**
+     * 是否已推送
+     */
+    private Boolean isPushed;
 
     /**
      * 推送失败次数
@@ -121,6 +127,21 @@ public class CustomOpenInfo implements Serializable {
      * 开户PDF文件地址
      */
     private String openAccountPdfUrl;
+
+    /**
+     * 开户来源
+     */
+    private String openSource;
+
+    /**
+     * 开户邀请人
+     */
+    private Integer openInviteId;
+
+    /**
+     * 开户渠道
+     */
+    private String openChannel;
 
     /**
      * 创建时间

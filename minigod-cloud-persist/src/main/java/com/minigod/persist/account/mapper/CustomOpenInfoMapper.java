@@ -51,13 +51,19 @@ public interface CustomOpenInfoMapper {
      */
     int updateByPrimaryKey(CustomOpenInfo record);
 
-    List<CustomOpenInfo> selectByIsNeedPush(@Param("isNeedPush") Boolean isNeedPush);
+    CustomOpenInfo selectOneByUserId(@Param("userId") Integer userId);
 
-    CustomOpenInfo selectOneById(@Param("id") Integer id);
+    List<CustomOpenInfo> selectByCaStatus(@Param("caStatus") Integer caStatus);
 
-    CustomOpenInfo selectOneByPhone(@Param("phone") String phone);
+    List<CustomOpenInfo> selectByIsPushedFalse();
 
-    List<CustomOpenInfo> selectByCaStatus(@Param("caStatus")Integer caStatus);
+    List<CustomOpenInfo> selectByIsNoticedFalse();
+
+    CustomOpenInfo selectOneByTradeAccount(@Param("tradeAccount")String tradeAccount);
+
+    List<CustomOpenInfo> selectByStatusAndIsNoticedFalse(@Param("status")Integer status);
+
+
 
 
 }

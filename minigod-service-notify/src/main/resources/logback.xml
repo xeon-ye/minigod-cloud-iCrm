@@ -7,7 +7,7 @@
 		<file>./logs/service-notify.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
-			<fileNamePattern>service-notify.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+			<fileNamePattern>./logs/service-notify.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
 
 			<!-- keep 30 days' worth of history capped at 3GB total size -->
 			<maxHistory>30</maxHistory>

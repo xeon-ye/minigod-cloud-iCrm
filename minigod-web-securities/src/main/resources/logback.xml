@@ -7,10 +7,10 @@
 		<file>./logs/web-securities.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<!-- daily rollover -->
-			<fileNamePattern>web-securities.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+			<fileNamePattern>./logs/web-securities.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
 
 			<!-- keep 30 days' worth of history capped at 3GB total size -->
-			<maxHistory>30</maxHistory>
+			<maxHistory>3</maxHistory>
 			<totalSizeCap>3GB</totalSizeCap>
 		</rollingPolicy>
 		<encoder>
@@ -19,8 +19,8 @@
 	</appender>
 
 	<logger name="org.springframework.cloud" level="INFO" />
-	<logger name="com.minigod.securities" level="DEBUG" />
-	<logger name="com.minigod.persist" level="DEBUG" />
+	<logger name="com.minigod.securities" level="INFO" />
+	<logger name="com.minigod.persist" level="INFO" />
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />

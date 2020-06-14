@@ -59,7 +59,7 @@ public class TencentApiOcrHelper {
         }
     }
 
-    public PassportOCRResponse  getPassportOCR(String imageUrl, String passportType) {
+    public PassportOCRResponse getPassportOCR(String imageUrl, String passportType) {
         try {
             Map<String, Object> data = new HashMap<>();
 

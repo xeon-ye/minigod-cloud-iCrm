@@ -3,6 +3,7 @@ package com.minigod.account.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.minigod.account.helper.CubpOpenInfoHelper;
 import com.minigod.account.utils.SzcaHttpClient;
+import com.minigod.common.exception.WebApiException;
 import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.common.security.PKCSUtil;
 import com.minigod.common.utils.DateUtils;
@@ -11,10 +12,7 @@ import com.minigod.common.utils.JSONUtil;
 import com.minigod.account.helper.FileStorageHelper;
 import com.minigod.account.helper.RestCubpHelper;
 import com.minigod.account.helper.TencentApiOcrHelper;
-import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
-import com.minigod.persist.account.mapper.CustomOpenFailReasonMapMapper;
-import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
-import com.minigod.persist.account.mapper.VerifyIdCardMapper;
+import com.minigod.persist.account.mapper.*;
 import com.minigod.persist.common.mapper.ConfigLanguageMapper;
 import com.minigod.protocol.account.cubp.callback.CubpOpenInfoCallbackVo;
 import com.minigod.protocol.account.cubp.request.CubpOpenAccountAppointmentReqVo;
@@ -24,9 +22,7 @@ import com.minigod.protocol.account.cubp.response.CubpOpenAccountUserInfoResVo;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum.*;
 import com.minigod.protocol.account.enums.OcrEnum;
-import com.minigod.protocol.account.model.CustomOpenCnImg;
-import com.minigod.protocol.account.model.CustomOpenInfo;
-import com.minigod.protocol.account.model.VerifyAuthCa;
+import com.minigod.protocol.account.model.*;
 import com.minigod.protocol.account.pojo.OpenStatusPojo;
 import com.minigod.protocol.account.pojo.VerifySzcaPojo;
 import com.minigod.protocol.account.request.params.*;
@@ -73,9 +69,13 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
     @Autowired
     TencentApiOcrHelper tencentApiOcrHelper;
     @Autowired
+    CustomInfoMapper customInfoMapper;
+    @Autowired
     CustomOpenInfoMapper customOpenInfoMapper;
     @Autowired
     CustomOpenCnImgMapper customOpenCnImgMapper;
+    @Autowired
+    CustomOpenHkImgMapper customOpenHkImgMapper;
     @Autowired
     VerifyIdCardMapper verifyIdCardMapper;
     @Autowired
@@ -83,18 +83,24 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
     @Autowired
     ConfigLanguageMapper configLanguageMapper;
 
-    @Value("${minigod.openAccount.images.h5.type}")
-    private String H5_OPEN_IMG_TYPE;
-
-    @Value("${minigod.openAccount.images.h5.count}")
-    private Integer H5_OPEN_IMG_COUNT;
-
-    @Value("${minigod.openAccount.images.app.type}")
-    private String APP_OPEN_IMG_TYPE;
-
-    @Value("${minigod.openAccount.images.app.count}")
-    private Integer APP_OPEN_IMG_COUNT;
-
+    @Value("${minigod.openAccount.images.idCardCn}")
+    private String OPEN_IMG_TYPE_ID_CARD_CN;
+    @Value("${minigod.openAccount.images.idCardHk}")
+    private String OPEN_IMG_TYPE_ID_CARD_HK;
+    @Value("${minigod.openAccount.images.idCardHkTemp}")
+    private String OPEN_IMG_TYPE_ID_CARD_HK_TEMP;
+    @Value("${minigod.openAccount.images.idCardPassport}")
+    private String OPEN_IMG_TYPE_ID_CARD_PASSPORT;
+    @Value("${minigod.openAccount.images.bankCard}")
+    private String OPEN_IMG_TYPE_BANK_CARD;
+    @Value("${minigod.openAccount.images.signature}")
+    private String OPEN_IMG_TYPE_SIGNATURE;
+    @Value("${minigod.openAccount.images.avatar}")
+    private String OPEN_IMG_TYPE_AVATAR;
+    @Value("${minigod.openAccount.images.cnH5ImageCount}")
+    private Integer OPEN_IMG_COUNT_CN_H5;
+    @Value("${minigod.openAccount.images.cnAppImageCount}")
+    private Integer OPEN_IMG_COUNT_CN_APP;
 
     @Value("${minigod.szca.url}")
     private String SZCA_API_URL;
@@ -105,18 +111,33 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
 
     private final KeyPair kp = PKCSUtil.generageKeyPair();
 
-
-    private CustomOpenInfo getLocalRealCustom(Integer userId) {
+    private CustomInfo getLocalRealCustom(Integer userId) {
         // 参数校验
         if (userId == null) {
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
-        CustomOpenInfo localOpenInfo = customOpenInfoMapper.selectOneById(userId);
+        CustomInfo localUserInfo = customInfoMapper.selectByPrimaryKey(userId);
+
+        // 用户不存在
+        if (localUserInfo == null) {
+            log.error("不存在该用户信息：userId=" + userId);
+            throw new InternalApiException(StaticType.CodeType.NONE_DATA, StaticType.MessageResource.NO_USER);
+        }
+
+        return localUserInfo;
+    }
+
+    private CustomOpenInfo getLocalOpenInfo(Integer userId) {
+        // 参数校验
+        if (userId == null) {
+            throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
+        }
+        CustomOpenInfo localOpenInfo = customOpenInfoMapper.selectOneByUserId(userId);
 
         // 用户不存在
         if (localOpenInfo == null) {
-            log.error("不存在该用户开户信息：userId=" + userId);
-            throw new InternalApiException(StaticType.CodeType.NONE_DATA, StaticType.MessageResource.NONE_DATA);
+            log.info("不存在该用户开户信息：userId=" + userId);
+            return null;
         }
 
         return localOpenInfo;
@@ -145,7 +166,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
 
     @Override
     public Boolean isCanUpdateOpenInfo(Integer userId) {
-        CustomOpenInfo localOpenInfo = customOpenInfoMapper.selectOneById(userId);
+        CustomOpenInfo localOpenInfo = customOpenInfoMapper.selectOneByUserId(userId);
 
         // 不能重复提交
         if (localOpenInfo != null) {
@@ -199,13 +220,15 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         return 0;
     }
 
+    /**
+     * 提交开户申请
+     */
     @Override
     public void saveOrUpdateOpenInfo(Integer userId, OpenInfoReqParams params) {
         // 参数校验
         if (params == null) {
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
-
 
         Integer openType = params.getOpenType();
         Integer accessWay = params.getAccessWay();
@@ -222,29 +245,43 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
-        CustomOpenInfo localOpenInfo = getLocalRealCustom(userId);
+        // 用户校验
+        CustomInfo userInfo = getLocalRealCustom(userId);
 
-        // 不能重复提交
-        if (localOpenInfo.getStatus().equals(OpenStatus.PENDING.getCode()) || localOpenInfo.getStatus().equals(OpenStatus.SUCCESS.getCode())) {
-            OpenStatus statusInfo = OpenStatus.getStatus(localOpenInfo.getStatus());
+        // 本地开户记录
+        CustomOpenInfo localOpenInfo = getLocalOpenInfo(userId);
 
-            if (!statusInfo.getIsSubmit()) {
-                throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.NO_SUBMIT_OPEN_INFO_REPEAT);
-            }
-        }
+        if (localOpenInfo != null) {
 
-        // 异常账户
-        if (localOpenInfo.getStatus().equals(OpenStatus.ACCOUNT_ABO.getCode())) {
-            OpenStatus statusInfo = OpenStatus.getStatus(localOpenInfo.getStatus());
+            if (localOpenInfo.getStatus() != null) {
+                // 不能重复提交
+                if (localOpenInfo.getStatus().equals(OpenStatus.PENDING.getCode()) || localOpenInfo.getStatus().equals(OpenStatus.SUCCESS.getCode())) {
+                    OpenStatus statusInfo = OpenStatus.getStatus(localOpenInfo.getStatus());
 
-            if (!statusInfo.getIsSubmit()) {
-                throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.ABO_ACCOUNT);
+                    if (!statusInfo.getIsSubmit()) {
+                        throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.NO_SUBMIT_OPEN_INFO_REPEAT);
+                    }
+                }
+
+                // 异常账户
+                if (localOpenInfo.getStatus().equals(OpenStatus.ACCOUNT_ABO.getCode())) {
+                    OpenStatus statusInfo = OpenStatus.getStatus(localOpenInfo.getStatus());
+
+                    if (!statusInfo.getIsSubmit()) {
+                        throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.ABO_ACCOUNT);
+                    }
+                }
             }
         }
 
         // 补充资料
-        formData.put("userId", userId);
-        formData.put("phoneNumber", localOpenInfo.getPhone());
+        // TODO: 此处针对minigod平台处理
+        if (userInfo.getThirdCode() != null && userInfo.getThirdCode() > 0) {
+            formData.put("userId", userInfo.getThirdCode());
+        } else {
+            formData.put("userId", userId);
+        }
+        formData.put("phoneNumber", userInfo.getPhone());
         // 交易市场相关
         formData.put("isOpenHkStockMarket", OpenAccountMarket.getFlag(accountMarkets, OpenAccountMarket.HK_TRADE));
         formData.put("isOpenUsaStockMarket", OpenAccountMarket.getFlag(accountMarkets, OpenAccountMarket.US_TRADE));
@@ -266,39 +303,76 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.MISSING_DATAS);
         }
 
+        Integer idKind = reqVo.getIdKind();
+
+        StringBuilder locationTypeB = new StringBuilder();
+        String[] locationTypes = null;
+        Integer imageCount = 0;
 
         // 图片数据校验
         if (openTypeInfo.getCode().equals(OpenType.ONLINE_CN.getCode())) {
-            String[] locationTypes = null;
-            int openAccountImgCnt = 0;
-            // 判断图片是否足够
-            if (accessWayInfo.getCode().equals(OpenAccessWay.APP.getCode())) {
-                locationTypes = APP_OPEN_IMG_TYPE.split(",");
-                openAccountImgCnt = APP_OPEN_IMG_COUNT;
-            }
-            if (accessWayInfo.getCode().equals(OpenAccessWay.H5.getCode())) {
-                locationTypes = H5_OPEN_IMG_TYPE.split(",");
-                openAccountImgCnt = H5_OPEN_IMG_COUNT;
-            }
+            locationTypeB.append(OPEN_IMG_TYPE_SIGNATURE);
+            locationTypeB.append(",");
+            locationTypeB.append(OPEN_IMG_TYPE_ID_CARD_CN);
+            locationTypeB.append(",");
+            locationTypeB.append(OPEN_IMG_TYPE_AVATAR);
 
+            locationTypes = locationTypeB.toString().split(",");
+            if (accessWay.equals(CustomOpenAccountEnum.OpenAccessWay.H5.getCode())) {
+                imageCount = OPEN_IMG_COUNT_CN_H5;
+            } else if (accessWay.equals(CustomOpenAccountEnum.OpenAccessWay.APP.getCode())) {
+                imageCount = OPEN_IMG_COUNT_CN_APP;
+            }
             List<CustomOpenCnImg> openUserImgList = null;
-
             if (locationTypes != null) {
                 openUserImgList = customOpenCnImgMapper.selectByUserIdAndLocationKeyInAndLocationTypeIn(userId, null, locationTypes);
             }
 
-            if (CollectionUtils.isEmpty(openUserImgList) || openUserImgList.size() < openAccountImgCnt) {
+            if (CollectionUtils.isEmpty(openUserImgList) || openUserImgList.size() < imageCount) {
+                // 图片不完整
+                throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.MISSING_IMAGES);
+            }
+        } else if (openType.equals(CustomOpenAccountEnum.OpenType.ONLINE_HK.getCode())) {
+            locationTypeB.append(OPEN_IMG_TYPE_SIGNATURE);
+            // 证件类型[0=未知 1=大陆居民身份证 2=香港居民身份证 3=护照 4=香港临时身份证]
+            // 1=大陆居民身份证
+            if (idKind == 1) {
+                locationTypeB.append(",");
+                locationTypeB.append(OPEN_IMG_TYPE_ID_CARD_CN);
+            }
+            // 2=香港居民身份证
+            else if (idKind == 2) {
+                locationTypeB.append(",");
+                locationTypeB.append(OPEN_IMG_TYPE_ID_CARD_HK);
+            }
+            // 3=护照
+            else if (idKind == 3) {
+                locationTypeB.append(",");
+                locationTypeB.append(OPEN_IMG_TYPE_ID_CARD_PASSPORT);
+            }
+            // 4=香港临时身份证
+            else if (idKind == 4) {
+                locationTypeB.append(",");
+                locationTypeB.append(OPEN_IMG_TYPE_ID_CARD_HK_TEMP);
+            }
+
+            locationTypes = locationTypeB.toString().split(",");
+            imageCount = locationTypes.length;
+            List<CustomOpenHkImg> openUserImgList = null;
+            if (locationTypes != null) {
+                openUserImgList = customOpenHkImgMapper.selectByUserIdAndLocationKeyInAndLocationTypeIn(userId, null, locationTypes);
+            }
+
+            if (CollectionUtils.isEmpty(openUserImgList) || openUserImgList.size() < imageCount) {
                 // 图片不完整
                 throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.MISSING_IMAGES);
             }
         }
 
         String email = reqVo.getEmail();
-        Integer idKind = reqVo.getIdKind();
         String idCard = reqVo.getIdNo();
         String userName = reqVo.getClientName();
         String bankCard = reqVo.getBankNo();
-
 
         // 线上内地开户，判断身份证、银行卡校验情况
         if (openTypeInfo.getCode().equals(OpenType.ONLINE_CN.getCode())) {
@@ -329,11 +403,13 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.EMAIL_IS_USED);
         }
 
+        // 把邮箱填入
+        userInfo.setEmail(email);
+        customInfoMapper.updateByPrimaryKeySelective(userInfo);
+
         CustomOpenInfo customOpenInfo = new CustomOpenInfo();
 
-        customOpenInfo.setId(userId);
-        customOpenInfo.setPhone(localOpenInfo.getPhone());
-        customOpenInfo.setEmail(email);
+        customOpenInfo.setUserId(userId);
         customOpenInfo.setIdKind(idKind);
         customOpenInfo.setIdCard(idCard);
         customOpenInfo.setBankCard(bankCard);
@@ -350,13 +426,19 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         customOpenInfo.setCaStatus(CaStatus.NONE.getCode());
 
         customOpenInfo.setPushErrCount(0);
-        customOpenInfo.setIsNeedPush(true);
+        customOpenInfo.setIsPushed(false);
+        customOpenInfo.setIsNoticed(false);
         customOpenInfo.setIsSend(false);
 
-        customOpenInfo.setCreateTime(localOpenInfo.getCreateTime());
+        customOpenInfo.setCreateTime(new Date());
         customOpenInfo.setUpdateTime(new Date());
 
-        customOpenInfoMapper.updateByPrimaryKey(customOpenInfo);
+        if(localOpenInfo != null){
+            customOpenInfo.setId(localOpenInfo.getId());
+            customOpenInfoMapper.updateByPrimaryKey(customOpenInfo);
+        }else{
+            customOpenInfoMapper.insertSelective(customOpenInfo);
+        }
 
         // TODO: 发送提交开户资料短信
     }
@@ -448,25 +530,47 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
                 throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
             }
 
-            //查询用户注册信息
-            CustomOpenInfo localOpenInfo = getLocalRealCustom(cubpOpenInfoCallbackVo.getUserId());
+            Integer backUserId = cubpOpenInfoCallbackVo.getUserId();
+            String phoneNumber = cubpOpenInfoCallbackVo.getPhoneNumber();
+
+            CustomInfo localCustomInfo = customInfoMapper.selectOneByPhone(phoneNumber);
+
+            if (localCustomInfo == null) {
+                log.error("不存在该用户信息：backUserId = " + backUserId + ", phoneNumber=" + phoneNumber);
+                throw new InternalApiException(StaticType.CodeType.NONE_DATA, StaticType.MessageResource.NONE_DATA);
+            }
+
+            Integer userId = localCustomInfo.getId();
+            Integer thirdCode = localCustomInfo.getThirdCode();
+
+
+            if (!userId.equals(backUserId) && !thirdCode.equals(backUserId)) {
+                log.error("不存在该用户信息：backUserId = " + backUserId + ", phoneNumber=" + phoneNumber);
+                throw new InternalApiException(StaticType.CodeType.NONE_DATA, StaticType.MessageResource.NONE_DATA);
+            }
+
+            //查询用户开户信息
+            CustomOpenInfo localOpenInfo = getLocalOpenInfo(userId);
+
+            if (localOpenInfo == null) {
+                log.error("不存在该用户开户信息：backUserId = " + backUserId + ", phoneNumber=" + phoneNumber);
+                throw new InternalApiException(StaticType.CodeType.NONE_DATA, StaticType.MessageResource.NONE_DATA);
+            }
 
             // 开户状态
             OpenStatusPojo openStatusPojo = getOpenCallbackStatusInfo(String.valueOf(cubpOpenInfoCallbackVo.getOpenStatus()));
 
             Boolean isClearImg = false;
 
-
             if (openStatusPojo == null || openStatusPojo.getOpenStatus().equals(OpenStatus.ACCOUNT_ABO)) {
                 log.error("开户状态信息异常：cubpOpenInfoCallbackVo" + JSON.toString(cubpOpenInfoCallbackVo));
                 throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_ARGS);
             }
 
-
             // TODO: 开户成功
             if (openStatusPojo.getOpenStatus().equals(OpenStatus.SUCCESS)) {
                 String openAccountDate = cubpOpenInfoCallbackVo.getOpenDate();
-                if (StringUtils.isNotBlank(openAccountDate)) {
+                if (StringUtils.isNotEmpty(openAccountDate)) {
                     Date openDate = DateUtils.stringToDate(openAccountDate, DateUtils.TimeFormatter.YYYY_MM_DD_HH_MM_SS);
                     localOpenInfo.setOpenDate(openDate);
                     localOpenInfo.setFailReason("");
@@ -478,6 +582,11 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
 
                 if (openStatusPojo.getPendingStatusType().equals(PendingStatusType.CA)) {
                     localOpenInfo.setCaStatus(CaStatus.IS_NEED_VERIFY.getCode());
+                }
+
+                String openAccountFilrUrl = cubpOpenInfoCallbackVo.getOpenAccountFileUrl();
+                if (StringUtils.isNotEmpty(openAccountFilrUrl)) {
+                    localOpenInfo.setOpenAccountPdfUrl(openAccountFilrUrl);
                 }
             }
             // 开户失败
@@ -535,6 +644,14 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
 
             customOpenInfoMapper.updateByPrimaryKeySelective(localOpenInfo);
 
+            if (isClearImg) {
+                if (localOpenInfo.getOpenType().equals(OpenType.ONLINE_CN.getCode())) {
+                    customOpenCnImgMapper.deleteByUserId(userId);
+                }
+                if (localOpenInfo.getOpenType().equals(OpenType.ONLINE_HK.getCode())) {
+                    customOpenHkImgMapper.deleteByUserId(userId);
+                }
+            }
 //            //生成登录凭证
 //            UserCert userCert = userDao.findUserCertByType(clientId, CertTypeEnum.trd.getTypeValue(), true);
 //            if (userCert != null) {
@@ -583,9 +700,12 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
 
 //            logger.info("用户号" + userId + "  , BPM回调minigod返回信息：" + JSON.toJSONString(responseVO));
 //            return responseVO;
+        } catch (InternalApiException e) {
+            log.error("开户结果回调异常", e);
+            throw new InternalApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-//            logger.error("开户结果回调异常", e);
-//            return AppUtil.getErrorMsg(-1, "回调异常");
+            log.error("开户结果回调异常", e);
+            throw new InternalApiException(StaticType.CodeType.ERROR_INTERNAL, StaticType.MessageResource.ERROR_INTERNAL);
         }
     }
 
@@ -600,16 +720,11 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
 
         OpenUserInfoResVo response = new OpenUserInfoResVo();
         // 查询本地用户数据
-        CustomOpenInfo customOpenInfo = null;
-        customOpenInfo = customOpenInfoMapper.selectOneById(userId);
+        CustomInfo userInfo = getLocalRealCustom(userId);
+        CustomOpenInfo customOpenInfo = getLocalOpenInfo(userId);
 
-        String phone = "";
-        if (customOpenInfo != null) {
-            phone = customOpenInfo.getPhone();
-        }
-        response.setPhone(phone);
-
-
+        String phone = userInfo.getPhone();
+        Integer thirdCode = userInfo.getThirdCode();
         // 查询用户开户信息
         OpenStatus openStatusInfo = null;
 
@@ -618,9 +733,13 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         String tradeAccount = null;
         String fundAccount = null;
 
-        // 查询cubp用户中心开户数据
+        // 查询cubp用户中心开户数据（根据手机号）
         CubpOpenAccountUserInfoReqVo cubpOpenAccountUserInforeqVo = new CubpOpenAccountUserInfoReqVo();
-        cubpOpenAccountUserInforeqVo.setUserId(userId);
+        if (thirdCode != null && thirdCode > 0) {
+            cubpOpenAccountUserInforeqVo.setUserId(thirdCode);
+        } else {
+            cubpOpenAccountUserInforeqVo.setPhoneNumber(phone);
+        }
         CubpOpenAccountUserInfoResVo cubpOpenAccountUserInfoResVo = restCubpHelper.selectSecuritiesUserInfo(cubpOpenAccountUserInforeqVo);
 
         // 查询到cubp用户数据
@@ -698,7 +817,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             response.setFailReason(failReasonInfo);
         }
 
-
+        response.setPhone(phone);
         return response;
     }
 
@@ -940,7 +1059,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             reqVo.setUserName(openInfo.getClientName());
             // 性别[0=男 1=女 2=其它]
             reqVo.setSex(openInfo.getSex() == 0 ? "男" : "女");
-            reqVo.setMobileNo(customOpenInfo.getPhone());
+            reqVo.setMobileNo(openInfo.getPhoneNumber());
             reqVo.setCard(openInfo.getBankNo());
             reqVo.setProvince(SzcaHttpClient.parseCertDN(certDn, "ST"));
             reqVo.setCity(SzcaHttpClient.parseCertDN(certDn, "L"));
@@ -954,7 +1073,16 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
                     int locationType = Integer.parseInt(customOpenImg.getLocationType());
                     String imgUrl = customOpenImg.getUrl();
 
+                    if (StringUtils.isEmpty(imgUrl)) {
+                        // 图片不存在
+                        return;
+                    }
                     String imgBase = ImageUtils.loadImgBase64ByUrl(imgUrl);
+
+                    if (StringUtils.isEmpty(imgBase)) {
+                        // 图片解析错误
+                        return;
+                    }
 
                     if (locationType == 101) {
                         reqVo.setIdentityImgTwo(imgBase);
@@ -972,6 +1100,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             }
 
             // P10签名
+            log.info(kp.getPublic().toString());
             String p10Code = PKCSUtil.genereatePkcs10(kp, certDn);
 
             reqVo.setCertP10(p10Code);
@@ -1014,8 +1143,9 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         reqVo.setApplyType("pdf");
         reqVo.setIfTsa("0");
 
-        // P10签名
+        // P1签名
 //        KeyPair kp = PKCSUtil.generageKeyPair();
+        log.info(kp.getPublic().toString());
         String p1Code = PKCSUtil.genereatePkcs1(kp, fileHash);
 
         reqVo.setP1SignData(p1Code);
@@ -1023,13 +1153,6 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         VerifyAuthCa verifyAuthCa = verifyService.getSignP7ForPdfBySzca(reqVo);
 
         if (verifyAuthCa != null) {
-            CustomOpenInfo localCustomOpenInfo = new CustomOpenInfo();
-            // 更新用户数据
-            localCustomOpenInfo.setId(customOpenInfo.getId());
-            localCustomOpenInfo.setCaStatus(CaStatus.IS_NEED_PUSH.getCode());
-            localCustomOpenInfo.setUpdateTime(new Date());
-            customOpenInfoMapper.updateByPrimaryKeySelective(customOpenInfo);
-
 
             szcaPojo.setFileUrl(verifyAuthCa.getFilePdfUrl());
         }

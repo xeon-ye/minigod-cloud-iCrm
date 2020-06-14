@@ -1,7 +1,9 @@
 package com.minigod.account.service.impl;
 
 import com.minigod.account.helper.FileStorageHelper;
+import com.minigod.account.helper.TencentApiIaiHelper;
 import com.minigod.account.utils.SzcaHttpClient;
+import com.minigod.common.utils.ImageUtils;
 import com.minigod.common.utils.JSONUtil;
 import com.minigod.common.verify.utils.VerifyUtil;
 import com.minigod.helper.bean.BaseBeanFactory;
@@ -18,8 +20,8 @@ import com.minigod.common.pojo.StaticType;
 import com.minigod.protocol.account.pojo.VerifySzcaPojo;
 import com.minigod.protocol.account.szca.request.*;
 import com.minigod.protocol.account.szca.response.*;
-import com.tencentcloudapi.faceid.v20180301.models.BankCard4EVerificationResponse;
-import com.tencentcloudapi.faceid.v20180301.models.IdCardVerificationResponse;
+import com.tencentcloudapi.faceid.v20180301.models.*;
+import com.tencentcloudapi.iai.v20200303.models.DetectLiveFaceResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,8 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
     @Autowired
     VerifyAuthCaMapper verifyAuthCaMapper;
     @Autowired
+    VerifyLiveFaceMapper verifyLiveFaceMapper;
+    @Autowired
     CustomOpenInfoMapper customOpenInfoMapper;
     @Autowired
     CustomOpenCnImgMapper customOpenCnImgMapper;
@@ -49,6 +53,8 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
     RestCubpHelper restCubpHelper;
     @Autowired
     TencentApiFaceIdHelper tencentApiFaceIdHelper;
+    @Autowired
+    TencentApiIaiHelper tencentApiIaiHelper;
 
     @Autowired
     FileStorageHelper fileStorageHelper;
@@ -62,8 +68,11 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
     @Value("${minigod.openAccount.isVerifyBankCardFromThird}")
     private Boolean IS_VERIFY_BANK_CARD_FROM_THIRD;
 
-    @Value("${minigod.szca.isRemote}")
-    private Boolean isRemote;
+    @Value("${minigod.openAccount.isVerifyLiveFaceFromThird}")
+    private Boolean IS_VERIFY_LIVE_FACE_FROM_THIRD;
+
+    @Value("${minigod.openAccount.isVerifyWithCa}")
+    private Boolean IS_VERIFY_WITH_CA;
 
     @Value("${minigod.szca.orgName}")
     private String SZCA_ORG_NAME;
@@ -94,6 +103,9 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
 
     @Value("${minigod.szca.getPDFInfoForSign}")
     private String API_GET_PDF_INFO_FOR_SIGN;
+
+    @Value("${minigod.openAccount.validLiveScore}")
+    private Double VALID_LIVE_SCORE_VALUE;
 
     private String API_GET_SEAL_PDF = "/SecuritiesAccount/service/reqGetSealPDFFile";
 
@@ -162,7 +174,7 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
     @Override
     public Boolean isIdCardUsed(String idCard) {
         // 参数校验
-        if (StringUtils.isBlank(idCard) || !VerifyUtil.isIDNo(idCard)) {
+        if (StringUtils.isBlank(idCard)) {
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_FORMAT_ID_CARD);
         }
 
@@ -297,19 +309,34 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
     @Override
     public VerifyResVo verifyIdCard(VerifyReqParams params) {
         // 参数校验
-        if (params == null || StringUtils.isBlank(params.getIdCard()) || StringUtils.isBlank(params.getUserName())) {
+        if (params == null) {
             log.error("身份证校验参数错误：params = ", JSONUtil.toJson(params));
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
 
         String idCard = params.getIdCard();
         String userName = params.getUserName();
+        Integer cardType = params.getCardType();
 
-        if (!VerifyUtil.isIDNo(idCard)) {
-            log.error("身份证校验参数错误：idCard = ", idCard);
-            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_FORMAT_ID_CARD);
+        if (StringUtils.isBlank(idCard)) {
+            log.error("身份证校验参数错误：params = ", JSONUtil.toJson(params));
+            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
 
+
+        Boolean isIdCardCn = cardType.equals(1);
+
+        if (isIdCardCn) {
+            if (StringUtils.isBlank(userName)) {
+                log.error("身份证校验参数错误：params = ", JSONUtil.toJson(params));
+                throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
+            }
+
+            if (!VerifyUtil.isIDNo(idCard)) {
+                log.error("身份证校验参数错误：idCard = ", idCard);
+                throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_FORMAT_ID_CARD);
+            }
+        }
         VerifyResVo verifyResVo = verifyResVoChecked();
 
         try {
@@ -321,6 +348,10 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
                 return verifyResVo;
             }
 
+            // 非境内卡
+            if (!isIdCardCn) {
+                return verifyResVo;
+            }
 
             // 本地唯一数据
             VerifyIdCard localVerifyIdCard = verifyIdCardMapper.selectOneByIdCardAndUserName(idCard, userName);
@@ -335,6 +366,7 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
                 localVerifyIdCard.setStatus(-1);
                 verifyIdCardMapper.insertSelective(localVerifyIdCard);
             }
+
 
             // 不启用身份证公安校验，直接返回成功，并记录本地记录
             if (!IS_VERIFY_ID_CARD_FROM_THIRD) {
@@ -569,9 +601,9 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
             // 校验完成
             localVerifyBankCard.setStatus(isValid ? 1 : 0);
             localVerifyBankCard.setCheckCount(1);
+            localVerifyBankCard.setCheckDate(new Date());
             localVerifyBankCard.setRemark(remark);
             localVerifyBankCard.setUpdateTime(new Date());
-            localVerifyBankCard.setCheckDate(new Date());
 
             verifyBankCardMapper.updateByPrimaryKeySelective(localVerifyBankCard);
 
@@ -583,6 +615,111 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
         } catch (Exception e) {
             verifyResVo.setIsValid(false);
             verifyResVo.setRemark(getResMessage(params, StaticType.MessageResource.FAIL_VERIFY_BANK_CARD));
+        }
+        return verifyResVo;
+    }
+
+    private Boolean isValidLive(Boolean isLiveness, Float score) {
+        if (isLiveness == null || score == null) {
+            return false;
+        }
+
+        if (!isLiveness && score < VALID_LIVE_SCORE_VALUE) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public VerifyResVo verifyLiveFace(VerifyReqParams params, Integer userId) {
+        // 参数校验
+        if (params == null || userId == null || StringUtils.isBlank(params.getLiveImage())) {
+            log.error("活体校验参数错误：params = ", JSONUtil.toJson(params));
+            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
+        }
+
+        String liveImage = params.getLiveImage();
+
+        String imgBase = ImageUtils.loadImgBase64ByUrl(liveImage);
+
+        // 真实照片校验
+        if (StringUtils.isEmpty(imgBase)) {
+            log.error("活体校验图片解析异常：liveImage = ", liveImage);
+            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
+        }
+
+        VerifyResVo verifyResVo = verifyResVoChecked();
+
+        try {
+            // 不启用活体校验，直接返回成功，并记录本地记录
+            if (!IS_VERIFY_LIVE_FACE_FROM_THIRD) {
+                return verifyResVo;
+            }
+
+            // 启用活体校验
+            // 本地完全匹配数据
+            VerifyLiveFace localVerifyLiveFace = verifyLiveFaceMapper.selectOneByUserIdAndImgUrl(userId, liveImage);
+
+            // 本地完全匹配数据，本地核验
+            if (localVerifyLiveFace != null) {
+                if (!isValidLive(localVerifyLiveFace.getIsLiveness(), localVerifyLiveFace.getScore())) {
+                    verifyResVo.setIsValid(false);
+                    verifyResVo.setRemark(getResMessage(params, StaticType.MessageResource.FAIL_VERIFY_LIVE_FACE));
+                }
+
+                return verifyResVo;
+            }
+
+            // 获取本地错误校验记录
+            List<VerifyLiveFace> localVerifyListToday = verifyLiveFaceMapper.selectByUserIdAndCheckDate(userId, new Date());
+
+            // 超过当日校验次数
+            if (localVerifyListToday.size() >= MAX_VERIFY_COUNT_DAILY) {
+                throw new InternalApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_VERIFY_LIVE_FACE_COUNT);
+            }
+
+            Boolean isValid = false;
+            Boolean isLiveness = false;
+            Float score = (float) 0;
+            String remark = null;
+
+            // 进行公安系统校验
+            DetectLiveFaceResponse detectLiveFaceResponse = tencentApiIaiHelper.detectLiveFace(liveImage);
+
+            if (detectLiveFaceResponse == null) {
+                log.error("第三方活体校验错误，无认证信息返回");
+                remark = "调用远程认证失败";
+            } else {
+                isLiveness = detectLiveFaceResponse.getIsLiveness() == null ? false : detectLiveFaceResponse.getIsLiveness();
+                score = detectLiveFaceResponse.getScore() == null ? 0 : detectLiveFaceResponse.getScore();
+                isValid = isValidLive(isLiveness, score);
+                if (!isValid) {
+                    log.error("第三方活体校验错误，认证失败：", JSONUtil.toJson(detectLiveFaceResponse));
+                    remark = detectLiveFaceResponse.getRequestId();
+                }
+            }
+
+            // 校验完成
+            VerifyLiveFace verifyLiveFace = new VerifyLiveFace();
+            verifyLiveFace.setUserId(userId);
+            verifyLiveFace.setImgUrl(liveImage);
+            verifyLiveFace.setIsLiveness(isLiveness);
+            verifyLiveFace.setScore(score);
+            verifyLiveFace.setRemark(remark);
+            verifyLiveFace.setCheckDate(new Date());
+            verifyLiveFace.setCreateTime(new Date());
+            verifyLiveFace.setUpdateTime(new Date());
+
+            verifyLiveFaceMapper.insertSelective(verifyLiveFace);
+
+            verifyResVo.setIsValid(isValid);
+            if (!isValid) {
+                log.error("活体校验失败");
+                verifyResVo.setRemark(getResMessage(params, StaticType.MessageResource.FAIL_VERIFY_LIVE_FACE));
+            }
+        } catch (Exception e) {
+            verifyResVo.setIsValid(false);
+            verifyResVo.setRemark(getResMessage(params, StaticType.MessageResource.FAIL_VERIFY_LIVE_FACE));
         }
         return verifyResVo;
     }
@@ -631,7 +768,7 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
             localAuthCa = new VerifyAuthCa();
             localAuthCa.setIdCard(idCard);
             localAuthCa.setUserName(userName);
-            localAuthCa.setStatus(VerifyAuthCaStatusEnum.UN_KNOW);
+            localAuthCa.setStatus(VerifyAuthCaStatusEnum.UN_KNOW.getCode());
             localAuthCa.setCreateTime(new Date());
             localAuthCa.setUpdateTime(new Date());
 
@@ -652,9 +789,9 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
                 // CA 已经存在用户认证信息
                 if (resState.equals("loseCert") && StringUtils.isNotEmpty(resCertSn)) {
                     localAuthCa.setCertSn(resCertSn);
-                    localAuthCa.setStatus(VerifyAuthCaStatusEnum.UN_KNOW + VerifyAuthCaStatusEnum.CA_P10);
+                    localAuthCa.setStatus(VerifyAuthCaStatusEnum.CA_P10.getCode());
                 } else {
-                    localAuthCa.setStatus(VerifyAuthCaStatusEnum.UN_KNOW);
+                    localAuthCa.setStatus(VerifyAuthCaStatusEnum.UN_START.getCode());
                 }
 
                 localAuthCa.setIdCard(idCard);
@@ -702,7 +839,7 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
 
             if (szcaCertApplyP10ResVo.getRetCode().equals("0")) {
                 localAuthCa.setCertSn(szcaCertApplyP10ResVo.getCertSn());
-                localAuthCa.setStatus(VerifyAuthCaStatusEnum.UN_KNOW + VerifyAuthCaStatusEnum.CA_P10);
+                localAuthCa.setStatus(VerifyAuthCaStatusEnum.CA_P10.getCode());
                 localAuthCa.setUpdateTime(new Date());
 
                 verifyAuthCaMapper.updateByPrimaryKeySelective(localAuthCa);
@@ -732,7 +869,7 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
         VerifyAuthCa localAuthCa = verifyAuthCaMapper.selectOneByCertDn(certDn);
 
         if (localAuthCa == null || !certDn.equals(localAuthCa.getCertDn()) || !certSn.equals(localAuthCa.getCertSn()) || !fileId.equals(localAuthCa.getFileId())) {
-            log.error("SZCA_合成pdv参数错误：reqVo = {}", reqVo);
+            log.error("SZCA_合成pdf参数错误：reqVo = {}", reqVo);
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -745,7 +882,7 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
                 String fileName = fileId + "_" + System.currentTimeMillis() + ".pdf";
                 String fileUrl = fileStorageHelper.uploadPdf(fileName, szcaSignP7ForPdfResVo.getFile());
                 localAuthCa.setFilePdfUrl(fileUrl);
-                localAuthCa.setStatus(VerifyAuthCaStatusEnum.UN_KNOW + VerifyAuthCaStatusEnum.CA_P10 + VerifyAuthCaStatusEnum.CA_SIGN + VerifyAuthCaStatusEnum.CA_P7_PDF);
+                localAuthCa.setStatus(VerifyAuthCaStatusEnum.CA_P7_PDF.getCode());
                 localAuthCa.setUpdateTime(new Date());
 
                 verifyAuthCaMapper.updateByPrimaryKeySelective(localAuthCa);
@@ -790,7 +927,7 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
 
                     localAuthCa.setFileHash(szcaPdfInfoForSignResVo.getFileHash());
                     localAuthCa.setFileId(szcaPdfInfoForSignResVo.getFileID());
-                    localAuthCa.setStatus(VerifyAuthCaStatusEnum.UN_KNOW + VerifyAuthCaStatusEnum.CA_P10 + VerifyAuthCaStatusEnum.CA_SIGN);
+                    localAuthCa.setStatus(VerifyAuthCaStatusEnum.CA_SIGN.getCode());
                     localAuthCa.setUpdateTime(new Date());
 
                     verifyAuthCaMapper.updateByPrimaryKeySelective(localAuthCa);
@@ -805,5 +942,16 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
 
 
         return null;
+    }
+
+    @Override
+    public void clearLocalVerifyCa(String idCard) {
+        // 参数校验
+        if (StringUtils.isEmpty(idCard)) {
+            log.error("清理本地ca认证数据参数错误, idCard = ", idCard);
+            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
+        }
+
+        verifyAuthCaMapper.deleteByIdCardAndStatusLessThan(idCard, VerifyAuthCaStatusEnum.CA_P7_PDF.getCode());
     }
 }

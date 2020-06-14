@@ -57,6 +57,8 @@ public class PushVerifiedAuthCaInfoJobHandler extends IJobHandler {
 
     @Value("${minigod.cubp.url}")
     private String CUBP_API_URL;
+    @Value("${minigod.openAccount.isVerifyWithCa}")
+    private Boolean IS_VERIFY_WITH_CA;
 
     private final Integer CA_STATUS_NEED_PUSH = CustomOpenAccountEnum.CaStatus.IS_NEED_PUSH.getCode();
 
@@ -75,19 +77,23 @@ public class PushVerifiedAuthCaInfoJobHandler extends IJobHandler {
         String server = CUBP_API_URL + "/proxy/customer/accountOpenApplicationCallBack";
 
         for (CustomOpenInfo customOpenInfo : openInfoList) {
-            Integer userId = customOpenInfo.getId();
+            Integer userId = customOpenInfo.getUserId();
 
             if (!customOpenInfo.getCaStatus().equals(CustomOpenAccountEnum.CaStatus.IS_NEED_PUSH.getCode())) {
                 continue;
             }
 
             VerifyAuthCa verifyAuthCa = verifyAuthCaMapper.selectOneByIdCard(customOpenInfo.getIdCard());
+            // 开启认证，且认证为空（标识未认证，数据异常）
+            if (IS_VERIFY_WITH_CA && verifyAuthCa == null) {
+                log.error("*********************【客户CA证书上传】CA认证数据为空**************************");
+                // 重置开户状态
+                customOpenInfo.setCaStatus(CustomOpenAccountEnum.CaStatus.IS_NEED_VERIFY.getCode());
+                customOpenInfoMapper.updateByPrimaryKeySelective(customOpenInfo);
+                continue;
+            }
+
             if (verifyAuthCa == null) {
-//                log.error("*********************【客户CA证书上传】CA认证数据为空**************************");
-//                // 重置开户状态
-//                customOpenInfo.setCaStatus((byte) 1);
-//                customOpenInfoMapper.updateByPrimaryKeySelective(customOpenInfo);
-//                continue;
                 verifyAuthCa = new VerifyAuthCa();
             }
 
@@ -96,7 +102,7 @@ public class PushVerifiedAuthCaInfoJobHandler extends IJobHandler {
             String caVerifyMsg = "";
 
             // 认证通过
-            if (VerifyAuthCaStatusEnum.isFlag(verifyAuthCa.getStatus(), VerifyAuthCaStatusEnum.CA_P7_PDF)) {
+            if (!IS_VERIFY_WITH_CA || VerifyAuthCaStatusEnum.isFlag(verifyAuthCa.getStatus(), VerifyAuthCaStatusEnum.CA_P7_PDF)) {
                 caVerifyStatus = "0";
                 caVerifyMsg = "成功";
             }

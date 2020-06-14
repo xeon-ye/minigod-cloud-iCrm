@@ -54,4 +54,7 @@ public interface VerifyAuthCaMapper {
     VerifyAuthCa selectOneByIdCard(@Param("idCard") String idCard);
 
     VerifyAuthCa selectOneByCertDn(@Param("certDn") String certDn);
+
+    int deleteByIdCardAndStatusLessThan(@Param("idCard")String idCard,@Param("maxStatus")Integer maxStatus);
+
 }

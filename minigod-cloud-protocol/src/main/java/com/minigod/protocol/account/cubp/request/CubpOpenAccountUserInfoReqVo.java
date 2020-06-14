@@ -11,6 +11,8 @@ public class CubpOpenAccountUserInfoReqVo implements Serializable {
     private static final long serialVersionUID = -5117281934075876024L;
     // 用户号
     private Integer userId;
+    //手机号码
+    private String phoneNumber;
     // 交易账号
     private String tradeAccount;
     // 资金账号

@@ -141,13 +141,13 @@ public class SignUtil {
     public static String getParams(String params) {
         try {
             params = convertUnicode(params);
-            System.err.println("格式化:" + params);
+//            System.err.println("格式化:" + params);
             Pattern p = Pattern.compile("[^0-9a-zA-Z一-龥]+");
             Matcher m = p.matcher(params);
             params = m.replaceAll("");
-            System.err.println("过滤:" + params);
+//            System.err.println("过滤:" + params);
             params = URLEncoder.encode(params, "UTF8");
-            System.err.println("编码:" + params);
+//            System.err.println("编码:" + params);
             char[] ar = params.toCharArray();
             Arrays.sort(ar);
             return String.valueOf(ar);

@@ -8,8 +8,14 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 
 server:
+  tomcat:
+    uri-encoding: UTF-8
+    max-threads: 1000
+    min-spare-threads: 30
   context-path: /securities
+  connection-timeout: 1800
   port: 8901
+  max-http-header-size: 1048576
 
 logging:
   level:

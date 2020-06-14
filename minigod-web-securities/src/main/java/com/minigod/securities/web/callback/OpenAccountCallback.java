@@ -1,5 +1,6 @@
 package com.minigod.securities.web.callback;
 
+import com.minigod.account.service.OpenAccountOfflineService;
 import com.minigod.account.service.OpenAccountOnlineService;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.exception.WebApiException;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RefreshScope
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class OpenAccountCallback {
     @Autowired
     private OpenAccountOnlineService openAccountOnlineService;
+    @Autowired
+    private OpenAccountOfflineService openAccountOfflineService;
 
 
     /**
@@ -38,7 +44,27 @@ public class OpenAccountCallback {
         } catch (InternalApiException e) {
             throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
         } catch (Exception e) {
-            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.FAIL_FETCH_CAPTCHA);
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.ERROR_UNKNOWN);
+        }
+    }
+
+    /**
+     * BPM回调线下开户接口
+     *
+     * @param callbackVo
+     * @return
+     */
+    @PostMapping("/offline_open_account")
+    public ResResult offlineOpenAccount(@RequestBody CubpOpenInfoCallbackVo callbackVo) {
+        try {
+            Integer userId = openAccountOfflineService.saveOrUpdateOpenInfo(callbackVo);
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", userId);
+            return ResResult.success(map);
+        } catch (InternalApiException e) {
+            throw new WebApiException(e.getCode(), e.getMessage(), e.getMessageResource());
+        } catch (Exception e) {
+            throw new WebApiException(StaticType.CodeType.DISPLAY_ERROR, StaticType.MessageResource.ERROR_UNKNOWN);
         }
     }
 

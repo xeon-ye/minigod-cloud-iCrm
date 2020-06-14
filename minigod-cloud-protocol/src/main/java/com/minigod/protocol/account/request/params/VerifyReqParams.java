@@ -9,9 +9,11 @@ import java.io.Serializable;
 public class VerifyReqParams extends BaseRequestParams implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private Integer cardType;
     private String userName; // 用户名
     private String idCard; // 身份证号
     private String bankCard; // 银行卡号
     private String phone;// 手机号码
     private String email;
+    private String liveImage;
 }

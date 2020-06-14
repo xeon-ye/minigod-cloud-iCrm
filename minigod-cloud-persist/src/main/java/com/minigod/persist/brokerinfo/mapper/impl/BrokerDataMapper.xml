@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.minigod.persist.brokerinfo.mapper.BrokerDataMapper">
+  <resultMap id="BaseResultMap" type="com.minigod.protocol.brokerinfo.model.BrokerData">
+    <!--@mbg.generated-->
+    <!--@Table broker_data-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="broker_no" jdbcType="VARCHAR" property="brokerNo" />
+    <result column="en_full_name" jdbcType="VARCHAR" property="enFullName" />
+    <result column="hk_full_name" jdbcType="VARCHAR" property="hkFullName" />
+    <result column="trading_status" jdbcType="VARCHAR" property="tradingStatus" />
+    <result column="address_en_1" jdbcType="VARCHAR" property="addressEn1" />
+    <result column="address_en_2" jdbcType="VARCHAR" property="addressEn2" />
+    <result column="address_en_3" jdbcType="VARCHAR" property="addressEn3" />
+    <result column="address_en_4" jdbcType="VARCHAR" property="addressEn4" />
+    <result column="address_hk" jdbcType="VARCHAR" property="addressHk" />
+    <result column="tel_phone" jdbcType="VARCHAR" property="telPhone" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="website" jdbcType="VARCHAR" property="website" />
+    <result column="stock_options_participantship" jdbcType="VARCHAR" property="stockOptionsParticipantship" />
+    <result column="hkscc_participantship" jdbcType="VARCHAR" property="hksccParticipantship" />
+    <result column="seoch_participantship" jdbcType="VARCHAR" property="seochParticipantship" />
+    <result column="oth_business_address_en_1" jdbcType="VARCHAR" property="othBusinessAddressEn1" />
+    <result column="oth_business_address_en_2" jdbcType="VARCHAR" property="othBusinessAddressEn2" />
+    <result column="oth_business_address_en_3" jdbcType="VARCHAR" property="othBusinessAddressEn3" />
+    <result column="oth_business_address_en_4" jdbcType="VARCHAR" property="othBusinessAddressEn4" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, code, broker_no, en_full_name, hk_full_name, trading_status, address_en_1, address_en_2, 
+    address_en_3, address_en_4, address_hk, tel_phone, fax, website, stock_options_participantship, 
+    hkscc_participantship, seoch_participantship, oth_business_address_en_1, oth_business_address_en_2, 
+    oth_business_address_en_3, oth_business_address_en_4
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from broker_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from broker_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.minigod.protocol.brokerinfo.model.BrokerData">
+    <!--@mbg.generated-->
+    insert into broker_data (id, code, broker_no, 
+      en_full_name, hk_full_name, trading_status, 
+      address_en_1, address_en_2, address_en_3, 
+      address_en_4, address_hk, tel_phone, 
+      fax, website, stock_options_participantship, 
+      hkscc_participantship, seoch_participantship, 
+      oth_business_address_en_1, oth_business_address_en_2, 
+      oth_business_address_en_3, oth_business_address_en_4
+      )
+    values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{brokerNo,jdbcType=VARCHAR}, 
+      #{enFullName,jdbcType=VARCHAR}, #{hkFullName,jdbcType=VARCHAR}, #{tradingStatus,jdbcType=VARCHAR}, 
+      #{addressEn1,jdbcType=VARCHAR}, #{addressEn2,jdbcType=VARCHAR}, #{addressEn3,jdbcType=VARCHAR}, 
+      #{addressEn4,jdbcType=VARCHAR}, #{addressHk,jdbcType=VARCHAR}, #{telPhone,jdbcType=VARCHAR}, 
+      #{fax,jdbcType=VARCHAR}, #{website,jdbcType=VARCHAR}, #{stockOptionsParticipantship,jdbcType=VARCHAR}, 
+      #{hksccParticipantship,jdbcType=VARCHAR}, #{seochParticipantship,jdbcType=VARCHAR}, 
+      #{othBusinessAddressEn1,jdbcType=VARCHAR}, #{othBusinessAddressEn2,jdbcType=VARCHAR}, 
+      #{othBusinessAddressEn3,jdbcType=VARCHAR}, #{othBusinessAddressEn4,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.minigod.protocol.brokerinfo.model.BrokerData">
+    <!--@mbg.generated-->
+    insert into broker_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="brokerNo != null">
+        broker_no,
+      </if>
+      <if test="enFullName != null">
+        en_full_name,
+      </if>
+      <if test="hkFullName != null">
+        hk_full_name,
+      </if>
+      <if test="tradingStatus != null">
+        trading_status,
+      </if>
+      <if test="addressEn1 != null">
+        address_en_1,
+      </if>
+      <if test="addressEn2 != null">
+        address_en_2,
+      </if>
+      <if test="addressEn3 != null">
+        address_en_3,
+      </if>
+      <if test="addressEn4 != null">
+        address_en_4,
+      </if>
+      <if test="addressHk != null">
+        address_hk,
+      </if>
+      <if test="telPhone != null">
+        tel_phone,
+      </if>
+      <if test="fax != null">
+        fax,
+      </if>
+      <if test="website != null">
+        website,
+      </if>
+      <if test="stockOptionsParticipantship != null">
+        stock_options_participantship,
+      </if>
+      <if test="hksccParticipantship != null">
+        hkscc_participantship,
+      </if>
+      <if test="seochParticipantship != null">
+        seoch_participantship,
+      </if>
+      <if test="othBusinessAddressEn1 != null">
+        oth_business_address_en_1,
+      </if>
+      <if test="othBusinessAddressEn2 != null">
+        oth_business_address_en_2,
+      </if>
+      <if test="othBusinessAddressEn3 != null">
+        oth_business_address_en_3,
+      </if>
+      <if test="othBusinessAddressEn4 != null">
+        oth_business_address_en_4,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="brokerNo != null">
+        #{brokerNo,jdbcType=VARCHAR},
+      </if>
+      <if test="enFullName != null">
+        #{enFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="hkFullName != null">
+        #{hkFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradingStatus != null">
+        #{tradingStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="addressEn1 != null">
+        #{addressEn1,jdbcType=VARCHAR},
+      </if>
+      <if test="addressEn2 != null">
+        #{addressEn2,jdbcType=VARCHAR},
+      </if>
+      <if test="addressEn3 != null">
+        #{addressEn3,jdbcType=VARCHAR},
+      </if>
+      <if test="addressEn4 != null">
+        #{addressEn4,jdbcType=VARCHAR},
+      </if>
+      <if test="addressHk != null">
+        #{addressHk,jdbcType=VARCHAR},
+      </if>
+      <if test="telPhone != null">
+        #{telPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null">
+        #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="stockOptionsParticipantship != null">
+        #{stockOptionsParticipantship,jdbcType=VARCHAR},
+      </if>
+      <if test="hksccParticipantship != null">
+        #{hksccParticipantship,jdbcType=VARCHAR},
+      </if>
+      <if test="seochParticipantship != null">
+        #{seochParticipantship,jdbcType=VARCHAR},
+      </if>
+      <if test="othBusinessAddressEn1 != null">
+        #{othBusinessAddressEn1,jdbcType=VARCHAR},
+      </if>
+      <if test="othBusinessAddressEn2 != null">
+        #{othBusinessAddressEn2,jdbcType=VARCHAR},
+      </if>
+      <if test="othBusinessAddressEn3 != null">
+        #{othBusinessAddressEn3,jdbcType=VARCHAR},
+      </if>
+      <if test="othBusinessAddressEn4 != null">
+        #{othBusinessAddressEn4,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.minigod.protocol.brokerinfo.model.BrokerData">
+    <!--@mbg.generated-->
+    update broker_data
+    <set>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="brokerNo != null">
+        broker_no = #{brokerNo,jdbcType=VARCHAR},
+      </if>
+      <if test="enFullName != null">
+        en_full_name = #{enFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="hkFullName != null">
+        hk_full_name = #{hkFullName,jdbcType=VARCHAR},
+      </if>
+      <if test="tradingStatus != null">
+        trading_status = #{tradingStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="addressEn1 != null">
+        address_en_1 = #{addressEn1,jdbcType=VARCHAR},
+      </if>
+      <if test="addressEn2 != null">
+        address_en_2 = #{addressEn2,jdbcType=VARCHAR},
+      </if>
+      <if test="addressEn3 != null">
+        address_en_3 = #{addressEn3,jdbcType=VARCHAR},
+      </if>
+      <if test="addressEn4 != null">
+        address_en_4 = #{addressEn4,jdbcType=VARCHAR},
+      </if>
+      <if test="addressHk != null">
+        address_hk = #{addressHk,jdbcType=VARCHAR},
+      </if>
+      <if test="telPhone != null">
+        tel_phone = #{telPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="website != null">
+        website = #{website,jdbcType=VARCHAR},
+      </if>
+      <if test="stockOptionsParticipantship != null">
+        stock_options_participantship = #{stockOptionsParticipantship,jdbcType=VARCHAR},
+      </if>
+      <if test="hksccParticipantship != null">
+        hkscc_participantship = #{hksccParticipantship,jdbcType=VARCHAR},
+      </if>
+      <if test="seochParticipantship != null">
+        seoch_participantship = #{seochParticipantship,jdbcType=VARCHAR},
+      </if>
+      <if test="othBusinessAddressEn1 != null">
+        oth_business_address_en_1 = #{othBusinessAddressEn1,jdbcType=VARCHAR},
+      </if>
+      <if test="othBusinessAddressEn2 != null">
+        oth_business_address_en_2 = #{othBusinessAddressEn2,jdbcType=VARCHAR},
+      </if>
+      <if test="othBusinessAddressEn3 != null">
+        oth_business_address_en_3 = #{othBusinessAddressEn3,jdbcType=VARCHAR},
+      </if>
+      <if test="othBusinessAddressEn4 != null">
+        oth_business_address_en_4 = #{othBusinessAddressEn4,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.minigod.protocol.brokerinfo.model.BrokerData">
+    <!--@mbg.generated-->
+    update broker_data
+    set code = #{code,jdbcType=VARCHAR},
+      broker_no = #{brokerNo,jdbcType=VARCHAR},
+      en_full_name = #{enFullName,jdbcType=VARCHAR},
+      hk_full_name = #{hkFullName,jdbcType=VARCHAR},
+      trading_status = #{tradingStatus,jdbcType=VARCHAR},
+      address_en_1 = #{addressEn1,jdbcType=VARCHAR},
+      address_en_2 = #{addressEn2,jdbcType=VARCHAR},
+      address_en_3 = #{addressEn3,jdbcType=VARCHAR},
+      address_en_4 = #{addressEn4,jdbcType=VARCHAR},
+      address_hk = #{addressHk,jdbcType=VARCHAR},
+      tel_phone = #{telPhone,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      website = #{website,jdbcType=VARCHAR},
+      stock_options_participantship = #{stockOptionsParticipantship,jdbcType=VARCHAR},
+      hkscc_participantship = #{hksccParticipantship,jdbcType=VARCHAR},
+      seoch_participantship = #{seochParticipantship,jdbcType=VARCHAR},
+      oth_business_address_en_1 = #{othBusinessAddressEn1,jdbcType=VARCHAR},
+      oth_business_address_en_2 = #{othBusinessAddressEn2,jdbcType=VARCHAR},
+      oth_business_address_en_3 = #{othBusinessAddressEn3,jdbcType=VARCHAR},
+      oth_business_address_en_4 = #{othBusinessAddressEn4,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+<!--auto generated by MybatisCodeHelper on 2020-04-23-->
+  <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from broker_data
+    </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-04-23-->
+  <select id="selectAllByCode" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from broker_data
+    where code=#{code,jdbcType=VARCHAR}
+  </select>
+</mapper>

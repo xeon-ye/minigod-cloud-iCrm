@@ -5,21 +5,21 @@
     <!--@mbg.generated-->
     <!--@Table custom_open_info-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="access_way" jdbcType="INTEGER" property="accessWay" />
     <result column="id_kind" jdbcType="INTEGER" property="idKind" />
     <result column="id_card" jdbcType="VARCHAR" property="idCard" />
-    <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
     <result column="open_type" jdbcType="INTEGER" property="openType" />
-    <result column="access_way" jdbcType="INTEGER" property="accessWay" />
+    <result column="bank_card" jdbcType="VARCHAR" property="bankCard" />
     <result column="fund_account_type" jdbcType="INTEGER" property="fundAccountType" />
     <result column="account_markets" jdbcType="VARCHAR" property="accountMarkets" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="pending_type" jdbcType="INTEGER" property="pendingType" />
     <result column="fail_type" jdbcType="INTEGER" property="failType" />
     <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
-    <result column="is_need_push" jdbcType="BOOLEAN" property="isNeedPush" />
+    <result column="is_noticed" jdbcType="BOOLEAN" property="isNoticed" />
+    <result column="notice_err_count" jdbcType="INTEGER" property="noticeErrCount" />
+    <result column="is_pushed" jdbcType="BOOLEAN" property="isPushed" />
     <result column="push_err_count" jdbcType="INTEGER" property="pushErrCount" />
     <result column="remote_id" jdbcType="VARCHAR" property="remoteId" />
     <result column="ca_status" jdbcType="INTEGER" property="caStatus" />
@@ -28,15 +28,19 @@
     <result column="is_send" jdbcType="BOOLEAN" property="isSend" />
     <result column="formData" jdbcType="VARCHAR" property="formdata" />
     <result column="open_account_pdf_url" jdbcType="VARCHAR" property="openAccountPdfUrl" />
+    <result column="open_source" jdbcType="VARCHAR" property="openSource" />
+    <result column="open_invite_id" jdbcType="INTEGER" property="openInviteId" />
+    <result column="open_channel" jdbcType="VARCHAR" property="openChannel" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, phone, email, `password`, id_kind, id_card, bank_card, open_type, access_way, 
-    fund_account_type, account_markets, `status`, pending_type, fail_type, fail_reason, 
-    is_need_push, push_err_count, remote_id, ca_status, open_date, trade_account, is_send, 
-    formData, open_account_pdf_url, create_time, update_time
+    id, user_id, access_way, id_kind, id_card, open_type, bank_card, fund_account_type, 
+    account_markets, `status`, pending_type, fail_type, fail_reason, is_noticed, notice_err_count, 
+    is_pushed, push_err_count, remote_id, ca_status, open_date, trade_account, is_send, 
+    formData, open_account_pdf_url, open_source, open_invite_id, open_channel, create_time, 
+    update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -52,37 +56,36 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.CustomOpenInfo" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into custom_open_info (phone, email, `password`, 
-      id_kind, id_card, bank_card, 
-      open_type, access_way, fund_account_type, 
-      account_markets, `status`, pending_type, 
-      fail_type, fail_reason, is_need_push, 
+    insert into custom_open_info (user_id, access_way, id_kind, 
+      id_card, open_type, bank_card, 
+      fund_account_type, account_markets, `status`, 
+      pending_type, fail_type, fail_reason, 
+      is_noticed, notice_err_count, is_pushed, 
       push_err_count, remote_id, ca_status, 
       open_date, trade_account, is_send, 
-      formData, open_account_pdf_url, create_time, 
+      formData, open_account_pdf_url, open_source, 
+      open_invite_id, open_channel, create_time, 
       update_time)
-    values (#{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{idKind,jdbcType=INTEGER}, #{idCard,jdbcType=VARCHAR}, #{bankCard,jdbcType=VARCHAR}, 
-      #{openType,jdbcType=INTEGER}, #{accessWay,jdbcType=INTEGER}, #{fundAccountType,jdbcType=INTEGER}, 
-      #{accountMarkets,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{pendingType,jdbcType=INTEGER}, 
-      #{failType,jdbcType=INTEGER}, #{failReason,jdbcType=VARCHAR}, #{isNeedPush,jdbcType=BOOLEAN}, 
+    values (#{userId,jdbcType=INTEGER}, #{accessWay,jdbcType=INTEGER}, #{idKind,jdbcType=INTEGER}, 
+      #{idCard,jdbcType=VARCHAR}, #{openType,jdbcType=INTEGER}, #{bankCard,jdbcType=VARCHAR}, 
+      #{fundAccountType,jdbcType=INTEGER}, #{accountMarkets,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{pendingType,jdbcType=INTEGER}, #{failType,jdbcType=INTEGER}, #{failReason,jdbcType=VARCHAR}, 
+      #{isNoticed,jdbcType=BOOLEAN}, #{noticeErrCount,jdbcType=INTEGER}, #{isPushed,jdbcType=BOOLEAN}, 
       #{pushErrCount,jdbcType=INTEGER}, #{remoteId,jdbcType=VARCHAR}, #{caStatus,jdbcType=INTEGER}, 
       #{openDate,jdbcType=TIMESTAMP}, #{tradeAccount,jdbcType=VARCHAR}, #{isSend,jdbcType=BOOLEAN}, 
-      #{formdata,jdbcType=VARCHAR}, #{openAccountPdfUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{formdata,jdbcType=VARCHAR}, #{openAccountPdfUrl,jdbcType=VARCHAR}, #{openSource,jdbcType=VARCHAR}, 
+      #{openInviteId,jdbcType=INTEGER}, #{openChannel,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.account.model.CustomOpenInfo" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into custom_open_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="phone != null">
-        phone,
+      <if test="userId != null">
+        user_id,
       </if>
-      <if test="email != null">
-        email,
-      </if>
-      <if test="password != null">
-        `password`,
+      <if test="accessWay != null">
+        access_way,
       </if>
       <if test="idKind != null">
         id_kind,
@@ -90,14 +93,11 @@
       <if test="idCard != null">
         id_card,
       </if>
-      <if test="bankCard != null">
-        bank_card,
-      </if>
       <if test="openType != null">
         open_type,
       </if>
-      <if test="accessWay != null">
-        access_way,
+      <if test="bankCard != null">
+        bank_card,
       </if>
       <if test="fundAccountType != null">
         fund_account_type,
@@ -117,8 +117,14 @@
       <if test="failReason != null">
         fail_reason,
       </if>
-      <if test="isNeedPush != null">
-        is_need_push,
+      <if test="isNoticed != null">
+        is_noticed,
+      </if>
+      <if test="noticeErrCount != null">
+        notice_err_count,
+      </if>
+      <if test="isPushed != null">
+        is_pushed,
       </if>
       <if test="pushErrCount != null">
         push_err_count,
@@ -144,6 +150,15 @@
       <if test="openAccountPdfUrl != null">
         open_account_pdf_url,
       </if>
+      <if test="openSource != null">
+        open_source,
+      </if>
+      <if test="openInviteId != null">
+        open_invite_id,
+      </if>
+      <if test="openChannel != null">
+        open_channel,
+      </if>
       <if test="createTime != null">
         create_time,
       </if>
@@ -152,14 +167,11 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
       </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
+      <if test="accessWay != null">
+        #{accessWay,jdbcType=INTEGER},
       </if>
       <if test="idKind != null">
         #{idKind,jdbcType=INTEGER},
@@ -167,14 +179,11 @@
       <if test="idCard != null">
         #{idCard,jdbcType=VARCHAR},
       </if>
-      <if test="bankCard != null">
-        #{bankCard,jdbcType=VARCHAR},
-      </if>
       <if test="openType != null">
         #{openType,jdbcType=INTEGER},
       </if>
-      <if test="accessWay != null">
-        #{accessWay,jdbcType=INTEGER},
+      <if test="bankCard != null">
+        #{bankCard,jdbcType=VARCHAR},
       </if>
       <if test="fundAccountType != null">
         #{fundAccountType,jdbcType=INTEGER},
@@ -194,8 +203,14 @@
       <if test="failReason != null">
         #{failReason,jdbcType=VARCHAR},
       </if>
-      <if test="isNeedPush != null">
-        #{isNeedPush,jdbcType=BOOLEAN},
+      <if test="isNoticed != null">
+        #{isNoticed,jdbcType=BOOLEAN},
+      </if>
+      <if test="noticeErrCount != null">
+        #{noticeErrCount,jdbcType=INTEGER},
+      </if>
+      <if test="isPushed != null">
+        #{isPushed,jdbcType=BOOLEAN},
       </if>
       <if test="pushErrCount != null">
         #{pushErrCount,jdbcType=INTEGER},
@@ -221,6 +236,15 @@
       <if test="openAccountPdfUrl != null">
         #{openAccountPdfUrl,jdbcType=VARCHAR},
       </if>
+      <if test="openSource != null">
+        #{openSource,jdbcType=VARCHAR},
+      </if>
+      <if test="openInviteId != null">
+        #{openInviteId,jdbcType=INTEGER},
+      </if>
+      <if test="openChannel != null">
+        #{openChannel,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -233,14 +257,11 @@
     <!--@mbg.generated-->
     update custom_open_info
     <set>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        `password` = #{password,jdbcType=VARCHAR},
+      <if test="accessWay != null">
+        access_way = #{accessWay,jdbcType=INTEGER},
       </if>
       <if test="idKind != null">
         id_kind = #{idKind,jdbcType=INTEGER},
@@ -248,14 +269,11 @@
       <if test="idCard != null">
         id_card = #{idCard,jdbcType=VARCHAR},
       </if>
-      <if test="bankCard != null">
-        bank_card = #{bankCard,jdbcType=VARCHAR},
-      </if>
       <if test="openType != null">
         open_type = #{openType,jdbcType=INTEGER},
       </if>
-      <if test="accessWay != null">
-        access_way = #{accessWay,jdbcType=INTEGER},
+      <if test="bankCard != null">
+        bank_card = #{bankCard,jdbcType=VARCHAR},
       </if>
       <if test="fundAccountType != null">
         fund_account_type = #{fundAccountType,jdbcType=INTEGER},
@@ -275,8 +293,14 @@
       <if test="failReason != null">
         fail_reason = #{failReason,jdbcType=VARCHAR},
       </if>
-      <if test="isNeedPush != null">
-        is_need_push = #{isNeedPush,jdbcType=BOOLEAN},
+      <if test="isNoticed != null">
+        is_noticed = #{isNoticed,jdbcType=BOOLEAN},
+      </if>
+      <if test="noticeErrCount != null">
+        notice_err_count = #{noticeErrCount,jdbcType=INTEGER},
+      </if>
+      <if test="isPushed != null">
+        is_pushed = #{isPushed,jdbcType=BOOLEAN},
       </if>
       <if test="pushErrCount != null">
         push_err_count = #{pushErrCount,jdbcType=INTEGER},
@@ -302,6 +326,15 @@
       <if test="openAccountPdfUrl != null">
         open_account_pdf_url = #{openAccountPdfUrl,jdbcType=VARCHAR},
       </if>
+      <if test="openSource != null">
+        open_source = #{openSource,jdbcType=VARCHAR},
+      </if>
+      <if test="openInviteId != null">
+        open_invite_id = #{openInviteId,jdbcType=INTEGER},
+      </if>
+      <if test="openChannel != null">
+        open_channel = #{openChannel,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -314,21 +347,21 @@
   <update id="updateByPrimaryKey" parameterType="com.minigod.protocol.account.model.CustomOpenInfo">
     <!--@mbg.generated-->
     update custom_open_info
-    set phone = #{phone,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      `password` = #{password,jdbcType=VARCHAR},
+    set user_id = #{userId,jdbcType=INTEGER},
+      access_way = #{accessWay,jdbcType=INTEGER},
       id_kind = #{idKind,jdbcType=INTEGER},
       id_card = #{idCard,jdbcType=VARCHAR},
-      bank_card = #{bankCard,jdbcType=VARCHAR},
       open_type = #{openType,jdbcType=INTEGER},
-      access_way = #{accessWay,jdbcType=INTEGER},
+      bank_card = #{bankCard,jdbcType=VARCHAR},
       fund_account_type = #{fundAccountType,jdbcType=INTEGER},
       account_markets = #{accountMarkets,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=INTEGER},
       pending_type = #{pendingType,jdbcType=INTEGER},
       fail_type = #{failType,jdbcType=INTEGER},
       fail_reason = #{failReason,jdbcType=VARCHAR},
-      is_need_push = #{isNeedPush,jdbcType=BOOLEAN},
+      is_noticed = #{isNoticed,jdbcType=BOOLEAN},
+      notice_err_count = #{noticeErrCount,jdbcType=INTEGER},
+      is_pushed = #{isPushed,jdbcType=BOOLEAN},
       push_err_count = #{pushErrCount,jdbcType=INTEGER},
       remote_id = #{remoteId,jdbcType=VARCHAR},
       ca_status = #{caStatus,jdbcType=INTEGER},
@@ -337,56 +370,60 @@
       is_send = #{isSend,jdbcType=BOOLEAN},
       formData = #{formdata,jdbcType=VARCHAR},
       open_account_pdf_url = #{openAccountPdfUrl,jdbcType=VARCHAR},
+      open_source = #{openSource,jdbcType=VARCHAR},
+      open_invite_id = #{openInviteId,jdbcType=INTEGER},
+      open_channel = #{openChannel,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <!--auto generated by MybatisCodeHelper on 2020-01-06-->
-    <select id="selectOneByUserId" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from custom_open_info
-        where user_id=#{userId,jdbcType=INTEGER}
-    </select>
-
-    <!--auto generated by MybatisCodeHelper on 2020-01-15-->
-    <select id="selectOneIdByUserId" resultType="java.lang.Integer">
-    select id
+  <!--auto generated by MybatisCodeHelper on 2020-06-04-->
+  <select id="selectOneByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
     from custom_open_info
     where user_id=#{userId,jdbcType=INTEGER}
   </select>
 
-    <!--auto generated by MybatisCodeHelper on 2020-01-16-->
-    <select id="selectByIsNeedPush" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from custom_open_info
-        where is_need_push=#{isNeedPush,jdbcType=BOOLEAN}
-    </select>
-
-    <!--auto generated by MybatisCodeHelper on 2020-02-28-->
-    <select id="selectOneById" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from custom_open_info
-        where id=#{id,jdbcType=INTEGER}
-    </select>
-
-    <!--auto generated by MybatisCodeHelper on 2020-02-28-->
-    <select id="selectOneByPhone" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from custom_open_info
-        where phone=#{phone,jdbcType=VARCHAR}
-    </select>
-
-<!--auto generated by MybatisCodeHelper on 2020-04-06-->
+  <!--auto generated by MybatisCodeHelper on 2020-04-06-->
   <select id="selectByCaStatus" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List"/>
+    <include refid="Base_Column_List" />
     from custom_open_info
     where ca_status=#{caStatus,jdbcType=INTEGER}
   </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-04-26-->
+  <select id="selectByIsPushedFalse" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from custom_open_info
+    where is_pushed = false
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-04-26-->
+  <select id="selectByIsNoticedFalse" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from custom_open_info
+    where is_noticed = false
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-06-10-->
+  <select id="selectOneByTradeAccount" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from custom_open_info
+        where trade_account=#{tradeAccount,jdbcType=VARCHAR}
+    </select>
+
+<!--auto generated by MybatisCodeHelper on 2020-06-12-->
+  <select id="selectByStatusAndIsNoticedFalse" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from custom_open_info
+        where `status`=#{status,jdbcType=INTEGER} and is_noticed = false
+    </select>
 
 </mapper>
