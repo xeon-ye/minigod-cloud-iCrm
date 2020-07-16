@@ -1,0 +1,6 @@
+<div style="padding:30px 55px 50px 55px; font-size:14px; color:#333; line-height:26px;">
+    <div style="padding:0px; margin:0px; line-height:26px;"><b>【请注意】：</b></div>
+    <div style="padding:0px; margin:0px; line-height:26px; margin-top:15px;">
+        客户领取【${stockName}】的股票数量为【${stockQuantity}】，目前持有【${stockName}】的股票数量为【${positionAmount}】，已经到达持仓数量的80%，请及时处理。
+    </div>
+</div>

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.call.dao.CallRecordDao">
+
+
+    <resultMap type="com.sunline.modules.call.entity.CallRecordEntity" id="callRecordMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="callSheetId" column="call_sheet_id"/>
+        <result property="callNo" column="call_no"/>
+        <result property="calledNo" column="called_no"/>
+        <result property="callId" column="call_id"/>
+        <result property="beginTime" column="begin_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="connectType" column="connect_type"/>
+        <result property="status" column="status"/>
+        <result property="exten" column="exten"/>
+        <result property="disposalAgent" column="disposal_agent"/>
+        <result property="offeringTime" column="offering_time"/>
+        <result property="recordFileName" column="record_file_name"/>
+        <result property="localFilePath" column="local_file_path"/>
+        <result property="customerName" column="customer_name"/>
+        <result property="refCallSheetId" column="ref_call_sheet_id"/>
+        <result property="pbx" column="pbx"/>
+        <result property="queueName" column="queue_name"/>
+        <result property="fileServer" column="file_server"/>
+        <result property="province" column="province"/>
+        <result property="district" column="district"/>
+        <result property="districtCode" column="district_code"/>
+        <result property="keyTag" column="key_tag"/>
+        <result property="callTimeLength" column="call_time_length"/>
+        <result property="investigate" column="investigate"/>
+        <result property="actionId" column="action_id"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="relationState" column="relation_state"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		user_id, 
+		client_id, 
+		call_sheet_id, 
+		call_no, 
+		called_no, 
+		call_id, 
+		begin_time, 
+		end_time, 
+		connect_type, 
+		status, 
+		exten, 
+		disposal_agent, 
+		offering_time, 
+		record_file_name, 
+		local_file_path, 
+		customer_name, 
+		ref_call_sheet_id, 
+		pbx, 
+		queue_name, 
+		file_server, 
+		province, 
+		district, 
+		district_code, 
+		key_tag, 
+		call_time_length, 
+		investigate, 
+		action_id, 
+		remark, 
+		create_time, 
+		update_time,
+		relation_state
+    </sql>
+
+    <sql id="Base_Column_List1" >
+        c.id,
+        c.user_id,
+        c.client_id,
+        c.call_sheet_id,
+        c.call_no,
+        c.called_no,
+        c.call_id,
+        date_format(c.begin_time,'%Y-%m-%d %T') as begin_time,
+        date_format(c.end_time,'%Y-%m-%d %T') as end_time,
+        c.connect_type,
+        c.status,
+        c.exten,
+        c.disposal_agent,
+        c.offering_time,
+        c.record_file_name,
+        c.local_file_path,
+        c.customer_name,
+        c.ref_call_sheet_id,
+        c.pbx,
+        c.queue_name,
+        c.file_server,
+        c.province,
+        c.district,
+        c.district_code,
+        c.key_tag,
+        c.call_time_length,
+        c.investigate,
+        c.action_id,
+        c.remark,
+        c.create_time,
+        c.update_time,
+        c.relation_state
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.call.entity.CallRecordEntity" resultMap="callRecordMap">
+		select
+		<include refid="Base_Column_List" />
+		from call_record
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.call.entity.CallRecordEntity" resultMap="callRecordMap">
+		select
+        <include refid="Base_Column_List1" />,s.user_name as extenName
+		from call_record c
+        LEFT JOIN sys_user s ON c.exten = s.exten
+        left join sys_user_role r on s.id = r.user_id
+        left join sys_role sr on sr.id = r.role_id
+        where 1 = 1
+        <if test="beginTime!=null ">
+          and c.begin_time >= #{beginTime}
+        </if>
+        <if test="endTime!=null ">
+          and c.end_time &lt;=#{endTime}
+        </if>
+        <if test="offeringTime!=null ">
+          and c.offering_time >=#{offeringTime}
+        </if>
+        <if test="connectType!=null and connectType!=''">
+          and c.connect_type = #{connectType}
+        </if>
+        <if test="status!=null and status!=''">
+          and c.status = #{status}
+        </if>
+        <if test="relationState!=null and relationState!=''">
+          and c.relation_state = #{relationState}
+        </if>
+        <if test="callNo!=null and callNo!='' ">
+          and c.call_no=#{callNo}
+        </if>
+        <if test="calledNo!=null and calledNo!='' ">
+          and c.called_no=#{calledNo}
+        </if>
+        <if test="clientId!=null and clientId!=''">
+          and c.client_id=#{clientId}
+        </if>
+        <if test="userId!=null and userId!=''">
+          and c.user_id=#{userId}
+        </if>
+        <if test="exten!=null and exten!=''">
+          and c.exten=#{exten}
+        </if>
+        <if test="name!=null ">
+          and sr.name=#{name}
+        </if>
+        and c.status='dealing'
+        order by c.begin_time desc
+
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.call.entity.CallRecordEntity" resultMap="callRecordMap">
+        select
+        <include refid="Base_Column_List" />
+        from call_record
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from call_record
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.call.entity.CallRecordEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into call_record
+		(
+			`user_id`, 
+			`client_id`, 
+			`call_sheet_id`, 
+			`call_no`, 
+			`called_no`, 
+			`call_id`, 
+			`begin_time`, 
+			`end_time`, 
+			`connect_type`, 
+			`status`, 
+			`exten`, 
+			`disposal_agent`, 
+			`offering_time`, 
+			`record_file_name`, 
+			`local_file_path`, 
+			`customer_name`, 
+			`ref_call_sheet_id`, 
+			`pbx`, 
+			`queue_name`, 
+			`file_server`, 
+			`province`, 
+			`district`, 
+			`district_code`, 
+			`key_tag`, 
+			`call_time_length`, 
+			`investigate`, 
+			`action_id`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`,
+			`relation_state`
+		)
+		values
+		(
+			#{userId}, 
+			#{clientId}, 
+			#{callSheetId}, 
+			#{callNo}, 
+			#{calledNo}, 
+			#{callId}, 
+			#{beginTime}, 
+			#{endTime}, 
+			#{connectType}, 
+			#{status}, 
+			#{exten}, 
+			#{disposalAgent}, 
+			#{offeringTime}, 
+			#{recordFileName}, 
+			#{localFilePath}, 
+			#{customerName}, 
+			#{refCallSheetId}, 
+			#{pbx}, 
+			#{queueName}, 
+			#{fileServer}, 
+			#{province}, 
+			#{district}, 
+			#{districtCode}, 
+			#{keyTag}, 
+			#{callTimeLength}, 
+			#{investigate}, 
+			#{actionId}, 
+			#{remark}, 
+			#{createTime}, 
+			#{updateTime},
+			#{relationState}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.call.entity.CallRecordEntity">
+		update call_record 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="clientId != null">`client_id` = #{clientId}, </if>
+			<if test="callSheetId != null">`call_sheet_id` = #{callSheetId}, </if>
+			<if test="callNo != null">`call_no` = #{callNo}, </if>
+			<if test="calledNo != null">`called_no` = #{calledNo}, </if>
+			<if test="callId != null">`call_id` = #{callId}, </if>
+			<if test="beginTime != null">`begin_time` = #{beginTime}, </if>
+			<if test="endTime != null">`end_time` = #{endTime}, </if>
+			<if test="connectType != null">`connect_type` = #{connectType}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="exten != null">`exten` = #{exten}, </if>
+			<if test="disposalAgent != null">`disposal_agent` = #{disposalAgent}, </if>
+			<if test="offeringTime != null">`offering_time` = #{offeringTime}, </if>
+			<if test="recordFileName != null">`record_file_name` = #{recordFileName}, </if>
+			<if test="localFilePath != null">`local_file_path` = #{localFilePath}, </if>
+			<if test="customerName != null">`customer_name` = #{customerName}, </if>
+			<if test="refCallSheetId != null">`ref_call_sheet_id` = #{refCallSheetId}, </if>
+			<if test="pbx != null">`pbx` = #{pbx}, </if>
+			<if test="queueName != null">`queue_name` = #{queueName}, </if>
+			<if test="fileServer != null">`file_server` = #{fileServer}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="district != null">`district` = #{district}, </if>
+			<if test="districtCode != null">`district_code` = #{districtCode}, </if>
+			<if test="keyTag != null">`key_tag` = #{keyTag}, </if>
+			<if test="callTimeLength != null">`call_time_length` = #{callTimeLength}, </if>
+			<if test="investigate != null">`investigate` = #{investigate}, </if>
+			<if test="actionId != null">`action_id` = #{actionId}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="relationState != null">`relation_state` = #{relationState}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from call_record where id = #{value}
+	</delete>
+
+	<delete id="deleteBatch">
+		delete from call_record where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <update id="cancelConnect" parameterType="com.sunline.modules.call.entity.CallRecordEntity">
+        update call_record set user_id = null ,client_id = null ,remark = null,relation_state = -1 where id = #{id};
+    </update>
+
+</mapper>

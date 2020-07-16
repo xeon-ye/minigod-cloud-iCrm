@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.commission.dao.FarePackageSetupDao">
+
+
+    <resultMap type="com.sunline.modules.commission.entity.FarePackageSetupEntity" id="farePackageSetupMap">
+        <result property="id" column="id"/>
+        <result property="fareKind" column="fare_kind"/>
+        <result property="exchangeType" column="exchange_type"/>
+        <result property="entrustWay" column="entrust_way"/>
+        <result property="feeType" column="fee_type"/>
+        <result property="balanceRatio" column="balance_ratio"/>
+        <result property="feeCountFix" column="fee_count_fix"/>
+        <result property="minFare" column="min_fare"/>
+        <result property="maxFare" column="max_fare"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="fareRemark" column="fare_remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="fareType" column="fare_type"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		fare_kind, 
+		exchange_type, 
+		entrust_way, 
+		fee_type, 
+		balance_ratio, 
+		fee_count_fix, 
+		min_fare, 
+		max_fare,
+		begin_date,
+		end_date,
+		fare_remark,
+		create_time, 
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.commission.entity.FarePackageSetupEntity" resultMap="farePackageSetupMap">
+		select
+		<include refid="Base_Column_List" />
+		from fare_package_setup
+		where fare_kind = #{value}
+        limit 0,1
+	</select>
+
+	<select id="queryObjectByBean" resultType="com.sunline.modules.commission.entity.FarePackageSetupEntity" resultMap="farePackageSetupMap">
+		select
+		<include refid="Base_Column_List" />
+		from fare_package_setup
+		where 1 =1
+        <if test="fareKind!=null and fareKind!=''">
+            and fare_kind = #{fareKind}
+        </if>
+        <if test="fareType!=null and fareType!=''">
+            and fare_type = #{fareType}
+        </if>
+
+        limit 0,1
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.commission.entity.FarePackageSetupEntity" resultMap="farePackageSetupMap">
+		select
+		<include refid="Base_Column_List" />
+		from fare_package_setup
+        where 1 = 1
+        <if test="fareKind!=null and fareKind!=''">
+            and fare_kind = #{fareKind}
+        </if>
+        <if test="exchangeType!=null and exchangeType!=''">
+            and exchange_type = #{exchangeType}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.commission.entity.FarePackageSetupEntity" resultMap="farePackageSetupMap">
+        select
+        <include refid="Base_Column_List" />
+        from fare_package_setup
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from fare_package_setup where 1 = 1
+        <if test="fareKind!=null and fareKind!=''">
+            and fare_kind = #{fareKind}
+        </if>
+        <if test="exchangeType!=null and exchangeType!=''">
+            and exchange_type = #{exchangeType}
+        </if>
+	</select>
+	 
+	<!--<insert id="save" parameterType="com.sunline.modules.commissionission.entity.FarePackageSetupEntity" usefareeratedKeys="true" keyProperty="id">
+		insert into fare_package_setup
+		(
+			`fare_kind`,
+			`exchange_type`,
+			`entrust_way`,
+			`fee_type`,
+			`balance_ratio`,
+			`fee_count_fix`,
+			`min_fare`,
+			`max_fare`,
+			`begin_date`,
+			`end_date`,
+			`create_time`,
+			`update_time`
+		)
+		values
+		(
+			#{fareKind},
+			#{exchangeType},
+			#{entrustWay},
+			#{feeType},
+			#{balanceRatio},
+			#{feeCountFix},
+			#{minFare},
+			#{maxFare},
+			#{beginDate},
+			#{endDate},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>-->
+	 
+	<update id="update" parameterType="com.sunline.modules.commission.entity.FarePackageSetupEntity">
+		update fare_package_setup 
+		<set>
+			<if test="fareKind != null">`fare_kind` = #{fareKind}, </if>
+			<if test="exchangeType != null">`exchange_type` = #{exchangeType}, </if>
+			<if test="entrustWay != null">`entrust_way` = #{entrustWay}, </if>
+			<if test="feeType != null">`fee_type` = #{feeType}, </if>
+			<if test="balanceRatio != null">`balance_ratio` = #{balanceRatio}, </if>
+			<if test="feeCountFix != null">`fee_count_fix` = #{feeCountFix}, </if>
+			<if test="minFare != null">`min_fare` = #{minFare}, </if>
+			<if test="maxFare != null">`max_fare` = #{maxFare}, </if>
+			<if test="beginDate != null">`begin_date` = #{beginDate}, </if>
+			<if test="endDate != null">`end_date` = #{endDate}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from fare_package_setup where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from fare_package_setup where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <select id="getChannelFareInfo" resultType="com.sunline.modules.commission.entity.FarePackageSetupEntity" resultMap="farePackageSetupMap">
+        SELECT
+        t1.channel_id,
+        t2.channel_name,
+        t3.exchange_type,
+        t3.fee_type,
+        t3.balance_ratio,
+        t3.fee_count_fix,
+        t3.min_fare,
+        t3.max_fare
+        FROM channel_fare_setup t1
+        LEFT JOIN user_channel_info t2 ON t2.channel_id=t1.channel_id
+        LEFT JOIN fare_package_setup t3 ON t3.fare_kind=t1.fare_kind
+        WHERE t1.channel_fare_type = 0
+        AND t1.begin_date <![CDATA[ <= ]]> CURDATE()
+        AND t1.audit_status = 2
+        AND t1.channel_id IN (SELECT channel_id FROM user_channel_info,(SELECT func_qry_channel_children(#{channelId}) AS channel_ids) t WHERE FIND_IN_SET(channel_id,t.channel_ids))
+        <if test="exchangeType!=null and exchangeType!=''">
+            AND exchange_type = #{exchangeType}
+        </if>
+    </select>
+
+</mapper>

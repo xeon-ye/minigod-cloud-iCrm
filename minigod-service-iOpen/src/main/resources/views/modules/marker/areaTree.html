@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>渠道维护和设置</title>
+#parse("modules/sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<!--.container （固定宽度）或 .container-fluid （100% 宽度）-->
+	<div class="container-fluid">
+        <input id="flag" name="flag" value="areaTree" hidden="hidden">
+		<div class="row">
+			<div class="col-md-4">
+				#if($shiro.hasPermission("userChannelInfo:update"))
+					<button class="layui-btn layui-btn-small" @click="add" type="button" @click="add"><i class="layui-icon">&#xe61f;</i> 新 增</button>
+				#end
+				#if($shiro.hasPermission("userChannelInfo:delete"))
+					<button class="layui-btn layui-btn-danger layui-btn-small" type="button" @click="del"><i class="layui-icon">&#xe640;</i>删 除</button>
+				#end
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<div style="font-size: 20px;margin-bottom: 10px">
+					<i class="layui-icon" style="font-size: 20px; color: #4caf50">&#xe62e;</i> 片区管理
+				</div>
+                <div style="overflow-y:auto; width:300px; height:600px">
+				    <div class="col-sm-10">
+					    <ul id="allMenuTree" class="ztree"></ul>
+				    </div>
+                </div>
+			</div>
+            <div v-show="showInfo" class="col-md-5 col-sm-10">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="layui-icon" style="font-size: 20px; color: #4caf50;">&#xe63c;</i> {{title}}</div>
+                    <form class="form-horizontal" id="menuFrom" method="post">
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">上级菜单</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" style="cursor:pointer;" v-model="menu.parentName" @click="menuTree" readonly="readonly" placeholder="一级大区"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">大区号</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" v-model="menu.channelId" placeholder="渠道号"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">大区名</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" v-model="menu.channelName" placeholder="渠道名"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">备注</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" v-model="menu.rmk" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label"></div>
+                            #if($shiro.hasPermission("userChannelInfo:update"))
+                            <button class="layui-btn" @click="saveOrUpdate" type="button">保 存</button>
+                            #end
+                            <button class="layui-btn layui-btn-warm" @click="reload" type="button">重 置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+<!-- 选择菜单 -->
+<div id="menuLayer" style="display: none;padding:10px;">
+	<ul id="menuTree" class="ztree"></ul>
+</div>
+
+<script src="${rc.contextPath}/js/marker/channelTree.js?_${date.systemTime}"></script>
+</body>
+</html>

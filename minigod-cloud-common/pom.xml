@@ -207,10 +207,6 @@
             <version>6.10</version>
         </dependency>
         <dependency>
-            <groupId>org.csource</groupId>
-            <artifactId>fastdfs</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>

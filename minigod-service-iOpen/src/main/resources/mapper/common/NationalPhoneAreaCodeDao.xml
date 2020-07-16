@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.common.dao.NationalPhoneAreaCodeDao">
+
+
+    <resultMap type="com.sunline.modules.common.entity.NationalPhoneAreaCodeEntity" id="nationalPhoneAreaCodeMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="value" column="value"/>
+        <result property="caeateTime" column="caeate_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="regionName" column="region_name"/>
+    </resultMap>
+
+    <insert id="save" parameterType="com.sunline.modules.common.entity.NationalPhoneAreaCodeEntity">
+        insert into national_phone_area_code
+        (
+        `id`,
+        `name`,
+        `value`,
+        `caeate_time`,
+        `update_time`,
+        `region_name`
+        )
+        values
+        (
+        #{id},
+        #{name},
+        #{value},
+        #{caeateTime},
+        #{updateTime},
+        #{regionName},
+        )
+    </insert>
+
+    <select id="queryList" resultType="com.sunline.modules.common.entity.NationalPhoneAreaCodeEntity" resultMap="nationalPhoneAreaCodeMap">
+        select
+         *
+        from national_phone_area_code
+        order by id
+    </select>
+
+</mapper>

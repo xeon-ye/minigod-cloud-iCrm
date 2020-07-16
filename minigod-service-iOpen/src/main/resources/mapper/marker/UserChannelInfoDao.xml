@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.marker.dao.UserChannelInfoDao">
+
+
+    <resultMap type="com.sunline.modules.marker.entity.UserChannelInfoEntity" id="userChannelInfoMap">
+        <result property="id" column="id"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="channelName" column="channel_name"/>
+        <result property="companyName" column="company_name"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="accessPoint" column="access_point"/>
+        <result property="diversMode" column="divers_mode"/>
+        <result property="regisUserSize" column="regis_user_size"/>
+        <result property="rmk" column="rmk"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="fareKind" column="fare_kind"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="isFreeCommission" column="is_free_commission"/>
+        <result property="freeCommissionDays" column="free_commission_days"/>
+
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		channel_id, 
+		channel_name, 
+		company_name, 
+		parent_id, 
+		access_point, 
+		divers_mode, 
+		regis_user_size, 
+		rmk, 
+		create_by, 
+		update_by, 
+		DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+		DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') AS update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultMap="userChannelInfoMap">
+		SELECT
+            u.*, (
+                SELECT
+                    i.channel_name
+                FROM
+                    user_channel_info i
+                WHERE
+                    i.channel_id = u.parent_id
+            ) AS parentName,
+            (
+                SELECT
+                    ui.channel_name
+                FROM
+                    user_channel_info ui
+                WHERE
+                    ui.channel_id = u.area_code
+            ) AS areaName,
+            f.*
+        FROM
+            user_channel_info u
+        left join channel_fare_setup f on u.channel_id = f.channel_id and   f.channel_fare_type = 0 and f.record_status = 1
+        WHERE u.id =  #{value}
+	</select>
+
+    <select id="queryByChannelId" resultType="java.lang.Integer">
+        select count(*) from user_channel_info where channel_id = #{channelId}
+    </select>
+
+    <select id="queryByChannelName" resultType="java.lang.Integer">
+        select count(*) from user_channel_info where channel_name = #{channelName}
+    </select>
+
+
+	<select id="queryList" resultType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultMap="userChannelInfoMap">
+		select
+		<include refid="Base_Column_List" />,channel_name as name
+		from user_channel_info where type = '1'
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="areaQueryList" resultType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultMap="userChannelInfoMap">
+        select
+        <include refid="Base_Column_List" />,channel_name as name
+        from user_channel_info where type = '0'
+        order by id
+
+    </select>
+
+    <select id="queryNotButtonnList" resultType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultMap="userChannelInfoMap">
+        select
+        *,(SELECT i.channel_name FROM user_channel_info i WHERE i.channel_id=u.parent_id and type = '1' ) AS parentName,u.channel_name as name
+        FROM user_channel_info u where type = '1' order by id
+    </select>
+
+
+    <select id="queryButtonList" parameterType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultMap="userChannelInfoMap">
+        SELECT
+            *, (
+                SELECT
+                    i.channel_name
+                FROM
+                    user_channel_info i
+                WHERE
+                    i.channel_id = u.parent_id
+                AND type = '1'
+            ) AS parentName,
+            u.channel_name AS NAME
+        FROM
+            user_channel_info u
+        WHERE
+            type = '1'
+            <if test="channelIds != null">
+                and u.channel_id
+                in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+        ORDER BY
+            id
+    </select>
+
+    <select id="areaQueryNotButtonnList" resultType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultMap="userChannelInfoMap">
+        select
+        *,(SELECT i.channel_name FROM user_channel_info i WHERE i.channel_id=u.parent_id and type = '0' ) AS parentName,u.channel_name as name
+        FROM user_channel_info u where type = '0' order by id
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultMap="userChannelInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_channel_info
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from user_channel_info
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.marker.entity.UserChannelInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into user_channel_info
+		(
+			`channel_id`, 
+			`channel_name`, 
+			`company_name`, 
+			`parent_id`, 
+			`access_point`, 
+			`divers_mode`, 
+			`regis_user_size`, 
+			`rmk`, 
+			`create_by`, 
+			`update_by`, 
+			`create_time`, 
+			`update_time`,
+			`area_code`,
+			`type`
+
+		)
+		values
+		(
+			#{channelId}, 
+			#{channelName},
+			#{companyName},
+			#{parentId}, 
+			#{accessPoint}, 
+			#{diversMode}, 
+			#{regisUserSize}, 
+			#{rmk}, 
+			#{createBy}, 
+			#{updateBy}, 
+			SYSDATE(),
+			#{updateTime},
+			#{areaCode},
+			'1'
+		)
+	</insert>
+
+    <insert id="saveArea" parameterType="com.sunline.modules.marker.entity.UserChannelInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into user_channel_info
+		(
+			`channel_id`,
+			`channel_name`,
+			`company_name`,
+			`parent_id`,
+			`access_point`,
+			`divers_mode`,
+			`regis_user_size`,
+			`rmk`,
+			`create_by`,
+			`update_by`,
+			`create_time`,
+			`update_time`,
+			`area_code`,
+			`type`
+
+		)
+		values
+		(
+			#{channelId},
+			#{channelName},
+			#{companyName},
+			#{parentId},
+			#{accessPoint},
+			#{diversMode},
+			#{regisUserSize},
+			#{rmk},
+			#{createBy},
+			#{updateBy},
+			SYSDATE(),
+			#{updateTime},
+			#{areaCode},
+			'0'
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.marker.entity.UserChannelInfoEntity">
+		update user_channel_info 
+		<set>
+			<if test="channelId != null">`channel_id` = #{channelId}, </if>
+			<if test="channelName != null">`channel_name` = #{channelName}, </if>
+			<if test="companyName != null">`company_name` = #{companyName}, </if>
+			<if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="accessPoint != null">`access_point` = #{accessPoint}, </if>
+			<if test="diversMode != null">`divers_mode` = #{diversMode}, </if>
+			<if test="regisUserSize != null">`regis_user_size` = #{regisUserSize}, </if>
+			<if test="rmk != null">`rmk` = #{rmk}, </if>
+			<if test="createBy != null">`create_by` = #{createBy}, </if>
+			<if test="updateBy != null">`update_by` = #{updateBy}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="areaCode != null">`area_code` = #{areaCode},</if>
+            `update_time` = now()
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from user_channel_info where
+            channel_id = #{channelId}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from user_channel_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <select id="queryChannelList" resultType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultMap="userChannelInfoMap">
+        SELECT
+        u.channel_id,
+        u.channel_name,
+        u.CREATE_by,
+        u.update_by,
+        u.parent_id,
+        DATE_FORMAT(u.create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+        DATE_FORMAT(u.update_time,'%Y-%m-%d %H:%i:%s') AS update_time,
+        u2.channel_name as parentName,
+        f.balance_ratio as balanceRatio,
+        f.exchange_type as exchangeType,
+        f.fee_count_fix as feeCountFix,
+        f.max_fare as maxFare,
+        f.min_fare as minFare,
+        f.fare_kind
+        FROM
+        user_channel_info u
+        LEFT JOIN user_channel_info u2 ON u.parent_id = u2.channel_id
+        left join channel_fare_setup c on u.channel_id = c.channel_id
+        LEFT JOIN fare_package_setup f on f.fare_kind = c.fare_kind
+        WHERE
+            u.type = 1
+        and c.audit_status = 2
+        and c.channel_fare_type = 0
+        <if test="channelName!=null and channelName!=''">
+            and u.channel_name  like concat('%', #{channelName}, '%')
+        </if>
+        <if test="parentName!=null and parentName!=''">
+            and u2.channel_name  like concat('%', #{parentName}, '%')
+        </if>
+        <if test="channelId!=null and channelId!=''">
+            and u.channel_id = #{channelId}
+        </if>
+        <if test="parentId!=null and parentId!=''">
+            and u.parent_id = #{parentId}
+        </if>
+        <if test="channelIds != null">
+            and u.channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and u.channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+        ORDER BY
+          u.id
+    </select>
+
+    <select id="queryChannelListByParent" resultType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultMap="userChannelInfoMap">
+        SELECT
+        u.channel_id,
+        u.channel_name,
+        u.CREATE_by,
+        u.update_by,
+        u.parent_id,
+        DATE_FORMAT(u.create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+        DATE_FORMAT(u.update_time,'%Y-%m-%d %H:%i:%s') AS update_time,
+        u2.channel_name as parentName
+        FROM
+        user_channel_info u
+        LEFT JOIN user_channel_info u2 ON u.parent_id = u2.channel_id
+        WHERE
+        u.type = 1
+        <!--<if test="channelName!=null and channelName!=''">-->
+        <!--and u.channel_name  like concat('%', #{channelName}, '%')-->
+        <!--</if>-->
+        <if test="parentName!=null and parentName!=''">
+            and u2.channel_name  like concat('%', #{parentName}, '%')
+        </if>
+        <if test="channelId!=null and channelId!=''">
+            and u.channel_id = #{channelId}
+        </if>
+        <if test="parentId!=null and parentId!=''">
+            and u.parent_id = #{parentId}
+        </if>
+        <if test="channelIds != null">
+            and u.channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and u.channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+        ORDER BY
+        u.id
+    </select>
+
+    <select id="queryByParent" parameterType="java.lang.String" resultType="java.lang.String">
+        select channel_id from user_channel_info where 1=1
+        <if test="parentId!=null">
+          and  parent_id = #{parentId}
+        </if>
+    </select>
+
+    <select id="queryInfo" parameterType="com.sunline.modules.marker.entity.UserChannelInfoEntity" resultType="com.sunline.modules.marker.entity.UserChannelInfoEntity">
+        select * from user_channel_info where 1=1
+        <if test="channelName!=null and channelName!=''">
+            and  channel_name = #{channelName}
+        </if>
+        <if test="channelId!=null and channelId!=''">
+            and  channel_id = #{channelId}
+        </if>
+    </select>
+
+    <select id="queryByChannelIds" parameterType="java.lang.String" resultType="com.sunline.modules.api.entity.ChannelModel">
+      select channel_id,channel_name from user_channel_info where 1 = 1 and TYPE  = 1
+        <if test="channelIds != null">
+            and channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        and channel_id > 0
+    </select>
+
+
+    <!-- 根据渠道号 查询授权该渠道的角色 -->
+    <select id="queryRoleIdsByChannelId" resultType="java.lang.String">
+
+        select role_id from sys_channel_r_role where channel_id  = #{value}
+
+    </select>
+
+    <!-- 授权新增渠道给指定角色  -->
+    <insert id="saveChannelRole" parameterType="com.sunline.modules.marker.entity.ChannelRoleEntity">
+
+        INSERT into sys_channel_r_role  (role_id,channel_id,create_time,create_user) values (#{roleId},#{channelId},now(),#{createUser})
+
+    </insert>
+
+</mapper>

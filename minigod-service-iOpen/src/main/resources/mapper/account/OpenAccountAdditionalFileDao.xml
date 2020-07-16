@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.OpenAccountAdditionalFileDao">
+
+
+    <resultMap type="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity" id="openAccountAdditionalFileMap">
+         <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="additionalId" column="additional_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="fileType" column="file_type"/>
+        <result property="fileStorageName" column="file_storage_name"/>
+        <result property="fileExtName" column="file_ext_name"/>
+        <result property="filePath" column="file_path"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		application_id, 
+		additional_id, 
+		file_name, 
+		file_type, 
+		file_storage_name, 
+		file_ext_name, 
+		file_path, 
+		create_user, 
+		update_user, 
+		create_time, 
+		update_time
+    </sql>
+
+	<sql id="Base_Where_Conditions">
+		<if test="id != null">
+			<![CDATA[ and id = #{id}]]>
+		</if>	
+		<if test="applicationId != null">
+			<![CDATA[ and application_id = #{applicationId}]]>
+		</if>
+		<if test="additionalId != null">
+			<![CDATA[ and additional_id = #{additionalId}]]>
+		</if>
+		<if test="fileType != null">
+			<![CDATA[ and file_type = #{fileType}]]>
+		</if>	
+		<if test="fileName != null">
+			<![CDATA[ and file_name = #{fileName}]]>
+		</if>	
+		<if test="fileStorageName != null">
+			<![CDATA[ and file_storage_name = #{fileStorageName}]]>
+		</if>
+		<if test="fileExtName != null">
+			<![CDATA[ and file_ext_name = #{fileExtName}]]>
+		</if>			
+		<if test="filePath != null">
+			<![CDATA[ and file_path = #{filePath}]]>
+		</if>
+		<if test="createUser != null">
+			<![CDATA[ and create_user = #{createUser}]]>
+		</if>
+		<if test="updateUser != null">
+			<![CDATA[ and update_user = #{updateUser}]]>
+		</if>
+		<if test="createTime != null">
+			<![CDATA[ and create_time = #{createTime}]]>
+		</if>
+		<if test="updateTime != null">
+			<![CDATA[ and update_time = #{updateTime}]]>
+		</if>
+		
+		
+	</sql>
+
+
+	<select id="queryObject" resultType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity" resultMap="openAccountAdditionalFileMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_additional_file
+		where
+		id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity" resultMap="openAccountAdditionalFileMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_additional_file
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity" resultMap="openAccountAdditionalFileMap">
+        select
+            f.id,
+            f.application_id,
+            f.additional_id,
+            f.file_name,
+            f.file_type,
+            f.file_storage_name,
+            f.file_ext_name,
+            f.file_path,
+            f.create_user,
+            f.update_user,
+            f.create_time,
+            f.update_time,
+            d.remark
+        from open_account_additional_file f
+        left JOIN  open_account_additional_detail d on f.application_id = d.application_id
+		<where>
+            1=1
+            <if test="id != null">
+                <![CDATA[ and f.id = #{id}]]>
+            </if>
+            <if test="applicationId != null">
+                <![CDATA[ and f.application_id = #{applicationId}]]>
+            </if>
+            <if test="additionalId != null">
+                <![CDATA[ and f.additional_id = #{additionalId}]]>
+            </if>
+            <if test="fileType != null">
+                <![CDATA[ and f.file_type = #{fileType}]]>
+            </if>
+            <if test="fileType == null">
+                <![CDATA[ and f.file_type !=3]]>
+            </if>
+            <if test="fileName != null">
+                <![CDATA[ and f.file_name = #{fileName}]]>
+            </if>
+            <if test="fileStorageName != null">
+                <![CDATA[ and f.file_storage_name = #{fileStorageName}]]>
+            </if>
+            <if test="fileExtName != null">
+                <![CDATA[ and f.file_ext_name = #{fileExtName}]]>
+            </if>
+            <if test="filePath != null">
+                <![CDATA[ and f.file_path = #{filePath}]]>
+            </if>
+            <if test="createUser != null">
+                <![CDATA[ and f.create_user = #{createUser}]]>
+            </if>
+            <if test="updateUser != null">
+                <![CDATA[ and f.update_user = #{updateUser}]]>
+            </if>
+            <if test="createTime != null">
+                <![CDATA[ and f.create_time = #{createTime}]]>
+            </if>
+            <if test="updateTime != null">
+                <![CDATA[ and f.update_time = #{updateTime}]]>
+            </if>
+		</where>
+        order by id
+    </select>
+    <select id="queryListByEntity" resultType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity" resultMap="openAccountAdditionalFileMap">
+        select
+            f.id,
+            f.application_id,
+            f.additional_id,
+            f.file_name,
+            f.file_type,
+            f.file_storage_name,
+            f.file_ext_name,
+            f.file_path,
+            f.create_user,
+            f.update_user,
+            f.create_time,
+            f.update_time
+        from open_account_additional_file f
+		<where>
+            1=1
+            <if test="id != null">
+                <![CDATA[ and f.id = #{id}]]>
+            </if>
+            <if test="applicationId != null">
+                <![CDATA[ and f.application_id = #{applicationId}]]>
+            </if>
+            <if test="additionalId != null">
+                <![CDATA[ and f.additional_id = #{additionalId}]]>
+            </if>
+            <if test="fileType != null">
+                <![CDATA[ and f.file_type = #{fileType}]]>
+            </if>
+            <if test="fileName != null">
+                <![CDATA[ and f.file_name = #{fileName}]]>
+            </if>
+            <if test="fileStorageName != null">
+                <![CDATA[ and f.file_storage_name = #{fileStorageName}]]>
+            </if>
+            <if test="fileExtName != null">
+                <![CDATA[ and f.file_ext_name = #{fileExtName}]]>
+            </if>
+            <if test="filePath != null">
+                <![CDATA[ and f.file_path = #{filePath}]]>
+            </if>
+            <if test="createUser != null">
+                <![CDATA[ and f.create_user = #{createUser}]]>
+            </if>
+            <if test="updateUser != null">
+                <![CDATA[ and f.update_user = #{updateUser}]]>
+            </if>
+            <if test="createTime != null">
+                <![CDATA[ and f.create_time = #{createTime}]]>
+            </if>
+            <if test="updateTime != null">
+                <![CDATA[ and f.update_time = #{updateTime}]]>
+            </if>
+		</where>
+        order by id
+    </select>
+
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from open_account_additional_file
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity">
+		insert into open_account_additional_file
+		(
+			`application_id`, 
+			`additional_id`, 
+			`file_name`, 
+			`file_type`, 
+			`file_storage_name`, 
+			`file_ext_name`, 
+			`file_path`, 
+			`create_user`, 
+			`update_user`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{additionalId}, 
+			#{fileName}, 
+			#{fileType}, 
+			#{fileStorageName}, 
+			#{fileExtName}, 
+			#{filePath}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity">
+		update open_account_additional_file 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="additionalId != null">`additional_id` = #{additionalId}, </if>
+			<if test="fileName != null">`file_name` = #{fileName}, </if>
+			<if test="fileType != null">`file_type` = #{fileType}, </if>
+			<if test="fileStorageName != null">`file_storage_name` = #{fileStorageName}, </if>
+			<if test="fileExtName != null">`file_ext_name` = #{fileExtName}, </if>
+			<if test="filePath != null">`file_path` = #{filePath}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from open_account_additional_file where id = #{value}
+	</delete>
+
+	<delete id="deleteFile" parameterType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity">
+		delete from open_account_additional_file where id = #{id}
+	</delete>
+
+	<delete id="deleteBatch">
+		delete from open_account_additional_file where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <select id="queryDetail" resultType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity" resultMap="openAccountAdditionalFileMap">
+        select remark from open_account_additional_detail where 1=1
+        <if test="applicationId!=null and applicationId!=''">
+           and application_id = #{applicationId}
+        </if>
+        <if test="additionalId!=null and additionalId!=''">
+           and additional_id = #{additionalId}
+        </if>
+        <if test="additionalId == null">
+            and additional_id is null;
+        </if>
+    </select>
+
+    <select id="querySupUsers" resultType="java.lang.String" parameterType="java.lang.String">
+        select t.create_user from open_account_additional_file t where t.application_id = #{value} group by t.create_user
+    </select>
+
+    <select id="queryInfo" resultType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity" resultMap="openAccountAdditionalFileMap"
+            parameterType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity">
+        select t.* from open_account_additional_file t where 1=1
+        <if test="id!=null and id!=''">
+            and  id = #{id}
+        </if>
+    </select>
+
+    <!-- 插入至图片备注表 -->
+    <insert id="saveRecord" parameterType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity">
+        INSERT INTO open_account_additional_detail
+        (
+        application_id,
+        additional_id,
+        update_time,
+        create_time,
+        remark,
+        create_user
+        )
+        VALUES
+        (
+        #{applicationId},
+        #{additionalId},
+       #{createTime},
+       #{updateTime},
+        #{remark},
+        #{createUser}
+        )
+    </insert>
+
+    <update id="updateRecord" parameterType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity">
+        update open_account_additional_detail
+        <set>
+            <if test="createUser != null">`create_user` = #{createUser}, </if>
+            <if test="updateUser != null">`update_user` = #{updateUser}, </if>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="remark != null">`remark` = #{remark}</if>
+        </set>
+        where application_id = #{applicationId}
+        <if test="additionalId != null">and `additional_id` = #{additionalId}</if>
+        <if test="additionalId = null">and `additional_id` is null </if>
+    </update>
+
+    <select id="queryAdditionalIds" resultType="java.lang.String" >
+        select additional_id from open_account_additional_file where file_type!=2 and file_type!=3 and application_id = #{value} group by additional_id
+    </select>
+    
+    <update id="resetUpdateUser" parameterType="java.lang.String">
+        update open_account_additional_file set update_user = null where application_id = #{value}
+    </update>
+
+    <select id="querySupFile" parameterType="com.sunline.modules.account.online.entity.OpenAccountAdditionalFileEntity" resultMap="openAccountAdditionalFileMap">
+        select
+        f.id,
+        f.application_id,
+        f.additional_id,
+        f.file_name,
+        f.file_type,
+        f.file_storage_name,
+        f.file_ext_name,
+        f.file_path,
+        f.create_user,
+        f.update_user,
+        f.create_time,
+        f.update_time,
+        d.remark
+        from open_account_additional_file f
+        left JOIN  open_account_additional_detail d on f.application_id = d.application_id and d.additional_id is null
+        <where>
+            1=1 and file_type != 2 and file_type!=3 and file_type!=4
+            <if test="id != null">
+                <![CDATA[ and f.id = #{id}]]>
+            </if>
+            <if test="applicationId != null">
+                <![CDATA[ and f.application_id = #{applicationId}]]>
+            </if>
+            <if test="additionalId != null">
+                <![CDATA[ and f.additional_id = #{additionalId}]]>
+            </if>
+            <if test="fileName != null">
+                <![CDATA[ and f.file_name = #{fileName}]]>
+            </if>
+            <if test="fileStorageName != null">
+                <![CDATA[ and f.file_storage_name = #{fileStorageName}]]>
+            </if>
+            <if test="fileExtName != null">
+                <![CDATA[ and f.file_ext_name = #{fileExtName}]]>
+            </if>
+            <if test="filePath != null">
+                <![CDATA[ and f.file_path = #{filePath}]]>
+            </if>
+            <if test="createUser != null">
+                <![CDATA[ and f.create_user = #{createUser}]]>
+            </if>
+            <if test="updateUser != null">
+                <![CDATA[ and f.update_user = #{updateUser}]]>
+            </if>
+            <if test="createTime != null">
+                <![CDATA[ and f.create_time = #{createTime}]]>
+            </if>
+            <if test="updateTime != null">
+                <![CDATA[ and f.update_time = #{updateTime}]]>
+            </if>
+
+        </where>
+        order by id
+    </select>
+</mapper>

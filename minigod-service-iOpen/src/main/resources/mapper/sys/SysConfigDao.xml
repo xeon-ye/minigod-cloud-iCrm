@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+<mapper namespace="com.sunline.modules.sys.dao.SysConfigDao">
+
+    <resultMap type="com.sunline.modules.oss.entity.SysConfigEntity" id="sysConfigMap">
+        <result property="id" column="id"/>
+        <result property="create_time" column="createTime"/>
+        <result property="create_user" column="createUser"/>
+        <result property="update_time" column="updateTime"/>
+        <result property="update_user" column="updateUser"/>
+
+    </resultMap>
+
+	<select id="queryObject" resultType="com.sunline.modules.oss.entity.SysConfigEntity">
+		select * from sys_config where id = #{id}
+	</select>
+	
+	<select id="queryList" parameterType="map" resultType="com.sunline.modules.oss.entity.SysConfigEntity">
+		select id,`key`,`value`,status,remark,key_id,create_user,update_user,  Date_format(create_time,'%Y-%m-%d %T') as create_time,Date_format(update_time,'%Y-%m-%d %T') as update_time from sys_config where status = 1
+		<if test="key != null and key.trim() != ''">
+			and `key` like concat('%',#{key},'%') 
+		</if>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="queryTotal" parameterType="map" resultType="int">
+		select count(*) from sys_config where status = 1 
+		<if test="key != null and key.trim() != ''">
+			and `key` like concat('%',#{key},'%')
+		</if>
+	</select>
+	
+	<insert id="save" parameterType="com.sunline.modules.oss.entity.SysConfigEntity">
+		insert into sys_config(key_id,`key`, `value`, remark,create_time,create_user,update_time,update_user)
+			values(#{keyId},#{key},#{value},#{remark},now(),#{createUser},now(),#{updateUser})
+	</insert>
+	
+	<update id="update" parameterType="com.sunline.modules.oss.entity.SysConfigEntity">
+		update sys_config set key_id = #{keyId},`key` = #{key}, `value` = #{value}, remark = #{remark} ,update_time = now(),update_user = #{updateUser}
+			 where id = #{id}
+	</update>
+	
+	<!-- 根据key，更新value -->
+	<update id="updateValueByKey" parameterType="map">
+		update sys_config set `value` = #{value} where `key` = #{key}
+	</update>
+	
+	<!-- 根据key，查询value -->
+	<select id="queryByKey" parameterType="string" resultType="string">
+		select value from sys_config where `key` = #{key}
+	</select>
+
+	<!-- 根据keyId，查询value -->
+	<select id="queryByKeyId" parameterType="string" resultType="string">
+		select value from sys_config where `key_id` = #{keyId}
+	</select>
+
+	<delete id="deleteBatch" parameterType="int">
+		delete from sys_config where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <select id="queryInfo" resultMap="sysConfigMap" resultType="com.sunline.modules.oss.entity.SysConfigEntity">
+        select * from sys_config where 1=1
+        <if test="key!=null and key !=''">
+           and  `key` = #{key}
+        </if>
+        <if test="keyId!=null and keyId !=''">
+           and  key_id = #{keyId}
+        </if>
+    </select>
+	
+</mapper>

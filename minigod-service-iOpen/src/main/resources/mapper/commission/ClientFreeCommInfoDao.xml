@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.commission.dao.ClientFreeCommInfoDao">
+
+
+    <resultMap type="com.sunline.modules.commission.entity.ClientFreeCommInfoEntity" id="clientFreeCommissionInfoMap">
+        <result property="id" column="id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="fareDict" column="fare_dict"/>
+        <result property="feeType" column="fee_type"/>
+        <result property="feeCount" column="fee_count"/>
+        <result property="fareType" column="fare_type"/>
+        <result property="exchangeType" column="exchange_type"/>
+        <result property="stockType" column="stock_type"/>
+        <result property="stockCode" column="stock_code"/>
+        <result property="entrustBs" column="entrust_bs"/>
+        <result property="entrustWay" column="entrust_way"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="minFare" column="min_fare"/>
+        <result property="maxFare" column="max_fare"/>
+        <result property="precisions" column="precisions"/>
+        <result property="precisionFlag" column="precision_flag"/>
+        <result property="feeCountFix" column="fee_count_fix"/>
+        <result property="fareStr" column="fare_str"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="freeCommStatus" column="free_comm_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		client_id, 
+		fund_account, 
+		fare_dict, 
+		fee_type, 
+		fee_count, 
+		fare_type, 
+		exchange_type, 
+		stock_type, 
+		stock_code, 
+		entrust_bs, 
+		entrust_way, 
+		money_type, 
+		min_fare, 
+		max_fare, 
+		precisions, 
+		precision_flag, 
+		fee_count_fix, 
+		fare_str, 
+		begin_date, 
+		end_date, 
+		free_comm_status,
+		create_time,
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.commission.entity.ClientFreeCommInfoEntity" resultMap="clientFreeCommissionInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_free_commission_info
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.commission.entity.ClientFreeCommInfoEntity" resultMap="clientFreeCommissionInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_free_commission_info
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.commission.entity.ClientFreeCommInfoEntity" resultMap="clientFreeCommissionInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_free_commission_info
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from client_free_commission_info
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.commission.entity.ClientFreeCommInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into client_free_commission_info
+		(
+			`client_id`, 
+			`fund_account`, 
+			`fare_dict`, 
+			`fee_type`, 
+			`fee_count`, 
+			`fare_type`, 
+			`exchange_type`, 
+			`stock_type`, 
+			`stock_code`, 
+			`entrust_bs`, 
+			`entrust_way`, 
+			`money_type`, 
+			`min_fare`, 
+			`max_fare`, 
+			`precisions`, 
+			`precision_flag`, 
+			`fee_count_fix`, 
+			`fare_str`, 
+			`begin_date`, 
+			`end_date`, 
+			`free_comm_status`,
+			`create_time`,
+			`update_time`
+		)
+		values
+		(
+			#{clientId}, 
+			#{fundAccount}, 
+			#{fareDict}, 
+			#{feeType}, 
+			#{feeCount}, 
+			#{fareType}, 
+			#{exchangeType}, 
+			#{stockType}, 
+			#{stockCode}, 
+			#{entrustBs}, 
+			#{entrustWay}, 
+			#{moneyType}, 
+			#{minFare}, 
+			#{maxFare}, 
+			#{precisions}, 
+			#{precisionFlag}, 
+			#{feeCountFix}, 
+			#{fareStr}, 
+			#{beginDate}, 
+			#{endDate}, 
+			#{freeCommStatus},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.commission.entity.ClientFreeCommInfoEntity">
+		update client_free_commission_info 
+		<set>
+			<if test="clientId != null">`client_id` = #{clientId}, </if>
+			<if test="fundAccount != null">`fund_account` = #{fundAccount}, </if>
+			<if test="fareDict != null">`fare_dict` = #{fareDict}, </if>
+			<if test="feeType != null">`fee_type` = #{feeType}, </if>
+			<if test="feeCount != null">`fee_count` = #{feeCount}, </if>
+			<if test="fareType != null">`fare_type` = #{fareType}, </if>
+			<if test="exchangeType != null">`exchange_type` = #{exchangeType}, </if>
+			<if test="stockType != null">`stock_type` = #{stockType}, </if>
+			<if test="stockCode != null">`stock_code` = #{stockCode}, </if>
+			<if test="entrustBs != null">`entrust_bs` = #{entrustBs}, </if>
+			<if test="entrustWay != null">`entrust_way` = #{entrustWay}, </if>
+			<if test="moneyType != null">`money_type` = #{moneyType}, </if>
+			<if test="minFare != null">`min_fare` = #{minFare}, </if>
+			<if test="maxFare != null">`max_fare` = #{maxFare}, </if>
+			<if test="precisions != null">`precisions` = #{precisions}, </if>
+			<if test="precisionFlag != null">`precision_flag` = #{precisionFlag}, </if>
+			<if test="feeCountFix != null">`fee_count_fix` = #{feeCountFix}, </if>
+			<if test="fareStr != null">`fare_str` = #{fareStr}, </if>
+			<if test="beginDate != null">`begin_date` = #{beginDate}, </if>
+			<if test="endDate != null">`end_date` = #{endDate}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from client_free_commission_info where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from client_free_commission_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

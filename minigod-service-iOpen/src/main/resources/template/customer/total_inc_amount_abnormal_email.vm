@@ -1,0 +1,47 @@
+<div style="padding:30px 55px 50px 55px; font-size:14px; color:#333; line-height:26px;">
+    <div style="padding:0px; margin:0px; line-height:26px;"><a style="text-decoration:none">客户<font><strong>${clientName}</strong>，净入金金额<strong>${totalAmount}</strong>，超过申报年收入/总资产，请检查！</font></a></div>
+    <div style="padding:0px; margin:0px; line-height:26px; margin-top:15px;">
+        相关信息如下：<br>
+        <table width="100%" border="1px" cellspacing="0" cellpadding="0">
+            <tbody><tr>
+                <td width="250"  style="padding-bottom:6px; background-color:rgba(167, 162, 162, 0.27)" >客户姓名：</td>
+                <td valign="top" style="padding-bottom:6px; line-height:28px; font-size:14px;">${clientName}</td>
+            </tr>
+            <tr>
+                <td width="250"  style="padding-bottom:6px; background-color:rgba(167, 162, 162, 0.27)">客户号：</td>
+                <td valign="top" style="padding-bottom:6px; line-height:28px; font-size:14px;">${clientId}</td>
+            </tr>
+            <tr>
+                <td width="250"  style="padding-bottom:6px; background-color:rgba(167, 162, 162, 0.27)">本次入金（HKD）：</td>
+                <td valign="top" style="padding-bottom:6px; line-height:28px; font-size:14px;">${occurBalance}</td>
+            </tr>
+            <tr>
+                <td width="250"  style="padding-bottom:6px; background-color:rgba(167, 162, 162, 0.27)">累计入金（HKD）：</td>
+                <td valign="top" style="padding-bottom:6px; line-height:28px; font-size:14px;">${totalIncAmount}</td>
+            </tr>
+            <tr>
+                <td width="250"  style="padding-bottom:6px; background-color:rgba(167, 162, 162, 0.27)">累计出金（HKD）：</td>
+                <td valign="top" style="padding-bottom:6px; line-height:28px; font-size:14px;">${totalOutAmount}</td>
+            </tr>
+            <tr>
+                <td width="250"  style="padding-bottom:6px; background-color:rgba(167, 162, 162, 0.27)">净入金（累计入金-累计出金）：</td>
+                <td valign="top" style="padding-bottom:6px; line-height:28px; font-size:14px;">${totalAmount}</td>
+            </tr>
+            <tr>
+                <td width="250"  style="padding-bottom:6px; background-color:rgba(167, 162, 162, 0.27)">年收入：</td>
+                <td valign="top" style="padding-bottom:6px; line-height:28px; font-size:14px;">${annualIncome}</td>
+            </tr>
+            <tr>
+                <td width="250"  style="padding-bottom:6px; background-color:rgba(167, 162, 162, 0.27)">银行存款：</td>
+                <td valign="top" style="padding-bottom:6px; line-height:28px; font-size:14px;">${propertyAmount1}</td>
+            </tr>
+            <tr>
+                <td width="250"  style="padding-bottom:6px; background-color:rgba(167, 162, 162, 0.27)">股票基金债券等投资：</td>
+                <td valign="top" style="padding-bottom:6px; line-height:28px; font-size:14px;">${propertyAmount2}</td>
+            </tr>
+            <tr>
+                <td width="250"  style="padding-bottom:6px; background-color:rgba(167, 162, 162, 0.27)">不动产：</td>
+                <td valign="top" style="padding-bottom:6px; line-height:28px; font-size:14px;">${propertyAmount3}</td>
+            </tr>
+            </tbody></table>
+</div>

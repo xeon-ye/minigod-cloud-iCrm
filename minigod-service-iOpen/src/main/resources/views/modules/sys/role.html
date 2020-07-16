@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>角色管理</title>
+#parse("modules/sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			<div class="form-group col-xs-2">
+				<input class="form-control" id="roleName" v-model="q.roleName" @keyup.enter="query" placeholder="角色名称">
+			</div>
+            <!--<div class="form-group col-xs-2">-->
+                <!--<select class="form-control" id="roleType" name="roleType">-->
+                    <!--<option value="">&#45;&#45;请选择角色类型&#45;&#45;</option>-->
+                    <!--<option value="0">内部角色</option>-->
+                    <!--<option value="-1">外部角色</option>-->
+                <!--</select>-->
+            <!--</div>-->
+            <div class="form-group col-xs-2">
+                <select class="form-control" id="status" name="status">
+                    <option value="">--请选择状态--</option>
+                    <option value="0">正常</option>
+                    <option value="-1">禁用</option>
+                </select>
+            </div>
+			<button class="layui-btn" id="searchSubmit" @click="query"><i class="layui-icon">&#xe615;</i>查 询</button>
+			
+			#if($shiro.hasPermission("sys:role:update"))
+				<button class="layui-btn" @click="add" type="button"><i class="layui-icon">&#xe61f;</i> 新 增</button>
+			#end
+			#if($shiro.hasPermission("sys:role:update"))
+				<button class="layui-btn layui-btn-normal" type="button" @click="update"><i class="layui-icon">&#xe642;</i>编辑</button>
+			#end
+            #if($shiro.hasPermission("sys:role:enabled"))
+            <button class="layui-btn layui-btn-warm" type="button" @click="enabled"><i class="layui-icon">&#xe652;</i>启用</button>
+            #end
+			#if($shiro.hasPermission("sys:role:delete"))
+				<button class="layui-btn layui-btn-danger" type="button" @click="del"><i class="layui-icon">&#xe651;</i>禁用</button>
+			#end
+			#if($shiro.hasPermission("sys:role:menu"))
+			<button class="layui-btn layui-btn-normal" type="button" @click="menu"><i class="layui-icon">&#xe642;</i>菜单授权</button>
+			#end
+			#if($shiro.hasPermission("sys:role:organ"))
+			<button class="layui-btn layui-btn-normal" type="button" @click="organ"><i class="layui-icon">&#xe642;</i>数据授权</button>
+			#end
+			#if($shiro.hasPermission("sys:role:channel"))
+			<button class="layui-btn layui-btn-normal" type="button" @click="channel"><i class="layui-icon">&#xe642;</i>渠道授权</button>
+			#end
+		</div>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+    
+    <div v-show="!showList" class="panel panel-default" >
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal" style="width: 100%">
+			<div class="form-group" style="width: 40%;left: 20px">
+			   	<div class="col-sm-2 control-label">角色名称</div>
+			   	<div class="col-sm-10">
+			      <input  class="form-control" v-model="role.name" placeholder="角色名称"/>
+			    </div>
+			</div>
+			<div class="form-group" style="width: 40%">
+			   	<div class="col-sm-2 control-label">备注</div>
+			   	<div class="col-sm-10">
+			      <input  class="form-control" v-model="role.remark" placeholder="备注"/>
+			    </div>
+			</div>
+            <div class="form-group" style="width: 40%">
+                <div class="col-sm-2 control-label">角色类型</div>
+                <label class="radio-inline">
+                    <input type="radio" name="roleType" value="0" v-model="role.roleType" disabled/> 内部角色
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="roleType" value="-1" v-model="role.roleType" disabled/> 外部角色
+                </label>
+            </div>
+			<div class="form-group" style="width: 40%">
+				<div class="col-sm-2 control-label">状态</div>
+				<label class="radio-inline">
+					<input type="radio" name="status" value="-1" v-model="role.status"/> 禁用
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="status" value="0" v-model="role.status"/> 正常
+				</label>
+			</div>
+
+			<div class="row">
+				<div v-if="option == 0 || option == 1" class="form-group col-md-6 " style="width: 25%">
+					<div class="col-sm-4 control-label">菜单授权:</div>
+                    <div style="overflow-y:auto; height:450px">
+					    <div class="col-sm-6">
+						    <ul id="menuTree" class="ztree"></ul>
+					    </div>
+                    </div>
+				</div>
+                <div v-if="option == 0 || option == 2" class="form-group col-md-6 " style="width: 25%">
+                    <div class="col-sm-4 control-label">数据授权:</div>
+                    <div style="overflow-y:auto; height:450px">
+                        <div class="col-sm-6">
+                            <ul id="organTree" class="ztree"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="option == 0 || option == 3" class="form-group col-sm-12 " style="width: 25%">
+                    <div class="col-sm-3  control-label">渠道授权:</div>
+                    <div style="overflow-y:auto; height:450px">
+                        <div class="col-sm-9">
+                            <ul id="channelTree" class="ztree"></ul>
+                        </div>
+                    </div>
+                </div>
+			</div>
+
+			<div class="form-group" style="margin-left: 30%;margin-top: 30px;">
+				#if($shiro.hasPermission("sys:role:update"))
+				<button class="layui-btn" type="button" @click="saveOrUpdate" >确定</button>
+				#end
+				<button class="layui-btn layui-btn-warm" type="button" @click="reload" style="margin-left: 30px">返回</button>
+			</div>
+		</form>
+	</div>
+</div>
+   
+<script src="${rc.contextPath}/js/sys/role.js?_${date.systemTime}"></script>
+</body>
+</html>

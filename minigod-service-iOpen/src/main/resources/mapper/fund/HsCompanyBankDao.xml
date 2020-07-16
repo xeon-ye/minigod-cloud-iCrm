@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.fund.dao.HsCompanyBankDao">
+
+
+    <resultMap type="com.sunline.modules.fund.entity.HsCompanyBankEntity" id="hsCompanyBankMap">
+        <result property="id" column="id"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="bankAccount" column="bank_account"/>
+        <result property="companyCode" column="company_code"/>
+        <result property="remark" column="remark"/>
+        <result property="contractRemark" column="contract_remark"/>
+        <result property="defaultFlag" column="default_flag"/>
+        <result property="caDefaultFlag" column="ca_default_flag"/>
+		<result property="isTop" column="is_top"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		bank_id, 
+		bank_name,
+		money_type,
+		bank_account, 
+		company_code, 
+		remark, 
+		contract_remark, 
+		default_flag, 
+		ca_default_flag,
+		is_top
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.fund.entity.HsCompanyBankEntity" resultMap="hsCompanyBankMap">
+		select
+		<include refid="Base_Column_List" />
+		from hs_company_bank
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.fund.entity.HsCompanyBankEntity" resultMap="hsCompanyBankMap">
+		select
+		<include refid="Base_Column_List" />
+		from hs_company_bank
+		ORDER BY is_top DESC
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.fund.entity.HsCompanyBankEntity" resultMap="hsCompanyBankMap">
+        select
+        <include refid="Base_Column_List" />
+        from hs_company_bank
+        WHERE 1=1
+		<if test="bankId != null and bankId != ''">
+			AND bank_id =#{bankId}
+		</if>
+		<if test="bankAccount != null">
+			AND bank_account =#{bankAccount}
+		</if>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from hs_company_bank
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.fund.entity.HsCompanyBankEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into hs_company_bank
+		(
+			`bank_id`, 
+			`money_type`, 
+			`bank_account`, 
+			`company_code`, 
+			`remark`, 
+			`contract_remark`, 
+			`default_flag`, 
+			`ca_default_flag`,
+			`is_top`
+		)
+		values
+		(
+			#{bankId}, 
+			#{moneyType}, 
+			#{bankAccount}, 
+			#{companyCode}, 
+			#{remark}, 
+			#{contractRemark}, 
+			#{defaultFlag}, 
+			#{caDefaultFlag},
+			#{isTop}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.fund.entity.HsCompanyBankEntity">
+		update hs_company_bank 
+		<set>
+			<if test="bankId != null">`bank_id` = #{bankId}, </if>
+			<if test="moneyType != null">`money_type` = #{moneyType}, </if>
+			<if test="bankAccount != null">`bank_account` = #{bankAccount}, </if>
+			<if test="companyCode != null">`company_code` = #{companyCode}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="contractRemark != null">`contract_remark` = #{contractRemark}, </if>
+			<if test="defaultFlag != null">`default_flag` = #{defaultFlag}, </if>
+			<if test="caDefaultFlag != null">`ca_default_flag` = #{caDefaultFlag},</if>
+			<if test="isTop != null">`is_top` = #{isTop}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from hs_company_bank where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from hs_company_bank where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -8,7 +8,6 @@
         <groupId>com.minigod</groupId>
         <artifactId>minigod-cloud</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath />
     </parent>
 
     <artifactId>minigod-cloud-auth</artifactId>

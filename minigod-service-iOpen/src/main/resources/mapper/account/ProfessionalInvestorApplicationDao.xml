@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.professional.dao.ProfessionalInvestorApplicationDao">
+
+
+    <resultMap type="com.sunline.modules.account.professional.entity.ProfessionalInvestorApplicationEntity" id="professionalInvestorApplicationMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="portfolios" column="portfolios"/>
+        <result property="applyTime" column="apply_time"/>
+        <result property="accreditTime" column="accredit_time"/>
+        <result property="expireTime" column="expire_time"/>
+        <result property="revokeTime" column="revoke_time"/>
+        <result property="totalAssets" column="total_assets"/>
+        <result property="totalAssetsDate" column="total_assets_date"/>
+        <result property="approveResult" column="approve_result"/>
+        <result property="instanceId" column="instance_id"/>
+        <result property="defid" column="defid"/>
+        <result property="applicationStatus" column="application_status"/>
+        <result property="startTime" column="start_time"/>
+        <result property="status" column="status"/>
+        <result property="currentNode" column="current_node"/>
+        <result property="assignDrafter" column="assign_drafter"/>
+		<result property="flowPath" column="flow_path"/>
+        <result property="actResult" column="act_result"/>
+        <result property="lastApprovalUser" column="last_approval_user"/>
+        <result property="approvalOpinion" column="approval_opinion"/>
+        <result property="startUserId" column="start_user_id"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="callbackStatus" column="callback_status"/>
+        <result property="hsDealStatus" column="hs_deal_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		application_id, 
+		client_id, 
+		fund_account,
+		user_id,
+		portfolios,
+		apply_time,
+		accredit_time,
+		expire_time,
+		revoke_time,
+		total_assets,
+		total_assets_date, 
+		approve_result, 
+		instance_id, 
+		defid, 
+		application_status, 
+		start_time, 
+		status, 
+		current_node, 
+		assign_drafter,
+		flow_path,
+		act_result, 
+		last_approval_user, 
+		approval_opinion, 
+		start_user_id, 
+		create_user, 
+		update_user, 
+		callback_status, 
+		hs_deal_status, 
+		create_time, 
+		update_time
+    </sql>
+
+	<sql id="Base_Column_With_Table" >
+		p.id,
+		p.application_id,
+		p.client_id,
+		p.fund_account,
+		p.user_id,
+		p.portfolios,
+		p.apply_time,
+		p.accredit_time,
+		p.expire_time,
+		p.revoke_time,
+		p.total_assets,
+		p.total_assets_date,
+		p.approve_result,
+		p.instance_id,
+		p.defid,
+		p.application_status,
+		p.start_time,
+		p.status,
+		p.current_node,
+		p.assign_drafter,
+		p.flow_path,
+		p.act_result,
+		p.last_approval_user,
+		p.approval_opinion,
+		p.start_user_id,
+		p.create_user,
+		p.update_user,
+		p.callback_status,
+		p.hs_deal_status,
+		p.create_time,
+		p.update_time
+	</sql>
+
+	<sql id="Base_Where_Conditions">
+		<if test="clientId != null and clientId != ''">
+			<![CDATA[ and p.client_id = #{clientId}]]>
+		</if>
+		<if test="applicationId != null and applicationId != ''">
+			<![CDATA[ and p.application_id = #{applicationId}]]>
+		</if>
+		<if test="userId != null and userId != ''">
+			<![CDATA[ and s.user_id = #{userId}]]>
+		</if>
+		<if test="clientName != null and clientName != ''">
+			<![CDATA[ and s.client_name = #{clientName}]]>
+		</if>
+		<if test="clientNameSpell != null and clientNameSpell != ''">
+			<![CDATA[ and s.client_name_spell = #{clientNameSpell}]]>
+		</if>
+		<if test="phoneNumber != null and phoneNumber != ''">
+			<![CDATA[ and s.phone_number = #{phoneNumber}]]>
+		</if>
+		<if test="applicationStatus != null and applicationStatus != ''">
+			<![CDATA[ and p.application_status = #{applicationStatus}]]>
+		</if>
+		<if test="applyDateSt != null and applyDateSt != ''">
+			AND p.apply_time <![CDATA[ >= ]]> #{applyDateSt}
+		</if>
+		<if test="applyDateEd != null and applyDateEd != ''">
+			AND p.apply_time <![CDATA[ <= ]]> #{applyDateEd}
+		</if>
+		<if test="accreditDateSt != null and accreditDateSt != ''">
+			AND p.accredit_time <![CDATA[ >= ]]> #{accreditDateSt}
+		</if>
+		<if test="accreditDateEd != null and accreditDateEd != ''">
+			AND p.accredit_time <![CDATA[ <= ]]> #{accreditDateEd}
+		</if>
+		<if test="expireDateSt != null and expireDateSt != ''">
+			AND p.expire_time <![CDATA[ >= ]]> #{expireDateSt}
+		</if>
+		<if test="expireDateEd != null and expireDateEd != ''">
+			AND p.expire_time <![CDATA[ <= ]]> #{expireDateEd}
+		</if>
+		<if test="revokeDateSt != null and revokeDateSt != ''">
+			AND p.revoke_time <![CDATA[ >= ]]> #{revokeDateSt}
+		</if>
+		<if test="revokeDateEd != null and revokeDateEd != ''">
+			AND p.revoke_time <![CDATA[ <= ]]> #{revokeDateEd}
+		</if>
+		<if test="assignDrafter != null">
+			AND (p.assign_drafter = #{assignDrafter} || p.assign_drafter IS NULL)
+		</if>
+		<if test="currentNodes != null">
+			<if test="currentNodes.size==0">
+				and p.current_node = null
+			</if>
+			<if test="currentNodes.size!=0">
+				and p.current_node in
+				<foreach item="item" index="index" collection="currentNodes" open="(" separator="," close=")">
+					#{currentNodes[${index}]}
+				</foreach>
+			</if>
+		</if>
+	</sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.account.professional.entity.ProfessionalInvestorApplicationEntity" resultMap="professionalInvestorApplicationMap">
+		select
+		<include refid="Base_Column_List"/>
+		from professional_investor_application
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.account.professional.entity.ProfessionalInvestorApplicationEntity" resultMap="professionalInvestorApplicationMap">
+		select s.client_name,s.client_name_spell,s.phone_number,s.user_id,s.sex,
+		<include refid="Base_Column_With_Table"/>
+		FROM professional_investor_application p
+		LEFT JOIN securities_user_info s ON p.client_id=s.trade_account
+		<where>
+			<include refid="Base_Where_Conditions"/>
+			<if test="callbackStatus != null and callbackStatus != ''">
+				AND p.callback_status = #{callbackStatus}
+			</if>
+		</where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by p.${sidx} ${order}
+            </when>
+			<otherwise>
+                order by p.accredit_time DESC
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.professional.entity.ProfessionalInvestorApplicationEntity" resultMap="professionalInvestorApplicationMap">
+        select
+        <include refid="Base_Column_List" />
+		FROM professional_investor_application
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from professional_investor_application p
+		LEFT JOIN securities_user_info s ON p.client_id=s.trade_account
+		<where>
+			<include refid="Base_Where_Conditions"/>
+		</where>
+	</select>
+
+    <select id="queryByApplicationId"
+            resultType="com.sunline.modules.account.professional.entity.ProfessionalInvestorApplicationEntity">
+		SELECT s.client_name,s.client_name_spell,s.phone_number,s.user_id,s.sex,
+		<include refid="Base_Column_With_Table"/>
+		FROM professional_investor_application p
+		LEFT JOIN securities_user_info s ON p.client_id=s.trade_account
+		WHERE p.application_id = #{applicationId}
+	</select>
+
+    <select id="queryCheckList"
+            resultType="com.sunline.modules.account.professional.entity.ProfessionalInvestorApplicationEntity">
+		select s.client_name,s.client_name_spell,s.phone_number,s.sex,
+		<include refid="Base_Column_With_Table"/>
+		FROM professional_investor_application p
+		LEFT JOIN securities_user_info s ON p.client_id=s.trade_account
+		<where>
+			p.application_status IN (1,2)
+			<include refid="Base_Where_Conditions"/>
+		</where>
+		ORDER BY assign_drafter DESC,p.apply_time ASC
+	</select>
+
+    <insert id="save" parameterType="com.sunline.modules.account.professional.entity.ProfessionalInvestorApplicationEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into professional_investor_application
+		(
+			`application_id`, 
+			`client_id`,
+			`fund_account`,
+			`user_id`,
+			`portfolios`, 
+			`apply_time`, 
+			`accredit_time`, 
+			`expire_time`, 
+			`revoke_time`, 
+			`total_assets`, 
+			`total_assets_date`, 
+			`approve_result`, 
+			`instance_id`, 
+			`defid`, 
+			`application_status`, 
+			`start_time`, 
+			`status`, 
+			`current_node`, 
+			`assign_drafter`,
+			`flow_path`,
+			`act_result`, 
+			`last_approval_user`, 
+			`approval_opinion`, 
+			`start_user_id`, 
+			`create_user`, 
+			`update_user`, 
+			`callback_status`, 
+			`hs_deal_status`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{clientId},
+			#{fundAccount},
+			#{userId},
+			#{portfolios}, 
+			#{applyTime},
+			#{accreditTime},
+			#{expireTime},
+			#{revokeTime},
+			#{totalAssets}, 
+			#{totalAssetsDate}, 
+			#{approveResult}, 
+			#{instanceId}, 
+			#{defid}, 
+			#{applicationStatus}, 
+			#{startTime}, 
+			#{status}, 
+			#{currentNode}, 
+			#{assignDrafter},
+			#{flowPath},
+			#{actResult}, 
+			#{lastApprovalUser}, 
+			#{approvalOpinion}, 
+			#{startUserId}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{callbackStatus}, 
+			#{hsDealStatus}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.account.professional.entity.ProfessionalInvestorApplicationEntity">
+		update professional_investor_application 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="clientId != null">`client_id` = #{clientId}, </if>
+			<if test="fundAccount != null">`fund_account` = #{fundAccount}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="portfolios != null">`portfolios` = #{portfolios}, </if>
+			<if test="applyTime != null">`apply_time` = #{applyTime}, </if>
+			<if test="accreditTime != null">`accredit_time` = #{accreditTime}, </if>
+			<if test="expireTime != null">`expire_time` = #{expireTime}, </if>
+			<if test="revokeTime != null">`revoke_time` = #{revokeTime}, </if>
+			<if test="totalAssets != null">`total_assets` = #{totalAssets}, </if>
+			<if test="totalAssetsDate != null">`total_assets_date` = #{totalAssetsDate}, </if>
+			<if test="approveResult != null">`approve_result` = #{approveResult}, </if>
+			<if test="instanceId != null">`instance_id` = #{instanceId}, </if>
+			<if test="defid != null">`defid` = #{defid}, </if>
+			<if test="applicationStatus != null">`application_status` = #{applicationStatus}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="currentNode != null">`current_node` = #{currentNode}, </if>
+			<if test="assignDrafter != null">`assign_drafter` = #{assignDrafter}, </if>
+			<if test="flowPath != null">`flow_path` = #{flowPath}, </if>
+			<if test="actResult != null">`act_result` = #{actResult}, </if>
+			<if test="lastApprovalUser != null">`last_approval_user` = #{lastApprovalUser}, </if>
+			<if test="approvalOpinion != null">`approval_opinion` = #{approvalOpinion}, </if>
+			<if test="startUserId != null">`start_user_id` = #{startUserId}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="callbackStatus != null">`callback_status` = #{callbackStatus}, </if>
+			<if test="hsDealStatus != null">`hs_deal_status` = #{hsDealStatus}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where application_id = #{applicationId}
+	</update>
+
+	<update id="updateAssignDrafter">
+		UPDATE professional_investor_application SET assign_drafter=#{assignDrafter},update_time=#{updateTime}
+		where application_id = #{applicationId}
+	</update>
+
+	<delete id="delete">
+		delete from professional_investor_application where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from professional_investor_application where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

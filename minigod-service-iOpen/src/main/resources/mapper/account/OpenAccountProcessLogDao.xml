@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.OpenAccountProcessLogDao">
+
+
+    <resultMap type="com.sunline.modules.account.online.entity.OpenAccountProcessLogEntity" id="openAccountProcessLogMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="currentNode" column="current_node"/>
+        <result property="taskId" column="task_id"/>
+        <result property="isEdit" column="is_edit"/>
+        <result property="isAdditional" column="is_additional"/>
+        <result property="isBackWorkflow" column="is_back_workflow"/>
+        <result property="isBackApp" column="is_back_app"/>
+        <result property="isReject" column="is_reject"/>
+        <result property="isRejectBlacklist" column="is_reject_blacklist"/>
+        <result property="backReasonType" column="back_reason_type"/>
+        <result property="isEditUser" column="is_edit_user"/>
+        <result property="isAdditionalUser" column="is_additional_user"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		application_id, 
+		current_node, 
+		task_id, 
+		is_edit, 
+		is_additional, 
+		is_back_workflow, 
+		is_back_app, 
+		is_reject, 
+		is_reject_blacklist, 
+		back_reason_type, 
+		is_edit_user, 
+		is_additional_user, 
+		create_user, 
+		update_user, 
+		create_time, 
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.account.online.entity.OpenAccountProcessLogEntity" resultMap="openAccountProcessLogMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_process_log
+		where id = #{value}
+	</select>
+
+	<select id="queryObjectByApplicationId" resultType="com.sunline.modules.account.online.entity.OpenAccountProcessLogEntity" resultMap="openAccountProcessLogMap">		
+		select
+		<include refid="Base_Column_List" />
+		from open_account_process_log a 
+			where id = (select max(id) from open_account_process_log b where a.application_id=b.application_id and 
+						b.application_id=#{application_id})
+	</select>
+	
+	<select id="queryList" resultType="com.sunline.modules.account.online.entity.OpenAccountProcessLogEntity" resultMap="openAccountProcessLogMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_process_log
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.OpenAccountProcessLogEntity" resultMap="openAccountProcessLogMap">
+        select
+        <include refid="Base_Column_List" />
+        from open_account_process_log
+        WHERE 1=1
+        <if test="applicationId != null">
+            <![CDATA[ AND application_id = #{applicationId}]]>
+        </if>
+        <if test="currentNode != null">
+            <![CDATA[ AND current_node = #{currentNode}]]>
+        </if>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from open_account_process_log
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.account.online.entity.OpenAccountProcessLogEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into open_account_process_log
+		(
+			`application_id`, 
+			`current_node`, 
+			`task_id`, 
+			`is_edit`, 
+			`is_additional`, 
+			`is_back_workflow`, 
+			`is_back_app`, 
+			`is_reject`, 
+			`is_reject_blacklist`, 
+			`back_reason_type`, 
+			`is_edit_user`, 
+			`is_additional_user`, 
+			`create_user`, 
+			`update_user`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{currentNode}, 
+			#{taskId}, 
+			#{isEdit}, 
+			#{isAdditional}, 
+			#{isBackWorkflow}, 
+			#{isBackApp}, 
+			#{isReject}, 
+			#{isRejectBlacklist}, 
+			#{backReasonType}, 
+			#{isEditUser}, 
+			#{isAdditionalUser}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.account.online.entity.OpenAccountProcessLogEntity">
+		update open_account_process_log 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="currentNode != null">`current_node` = #{currentNode}, </if>
+			<if test="taskId != null">`task_id` = #{taskId}, </if>
+			<if test="isEdit != null">`is_edit` = #{isEdit}, </if>
+			<if test="isAdditional != null">`is_additional` = #{isAdditional}, </if>
+			<if test="isBackWorkflow != null">`is_back_workflow` = #{isBackWorkflow}, </if>
+			<if test="isBackApp != null">`is_back_app` = #{isBackApp}, </if>
+			<if test="isReject != null">`is_reject` = #{isReject}, </if>
+			<if test="isRejectBlacklist != null">`is_reject_blacklist` = #{isRejectBlacklist}, </if>
+			<if test="backReasonType != null">`back_reason_type` = #{backReasonType}, </if>
+			<if test="isEditUser != null">`is_edit_user` = #{isEditUser}, </if>
+			<if test="isAdditionalUser != null">`is_additional_user` = #{isAdditionalUser}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateByTaskId" parameterType="com.sunline.modules.account.online.entity.OpenAccountProcessLogEntity">
+		update open_account_process_log 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="currentNode != null">`current_node` = #{currentNode}, </if>			
+			<if test="isEdit != null">`is_edit` = #{isEdit}, </if>
+			<if test="isAdditional != null">`is_additional` = #{isAdditional}, </if>
+			<if test="isBackWorkflow != null">`is_back_workflow` = #{isBackWorkflow}, </if>
+			<if test="isBackApp != null">`is_back_app` = #{isBackApp}, </if>
+			<if test="isReject != null">`is_reject` = #{isReject}, </if>
+			<if test="isRejectBlacklist != null">`is_reject_blacklist` = #{isRejectBlacklist}, </if>
+			<if test="backReasonType != null">`back_reason_type` = #{backReasonType}, </if>
+			<if test="isEditUser != null">`is_edit_user` = #{isEditUser}, </if>
+			<if test="isAdditionalUser != null">`is_additional_user` = #{isAdditionalUser}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where task_id = #{taskId}
+	</update>
+	
+	<delete id="delete">
+		delete from open_account_process_log where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from open_account_process_log where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

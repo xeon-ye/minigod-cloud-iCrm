@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>&#xe705; 佣金套餐列表</title>
+    #parse("modules/sys/header.html")
+</head>
+<body>
+<div v-show="showPackageList" class="col-md-5 col-sm-10"  style="width: 100%;">
+    <div class="panel panel-default">
+        <!--<div class="panel-heading"><i class="layui-icon" style="font-size: 20px; color: #4caf50;" >&#xe705; </i> 佣金方案列表</div>-->
+        <div class="grid-btn">    </div>
+        <div class="grid-btn">
+            <div class="form-group col-sm-2">
+                <input class="form-control" id="fareKind" v-model="query.fareKind" @keyup.enter="query" placeholder="套餐编号">
+            </div>
+            <div class="form-group col-sm-2">
+                <select class="form-control" id="exchangeType" name="exchangeType">
+                    <option value="">--请选择--</option>
+                    <option value="K">港交所</option>
+                    <option value="P">美国市场</option>
+                </select>
+            </div>
+            <button class="layui-btn" id="searchSubmit" onclick="reloadList();"><i class="layui-icon">&#xe615;</i>查 询</button>
+        </div>
+        <div class="grid-btn">    </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager" ></div>
+        <div id="page"></div>
+    </div>
+</div>
+<script src="${rc.contextPath}/js/marker/packageList.js?_${date.systemTime}"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.dbs.dao.DbsAreBankFlowDao">
+	<resultMap type="com.sunline.modules.dbs.entity.DbsAreBankFlowEntity" id="dbsAreBankFlowMap">
+		<result property="id" column="id"/>
+		<result property="msgId" column="msg_id"/>
+		<result property="sourceMsgId" column="source_msg_id"/>
+		<result property="reqStatus" column="req_status"/>
+		<result property="enqStatus" column="enq_status"/>
+		<result property="reqMessage" column="req_message"/>
+		<result property="reqTime" column="req_time"/>
+		<result property="resMessage" column="res_message"/>
+		<result property="resTime" column="res_time"/>
+		<result property="createUser" column="create_user"/>
+		<result property="updateUser" column="update_user"/>
+		<result property="createTime" column="create_time"/>
+		<result property="updateTime" column="update_time"/>
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		id,
+		msg_id,
+		source_msg_id,
+		req_status,
+		enq_status,
+		req_message,
+		req_time,
+		res_message,
+		res_time,
+		create_user,
+		update_user,
+		create_time,
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.dbs.entity.DbsAreBankFlowEntity" resultMap="dbsAreBankFlowMap">
+		select
+		<include refid="Base_Column_List" />
+		from dbs_are_bank_flow
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.dbs.entity.DbsAreBankFlowEntity" resultMap="dbsAreBankFlowMap">
+		select
+		<include refid="Base_Column_List" />
+		from dbs_are_bank_flow
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="queryListByBean" resultType="com.sunline.modules.dbs.entity.DbsAreBankFlowEntity" resultMap="dbsAreBankFlowMap">
+		select
+		<include refid="Base_Column_List" />
+		from dbs_are_bank_flow
+		WHERE 1=1
+	</select>
+
+	<select id="queryTotal" resultType="int">
+		select count(*) from dbs_are_bank_flow
+	</select>
+
+	<insert id="save" parameterType="com.sunline.modules.dbs.entity.DbsAreBankFlowEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into dbs_are_bank_flow
+		(
+			`msg_id`,
+			`source_msg_id`,
+			`req_status`,
+			`enq_status`,
+			`req_message`,
+			`req_time`,
+			`res_message`,
+			`res_time`,
+			`create_user`,
+			`update_user`,
+			`create_time`,
+			`update_time`
+		)
+		values
+		(
+			#{msgId},
+			#{sourceMsgId},
+			#{reqStatus},
+			#{enqStatus},
+			#{reqMessage},
+			#{reqTime},
+			#{resMessage},
+			#{resTime},
+			#{createUser},
+			#{updateUser},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.sunline.modules.dbs.entity.DbsAreBankFlowEntity">
+		update dbs_are_bank_flow
+		<set>
+			<if test="msgId != null">`msg_id` = #{msgId}, </if>
+			<if test="sourceMsgId != null">`source_msg_id` = #{sourceMsgId}, </if>
+			<if test="reqStatus != null">`req_status` = #{reqStatus}, </if>
+			<if test="enqStatus != null">`enq_status` = #{enqStatus}, </if>
+			<if test="reqMessage != null">`req_message` = #{reqMessage}, </if>
+			<if test="reqTime != null">`req_time` = #{reqTime}, </if>
+			<if test="resMessage != null">`res_message` = #{resMessage}, </if>
+			<if test="resTime != null">`res_time` = #{resTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete">
+		delete from dbs_are_bank_flow where id = #{value}
+	</delete>
+
+	<delete id="deleteBatch">
+		delete from dbs_are_bank_flow where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

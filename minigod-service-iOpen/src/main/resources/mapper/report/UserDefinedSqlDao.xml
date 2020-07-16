@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.report.dao.UserDefinedSqlDao">
+
+
+    <resultMap type="com.sunline.modules.report.entity.UserDefinedSqlEntity" id="userDefinedSqlMap">
+        <result property="id" column="id"/>
+        <result property="defTitle" column="def_title"/>
+        <result property="defSql" column="def_sql"/>
+        <result property="defDesc" column="def_desc"/>
+        <result property="defRemark" column="def_remark"/>
+        <result property="createOpr" column="create_opr"/>
+        <result property="updateOpr" column="update_opr"/>
+        <result property="isStatus" column="is_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		def_title, 
+		def_sql, 
+		def_desc, 
+		def_remark, 
+		create_opr, 
+		update_opr, 
+		is_status, 
+		auth_user_list,
+		params,
+		create_time,
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.report.entity.UserDefinedSqlEntity" resultMap="userDefinedSqlMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_defined_sql
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.report.entity.UserDefinedSqlEntity" resultMap="userDefinedSqlMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_defined_sql
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+
+	<select id="queryUserDefinedList" resultType="com.sunline.modules.report.entity.UserDefinedSqlEntity" resultMap="userDefinedSqlMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_defined_sql u
+		WHERE 1=1
+		<if test="isStatus!=null">
+			and u.is_status = #{isStatus}
+		</if>
+		<if test="defRemark!=null and defRemark!=''">
+			and (u.def_remark = #{defRemark} or u.def_desc = #{defRemark})
+		</if>
+		<if test="createOpr!=null and createOpr!=''">
+			and (u.create_opr = #{createOpr})
+		</if>
+        <if test="authUserList!=null and authUserList!=''">
+            and u.auth_user_list LIKE   CONCAT('%',#{authUserList},'%')
+        </if>
+
+		ORDER BY u.id
+	</select>
+
+	<select id="selectUserDefinedSql" resultType="java.util.LinkedHashMap" parameterType="java.util.Map" >
+		${defSql}
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.report.entity.UserDefinedSqlEntity" resultMap="userDefinedSqlMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_defined_sql
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from user_defined_sql
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.report.entity.UserDefinedSqlEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into user_defined_sql
+		(
+			`def_title`, 
+			`def_sql`, 
+			`def_desc`, 
+			`def_remark`, 
+			`create_opr`, 
+			`update_opr`, 
+			`is_status`, 
+			`params`,
+			`create_time`,
+			`update_time`
+		)
+		values
+		(
+			#{defTitle}, 
+			#{defSql}, 
+			#{defDesc}, 
+			#{defRemark}, 
+			#{createOpr}, 
+			#{updateOpr}, 
+			#{isStatus}, 
+			#{params},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.report.entity.UserDefinedSqlEntity">
+		update user_defined_sql 
+		<set>
+			<if test="defTitle != null">`def_title` = #{defTitle}, </if>
+			<if test="defSql != null">`def_sql` = #{defSql}, </if>
+			<if test="defDesc != null">`def_desc` = #{defDesc}, </if>
+			<if test="defRemark != null">`def_remark` = #{defRemark}, </if>
+			<if test="createOpr != null">`create_opr` = #{createOpr}, </if>
+			<if test="updateOpr != null">`update_opr` = #{updateOpr}, </if>
+			<if test="authUserList != null">`auth_user_list` = #{authUserList}, </if>
+			<if test="isStatus != null">`is_status` = #{isStatus}, </if>
+			<if test="params != null">`params` = #{params}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from user_defined_sql where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from user_defined_sql where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

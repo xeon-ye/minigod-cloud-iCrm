@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>消息发送日志</title>
+    #parse("modules/sys/header.html")
+    <style>
+        .form-group{
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+            <div class="form-group col-sm-2">
+                <select class="form-control" id="messageType" name="messageType" v-model="q.messageType">
+                    <option value="" selected="selected">--消息类型--</option>
+                    <option value="0">未知</option>
+                    <option value="1">邮件</option>
+                    <option value="2">短信</option>
+                    <option value="3">统一消息中心推送接口</option>
+                </select>
+            </div>
+            <div class="form-group col-sm-2">
+                <input class="form-control" id="recipients" v-model="q.recipients" @keyup.enter="query"
+                       placeholder="接收人">
+            </div>
+            <div class="form-group col-sm-2">
+                <select class="form-control" id="sendResult" name="sendResult" v-model="q.sendResult">
+                    <option value="">--发送结果--</option>
+                    <option value="0">未知</option>
+                    <option value="1">待处理</option>
+                    <option value="2">成功</option>
+                    <option value="3">失败</option>
+                    <option value="4">处理中</option>
+                    <option value="5">未处理</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-8" style="margin: 10px 0 20px">
+            #if($shiro.hasPermission("messageSendInfo:info"))
+            <button class="layui-btn" @click="query" type="button"><i class="layui-icon">&#xe615;</i>查 询</button>
+            #end
+            #if($shiro.hasPermission("messageSendInfo:save"))
+            <button class="layui-btn" @click="add" type="button"><i class="layui-icon">&#xe61f;</i> 新 增</button>
+            #end
+            #if($shiro.hasPermission("messageSendInfo:update"))
+            <button class="layui-btn layui-btn-normal" type="button" @click="update"><i
+                    class="layui-icon">&#xe642;</i>编辑
+            </button>
+            #end
+            #if($shiro.hasPermission("messageSendInfo:delete"))
+            <button class="layui-btn layui-btn-danger" type="button" @click="del"><i class="layui-icon">&#xe640;</i>删除
+            </button>
+            #end
+        </div>
+        <!--<table id="jqGrid"></table>-->
+        <table id="jqGrid" width="99%" class="layui-table" lay-size=""></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-2 control-label">消息类型</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="messageSendInfo.messageType" placeholder="消息类型"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">接收人</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="messageSendInfo.recipients" placeholder="接收人"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">标题</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="messageSendInfo.messageTitle" placeholder="标题"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">内容</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="messageSendInfo.messageContent" placeholder="内容"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">附件地址</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="messageSendInfo.attachmentUris"
+                           placeholder="附件地址"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">发送结果</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="messageSendInfo.sendResult" placeholder="发送结果"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">创建时间</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="messageSendInfo.createTime" placeholder="创建时间"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">更新时间</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="messageSendInfo.updateTime" placeholder="更新时间"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">备注</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="messageSendInfo.comment" placeholder="备注"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <button class="layui-btn" type="button" @click="saveOrUpdate">保存</button>
+                <button class="layui-btn layui-btn-warm" type="button" @click="reload" style="margin-left: 30px">返回
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="${rc.contextPath}/js/notice/messageSendInfo.js?_${date.systemTime}"></script>
+</body>
+</html>

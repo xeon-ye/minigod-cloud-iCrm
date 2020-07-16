@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.stock.dao.DonatedStockApplicationInfoDao">
+
+
+    <resultMap type="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity"
+               id="donatedStockApplicationInfoMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="clientName" column="client_name"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="stockCode" column="stock_code"/>
+        <result property="stockName" column="stock_name"/>
+        <result property="stockQuantity" column="stock_quantity"/>
+        <result property="totalCost" column="total_cost"/>
+        <result property="activityId" column="activity_id"/>
+        <result property="activityName" column="activity_name"/>
+        <result property="programmeId" column="programme_id"/>
+        <result property="receiveTime" column="receive_time"/>
+        <result property="printStatus" column="print_status"/>
+        <result property="printOperator" column="print_operator"/>
+        <result property="stampDutyStatus" column="stamp_duty_status"/>
+        <result property="stampDutyOperator" column="stamp_duty_operator"/>
+        <result property="accountEntryStatus" column="account_entry_status"/>
+        <result property="currentNode" column="current_node"/>
+        <result property="approveResult" column="approve_result"/>
+        <result property="lastApprovalUser" column="last_approval_user"/>
+        <result property="approvalOpinion" column="approval_opinion"/>
+        <result property="callbackStatus" column="callback_status"/>
+        <result property="status" column="status"/>
+        <result property="instanceId" column="instance_id"/>
+        <result property="defid" column="defid"/>
+        <result property="code" column="code"/>
+        <result property="startUserId" column="start_user_id"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="startTime" column="start_time"/>
+        <result property="actResult" column="act_result"/>
+        <result property="applicationStatus" column="application_status"/>
+        <result property="assignDrafter" column="assign_drafter"/>
+        <result property="flowPath" column="flow_path"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		t.id,
+		t.application_id,
+		t.user_id,
+		t.channel_id,
+		t.client_id,
+		t.client_name,
+		t.phone_number,
+		t.stock_code,
+		t.stock_name,
+		t.stock_quantity,
+		t.total_cost,
+		t.activity_id,
+		t.activity_name,
+		t.programme_id,
+		t.receive_time,
+		t.print_status,
+		t.print_operator,
+		t.stamp_duty_status,
+		t.stamp_duty_operator,
+		t.account_entry_status,
+		t.current_node,
+		t.approve_result,
+		t.last_approval_user,
+		t.approval_opinion,
+		t.callback_status,
+		t.status,
+		t.instance_id,
+		t.defid,
+		t.code,
+		t.start_user_id,
+		t.create_user,
+		t.update_user,
+		t.start_time,
+		t.act_result,
+		t.application_status,
+		t.assign_drafter,
+		t.flow_path,
+		t.create_time,
+		t.update_time,
+		t.activ_type
+    </sql>
+
+    <sql id="Base_Where_Conditions1">
+        <if test="applicationId != null">
+            <![CDATA[ and t.application_id = #{applicationId}]]>
+        </if>
+        <if test="userId != null">
+            <![CDATA[ and t.user_id = #{userId}]]>
+        </if>
+        <if test="clientId != null">
+            <![CDATA[ and t.client_id = #{clientId}]]>
+        </if>
+        <if test="receiveTimeStart != null">
+            <![CDATA[ and t.receive_time >= #{receiveTimeStart}]]>
+        </if>
+        <if test="receiveTimeEnd != null">
+            <![CDATA[ and t.receive_time <= #{receiveTimeEnd}]]>
+        </if>
+        <if test="phoneNumber != null">
+            <![CDATA[ and t.phone_number = #{phoneNumber}]]>
+        </if>
+        <if test="channelId != null">
+            <![CDATA[ and t.channel_id = #{channelId}]]>
+        </if>
+        <if test="channelName != null">
+            <![CDATA[ and a.channel_name = #{channelName}]]>
+        </if>
+        <if test="clientName != null">
+            <![CDATA[ and t.client_name = #{clientName}]]>
+        </if>
+        <if test="activityId != null">
+            <![CDATA[ and t.activity_Id = #{activityId}]]>
+        </if>
+        <if test="stockCode != null">
+            <![CDATA[ and t.stock_code = #{stockCode}]]>
+        </if>
+        <if test="applicationStatus != null">
+            <![CDATA[ and t.application_status = #{applicationStatus}]]>
+        </if>
+        <if test="bankType != null">
+            <![CDATA[ and t1.bank_type = #{bankType}]]>
+        </if>
+    </sql>
+
+    <sql id="Base_Where_Conditions">
+        <if test="applicationId != null">
+            <![CDATA[ and t.application_id = #{applicationId}]]>
+        </if>
+        <if test="callbackStatus != null">
+            <![CDATA[ and t.callback_status = #{callbackStatus}]]>
+        </if>
+        <if test="printStatus != null">
+            <![CDATA[ and t.print_status = #{printStatus}]]>
+        </if>
+        <if test="stampDutyStatus != null">
+            <![CDATA[ and t.stamp_duty_status = #{stampDutyStatus}]]>
+        </if>
+        <if test="accountEntryStatus != null">
+            <![CDATA[ and t.account_entry_status = #{accountEntryStatus}]]>
+        </if>
+        <if test="applicationStatus != null">
+            <![CDATA[ and t.application_status = #{applicationStatus}]]>
+        </if>
+        <if test="stockCode != null">
+            <![CDATA[ and t.stock_code = #{stockCode}]]>
+        </if>
+    </sql>
+
+    <sql id="Base_Where_Conditions2">
+        <if test="applicationStatus != null and applicationStatus != ''">
+            <![CDATA[ and t.application_status = #{applicationStatus}]]>
+        </if>
+        <if test="applicationId != null and applicationId != ''">
+            <![CDATA[ and t.application_id = #{applicationId}]]>
+        </if>
+        <if test="clientId != null and clientId != ''">
+            <![CDATA[ and t.client_id = #{clientId}]]>
+        </if>
+        <if test="receiveTimeStart != null and receiveTimeStart != ''">
+            <![CDATA[ and t.receive_time >= #{receiveTimeStart}]]>
+        </if>
+        <if test="receiveTimeEnd != null and receiveTimeEnd != ''">
+            <![CDATA[ and t.receive_time <= #{receiveTimeEnd}]]>
+        </if>
+        <if test="phoneNumber != null and phoneNumber != ''">
+            <![CDATA[ and t.phone_number = #{phoneNumber}]]>
+        </if>
+        <if test="clientNameSpell != null and clientNameSpell != ''">
+            <![CDATA[ and a.client_name_spell = #{clientNameSpell}]]>
+        </if>
+        <if test="printStatus != null and printStatus != ''">
+            <![CDATA[ and t.print_status = #{printStatus}]]>
+        </if>
+        <if test="stampDutyStatus != null and stampDutyStatus != ''">
+            <![CDATA[ and t.stamp_duty_status = #{stampDutyStatus}]]>
+        </if>
+        <if test="accountEntryStatus != null and accountEntryStatus != ''">
+            <![CDATA[ and t.account_entry_status = #{accountEntryStatus}]]>
+        </if>
+    </sql>
+
+    <select id="queryObject" resultType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity"
+            resultMap="donatedStockApplicationInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        from donated_stock_application_info t
+        where id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity"
+            resultMap="donatedStockApplicationInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        from donated_stock_application_info t
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity"
+            resultMap="donatedStockApplicationInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        from donated_stock_application_info t
+        <where>
+            <include refid="Base_Where_Conditions"/>
+        </where>
+
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*)
+        from donated_stock_application_info t
+        <where>
+            <include refid="Base_Where_Conditions2"/>
+        </where>
+    </select>
+
+    <!-- 领取列表-->
+    <select id="selectApproveList" resultMap="donatedStockApplicationInfoMap"
+            parameterType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity">
+        select
+        <include refid="Base_Column_List"/>,
+        a.channel_name as channelName,
+        t1.bank_type
+        ,(SELECT CONVERT(IFNULL(SUM(a.occur_balance) * IFNULL((h.exch_rate / h.reverse_rate),1),0),DECIMAL (20, 2)) as
+        occur_balance FROM client_fund_deposit a
+        JOIN (SELECT b.client_id,min(b.init_date) AS init_date FROM client_fund_deposit b WHERE b.deposit_type = 'D'
+        GROUP BY b.client_id) f on a.client_id = f.client_id and a.init_date = f.init_date and a.deposit_type ='D'
+        LEFT JOIN money_rate_info h on a.money_type = h.from_money_type and h.to_money_type ='2' AND h.init_date
+        <![CDATA[ <= ]]> f.init_date AND h.valid_date <![CDATA[ >= ]]> f.init_date
+        where a.client_id =t.client_id
+        ) AS firstIncome
+        ,(select CONVERT(IFNULL(SUM(a.stock_mkt_value) * IFNULL((h.exch_rate / h.reverse_rate),1),0),DECIMAL (20, 2)) as
+        stock_mkt_value from stock_transfer_info a
+        JOIN (select b.client_id ,min(b.trade_date) as trade_date from stock_transfer_info b where b.business_flag =
+        '3101' group by b.client_id) f on a.client_id = f.client_id and a.trade_date = f.trade_date and a.business_flag
+        = '3101'
+        LEFT JOIN money_rate_info h on a.money_type = h.from_money_type and h.to_money_type ='2' and h.init_date =
+        (SELECT init_date FROM money_rate_info WHERE LEFT (f.trade_date, 6) >= LEFT(init_date, 6) ORDER BY init_date
+        DESC LIMIT 1)
+        where a.client_id =t.client_id
+        ) AS firstTransfer
+        from donated_stock_application_info t
+        LEFT JOIN user_channel_info a on t.channel_id = a.channel_id
+        LEFT JOIN customer_account_open_info t1 ON t1.user_id=t.user_id AND t1.client_id IS NOT NULL
+        <where>
+            <include refid="Base_Where_Conditions1"/>
+        </where>
+        ORDER BY t.receive_time DESC
+    </select>
+
+    <!-- 领取列表数量-->
+    <select id="selectApproveListCount" resultMap="donatedStockApplicationInfoMap"
+            parameterType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from donated_stock_application_info t
+        LEFT JOIN user_channel_info a on t.channel_id = a.channel_id
+        where t.application_status =#{applicationStatus}
+        <if test="printStatus != null">
+            <![CDATA[ and t.print_status = #{printStatus}]]>
+        </if>
+    </select>
+
+    <!-- 查询待入账-->
+    <select id="selectWaitStockDeposit" resultMap="donatedStockApplicationInfoMap"
+            parameterType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity">
+        select
+        <include refid="Base_Column_List"/>
+        , t1.fund_account as fundAccount
+        from donated_stock_application_info t
+        LEFT JOIN securities_user_info t1 on t.user_id = t1.user_id AND t1.client_status !='3'
+        where t.account_entry_status =4 or t.account_entry_status = 3
+    </select>
+
+    <!-- 查询待入账列表-->
+    <select id="querytWaitEntryList" resultMap="donatedStockApplicationInfoMap"
+            parameterType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from donated_stock_application_info t
+        WHERE 1=1 and t.application_status = 3
+        <include refid="Base_Where_Conditions2"/>
+        ORDER BY t.stock_code ASC,t.receive_time DESC
+    </select>
+
+    <!--待入帐列表数据-->
+    <select id="queryEntryListByOrder" resultMap="donatedStockApplicationInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,a.client_name_spell as clientNameSpell
+        from donated_stock_application_info t
+        LEFT JOIN securities_user_info a on t.user_id = a.user_id AND a.client_status !='3'
+        WHERE 1=1 and t.application_status = 3
+        <include refid="Base_Where_Conditions2"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by t.${sidx} ${order}
+            </when>
+            <otherwise>
+                ORDER BY t.stock_code ASC,t.receive_time DESC
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!-- 待入账打印列表-->
+    <select id="selectDealAccountList" resultMap="donatedStockApplicationInfoMap"
+            parameterType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity">
+        select
+        <include refid="Base_Column_List"/>
+        ,a.client_name_spell as clientNameSpell,a.open_account_time as openAccountTime,a.open_account_type as
+        openAccountType,a.fund_account
+        ,(SELECT CONVERT(IFNULL(SUM(a.occur_balance) * IFNULL((h.exch_rate / h.reverse_rate),1),0),DECIMAL (20, 2)) as
+        occur_balance FROM client_fund_deposit a
+        JOIN (SELECT b.client_id,min(b.init_date) AS init_date FROM client_fund_deposit b WHERE b.deposit_type = 'D'
+        GROUP BY b.client_id) f on a.client_id = f.client_id and a.init_date = f.init_date and a.deposit_type ='D'
+        LEFT JOIN money_rate_info h on a.money_type = h.from_money_type and h.to_money_type ='2' AND h.init_date
+        <![CDATA[ <= ]]> f.init_date AND h.valid_date <![CDATA[ >= ]]> f.init_date
+        where a.client_id =t.client_id
+        ) AS firstIncome
+        ,(select CONVERT(IFNULL(SUM(a.stock_mkt_value) * IFNULL((h.exch_rate / h.reverse_rate),1),0),DECIMAL (20, 2)) as
+        stock_mkt_value from stock_transfer_info a
+        JOIN (select b.client_id ,min(b.trade_date) as trade_date from stock_transfer_info b where b.business_flag =
+        '3101' group by b.client_id) f on a.client_id = f.client_id and a.trade_date = f.trade_date and a.business_flag
+        = '3101'
+        LEFT JOIN money_rate_info h on a.money_type = h.from_money_type and h.to_money_type ='2' and h.init_date =
+        (SELECT init_date FROM money_rate_info WHERE LEFT (f.trade_date, 6) >= LEFT(init_date, 6) ORDER BY init_date
+        DESC LIMIT 1)
+        where a.client_id =t.client_id
+        ) AS firstTransfer
+        ,(SELECT MIN(a.init_date) FROM client_fund_deposit a
+        JOIN (SELECT b.client_id,min(b.init_date) AS init_date FROM client_fund_deposit b WHERE b.deposit_type = 'D'
+        GROUP BY b.client_id) f on a.client_id = f.client_id and a.init_date = f.init_date and a.deposit_type ='D'
+        where a.client_id =t.client_id
+        ) AS firstIncomeDate
+        ,(select MIN(a.trade_date) from stock_transfer_info a
+        JOIN (select b.client_id ,min(b.trade_date) as trade_date from stock_transfer_info b where b.business_flag =
+        '3101' group by b.client_id) f on a.client_id = f.client_id and a.trade_date = f.trade_date and a.business_flag
+        = '3101'
+        where a.client_id =t.client_id
+        ) AS firstTransferDate,
+        t2.channel_name as channelName,
+        t1.bank_type as bankType
+        FROM donated_stock_application_info t
+        LEFT JOIN securities_user_info a ON t.user_id = a.user_id AND a.client_status !='3'
+        LEFT JOIN customer_account_open_info t1 ON t1.user_id=t.user_id AND t1.client_id IS NOT NULL AND
+        t1.client_id=a.trade_account
+        LEFT JOIN user_channel_info t2 ON t2.channel_id = t.channel_id
+        WHERE 1=1 and t.application_status = 3
+        <include refid="Base_Where_Conditions2"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by t.${sidx} ${order}
+            </when>
+            <otherwise>
+                ORDER BY t.stock_code ASC,t.receive_time DESC
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="queryByApplicationId" resultType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity"
+            resultMap="donatedStockApplicationInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        from donated_stock_application_info t
+        where application_id = #{applicationId}
+    </select>
+
+    <select id="queryObjectIds" parameterType="java.lang.String" resultMap="donatedStockApplicationInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        from donated_stock_application_info t
+        where id in (${value})
+    </select>
+    <!-- 领取列表查看详情-->
+    <select id="queryDetailByApplicationId"
+            resultType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity"
+            resultMap="donatedStockApplicationInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,a3.channel_name as channelName
+        ,a1.open_account_time as openAccountTime
+        ,a1.fund_account
+        ,DATE_FORMAT(a2.create_time,'%Y-%m-%d %T')as registerTime
+        ,(SELECT CONVERT(IFNULL(SUM(a.occur_balance) * IFNULL((h.exch_rate / h.reverse_rate),1),0),DECIMAL (20, 5)) as
+        occur_balance FROM client_fund_deposit a
+        JOIN (SELECT b.client_id,min(b.init_date) AS init_date FROM client_fund_deposit b WHERE b.deposit_type = 'D'
+        GROUP BY b.client_id) f on a.client_id = f.client_id and a.init_date = f.init_date and a.deposit_type ='D'
+        LEFT JOIN money_rate_info h on a.money_type = h.from_money_type and h.to_money_type ='2' AND h.init_date
+        <![CDATA[ <= ]]> f.init_date AND h.valid_date <![CDATA[ >= ]]> f.init_date
+        where a.client_id =t.client_id
+        ) AS firstIncome
+        ,(select CONVERT(IFNULL(SUM(a.stock_mkt_value) * IFNULL((h.exch_rate / h.reverse_rate),1),0),DECIMAL (20, 5)) as
+        stock_mkt_value from stock_transfer_info a
+        JOIN (select b.client_id ,min(b.trade_date) as trade_date from stock_transfer_info b where b.business_flag =
+        '3101' group by b.client_id) f on a.client_id = f.client_id and a.trade_date = f.trade_date and a.business_flag
+        = '3101'
+        LEFT JOIN money_rate_info h on a.money_type = h.from_money_type and h.to_money_type ='2' and h.init_date =
+        (SELECT init_date FROM money_rate_info WHERE LEFT (f.trade_date, 6) >= LEFT(init_date, 6) ORDER BY init_date
+        DESC LIMIT 1)
+        where a.client_id =t.client_id
+        ) AS firstTransfer
+        ,(SELECT MIN(a.init_date) FROM client_fund_deposit a
+        JOIN (SELECT b.client_id,min(b.init_date) AS init_date FROM client_fund_deposit b WHERE b.deposit_type = 'D'
+        GROUP BY b.client_id) f on a.client_id = f.client_id and a.init_date = f.init_date and a.deposit_type ='D'
+        where a.client_id =t.client_id
+        ) AS firstIncomeDate
+        ,(select MIN(a.trade_date) from stock_transfer_info a
+        JOIN (select b.client_id ,min(b.trade_date) as trade_date from stock_transfer_info b where b.business_flag =
+        '3101' group by b.client_id) f on a.client_id = f.client_id and a.trade_date = f.trade_date and a.business_flag
+        = '3101'
+        where a.client_id =t.client_id
+        ) AS firstTransferDate
+        from donated_stock_application_info t
+        LEFT JOIN user_channel_info a3 on t.channel_id= a3.channel_id
+        LEFT JOIN securities_user_info a1 on t.user_id = a1.user_id AND a1.client_status !='3'
+        LEFT JOIN user_info a2 on t.user_id = a2.user_id
+        where t.application_id = #{applicationId}
+    </select>
+
+
+    <insert id="save" parameterType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity"
+            useGeneratedKeys="true" keyProperty="id">
+		insert into donated_stock_application_info
+		(
+			`application_id`, 
+			`user_id`, 
+			`channel_id`, 
+			`client_id`, 
+			`client_name`, 
+			`phone_number`, 
+			`stock_code`, 
+			`stock_name`, 
+			`stock_quantity`, 
+			`total_cost`, 
+			`activity_id`, 
+			`activity_name`, 
+			`programme_id`, 
+			`receive_time`, 
+			`print_status`, 
+			`print_operator`, 
+			`stamp_duty_status`, 
+			`stamp_duty_operator`,
+			`current_node`, 
+			`approve_result`, 
+			`last_approval_user`, 
+			`approval_opinion`, 
+			`callback_status`, 
+			`status`, 
+			`instance_id`, 
+			`defid`, 
+			`code`, 
+			`start_user_id`, 
+			`create_user`, 
+			`update_user`, 
+			`start_time`, 
+			`act_result`, 
+			`application_status`, 
+			`assign_drafter`, 
+			`flow_path`, 
+			`create_time`, 
+			`update_time`,
+			`activ_type`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{userId}, 
+			#{channelId}, 
+			#{clientId}, 
+			#{clientName}, 
+			#{phoneNumber}, 
+			#{stockCode}, 
+			#{stockName}, 
+			#{stockQuantity}, 
+			#{totalCost}, 
+			#{activityId}, 
+			#{activityName}, 
+			#{programmeId}, 
+			#{receiveTime}, 
+			#{printStatus}, 
+			#{printOperator}, 
+			#{stampDutyStatus}, 
+			#{stampDutyOperator},
+			#{currentNode}, 
+			#{approveResult}, 
+			#{lastApprovalUser}, 
+			#{approvalOpinion}, 
+			#{callbackStatus}, 
+			#{status}, 
+			#{instanceId}, 
+			#{defid}, 
+			#{code}, 
+			#{startUserId}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{startTime}, 
+			#{actResult}, 
+			#{applicationStatus}, 
+			#{assignDrafter}, 
+			#{flowPath}, 
+			#{createTime}, 
+			#{updateTime},
+			#{activType}
+		)
+	</insert>
+
+
+    <update id="updateByApplicationId"
+            parameterType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity">
+        update donated_stock_application_info
+        <set>
+            <if test="applicationId != null">`application_id` = #{applicationId},</if>
+            <if test="currentNode != null">`current_node` = #{currentNode},</if>
+            <if test="approveResult != null">`approve_result` = #{approveResult},</if>
+            <if test="lastApprovalUser != null">`last_approval_user` = #{lastApprovalUser},</if>
+            <if test="approvalOpinion != null">`approval_opinion` = #{approvalOpinion},</if>
+            <if test="callbackStatus != null">`callback_status` = #{callbackStatus},</if>
+            <if test="status != null">`status` = #{status},</if>
+            <if test="instanceId != null">`instance_id` = #{instanceId},</if>
+            <if test="defid != null">`defid` = #{defid},</if>
+            <if test="startUserId != null">`start_user_id` = #{startUserId},</if>
+            <if test="createUser != null">`create_user` = #{createUser},</if>
+            <if test="updateUser != null">`update_user` = #{updateUser},</if>
+            <if test="startTime != null">`start_time` = #{startTime},</if>
+            <if test="actResult != null">`act_result` = #{actResult},</if>
+            <if test="applicationStatus != null">`application_status` = #{applicationStatus},</if>
+            <if test="flowPath != null">`flow_path` = #{flowPath},</if>
+            <if test="assignDrafter != null">`assign_drafter` = #{assignDrafter},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where application_id = #{applicationId}
+    </update>
+
+
+    <update id="update" parameterType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity">
+        update donated_stock_application_info
+        <set>
+            <if test="applicationId != null">`application_id` = #{applicationId},</if>
+            <if test="userId != null">`user_id` = #{userId},</if>
+            <if test="channelId != null">`channel_id` = #{channelId},</if>
+            <if test="clientId != null">`client_id` = #{clientId},</if>
+            <if test="clientName != null">`client_name` = #{clientName},</if>
+            <if test="phoneNumber != null">`phone_number` = #{phoneNumber},</if>
+            <if test="stockCode != null">`stock_code` = #{stockCode},</if>
+            <if test="stockName != null">`stock_name` = #{stockName},</if>
+            <if test="stockQuantity != null">`stock_quantity` = #{stockQuantity},</if>
+            <if test="totalCost != null">`total_cost` = #{totalCost},</if>
+            <if test="activityId != null">`activity_id` = #{activityId},</if>
+            <if test="activityName != null">`activity_name` = #{activityName},</if>
+            <if test="programmeId != null">`programme_id` = #{programmeId},</if>
+            <if test="receiveTime != null">`receive_time` = #{receiveTime},</if>
+            <if test="printStatus != null">`print_status` = #{printStatus},</if>
+            <if test="printOperator != null">`print_operator` = #{printOperator},</if>
+            <if test="stampDutyStatus != null">`stamp_duty_status` = #{stampDutyStatus},</if>
+            <if test="stampDutyOperator != null">`stamp_duty_operator` = #{stampDutyOperator},</if>
+            <if test="accountEntryStatus != null">`account_entry_status` = #{accountEntryStatus},</if>
+            <if test="currentNode != null">`current_node` = #{currentNode},</if>
+            <if test="approveResult != null">`approve_result` = #{approveResult},</if>
+            <if test="lastApprovalUser != null">`last_approval_user` = #{lastApprovalUser},</if>
+            <if test="approvalOpinion != null">`approval_opinion` = #{approvalOpinion},</if>
+            <if test="callbackStatus != null">`callback_status` = #{callbackStatus},</if>
+            <if test="status != null">`status` = #{status},</if>
+            <if test="instanceId != null">`instance_id` = #{instanceId},</if>
+            <if test="defid != null">`defid` = #{defid},</if>
+            <if test="code != null">`code` = #{code},</if>
+            <if test="startUserId != null">`start_user_id` = #{startUserId},</if>
+            <if test="createUser != null">`create_user` = #{createUser},</if>
+            <if test="updateUser != null">`update_user` = #{updateUser},</if>
+            <if test="startTime != null">`start_time` = #{startTime},</if>
+            <if test="actResult != null">`act_result` = #{actResult},</if>
+            <if test="applicationStatus != null">`application_status` = #{applicationStatus},</if>
+            <if test="assignDrafter != null">`assign_drafter` = #{assignDrafter},</if>
+            <if test="flowPath != null">`flow_path` = #{flowPath},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="activType != null">`activ_type` = #{activType}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateAssignDrafter" parameterType="com.sunline.modules.stock.entity.DonatedStockApplicationInfoEntity">
+		update donated_stock_application_info set assign_drafter=#{assignDrafter}
+		where id = #{id}
+	</update>
+
+
+    <delete id="delete">
+		delete from donated_stock_application_info where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from donated_stock_application_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

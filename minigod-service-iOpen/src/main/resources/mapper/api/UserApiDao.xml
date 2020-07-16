@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.api.dao.UserApiDao">
+
+    <select id="queryUserStatus" parameterType="com.sunline.modules.api.entity.CrmExternalCommonModel" resultType="com.sunline.modules.api.entity.CrmExternalCommonModel">
+        SELECT DISTINCT
+            s.trade_account,
+            ifnull(null,1) as userRegStatus,
+            COUNT(DISTINCT s.trade_account ) as openAccountStatus,
+            COUNT(DISTINCT i.client_id) as transferStatus,
+            COUNT(DISTINCT t.client_id) as tradeStatus,
+            (
+                CASE
+                WHEN d1.deposit_type = 'D' THEN
+                    '1'
+                ELSE
+                    '0'
+                END
+            ) AS depositStatus,
+
+            (
+                CASE
+                WHEN d2.deposit_type = 'W' THEN
+                    '1'
+                ELSE
+                    '0'
+                END
+            ) AS withdrawalStatus
+        FROM
+            securities_user_info s
+        LEFT JOIN client_fund_deposit d1 ON d1.client_id = s.trade_account
+        AND d1.deposit_type = 'D'
+        LEFT JOIN client_fund_deposit d2 ON d2.client_id = s.trade_account
+        AND d2.deposit_type = 'W'
+        left join stock_transfer_info i on i.client_id = s.trade_account
+        left join client_trade_flow_info t on t.client_id = s.trade_account
+        WHERE
+            1 = 1
+        <if test="batchTradeAccountList != null">
+            and s.trade_account
+            in
+            <foreach item="item" index="index" collection="batchTradeAccountList" open="(" separator="," close=")">
+                #{batchTradeAccountList[${index}]}
+            </foreach>
+        </if>
+        GROUP BY s.trade_account
+    </select>
+
+    <!-- 获取客户首天累计入金金额-->
+    <select id="getFirstTrsTotal" parameterType="com.sunline.modules.api.entity.CrmExternalCommonModel"
+            resultType="com.sunline.modules.api.entity.CrmExternalCommonModel">
+        SELECT
+        t1.client_id AS tradeAccount,
+        t1.trade_date AS tradeTate
+        FROM stock_transfer_info t1
+        LEFT JOIN (SELECT client_id,MIN(trade_date) AS trade_date FROM stock_transfer_info t1 WHERE t1.business_flag=#{transferStatus}
+        <if test="batchTradeAccountList != null">
+            AND t1.client_id
+            IN
+            <foreach item="item" index="index" collection="batchTradeAccountList" open="(" separator="," close=")">
+                #{batchTradeAccountList[${index}]}
+            </foreach>
+        </if>
+        GROUP BY client_id) t2
+        ON t1.client_id=t2.client_id AND t1.trade_date=t2. trade_date
+        WHERE t1.business_flag=#{transferStatus}
+        AND t1.remark NOT LIKE CONCAT('STOCK AWARD','%')
+        AND t1.client_id=t2.client_id
+        AND t1.trade_date=t2.trade_date
+        GROUP BY
+        t1.client_id,
+        t1.fund_account,
+        t1.trade_date
+
+    </select>
+
+</mapper>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.CustomerAccountOpenImageDao">
+
+
+    <resultMap type="com.sunline.modules.account.online.entity.CustomerAccountOpenImgEntity" id="customerAccountOpenImageMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>       
+        <result property="fileName" column="file_name"/>
+        <result property="fileStorageName" column="file_storage_name"/>
+        <result property="extName" column="ext_name"/>       
+        <result property="imageLocation" column="image_location"/>
+        <result property="imageLocationType" column="image_location_type"/>
+        <result property="storagePath" column="storage_path"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="createUser" column="create_user"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		application_id,
+		file_name, 
+		file_storage_name, 
+		ext_name, 		
+		image_location, 
+		image_location_type, 
+		storage_path, 
+		update_time, 
+		create_time,
+		create_user,
+		update_user,
+		remark
+    </sql>
+
+	<sql id="Base_Where_Conditions">
+		<if test="id != null">
+			<![CDATA[ and id = #{id}]]>
+		</if>
+		<if test="fileName != null">
+			<![CDATA[ and file_name = #{fileName}]]>
+		</if>
+		<if test="applicationId != null">
+			<![CDATA[ and application_id = #{applicationId}]]>
+		</if>	
+		<if test="fileStorageName != null">
+			<![CDATA[ and file_storage_name = #{fileStorageName}]]>
+		</if>
+		<if test="extName != null">
+			<![CDATA[ and ext_name = #{extName}]]>
+		</if>	
+		<if test="imageLocation != null">
+			<![CDATA[ and image_location = #{imageLocation}]]>
+		</if>
+		<if test="imageLocation == null">
+			<![CDATA[ and image_location != 6]]>
+		</if>
+		<if test="imageLocationType != null">
+			<![CDATA[ and image_location_type = #{imageLocationType}]]>
+		</if>
+		<if test="storagePath != null">
+			<![CDATA[ and storage_path = #{storagePath}]]>
+		</if>
+		<if test="updateTime != null">
+			<![CDATA[ and update_time = #{updateTime}]]>
+		</if>
+		<if test="createTime != null">
+			<![CDATA[ and create_time = #{createTime}]]>
+		</if>
+		<if test="updateUser != null">
+			<![CDATA[ and update_user = #{updateUser}]]>
+		</if>
+		<if test="createUser != null">
+			<![CDATA[ and create_user = #{createUser}]]>
+		</if>
+		<if test="remark != null">
+			<![CDATA[ and remark = #{remark}]]>
+		</if>
+	</sql>
+
+
+	<select id="queryObject" resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenImgEntity" resultMap="customerAccountOpenImageMap">
+		select
+		<include refid="Base_Column_List" />
+		from customer_account_open_image
+		where
+		id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenImgEntity" resultMap="customerAccountOpenImageMap">
+		select
+		<include refid="Base_Column_List" />
+		from customer_account_open_image
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenImgEntity" resultMap="customerAccountOpenImageMap">
+        select
+        <include refid="Base_Column_List" />
+        from customer_account_open_image
+		<where>
+			<include refid="Base_Where_Conditions"/>
+		</where>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from customer_account_open_image
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenImgEntity">
+		insert into customer_account_open_image
+		(
+			`application_id`,
+			`file_name`, 
+			`file_storage_name`, 
+			`ext_name`, 			
+			`image_location`, 
+			`image_location_type`, 
+			`storage_path`, 
+			`update_time`, 
+			`create_time`, 
+			`remark`
+		)
+		values
+		(
+			#{applicationId},
+			#{fileName}, 
+			#{fileStorageName}, 
+			#{extName}, 			
+			#{imageLocation}, 
+			#{imageLocationType}, 
+			#{storagePath}, 
+			#{updateTime}, 
+			#{createTime}, 
+			#{remark}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenImgEntity">
+		update customer_account_open_image 
+		<set>
+			<if test="fileName != null">`file_name` = #{fileName}, </if>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="fileStorageName != null">`file_storage_name` = #{fileStorageName}, </if>
+			<if test="extName != null">`ext_name` = #{extName}, </if>			
+			<if test="imageLocation != null">`image_location` = #{imageLocation}, </if>
+			<if test="imageLocationType != null">`image_location_type` = #{imageLocationType}, </if>
+			<if test="storagePath != null">`storage_path` = #{storagePath}, </if>
+            <if test="updateUser != null">`update_user` = #{updateUser}, </if>
+            <if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="remark != null">`remark` = #{remark}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from customer_account_open_image where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from customer_account_open_image where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <update id="resetUpdateUser" parameterType="java.lang.String">
+        update customer_account_open_image set update_user = null where application_id = #{value}
+    </update>
+
+    <!-- 按流水号删除图片 -->
+    <delete id="deleteByApplicationId" parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenImgEntity">
+        delete from customer_account_open_image where application_id = #{applicationId} and image_location_type = ${imageLocationType}
+    </delete>
+
+</mapper>

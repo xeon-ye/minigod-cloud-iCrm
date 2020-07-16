@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.OpenAccountOperatorLogDao">
+
+
+    <resultMap type="com.sunline.modules.account.online.entity.OpenAccountOperatorLogEntity" id="openAccountOperatorLogMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="currentNode" column="current_node"/>
+        <result property="taskId" column="task_id"/>
+        <result property="operateType" column="operate_type"/>
+        <result property="editFields" column="edit_fields"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		t1.id,
+		t1.application_id,
+		t1.current_node,
+		t1.task_id,
+		t1.operate_type,
+		t1.edit_fields,
+		t1.create_user,
+		t1.update_user,
+		t1.create_time,
+		t1.update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.account.online.entity.OpenAccountOperatorLogEntity" resultMap="openAccountOperatorLogMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_operator_log
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.account.online.entity.OpenAccountOperatorLogEntity" resultMap="openAccountOperatorLogMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_operator_log
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.OpenAccountOperatorLogEntity" resultMap="openAccountOperatorLogMap">
+        SELECT
+        t1.id,
+        t1.application_id,
+        t1.current_node,
+        t1.task_id,
+        t1.operate_type,
+        t1.edit_fields,
+        t1.update_user,
+        t1.create_time,
+        t1.update_time,
+        t2.user_name AS create_user
+        FROM open_account_operator_log t1
+        LEFT JOIN sys_user t2 on t2.id=t1.create_user
+        WHERE 1=1
+        <if test="applicationId != null and applicationId != ''">
+            AND application_id =#{applicationId}
+        </if>
+        ORDER  BY t1.create_time ASC
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from open_account_operator_log
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.account.online.entity.OpenAccountOperatorLogEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into open_account_operator_log
+		(
+			`application_id`, 
+			`current_node`, 
+			`task_id`, 
+			`operate_type`, 
+			`edit_fields`, 
+			`create_user`, 
+			`update_user`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{currentNode}, 
+			#{taskId}, 
+			#{operateType}, 
+			#{editFields}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.account.online.entity.OpenAccountOperatorLogEntity">
+		update open_account_operator_log 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="currentNode != null">`current_node` = #{currentNode}, </if>
+			<if test="taskId != null">`task_id` = #{taskId}, </if>
+			<if test="operateType != null">`operate_type` = #{operateType}, </if>
+			<if test="editFields != null">`edit_fields` = #{editFields}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from open_account_operator_log where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from open_account_operator_log where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

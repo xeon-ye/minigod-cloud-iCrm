@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.commission.dao.ChannelClientFareSetupDao">
+
+
+    <resultMap type="com.sunline.modules.commission.entity.ChannelClientFareSetupEntity" id="channelClientFareSetupMap">
+        <result property="id" column="id"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="fareKind" column="fare_kind"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="syncStatus" column="sync_status"/>
+        <result property="syncTime" column="sync_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		channel_id, 
+		client_id, 
+		fund_account, 
+		fare_kind, 
+		begin_date, 
+		end_date, 
+		sync_status, 
+		sync_time, 
+		create_time, 
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.commission.entity.ChannelClientFareSetupEntity" resultMap="channelClientFareSetupMap">
+		select
+		<include refid="Base_Column_List" />
+		from channel_client_fare_setup
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.commission.entity.ChannelClientFareSetupEntity" resultMap="channelClientFareSetupMap">
+		select
+		<include refid="Base_Column_List" />
+		from channel_client_fare_setup
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.commission.entity.ChannelClientFareSetupEntity" resultMap="channelClientFareSetupMap">
+        select
+        <include refid="Base_Column_List" />
+        from channel_client_fare_setup
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from channel_client_fare_setup
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.commission.entity.ChannelClientFareSetupEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into channel_client_fare_setup
+		(
+			`channel_id`, 
+			`client_id`, 
+			`fund_account`, 
+			`fare_kind`, 
+			`begin_date`, 
+			`end_date`, 
+			`sync_status`, 
+			`sync_time`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{channelId}, 
+			#{clientId}, 
+			#{fundAccount}, 
+			#{fareKind}, 
+			#{beginDate}, 
+			#{endDate}, 
+			#{syncStatus}, 
+			#{syncTime}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.commission.entity.ChannelClientFareSetupEntity">
+		update channel_client_fare_setup 
+		<set>
+			<if test="channelId != null">`channel_id` = #{channelId}, </if>
+			<if test="clientId != null">`client_id` = #{clientId}, </if>
+			<if test="fundAccount != null">`fund_account` = #{fundAccount}, </if>
+			<if test="fareKind != null">`fare_kind` = #{fareKind}, </if>
+			<if test="beginDate != null">`begin_date` = #{beginDate}, </if>
+			<if test="endDate != null">`end_date` = #{endDate}, </if>
+			<if test="syncStatus != null">`sync_status` = #{syncStatus}, </if>
+			<if test="syncTime != null">`sync_time` = #{syncTime}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from channel_client_fare_setup where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from channel_client_fare_setup where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

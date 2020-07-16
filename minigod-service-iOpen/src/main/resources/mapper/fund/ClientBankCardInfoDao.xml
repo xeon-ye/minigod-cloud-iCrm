@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.fund.dao.ClientBankCardInfoDao">
+
+
+    <resultMap type="com.sunline.modules.fund.entity.ClientBankCardInfoEntity" id="clientBankCardInfoMap">
+        <result property="id" column="id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+		<result property="bankType" column="bank_type"/>
+        <result property="bankName" column="bank_name"/>
+        <result property="bankNo" column="bank_no"/>
+		<result property="bankCode" column="bank_code"/>
+        <result property="bankAccount" column="bank_account"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="untiedTime" column="untied_time"/>
+        <result property="status" column="status"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		client_id, 
+		fund_account,
+		bank_type,
+		bank_name, 
+		bank_no,
+		bank_code,
+		bank_account, 
+		register_time, 
+		untied_time, 
+		status, 
+		create_user, 
+		update_user, 
+		create_time, 
+		update_time
+    </sql>
+	<sql id="Base_Column_List_WithTable" >
+		t1.id,
+		t1.client_id,
+		t1.bank_type,
+		t1.fund_account,
+		t1.bank_name,
+		t1.bank_no,
+		t1.bank_code,
+		t1.bank_account,
+		t1.register_time,
+		t1.untied_time,
+		t1.status,
+		t1.create_user,
+		t1.update_user,
+		t1.create_time,
+		t1.update_time
+	</sql>
+
+    <select id="queryObject" resultType="com.sunline.modules.fund.entity.ClientBankCardInfoEntity" resultMap="clientBankCardInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_bank_card_info
+        where id = #{value}
+    </select>
+
+	<select id="queryList" resultType="com.sunline.modules.fund.entity.ClientBankCardInfoEntity" resultMap="clientBankCardInfoMap">
+		select
+		<include refid="Base_Column_List_WithTable" />,
+		t2.user_id,
+		t2.client_name,
+		t2.open_account_type,
+		t2.phone_number
+		from client_bank_card_info t1
+		LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+		WHERE 1=1
+		<if test="userId != null and userId != ''">
+			AND t2.user_id =#{userId}
+		</if>
+		<if test="clientId != null and clientId != ''">
+			AND t1.client_id =#{clientId}
+		</if>
+		<if test="fundAccount != null and fundAccount != ''">
+			AND t1.fund_account =#{fundAccount}
+		</if>
+		<if test="phoneNumber != null and phoneNumber != ''">
+			AND t2.phone_number =#{phoneNumber}
+		</if>
+		<if test="bankType != null">
+			AND t1.bank_type =#{bankType}
+		</if>
+		<if test="status != null">
+			AND t1.status =#{status}
+		</if>
+		<if test="bankName != null and bankName != ''">
+			AND t1.bank_name LIKE CONCAT(#{bankName},'%')
+		</if>
+		<if test="bankAccount != null and bankAccount != ''">
+			AND t1.bank_account =#{bankAccount}
+		</if>
+		<if test="bankNo != null and bankNo != ''">
+			AND t1.bank_no =#{bankNo}
+		</if>
+		<if test="bankCode != null and bankCode != ''">
+			AND t1.bank_code =#{bankCode}
+		</if>
+		<if test="openAccountType == 0">
+			and t2.open_account_type = 0
+		</if>
+		<if test="openAccountType == 1">
+			and t2.open_account_type = 1
+		</if>
+		<if test="openAccountType == 2">
+			and t2.open_account_type = 2
+		</if>
+		<if test="openAccountType == 3">
+			and t2.open_account_type = 3
+		</if>
+		<if test="openAccountType == 4">
+			and t2.open_account_type = 1 and t2.bank_type =0
+		</if>
+		<if test="openAccountType == 5">
+			and t2.open_account_type = 1 and t2.bank_type =1 and t2.open_account_time &lt; '2019-01-12 16:30:00'
+		</if>
+		<if test="openAccountType == 6">
+			and t2.open_account_type = 1 and t2.bank_type =1 and t2.open_account_time &gt;= '2019-01-12 16:30:00'
+		</if>
+		ORDER BY t1.register_time DESC
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.fund.entity.ClientBankCardInfoEntity" resultMap="clientBankCardInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_bank_card_info
+        WHERE 1=1
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="bankType != null">
+            AND t1.bank_type =#{bankType}
+        </if>
+        <if test="status != null">
+            AND t1.status =#{status}
+        </if>
+        <if test="bankName != null and bankName != ''">
+            AND t1.bank_name LIKE CONCAT(#{bankName},'%')
+        </if>
+        <if test="bankAccount != null and bankAccount != ''">
+            AND t1.bank_account =#{bankAccount}
+        </if>
+        <if test="bankNo != null and bankNo != ''">
+            AND t1.bank_no =#{bankNo}
+        </if>
+		<if test="bankCode != null and bankCode != ''">
+			AND t1.bank_code =#{bankCode}
+		</if>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from client_bank_card_info
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.fund.entity.ClientBankCardInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into client_bank_card_info
+		(
+			`client_id`, 
+			`fund_account`,
+			`bank_type`,
+			`bank_name`, 
+			`bank_no`,
+			`bank_code`,
+			`bank_account`, 
+			`register_time`, 
+			`untied_time`, 
+			`status`, 
+			`create_user`, 
+			`update_user`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{clientId}, 
+			#{fundAccount},
+			#{bankType},
+			#{bankName},
+			#{bankNo},
+			#{bankCode},
+			#{bankAccount}, 
+			#{registerTime}, 
+			#{untiedTime}, 
+			#{status}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.fund.entity.ClientBankCardInfoEntity">
+		update client_bank_card_info 
+		<set>
+			<if test="clientId != null">`client_id` = #{clientId}, </if>
+			<if test="bankType != null">`bank_type` = #{bankType}, </if>
+			<if test="fundAccount != null">`fund_account` = #{fundAccount}, </if>
+			<if test="bankName != null">`bank_name` = #{bankName}, </if>
+			<if test="bankNo != null">`bank_no` = #{bankNo}, </if>
+			<if test="bankCode != null">`bank_code` = #{bankCode}, </if>
+			<if test="bankAccount != null">`bank_account` = #{bankAccount}, </if>
+			<if test="registerTime != null">`register_time` = #{registerTime}, </if>
+			<if test="untiedTime != null">`untied_time` = #{untiedTime}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from client_bank_card_info where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from client_bank_card_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

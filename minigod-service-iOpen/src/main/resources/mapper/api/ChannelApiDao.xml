@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.api.dao.ChannelApiDao">
+    <select id="queryLastInfo" parameterType="java.lang.String" resultType="com.sunline.modules.api.entity.ChannelQueryModel">
+        SELECT
+        COUNT(*) AS regCount,
+        IFNULL((select count(*) from securities_user_info where DATE_FORMAT(open_account_time,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as openCount,
+        IFNULL((
+        SELECT sum(t.count) FROM
+        (
+        SELECT count(DISTINCT d.client_id) as count FROM client_fund_deposit d LEFT JOIN securities_user_info s ON d.client_id = s.trade_account
+        LEFT JOIN money_rate_info t3 ON t3.from_money_type = d.money_type
+        AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> NOW() AND t3.valid_date <![CDATA[ >= ]]> NOW()
+        WHERE d.deposit_type = 'D' and DATE_FORMAT(d.init_date,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY)
+        AND NOT EXISTS (SELECT 1 FROM client_fund_deposit s2 WHERE s2.deposit_type='D' AND s2.init_date <![CDATA[ < ]]> DATE_SUB(CURDATE(),INTERVAL 1 DAY) AND s2.client_id=d.client_id)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        GROUP BY d.client_id
+        HAVING IFNULL(CONVERT (SUM(d.occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) >= 9800
+        ) t
+        ),0) as firstIncomeCount,
+        IFNULL((
+        SELECT sum(t.count) FROM
+        (
+        SELECT count(DISTINCT t.client_id) as count,t.business_flag as flag FROM stock_transfer_info t LEFT JOIN securities_user_info s ON t.client_id = s.trade_account
+        LEFT JOIN money_rate_info t3 ON t3.from_money_type = t.money_type
+        AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> NOW() AND t3.valid_date <![CDATA[ >= ]]> NOW()
+        WHERE DATE_FORMAT(t.trade_date,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY)
+        AND NOT EXISTS (SELECT 1 FROM stock_transfer_info s2 WHERE s2.business_flag = '3102' AND s2.trade_date <![CDATA[ < ]]> DATE_SUB(CURDATE(),INTERVAL 1 DAY) AND s2.client_id=t.client_id)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        GROUP BY t.client_id
+        HAVING IFNULL(CONVERT (SUM(t.stock_mkt_value * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) >= 9800
+        ) t WHERE t.flag = '3102'
+        ),0) as firstTrsOutCount,
+        IFNULL((
+        SELECT sum(t.count) FROM
+        (
+        SELECT count(DISTINCT t.client_id) as count,t.business_flag as flag FROM stock_transfer_info t LEFT JOIN securities_user_info s ON t.client_id = s.trade_account
+        LEFT JOIN money_rate_info t3 ON t3.from_money_type = t.money_type
+        AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> NOW() AND t3.valid_date <![CDATA[ >= ]]> NOW()
+        WHERE DATE_FORMAT(t.trade_date,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY)
+        AND NOT EXISTS (SELECT 1 FROM stock_transfer_info s2 WHERE s2.business_flag = '3101' AND s2.trade_date <![CDATA[ < ]]> DATE_SUB(CURDATE(),INTERVAL 1 DAY) AND s2.client_id=t.client_id)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        GROUP BY t.client_id
+        HAVING IFNULL(CONVERT (SUM(t.stock_mkt_value * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) >= 9800
+        ) t WHERE t.flag = '3101'
+        ),0) as firstTrsInCount,
+
+        IFNULL((select count(d.client_id) from client_ipo_detail d left join securities_user_info s on d.client_id = s.trade_account
+        where DATE_FORMAT(d.create_time,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as hitNewCount,
+        IFNULL((select count(d.client_id) from client_ipo_detail d left join securities_user_info s on d.client_id = s.trade_account where d.type = 0
+        and DATE_FORMAT(d.create_time,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY) and d.quantity_allotted > 0
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as cashHitNewCount,
+        IFNULL((select count(d.client_id) from client_ipo_detail d left join securities_user_info s on d.client_id = s.trade_account where d.type = 1
+        and DATE_FORMAT(d.create_time,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY) and d.quantity_allotted > 0
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as finHitNewCount,
+        IFNULL((select count(t.client_id) from client_trade_flow_info t left join securities_user_info s on t.client_id = s.trade_account where
+        DATE_FORMAT(t.trade_date,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as tradeCount,
+        IFNULL((
+        select IFNULL(CONVERT (SUM(t.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) from client_trade_flow_info t
+        left join securities_user_info s on t.client_id = s.trade_account
+        LEFT JOIN money_rate_info t3 ON t3.from_money_type = t.money_type
+        AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> NOW() AND t3.valid_date <![CDATA[ >= ]]> NOW()
+        where DATE_FORMAT(t.trade_date,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as tradeMoney,
+        IFNULL((select count(*) from client_fund_deposit d left join securities_user_info s on d.client_id = s.trade_account where d.deposit_type= 'W'
+        and DATE_FORMAT(d.init_date,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as outComeCount
+        FROM
+        user_info u
+        WHERE DATE_FORMAT(u.create_time,'%Y-%m-%d') = DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and u.user_source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="queryTotalInfo" parameterType="java.lang.String" resultType="com.sunline.modules.api.entity.ChannelQueryModel">
+        SELECT
+        COUNT(*) AS regCount,
+        IFNULL((select count(*) from securities_user_info where 1=1 AND DATE_FORMAT(open_account_time,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as openCount,
+        IFNULL((
+        SELECT sum(t.count) FROM
+        (
+        SELECT count(DISTINCT d.client_id) as count FROM client_fund_deposit d LEFT JOIN securities_user_info s ON d.client_id = s.trade_account
+        WHERE d.deposit_type = 'D' AND DATE_FORMAT(d.init_date,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        GROUP BY d.client_id
+        ) t
+        ),0) as firstIncomeCount,
+        IFNULL((
+        SELECT sum(t.count) FROM
+        (
+        SELECT count(DISTINCT t.create_time) as count,t.business_flag as flag FROM stock_transfer_info t LEFT JOIN securities_user_info s ON t.client_id = s.trade_account
+        WHERE 1=1
+        AND DATE_FORMAT(t.trade_date,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        GROUP BY t.client_id
+        ) t WHERE t.flag = '3101'
+        ),0) as firstTrsInCount,
+        IFNULL((
+        SELECT sum(t.count) FROM
+        (
+        SELECT count(DISTINCT t.create_time) as count,t.business_flag as flag FROM stock_transfer_info t LEFT JOIN securities_user_info s ON t.client_id = s.trade_account
+        WHERE 1=1
+        AND DATE_FORMAT(t.trade_date,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        GROUP BY t.client_id
+        ) t WHERE t.flag = '3102'
+        ),0) as firstTrsOutCount,
+
+        IFNULL((select count(d.client_id) from client_ipo_detail d left join securities_user_info s on d.client_id = s.trade_account
+        where 1= 1 AND DATE_FORMAT(d.curr_date,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as hitNewCount,
+        IFNULL((select count(d.client_id) from client_ipo_detail d left join securities_user_info s on d.client_id = s.trade_account where d.type = 0 and d.quantity_allotted > 0
+        AND DATE_FORMAT(d.curr_date,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 1 DAY) and d.quantity_allotted > 0
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as cashHitNewCount,
+        IFNULL((select count(d.client_id) from client_ipo_detail d left join securities_user_info s on d.client_id = s.trade_account where d.type = 1 and d.quantity_allotted > 0
+        AND DATE_FORMAT(d.curr_date,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as finHitNewCount,
+        IFNULL((select count(t.client_id) from client_trade_flow_info t left join securities_user_info s on t.client_id = s.trade_account where 1=1
+        AND DATE_FORMAT(t.trade_date,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as tradeCount,
+        IFNULL((
+        select IFNULL(CONVERT (SUM(t.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) from client_trade_flow_info t
+        left join securities_user_info s on t.client_id = s.trade_account
+        LEFT JOIN money_rate_info t3 ON t3.from_money_type = t.money_type
+        AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> NOW() AND t3.valid_date <![CDATA[ >= ]]> NOW()
+        where 1=1 AND DATE_FORMAT(t.trade_date,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as tradeMoney,
+        IFNULL((select count(*) from client_fund_deposit d left join securities_user_info s on d.client_id = s.trade_account where d.deposit_type= 'W'
+        AND DATE_FORMAT(d.init_date,'%Y-%m-%d') <![CDATA[ <= ]]> DATE_SUB(curdate(),INTERVAL 1 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0) as outComeCount
+        FROM
+        user_info u
+        WHERE 1=1
+        <if test="channelIds != null">
+            and u.user_source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+
+    </select>
+</mapper>

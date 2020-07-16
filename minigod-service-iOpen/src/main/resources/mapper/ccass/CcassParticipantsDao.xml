@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.ccass.dao.CcassParticipantsDao">
+
+
+    <resultMap type="com.sunline.modules.ccass.entity.CcassParticipantsEntity" id="ccassParticipantsMap">
+        <result property="id" column="id"/>
+        <result property="ccassId" column="ccass_id"/>
+        <result property="ccassNameEn" column="ccass_name_en"/>
+        <result property="ccassNameTc" column="ccass_name_tc"/>
+        <result property="partId" column="part_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, 
+		ccass_id, 
+		ccass_name_en, 
+		ccass_name_tc, 
+		part_id,
+		DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+		DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') AS update_time
+    </sql>
+
+    <select id="queryObject" resultType="com.sunline.modules.ccass.entity.CcassParticipantsEntity"
+            resultMap="ccassParticipantsMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ccass_participants
+        WHERE 1=1
+        <if test="ccassId != null and ccassId != ''">
+            AND ccass_id =#{ccassId}
+        </if>
+        <if test="partId != null and partId != ''">
+            AND part_id =#{partId}
+        </if>
+    </select>
+
+    <select id="queryList" resultType="com.sunline.modules.ccass.entity.CcassParticipantsEntity"
+            resultMap="ccassParticipantsMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ccass_participants
+        WHERE 1=1
+        <if test="ccassId != null and ccassId != ''">
+            AND ccass_id =#{ccassId}
+        </if>
+        <if test="partId != null and partId != ''">
+            AND part_id =#{partId}
+        </if>
+        <if test="ccassNameTc != null and ccassNameTc != ''">
+            AND ccass_name_tc LIKE CONCAT('%',#{ccassNameTc},'%')
+        </if>
+        <if test="ccassNameEn != null and ccassNameEn != ''">
+            AND ccass_name_en LIKE CONCAT('%',#{ccassNameEn},'%')
+        </if>
+        ORDER BY ccass_name_en
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.ccass.entity.CcassParticipantsEntity"
+            resultMap="ccassParticipantsMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ccass_participants
+        WHERE 1=1
+        <if test="ccassId != null and ccassId != ''">
+            AND ccass_id =#{ccassId}
+        </if>
+        <if test="partId != null and partId != ''">
+            AND part_id =#{partId}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from ccass_participants
+	</select>
+
+    <insert id="save" parameterType="com.sunline.modules.ccass.entity.CcassParticipantsEntity">
+		insert into ccass_participants
+		(
+			`ccass_id`, 
+			`ccass_name_en`, 
+			`ccass_name_tc`, 
+			`part_id`,
+		    `create_time`,
+            `update_time`
+		)
+		values
+		(
+			#{ccassId}, 
+			#{ccassNameEn}, 
+			#{ccassNameTc}, 
+			#{partId},
+			NOW(),
+            NOW()
+		)
+	</insert>
+
+    <insert id="saveBatch" parameterType="com.sunline.modules.ccass.entity.CcassParticipantsEntity">
+        insert into ccass_participants
+        (
+        `ccass_id`,
+        `ccass_name_en`,
+        `ccass_name_tc`,
+        `part_id`,
+        `create_time`,
+        `update_time`
+        )
+        values
+        <foreach item="item" collection="list" separator=",">
+            (
+            #{item.ccassId},
+            #{item.ccassNameEn},
+            #{item.ccassNameTc},
+            #{item.partId},
+            NOW(),
+            NOW()
+            )
+        </foreach>
+
+    </insert>
+
+    <update id="update" parameterType="com.sunline.modules.ccass.entity.CcassParticipantsEntity">
+        update ccass_participants
+        <set>
+            <if test="ccassId != null">`ccass_id` = #{ccassId},</if>
+            <if test="ccassNameEn != null">`ccass_name_en` = #{ccassNameEn},</if>
+            <if test="ccassNameTc != null">`ccass_name_tc` = #{ccassNameTc},</if>
+            <if test="partId != null">`part_id` = #{partId},</if>
+            `update_time` = NOW()
+        </set>
+        where part_id = #{partId}
+    </update>
+
+    <delete id="delete">
+		delete from ccass_participants where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from ccass_participants where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

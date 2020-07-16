@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.CustomerAccountOpenInfoDao">
+
+
+    <resultMap type="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity"
+               id="customerAccountOpenInfoMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="openAccountType" column="open_account_type"/>
+        <result property="openAccountAccessWay" column="open_account_access_way"/>
+        <result property="fundAccountType" column="fund_account_type"/>
+        <result property="sourceChannelId" column="source_channel_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="inviterId" column="inviter_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="clientName" column="client_name"/>
+        <result property="familyName" column="family_name"/>
+        <result property="givenName" column="given_name"/>
+        <result property="clientNameSpell" column="client_name_spell"/>
+		<result property="givenNameSpell" column="given_name_spell"/>
+		<result property="familyNameSpell" column="family_name_spell"/>
+        <result property="idKind" column="id_kind"/>
+        <result property="idNo" column="id_no"/>
+        <result property="sex" column="sex"/>
+        <result property="birthday" column="birthday"/>
+        <result property="idCardAddress" column="id_card_address"/>
+        <result property="idCardValidDateStart" column="id_card_valid_date_start"/>
+        <result property="idCardValidDateEnd" column="id_card_valid_date_end"/>
+        <result property="identitySimilarityPercent" column="identity_similarity_percent"/>
+        <result property="isPassIdentityAuthentication" column="is_pass_identity_authentication"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="bankNo" column="bank_no"/>
+        <result property="bankAccountName" column="bank_account_name"/>
+        <result property="nationality" column="nationality"/>
+        <result property="isAmericanGreenCardHolder" column="is_american_green_card_holder"/>
+		<result property="contactRepublicName" column="contact_republic_name"/>
+        <result property="contactProvinceName" column="contact_province_name"/>
+        <result property="contactCityName" column="contact_city_name"/>
+        <result property="contactCountyName" column="contact_county_name"/>
+        <result property="contactDetailAddress" column="contact_detail_address"/>
+		<result property="companyRepublicName" column="company_republic_name"/>
+        <result property="companyProvinceName" column="company_province_name"/>
+        <result property="companyCityName" column="company_city_name"/>
+        <result property="companyCountyName" column="company_county_name"/>
+        <result property="companyDetailAddress" column="company_detail_address"/>
+		<result property="familyRepublicName" column="family_republic_name"/>
+        <result property="familyProvinceName" column="family_province_name"/>
+        <result property="familyCityName" column="family_city_name"/>
+        <result property="familyCountyName" column="family_county_name"/>
+        <result property="familyDetailAddress" column="family_detail_address"/>
+        <result property="familyAddress" column="family_address"/>
+        <result property="contactAddress" column="contact_address"/>
+        <result property="email" column="email"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="professionCode" column="profession_code"/>
+        <result property="professionType" column="profession_type"/>
+        <result property="companyName" column="company_name"/>
+        <result property="companyAddress" column="company_address"/>
+        <result property="companyPhoneNumber" column="company_phone_number"/>
+        <result property="jobPosition" column="job_position"/>
+        <result property="industryRange" column="industry_range"/>
+        <result property="capitalSource" column="capital_source"/>
+        <result property="annualIncome" column="annual_income"/>
+        <result property="investTarget" column="invest_target"/>
+        <result property="investTargetOther" column="invest_target_other"/>
+        <result property="stocksInvestmentExperienceType" column="stocks_investment_experience_type"/>
+        <result property="warrantsInvestmentExperienceType" column="warrants_investment_experience_type"/>
+        <result property="futuresInvestmentExperienceType" column="futures_investment_experience_type"/>
+        <result property="isKnowDerivativeProducts" column="is_know_derivative_products"/>
+        <result property="derivativeProductsStudyType" column="derivative_products_study_type"/>
+        <result property="derivativeProductsStudyTypeOther" column="derivative_products_study_type_other"/>
+        <result property="financingInstitutionWorkExperienceType" column="financing_institution_work_experience_type"/>
+        <result property="financingInstitutionWorkExperienceTypeOther"
+                column="financing_institution_work_experience_type_other"/>
+        <result property="isTradedDerivativeProducts" column="is_traded_derivative_products"/>
+        <result property="isOpenUsaStockMarket" column="is_open_usa_stock_market"/>
+        <result property="isOpenHkStockMarket" column="is_open_hk_stock_market"/>
+        <result property="isAllowProvidePrivacy" column="is_allow_provide_privacy"/>
+        <result property="isAmlSuspicious" column="is_aml_suspicious"/>
+        <result property="isAllowDerivativesTransaction" column="is_allow_derivatives_transaction"/>
+        <result property="initialAccountPassword" column="initial_account_password"/>
+        <result property="openAccountTime" column="open_account_time"/>
+        <result property="applicationTime" column="application_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="recordStatus" column="record_status"/>
+        <result property="bankType" column="bank_type"/>
+        <result property="otherBankName" column="other_bank_name"/>
+        <result property="accountLevel" column="account_level"/>
+        <result property="addressType" column="address_type"/>
+        <result property="signingOrganization" column="signing_organization"/>
+        <result property="nation" column="nation"/>
+        <result property="caSignHashCode" column="ca_sign_hash_code"/>
+        <result property="northTrade" column="north_trade"/>
+        <result property="fatca" column="fatca"/>
+		<result property="acceptRisk" column="accept_risk"/>
+        <result property="theUSTaxNum" column="theUS_tax_number"/>
+        <result property="otherNationality" column="other_nationality"/>
+		<result property="otherContactRepublic" column="other_contact_republic"/>
+		<result property="otherCompanyRepublic" column="other_company_republic"/>
+		<result property="otherFamilyRepublic" column="other_family_republic"/>
+		<result property="freelanceCode" column="freelance_code"/>
+		<result property="freelanceOther" column="freelance_other"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+		application_id,
+		open_account_type,
+		open_account_access_way,
+		fund_account_type,
+		source_channel_id,		
+		user_id,
+		inviter_id,
+		client_id,
+		fund_account,
+		client_name,
+		family_name,
+		given_name,
+		client_name_spell,
+		given_name_spell,
+		family_name_spell,
+		id_kind,
+		id_no,
+		sex,
+		birthday,
+		id_card_address,
+		id_card_valid_date_start,
+		id_card_valid_date_end,
+		identity_similarity_percent,
+		is_pass_identity_authentication,
+		bank_id,
+		bank_no,
+		bank_account_name,
+		nationality,
+		is_american_green_card_holder,
+		contact_republic_name,
+		contact_province_name,
+		contact_city_name,
+		contact_county_name,
+		contact_detail_address,
+		company_republic_name,
+		company_province_name,
+        company_city_name,
+        company_county_name,
+        company_detail_address,
+        family_republic_name,
+        family_province_name,
+        family_city_name,
+        family_county_name,
+        family_detail_address,
+		family_address,
+		contact_address,
+		email,
+		phone_number,
+		profession_code,
+		freelance_code,
+		freelance_other,
+		profession_type,
+		company_name,
+		company_address,
+		company_phone_number,
+		job_position,
+		industry_range,
+		capital_source,
+		annual_income,
+		invest_target,
+		invest_target_other,
+		stocks_investment_experience_type,
+		warrants_investment_experience_type,
+		futures_investment_experience_type,
+		is_know_derivative_products,
+		derivative_products_study_type,
+		derivative_products_study_type_other,
+		financing_institution_work_experience_type,
+		financing_institution_work_experience_type_other,
+		is_traded_derivative_products,
+		is_open_usa_stock_market,
+		is_open_hk_stock_market,
+		is_allow_provide_privacy,
+		is_aml_suspicious,
+		is_allow_derivatives_transaction,
+		account_level,
+		initial_account_password,
+		open_account_time,
+		application_time,
+		create_time,
+		update_time,
+		record_status,
+		bank_type,
+		other_bank_name,
+		address_type,
+		signing_organization,
+		nation,
+		ca_sign_hash_code,
+		north_trade,
+        fatca,
+        theUS_tax_number,
+        accept_risk,
+        other_nationality,
+        other_contact_republic,
+        other_company_republic,
+        other_family_republic
+    </sql>
+
+    <sql id="Base_Where_Conditions">
+        <if test="id != null">
+            <![CDATA[ and id = #{id}]]>
+        </if>
+        <if test="applicationId != null">
+            <![CDATA[ and application_id = #{applicationId}]]>
+        </if>
+        <if test="userId != null">
+            <![CDATA[ and user_id = #{userId}]]>
+        </if>
+        <if test="idNo != null">
+            <![CDATA[ and id_no = #{idNo}]]>
+        </if>
+        <if test="idKind != null">
+            <![CDATA[ and id_kind = #{idKind}]]>
+        </if>
+        <if test="email != null">
+            <![CDATA[ and email = #{email}]]>
+        </if>
+        <if test="recordStatus != null">
+            <![CDATA[ and record_status = #{recordStatus}]]>
+        </if>
+        <if test="phoneNumber != null">
+            <![CDATA[ and phone_number = #{phoneNumber}]]>
+        </if>
+    </sql>
+
+    <select id="selectSelective" resultMap="customerAccountOpenInfoMap"
+            parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from customer_account_open_info
+        <where>
+            <include refid="Base_Where_Conditions"/>
+        </where>
+    </select>
+
+    <select id="selectDistinctChannel" resultMap="customerAccountOpenInfoMap"
+            parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity">
+		select DISTINCT(caoi.source_channel_id) as source_channel_id,
+		from customer_account_open_info caoi,customer_account_open_application caoa
+		where caoa.id = caoi.application_id and caoa.current_node ='客服审核'
+	</select>
+
+    <select id="queryObject" resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity"
+            resultMap="customerAccountOpenInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        from customer_account_open_info
+        where application_id = #{value}
+    </select>
+
+    <select id="queryByApplicationId"
+            resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity"
+            resultMap="customerAccountOpenInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        from customer_account_open_info
+        where application_id = #{applicationId}
+    </select>
+
+    <select id="findByClientId" resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity"
+            resultMap="customerAccountOpenInfoMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM customer_account_open_info
+        WHERE client_id = #{clientId}
+    </select>
+
+    <select id="queryList" resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity"
+            resultMap="customerAccountOpenInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        from customer_account_open_info
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity"
+            resultMap="customerAccountOpenInfoMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM customer_account_open_info
+        WHERE 1=1
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from customer_account_open_info
+	</select>
+
+    <insert id="save" parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity">
+		insert into customer_account_open_info
+		(
+			`application_id`,
+			`open_account_type`,
+			`open_account_access_way`,
+			`fund_account_type`,
+			`source_channel_id`,			
+			`user_id`,
+			`inviter_id`,
+			`client_id`,
+			`fund_account`,
+			`client_name`,
+			`family_name`,
+			`given_name`,
+			`client_name_spell`,
+			`given_name_spell`,
+			`family_name_spell`,
+			`id_kind`,
+			`id_no`,
+			`sex`,
+			`birthday`,
+			`id_card_address`,
+			`id_card_valid_date_start`,
+			`id_card_valid_date_end`,
+			`identity_similarity_percent`,
+			`is_pass_identity_authentication`,
+			`bank_id`,
+			`bank_no`,
+			`bank_account_name`,
+			`nationality`,
+			`is_american_green_card_holder`,
+			`contact_republic_name`,
+			`contact_province_name`,
+			`contact_city_name`,
+			`contact_county_name`,
+			`contact_detail_address`,
+			`company_republic_name`,
+			`company_province_name`,
+            `company_city_name`,
+            `company_county_name`,
+            `company_detail_address`,
+            `family_republic_name`,
+            `family_province_name`,
+            `family_city_name`,
+            `family_county_name`,
+            `family_detail_address`,
+			`family_address`,
+			`contact_address`,
+			`email`,
+			`phone_number`,
+			`profession_code`,
+			`freelance_code`,
+			`freelance_other`,
+			`profession_type`,
+			`company_name`,
+			`company_address`,
+			`company_phone_number`,
+			`job_position`,
+			`industry_range`,
+			`capital_source`,
+			`annual_income`,
+			`invest_target`,
+			`invest_target_other`,
+			`stocks_investment_experience_type`,
+			`warrants_investment_experience_type`,
+			`futures_investment_experience_type`,
+			`is_know_derivative_products`,
+			`derivative_products_study_type`,
+			`derivative_products_study_type_other`,
+			`financing_institution_work_experience_type`,
+			`financing_institution_work_experience_type_other`,
+			`is_traded_derivative_products`,
+			`is_open_usa_stock_market`,
+			`is_open_hk_stock_market`,
+			`is_allow_provide_privacy`,
+			`is_aml_suspicious`,
+			`is_allow_derivatives_transaction`,
+			`initial_account_password`,
+			`open_account_time`,
+			`application_time`,
+			`create_time`,
+			`update_time`,
+			`record_status`,
+			`bank_type`,
+	        `other_bank_name`,
+			`address_type`,
+			`signing_organization`,
+			`nation`,
+			`north_trade`,
+            `fatca`,
+            `theUS_tax_number`,
+            `accept_risk`,
+            `other_nationality`,
+            `other_contact_republic`,
+            `other_company_republic`,
+            `other_family_republic`
+		)
+		values
+		(
+			#{applicationId},
+			#{openAccountType},
+			#{openAccountAccessWay},
+			#{fundAccountType},
+			#{sourceChannelId},			
+			#{userId},
+			#{inviterId},
+			#{clientId},
+			#{fundAccount},
+			#{clientName},
+			#{familyName},
+			#{givenName},
+			#{clientNameSpell},
+			#{givenNameSpell},
+			#{familyNameSpell},
+			#{idKind},
+			#{idNo},
+			#{sex},
+			#{birthday},
+			#{idCardAddress},
+			#{idCardValidDateStart},
+			#{idCardValidDateEnd},
+			#{identitySimilarityPercent},
+			#{isPassIdentityAuthentication},
+			#{bankId},
+			#{bankNo},
+			#{bankAccountName},
+			#{nationality},
+			#{isAmericanGreenCardHolder},
+			#{contactRepublicName},
+			#{contactProvinceName},
+			#{contactCityName},
+			#{contactCountyName},
+			#{contactDetailAddress},
+			#{companyRepublicName},
+			#{companyProvinceName},
+			#{companyCityName},
+			#{companyCountyName},
+			#{companyDetailAddress},
+			#{familyRepublicName},
+			#{familyProvinceName},
+			#{familyCityName},
+			#{familyCountyName},
+			#{familyDetailAddress},
+			#{familyAddress},
+			#{contactAddress},
+			#{email},
+			#{phoneNumber},
+			#{professionCode},
+			#{freelanceCode},
+			#{freelanceOther},
+			#{professionType},
+			#{companyName},
+			#{companyAddress},
+			#{companyPhoneNumber},
+			#{jobPosition},
+			#{industryRange},
+			#{capitalSource},
+			#{annualIncome},
+			#{investTarget},
+			#{investTargetOther},
+			#{stocksInvestmentExperienceType},
+			#{warrantsInvestmentExperienceType},
+			#{futuresInvestmentExperienceType},
+			#{isKnowDerivativeProducts},
+			#{derivativeProductsStudyType},
+			#{derivativeProductsStudyTypeOther},
+			#{financingInstitutionWorkExperienceType},
+			#{financingInstitutionWorkExperienceTypeOther},
+			#{isTradedDerivativeProducts},
+			#{isOpenUsaStockMarket},
+			#{isOpenHkStockMarket},
+			#{isAllowProvidePrivacy},
+			#{isAmlSuspicious},
+			#{isAllowDerivativesTransaction},
+			#{initialAccountPassword},
+			#{openAccountTime},
+			#{applicationTime},
+			#{createTime},
+			#{updateTime},
+			#{recordStatus},
+			#{bankType},
+			#{otherBankName},
+			#{addressType},
+			#{signingOrganization},
+			#{nation},
+			#{northTrade},
+			#{fatca},
+			#{theUSTaxNum},
+			#{acceptRisk},
+			#{otherNationality},
+			#{otherContactRepublic},
+			#{otherCompanyRepublic},
+			#{otherFamilyRepublic}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity">
+        update customer_account_open_info
+        <set>
+            <if test="openAccountType != null">`open_account_type` = #{openAccountType},</if>
+            <if test="openAccountAccessWay != null">`open_account_access_way` = #{openAccountAccessWay},</if>
+            <if test="fundAccountType != null">`fund_account_type` = #{fundAccountType},</if>
+            <if test="sourceChannelId != null">`source_channel_id` = #{sourceChannelId},</if>
+            <if test="userId != null">`user_id` = #{userId},</if>
+            <if test="inviterId != null">`inviter_id` = #{inviterId},</if>
+            <if test="clientId != null">`client_id` = #{clientId},</if>
+            <if test="fundAccount != null">`fund_account` = #{fundAccount},</if>
+            <if test="clientName != null">`client_name` = #{clientName},</if>
+            <if test="familyName != null">`family_name` = #{familyName},</if>
+            <if test="givenName != null">`given_name` = #{givenName},</if>
+            <if test="clientNameSpell != null">`client_name_spell` = #{clientNameSpell},</if>
+			<if test="givenNameSpell != null">`given_name_spell` = #{givenNameSpell},</if>
+			<if test="familyNameSpell != null">`family_name_spell` = #{familyNameSpell},</if>
+            <if test="idKind != null">`id_kind` = #{idKind},</if>
+            <if test="idNo != null">`id_no` = #{idNo},</if>
+            <if test="sex != null">`sex` = #{sex},</if>
+            <if test="birthday != null">`birthday` = #{birthday},</if>
+            <if test="idCardAddress != null">`id_card_address` = #{idCardAddress},</if>
+            <if test="idCardValidDateStart != null">`id_card_valid_date_start` = #{idCardValidDateStart},</if>
+            <if test="idCardValidDateEnd != null">`id_card_valid_date_end` = #{idCardValidDateEnd},</if>
+            <if test="identitySimilarityPercent != null">`identity_similarity_percent` = #{identitySimilarityPercent},
+            </if>
+            <if test="isPassIdentityAuthentication != null">`is_pass_identity_authentication` =
+                #{isPassIdentityAuthentication},
+            </if>
+            <if test="bankType != null">`bank_type` = #{bankType},</if>
+            <if test="bankId != null">`bank_id` = #{bankId},</if>
+            <if test="otherBankName != null">`other_bank_name` = #{otherBankName},</if>
+            <if test="bankNo != null">`bank_no` = #{bankNo},</if>
+            <if test="bankAccountName != null">`bank_account_name` = #{bankAccountName},</if>
+            <if test="nationality != null">`nationality` = #{nationality},</if>
+            <if test="isAmericanGreenCardHolder != null">`is_american_green_card_holder` =
+                #{isAmericanGreenCardHolder},
+            </if>
+			<if test="contactRepublicName != null">`contact_republic_name` = #{contactRepublicName},</if>
+            <if test="contactProvinceName != null">`contact_province_name` = #{contactProvinceName},</if>
+            <if test="contactCityName != null">`contact_city_name` = #{contactCityName},</if>
+            <if test="contactCountyName != null">`contact_county_name` = #{contactCountyName},</if>
+            <if test="contactDetailAddress != null">`contact_detail_address` = #{contactDetailAddress},</if>
+			<if test="companyRepublicName != null">`company_republic_name` = #{companyRepublicName},</if>
+            <if test="companyProvinceName != null">`company_province_name` = #{companyProvinceName},</if>
+            <if test="companyCityName != null">`company_city_name` = #{companyCityName},</if>
+            <if test="companyCountyName != null">`company_county_name` = #{companyCountyName},</if>
+            <if test="companyDetailAddress != null">`company_detail_address` = #{companyDetailAddress},</if>
+			<if test="familyRepublicName != null">`family_republic_name` = #{familyRepublicName},</if>
+            <if test="familyProvinceName != null">`family_province_name` = #{familyProvinceName},</if>
+            <if test="familyCityName != null">`family_city_name` = #{familyCityName},</if>
+            <if test="familyCountyName != null">`family_county_name` = #{familyCountyName},</if>
+            <if test="familyDetailAddress != null">`family_detail_address` = #{familyDetailAddress},</if>
+            <if test="familyAddress != null">`family_address` = #{familyAddress},</if>
+            <if test="contactAddress != null">`contact_address` = #{contactAddress},</if>
+            <if test="email != null">`email` = #{email},</if>
+            <if test="phoneNumber != null">`phone_number` = #{phoneNumber},</if>
+            <if test="professionCode != null">`profession_code` = #{professionCode},</if>
+			<if test="freelanceCode != null">`freelance_code` = #{freelanceCode},</if>
+			<if test="freelanceOther != null">`freelance_other` = #{freelanceOther},</if>
+            <if test="professionType != null">`profession_type` = #{professionType},</if>
+            <if test="companyName != null">`company_name` = #{companyName},</if>
+            <if test="companyAddress != null">`company_address` = #{companyAddress},</if>
+            <if test="companyPhoneNumber != null">`company_phone_number` = #{companyPhoneNumber},</if>
+            <if test="jobPosition != null">`job_position` = #{jobPosition},</if>
+            <if test="industryRange != null">`industry_range` = #{industryRange},</if>
+            <if test="capitalSource != null">`capital_source` = #{capitalSource},</if>
+            <if test="annualIncome != null">`annual_income` = #{annualIncome},</if>
+            <if test="investTarget != null">`invest_target` = #{investTarget},</if>
+            <if test="investTargetOther != null">`invest_target_other` = #{investTargetOther},</if>
+            <if test="stocksInvestmentExperienceType != null">`stocks_investment_experience_type` =
+                #{stocksInvestmentExperienceType},
+            </if>
+            <if test="warrantsInvestmentExperienceType != null">`warrants_investment_experience_type` =
+                #{warrantsInvestmentExperienceType},
+            </if>
+            <if test="futuresInvestmentExperienceType != null">`futures_investment_experience_type` =
+                #{futuresInvestmentExperienceType},
+            </if>
+            <if test="isKnowDerivativeProducts != null">`is_know_derivative_products` = #{isKnowDerivativeProducts},
+            </if>
+            <if test="derivativeProductsStudyType != null">`derivative_products_study_type` =
+                #{derivativeProductsStudyType},
+            </if>
+            <if test="derivativeProductsStudyTypeOther != null">`derivative_products_study_type_other` =
+                #{derivativeProductsStudyTypeOther},
+            </if>
+            <if test="financingInstitutionWorkExperienceType != null">`financing_institution_work_experience_type` =
+                #{financingInstitutionWorkExperienceType},
+            </if>
+            <if test="financingInstitutionWorkExperienceTypeOther != null">
+                `financing_institution_work_experience_type_other` = #{financingInstitutionWorkExperienceTypeOther},
+            </if>
+            <if test="isTradedDerivativeProducts != null">`is_traded_derivative_products` =
+                #{isTradedDerivativeProducts},
+            </if>
+            <if test="isOpenUsaStockMarket != null">`is_open_usa_stock_market` = #{isOpenUsaStockMarket},</if>
+            <if test="isOpenHkStockMarket != null">`is_open_hk_stock_market` = #{isOpenHkStockMarket},</if>
+            <if test="isAllowProvidePrivacy != null">`is_allow_provide_privacy` = #{isAllowProvidePrivacy},</if>
+            <if test="isAmlSuspicious != null">`is_aml_suspicious` = #{isAmlSuspicious},</if>
+            <if test="isAllowDerivativesTransaction != null">`is_allow_derivatives_transaction` =
+                #{isAllowDerivativesTransaction},
+            </if>
+            <if test="initialAccountPassword != null">`initial_account_password` = #{initialAccountPassword},</if>
+            <if test="openAccountTime != null">`open_account_time` = #{openAccountTime},</if>
+            <if test="applicationTime != null">`application_time` = #{applicationTime},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="recordStatus != null">`record_status` = #{recordStatus},</if>
+            <if test="addressType != null">`address_type` = #{addressType},</if>
+            <if test="signingOrganization != null">signing_organization = #{signingOrganization},</if>
+            <if test="nation != null">`nation` = #{nation},</if>
+            <if test="accountLevel != null">`account_level` = #{accountLevel},</if>
+            <if test="caSignHashCode != null">`ca_sign_hash_code` = #{caSignHashCode},</if>
+            <if test="northTrade != null">`north_trade` = #{northTrade},</if>
+            <if test="fatca != null">`fatca` = #{fatca},</if>
+			<if test="theUSTaxNum != null">`theUS_tax_number` = #{theUSTaxNum},</if>
+            <if test="acceptRisk != null">`accept_risk` = #{acceptRisk},</if>
+            <if test="otherNationality != null">`other_nationality` = #{otherNationality},</if>
+			<if test="otherContactRepublic != null">`other_contact_republic` = #{otherContactRepublic},</if>
+			<if test="otherCompanyRepublic != null">`other_company_republic` = #{otherCompanyRepublic},</if>
+			<if test="otherFamilyRepublic != null">`other_family_republic` = #{otherFamilyRepublic}</if>
+        </set>
+        where application_id = #{applicationId}
+    </update>
+
+    <update id="updateNoProduct"
+            parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity">
+        update customer_account_open_info
+        <set>
+            <if test="openAccountType != null">`open_account_type` = #{openAccountType},</if>
+            <if test="openAccountAccessWay != null">`open_account_access_way` = #{openAccountAccessWay},</if>
+            <if test="fundAccountType != null">`fund_account_type` = #{fundAccountType},</if>
+            <if test="sourceChannelId != null">`source_channel_id` = #{sourceChannelId},</if>
+            <if test="userId != null">`user_id` = #{userId},</if>
+            <if test="inviterId != null">`inviter_id` = #{inviterId},</if>
+            <if test="clientId != null">`client_id` = #{clientId},</if>
+            <if test="fundAccount != null">`fund_account` = #{fundAccount},</if>
+            <if test="clientName != null">`client_name` = #{clientName},</if>
+            <if test="familyName != null">`family_name` = #{familyName},</if>
+            <if test="givenName != null">`given_name` = #{givenName},</if>
+            <if test="clientNameSpell != null">`client_name_spell` = #{clientNameSpell},</if>
+			<if test="givenNameSpell != null">`given_name_spell` = #{givenNameSpell},</if>
+			<if test="familyNameSpell != null">`family_name_spell` = #{familyNameSpell},</if>
+            <if test="idKind != null">`id_kind` = #{idKind},</if>
+            <if test="idNo != null">`id_no` = #{idNo},</if>
+            <if test="sex != null">`sex` = #{sex},</if>
+            <if test="birthday != null">`birthday` = #{birthday},</if>
+            <if test="idCardAddress != null">`id_card_address` = #{idCardAddress},</if>
+            <if test="idCardValidDateStart != null">`id_card_valid_date_start` = #{idCardValidDateStart},</if>
+            <if test="idCardValidDateEnd != null">`id_card_valid_date_end` = #{idCardValidDateEnd},</if>
+            <if test="identitySimilarityPercent != null">`identity_similarity_percent` = #{identitySimilarityPercent},
+            </if>
+            <if test="isPassIdentityAuthentication != null">`is_pass_identity_authentication` =
+                #{isPassIdentityAuthentication},
+            </if>
+            <if test="bankType != null">`bank_type` = #{bankType},</if>
+            <if test="bankId != null">`bank_id` = #{bankId},</if>
+            <if test="otherBankName != null">`other_bank_name` = #{otherBankName},</if>
+            <if test="bankNo != null">`bank_no` = #{bankNo},</if>
+            <if test="bankAccountName != null">`bank_account_name` = #{bankAccountName},</if>
+            <if test="nationality != null">`nationality` = #{nationality},</if>
+            <if test="isAmericanGreenCardHolder != null">`is_american_green_card_holder` =
+                #{isAmericanGreenCardHolder},
+            </if>
+			<if test="contactRepublicName != null">`contact_republic_name` = #{contactRepublicName},</if>
+            <if test="contactProvinceName != null">`contact_province_name` = #{contactProvinceName},</if>
+            <if test="contactCityName != null">`contact_city_name` = #{contactCityName},</if>
+            <if test="contactCountyName != null">`contact_county_name` = #{contactCountyName},</if>
+            <if test="contactDetailAddress != null">`contact_detail_address` = #{contactDetailAddress},</if>
+			<if test="companyRepublicName != null">`company_republic_name` = #{companyRepublicName},</if>
+			<if test="companyProvinceName != null">`company_province_name` = #{companyProvinceName},</if>
+            <if test="companyCityName != null">`company_city_name` = #{companyCityName},</if>
+            <if test="companyCountyName != null">`company_county_name` = #{companyCountyName},</if>
+            <if test="companyDetailAddress != null">`company_detail_address` = #{companyDetailAddress},</if>
+			<if test="familyRepublicName != null">`family_republic_name` = #{familyRepublicName},</if>
+			<if test="familyProvinceName != null">`family_province_name` = #{familyProvinceName},</if>
+            <if test="familyCityName != null">`family_city_name` = #{familyCityName},</if>
+            <if test="familyCountyName != null">`family_county_name` = #{familyCountyName},</if>
+            <if test="familyDetailAddress != null">`family_detail_address` = #{familyDetailAddress},</if>
+            <if test="familyAddress != null">`family_address` = #{familyAddress},</if>
+            <if test="contactAddress != null">`contact_address` = #{contactAddress},</if>
+            <if test="email != null">`email` = #{email},</if>
+            <if test="phoneNumber != null">`phone_number` = #{phoneNumber},</if>
+            <if test="professionCode != null">`profession_code` = #{professionCode},</if>
+			<if test="freelanceCode != null">`freelance_code` = #{freelanceCode},</if>
+			<if test="freelanceOther != null">`freelance_other` = #{freelanceOther},</if>
+            <if test="professionType != null">`profession_type` = #{professionType},</if>
+            <if test="companyName != null">`company_name` = #{companyName},</if>
+            <if test="companyAddress != null">`company_address` = #{companyAddress},</if>
+            <if test="companyPhoneNumber != null">`company_phone_number` = #{companyPhoneNumber},</if>
+            <if test="jobPosition != null">`job_position` = #{jobPosition},</if>
+            <if test="industryRange != null">`industry_range` = #{industryRange},</if>
+            <if test="capitalSource != null">`capital_source` = #{capitalSource},</if>
+            <if test="annualIncome != null">`annual_income` = #{annualIncome},</if>
+            <if test="investTarget != null">`invest_target` = #{investTarget},</if>
+            <if test="investTargetOther != null">`invest_target_other` = #{investTargetOther},</if>
+            <if test="stocksInvestmentExperienceType != null">`stocks_investment_experience_type` =
+                #{stocksInvestmentExperienceType},
+            </if>
+            <if test="warrantsInvestmentExperienceType != null">`warrants_investment_experience_type` =
+                #{warrantsInvestmentExperienceType},
+            </if>
+            <if test="futuresInvestmentExperienceType != null">`futures_investment_experience_type` =
+                #{futuresInvestmentExperienceType},
+            </if>
+            <if test="isKnowDerivativeProducts != null">`is_know_derivative_products` = #{isKnowDerivativeProducts},
+            </if>
+            `derivative_products_study_type` = #{derivativeProductsStudyType},
+            `derivative_products_study_type_other` = #{derivativeProductsStudyTypeOther},
+            `financing_institution_work_experience_type` = #{financingInstitutionWorkExperienceType},
+            `financing_institution_work_experience_type_other` = #{financingInstitutionWorkExperienceTypeOther},
+            `is_traded_derivative_products` = #{isTradedDerivativeProducts},
+            <if test="isOpenUsaStockMarket != null">`is_open_usa_stock_market` = #{isOpenUsaStockMarket},</if>
+            <if test="isOpenHkStockMarket != null">`is_open_hk_stock_market` = #{isOpenHkStockMarket},</if>
+            <if test="isAllowProvidePrivacy != null">`is_allow_provide_privacy` = #{isAllowProvidePrivacy},</if>
+            <if test="isAmlSuspicious != null">`is_aml_suspicious` = #{isAmlSuspicious},</if>
+            <if test="isAllowDerivativesTransaction != null">`is_allow_derivatives_transaction` =
+                #{isAllowDerivativesTransaction},
+            </if>
+            <if test="initialAccountPassword != null">`initial_account_password` = #{initialAccountPassword},</if>
+            <if test="openAccountTime != null">`open_account_time` = #{openAccountTime},</if>
+            <if test="applicationTime != null">`application_time` = #{applicationTime},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="recordStatus != null">`record_status` = #{recordStatus},</if>
+            <if test="addressType != null">`address_type` = #{addressType},</if>
+            <if test="northTrade != null">`north_trade` = #{northTrade},</if>
+            <if test="fatca != null">`fatca` = #{fatca},</if>
+			<if test="theUSTaxNum != null">`theUS_tax_number` = #{theUSTaxNum},</if>
+            <if test="acceptRisk != null">`accept_risk` = #{acceptRisk},</if>
+            <if test="otherNationality != null">`other_nationality` = #{otherNationality},</if>
+			<if test="otherContactRepublic != null">`other_contact_republic` = #{otherContactRepublic},</if>
+			<if test="otherCompanyRepublic != null">`other_company_republic` = #{otherCompanyRepublic},</if>
+			<if test="otherFamilyRepublic != null">`other_family_republic` = #{otherFamilyRepublic}</if>
+		</set>
+        where application_id = #{applicationId}
+    </update>
+
+    <delete id="delete">
+		delete from customer_account_open_info where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from customer_account_open_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="validateTradeAccount" resultType="java.lang.Integer">
+        select count(*) from customer_account_open_info i left join customer_account_open_application a on
+        i.application_id = a.application_id where 1=1
+        <if test="clientId!=null and clientId !=''">
+            and i.client_id = #{clientId}
+        </if>
+        and a.application_status in(1,2,3,4,6,11)
+        and i.application_id != #{applicationId}
+    </select>
+
+    <!-- 通过证件类型和证件号码查询客户是否已提交开户 -->
+    <select id="isExistedOpenAccByIdCard"
+            resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity"
+            resultMap="customerAccountOpenInfoMap">
+        SELECT
+        i.*
+        FROM customer_account_open_info i , customer_account_open_application a
+        WHERE i.application_id = a.application_id AND a.application_status in(1,2,3,5,11,12)
+        <if test="idKind!=null and idKind!=''">
+            AND id_kind = #{idKind}
+        </if>
+        <if test="idNo!=null and idNo!=''">
+            AND id_no = #{idNo}
+        </if>
+        <if test="email!=null and email!=''">
+            AND email = #{email}
+        </if>
+        <if test="phoneNumber!=null and phoneNumber!=''">
+            AND phone_number = #{phoneNumber}
+        </if>
+    </select>
+
+</mapper>

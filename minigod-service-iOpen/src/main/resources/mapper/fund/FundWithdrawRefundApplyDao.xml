@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.fund.dao.FundWithdrawRefundApplyDao">
+
+
+    <resultMap type="com.sunline.modules.fund.entity.FundWithdrawRefundApplyEntity" id="fundWithdrawRefundApplyMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="withdrawApplicationId" column="withdraw_application_id"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="refundAmount" column="refund_amount"/>
+        <result property="refundBankFee" column="refund_bank_fee"/>
+        <result property="netRefundAmount" column="net_refund_amount"/>
+        <result property="refundType" column="refund_type"/>
+        <result property="currentNode" column="current_node"/>
+        <result property="approveResult" column="approve_result"/>
+        <result property="lastApprovalUser" column="last_approval_user"/>
+        <result property="approvalOpinion" column="approval_opinion"/>
+        <result property="callbackStatus" column="callback_status"/>
+        <result property="status" column="status"/>
+        <result property="instanceId" column="instance_id"/>
+        <result property="defid" column="defid"/>
+        <result property="code" column="code"/>
+        <result property="startUserId" column="start_user_id"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="startTime" column="start_time"/>
+        <result property="actResult" column="act_result"/>
+        <result property="assignDrafter" column="assign_drafter"/>
+        <result property="applicationStatus" column="application_status"/>
+        <result property="hsBankId" column="hs_bank_id"/>
+        <result property="hsBankAccount" column="hs_bank_account"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		t1.id,
+		t1.application_id,
+		t1.withdraw_application_id,
+		t1.currency_type,
+		t1.refund_amount,
+		t1.refund_bank_fee,
+		t1.net_refund_amount,
+		t1.refund_type,
+		t1.current_node,
+		t1.approve_result,
+		t1.last_approval_user,
+		t1.approval_opinion,
+		t1.callback_status,
+		t1.status,
+		t1.instance_id,
+		t1.defid,
+		t1.code,
+		t1.start_user_id,
+		t1.create_user,
+		t1.update_user,
+		t1.start_time,
+		t1.act_result,
+		t1.assign_drafter,
+		t1.application_status,
+		t1.hs_bank_id,
+		t1.hs_bank_account,
+		t1.hs_deal_status,
+		t1.create_time,
+		t1.update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.fund.entity.FundWithdrawRefundApplyEntity" resultMap="fundWithdrawRefundApplyMap">
+		select
+		<include refid="Base_Column_List" />
+		from fund_withdraw_refund_application t1
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.fund.entity.FundWithdrawRefundApplyEntity" resultMap="fundWithdrawRefundApplyMap">
+		SELECT
+		<include refid="Base_Column_List" />,
+        t3.user_id,
+        t3.client_name,
+        t3.sex,
+        t3.source_channel_id,
+        t3.phone_number,
+        t3.id_kind,
+        t3.id_no,
+        t3.client_name_spell AS client_name_en,
+        t2.client_id,
+        t2.fund_account,
+        t2.client_name_spell,
+        t2.withdraw_type,
+        t2.bank_name,
+        t2.bank_no,
+        t2.swift_code,
+        t2.contact_address,
+        t2.money_type,
+        t2.occur_balance,
+        t2.charge_money,
+        t2.actual_balance,
+        t2.frozen_balance,
+        t2.current_balance
+        FROM fund_withdraw_refund_application t1
+		LEFT JOIN client_fund_withdraw_application t2 ON t1.withdraw_application_id=t2.application_id
+        LEFT JOIN securities_user_info t3 ON t3.trade_account=t2.client_id
+        WHERE 1=1
+        <if test="applicationId != null and applicationId != ''">
+            AND t1.application_id =#{applicationId}
+        </if>
+        <if test="userId != null and userId != ''">
+            AND t3.user_id =#{userId}
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t2.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t2.fund_account =#{fundAccount}
+        </if>
+        <if test="phoneNumber != null and phoneNumber != ''">
+            AND t3.phone_number =#{phoneNumber}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t2.money_type =#{moneyType}
+        </if>
+        <if test="withdrawType != null">
+            AND t2.withdraw_type =#{withdrawType}
+        </if>
+        <if test="sourceChannelId != null and sourceChannelId != ''">
+            AND t3.source_channel_id = #{sourceChannelId}
+        </if>
+        <if test="applicationStatus != null">
+            AND t1.application_status =#{applicationStatus}
+        </if>
+        <if test="callbackStatus != null">
+            AND t1.callback_status =#{callbackStatus}
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            AND t1.create_time <![CDATA[ >= ]]> #{beginTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND t1.create_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        <if test="currentNodes != null">
+            <if test="currentNodes.size==0">
+                and t2.current_node = null
+            </if>
+            <if test="currentNodes.size!=0">
+                and t2.current_node in
+                <foreach item="item" index="index" collection="currentNodes" open="(" separator="," close=")">
+                    #{currentNodes[${index}]}
+                </foreach>
+            </if>
+        </if>
+        <if test="clientNameSpell != null">
+            AND t2.client_name_spell =#{clientNameSpell}
+        </if>
+        <if test="bankNo != null">
+            AND t2.bank_no =#{bankNo}
+        </if>
+        <if test="fundWithdrawBalance == 1 ">
+            AND t2.occur_balance <![CDATA[ < ]]> 10000
+        </if>
+        <if test="fundWithdrawBalance == 2 ">
+            AND t2.occur_balance <![CDATA[ >= ]]> 10000 AND t2.occur_balance <![CDATA[ < ]]> 50000
+        </if>
+        <if test="fundWithdrawBalance == 3 ">
+            AND t2.occur_balance <![CDATA[ >= ]]> 50000 AND t2.occur_balance <![CDATA[ < ]]> 100000
+        </if>
+        <if test="fundWithdrawBalance == 4 ">
+            AND t2.occur_balance <![CDATA[ >= ]]> 100000 AND t2.occur_balance <![CDATA[ < ]]> 200000
+        </if>
+        <if test="fundWithdrawBalance == 5 ">
+            AND t2.occur_balance <![CDATA[ >= ]]> 200000 AND t2.occur_balance <![CDATA[ < ]]> 500000
+        </if>
+        <if test="fundWithdrawBalance == 6 ">
+            AND t2.occur_balance <![CDATA[ >= ]]> 500000 AND t2.occur_balance <![CDATA[ < ]]> 1000000
+        </if>
+        <if test="fundWithdrawBalance == 7 ">
+            AND t2.occur_balance <![CDATA[ >= ]]> 1000000
+        </if>
+        <if test="hsDealStatus != null">
+            AND t1.hs_deal_status =#{hsDealStatus}
+        </if>
+        ORDER BY t1.create_time DESC
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.fund.entity.FundWithdrawRefundApplyEntity" resultMap="fundWithdrawRefundApplyMap">
+        select
+        <include refid="Base_Column_List" />
+        from fund_withdraw_refund_application
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from fund_withdraw_refund_application
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.fund.entity.FundWithdrawRefundApplyEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into fund_withdraw_refund_application
+		(
+			`application_id`, 
+			`withdraw_application_id`, 
+			`currency_type`,
+			`refund_amount`, 
+			`refund_bank_fee`, 
+			`net_refund_amount`, 
+			`refund_type`, 
+			`current_node`, 
+			`approve_result`, 
+			`last_approval_user`, 
+			`approval_opinion`, 
+			`callback_status`, 
+			`status`, 
+			`instance_id`, 
+			`defid`, 
+			`code`, 
+			`start_user_id`, 
+			`create_user`, 
+			`update_user`, 
+			`start_time`, 
+			`act_result`, 
+			`assign_drafter`, 
+			`application_status`, 
+			`hs_bank_id`, 
+			`hs_bank_account`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{withdrawApplicationId}, 
+			#{currencyType},
+			#{refundAmount}, 
+			#{refundBankFee}, 
+			#{netRefundAmount}, 
+			#{refundType}, 
+			#{currentNode}, 
+			#{approveResult}, 
+			#{lastApprovalUser}, 
+			#{approvalOpinion}, 
+			#{callbackStatus}, 
+			#{status}, 
+			#{instanceId}, 
+			#{defid}, 
+			#{code}, 
+			#{startUserId}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{startTime}, 
+			#{actResult}, 
+			#{assignDrafter}, 
+			#{applicationStatus}, 
+			#{hsBankId}, 
+			#{hsBankAccount}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.fund.entity.FundWithdrawRefundApplyEntity">
+		update fund_withdraw_refund_application 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="withdrawApplicationId != null">`withdraw_application_id` = #{withdrawApplicationId}, </if>
+			<if test="currencyType != null">`currency_type` = #{currencyType}, </if>
+			<if test="refundAmount != null">`refund_amount` = #{refundAmount}, </if>
+			<if test="refundBankFee != null">`refund_bank_fee` = #{refundBankFee}, </if>
+			<if test="netRefundAmount != null">`net_refund_amount` = #{netRefundAmount}, </if>
+			<if test="refundType != null">`refund_type` = #{refundType}, </if>
+			<if test="currentNode != null">`current_node` = #{currentNode}, </if>
+			<if test="approveResult != null">`approve_result` = #{approveResult}, </if>
+			<if test="lastApprovalUser != null">`last_approval_user` = #{lastApprovalUser}, </if>
+			<if test="approvalOpinion != null">`approval_opinion` = #{approvalOpinion}, </if>
+			<if test="callbackStatus != null">`callback_status` = #{callbackStatus}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="instanceId != null">`instance_id` = #{instanceId}, </if>
+			<if test="defid != null">`defid` = #{defid}, </if>
+			<if test="code != null">`code` = #{code}, </if>
+			<if test="startUserId != null">`start_user_id` = #{startUserId}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="actResult != null">`act_result` = #{actResult}, </if>
+			<if test="assignDrafter != null">`assign_drafter` = #{assignDrafter}, </if>
+			<if test="applicationStatus != null">`application_status` = #{applicationStatus}, </if>
+			<if test="hsBankId != null">`hs_bank_id` = #{hsBankId}, </if>
+			<if test="hsBankAccount != null">`hs_bank_account` = #{hsBankAccount}, </if>
+            <if test="hsDealStatus != null">`hs_deal_status` = #{hsDealStatus}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from fund_withdraw_refund_application where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from fund_withdraw_refund_application where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <select id="queryByApplicationId" resultType="com.sunline.modules.fund.entity.FundWithdrawRefundApplyEntity"
+            resultMap="fundWithdrawRefundApplyMap">
+        SELECT
+        <include refid="Base_Column_List" />,
+        t3.user_id,
+        t3.client_name,
+        t3.sex,
+        t3.source_channel_id,
+        t3.phone_number,
+        t3.id_kind,
+        t3.id_no,
+        t3.client_name_spell AS client_name_en,
+        t2.client_id,
+        t2.fund_account,
+        t2.client_name_spell,
+        t2.withdraw_type,
+        t2.bank_name,
+        t2.bank_no,
+        t2.swift_code,
+        t2.contact_address,
+        t2.money_type,
+        t2.occur_balance,
+        t2.charge_money,
+        t2.actual_balance,
+        t2.frozen_balance,
+        t2.current_balance
+        FROM fund_withdraw_refund_application t1
+        LEFT JOIN client_fund_withdraw_application t2 ON t1.withdraw_application_id=t2.application_id
+        LEFT JOIN securities_user_info t3 ON t3.trade_account=t2.client_id
+        WHERE t1.application_id = #{value}
+    </select>
+
+    <update id="updateByApplicationId" parameterType="com.sunline.modules.fund.entity.FundWithdrawRefundApplyEntity">
+        update fund_withdraw_refund_application
+        <set>
+            <if test="applicationId != null">`application_id` = #{applicationId}, </if>
+            <if test="withdrawApplicationId != null">`withdraw_application_id` = #{withdrawApplicationId}, </if>
+            <if test="currencyType != null">`currency_type` = #{currencyType}, </if>
+            <if test="refundAmount != null">`refund_amount` = #{refundAmount}, </if>
+            <if test="refundBankFee != null">`refund_bank_fee` = #{refundBankFee}, </if>
+            <if test="netRefundAmount != null">`net_refund_amount` = #{netRefundAmount}, </if>
+            <if test="refundType != null">`refund_type` = #{refundType}, </if>
+            <if test="currentNode != null">`current_node` = #{currentNode}, </if>
+            <if test="approveResult != null">`approve_result` = #{approveResult}, </if>
+            <if test="lastApprovalUser != null">`last_approval_user` = #{lastApprovalUser}, </if>
+            <if test="approvalOpinion != null">`approval_opinion` = #{approvalOpinion}, </if>
+            <if test="callbackStatus != null">`callback_status` = #{callbackStatus}, </if>
+            <if test="status != null">`status` = #{status}, </if>
+            <if test="instanceId != null">`instance_id` = #{instanceId}, </if>
+            <if test="defid != null">`defid` = #{defid}, </if>
+            <if test="code != null">`code` = #{code}, </if>
+            <if test="startUserId != null">`start_user_id` = #{startUserId}, </if>
+            <if test="createUser != null">`create_user` = #{createUser}, </if>
+            <if test="updateUser != null">`update_user` = #{updateUser}, </if>
+            <if test="startTime != null">`start_time` = #{startTime}, </if>
+            <if test="actResult != null">`act_result` = #{actResult}, </if>
+            <if test="assignDrafter != null">`assign_drafter` = #{assignDrafter}, </if>
+            <if test="applicationStatus != null">`application_status` = #{applicationStatus}, </if>
+            <if test="hsBankId != null">`hs_bank_id` = #{hsBankId}, </if>
+            <if test="hsBankAccount != null">`hs_bank_account` = #{hsBankAccount}, </if>
+            <if test="hsDealStatus != null">`hs_deal_status` = #{hsDealStatus}, </if>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where application_id = #{applicationId}
+    </update>
+
+    <update id="updateAssignDrafter"
+            parameterType="com.sunline.modules.fund.entity.FundWithdrawRefundApplyEntity">
+        update fund_withdraw_refund_application set assign_drafter=#{assignDrafter},update_time=#{updateTime}
+        where application_id = #{applicationId}
+    </update>
+
+    <select id="queryAuditList" resultType="com.sunline.modules.fund.entity.FundWithdrawRefundApplyEntity" resultMap="fundWithdrawRefundApplyMap">
+        SELECT
+        <include refid="Base_Column_List" />,
+        t3.user_id,
+        t3.client_name,
+        t3.sex,
+        t3.source_channel_id,
+        t3.phone_number,
+        t3.id_kind,
+        t3.id_no,
+        t3.client_name_spell AS client_name_en,
+        t2.client_id,
+        t2.fund_account,
+        t2.client_name_spell,
+        t2.withdraw_type,
+        t2.bank_name,
+        t2.bank_no,
+        t2.swift_code,
+        t2.contact_address,
+        t2.money_type,
+        t2.occur_balance,
+        t2.charge_money,
+        t2.actual_balance,
+        t2.frozen_balance,
+        t2.current_balance
+        FROM fund_withdraw_refund_application t1
+        LEFT JOIN client_fund_withdraw_application t2 ON t1.withdraw_application_id=t2.application_id
+        LEFT JOIN securities_user_info t3 ON t3.trade_account=t2.client_id
+        WHERE 1=1
+        AND t1.application_status IN (1)
+        <if test="applicationId != null and applicationId != ''">
+            AND t1.application_id =#{applicationId}
+        </if>
+        <if test="userId != null and userId != ''">
+            AND t3.user_id =#{userId}
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t2.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t2.fund_account =#{fundAccount}
+        </if>
+        <if test="phoneNumber != null and phoneNumber != ''">
+            AND t3.phone_number =#{phoneNumber}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t2.money_type =#{moneyType}
+        </if>
+        <if test="withdrawType != null">
+            AND t2.withdraw_type =#{withdrawType}
+        </if>
+        <if test="sourceChannelId != null and sourceChannelId != ''">
+            AND t3.source_channel_id = #{sourceChannelId}
+        </if>
+        <if test="applicationStatus != null">
+            AND t1.application_status =#{applicationStatus}
+        </if>
+        <if test="callbackStatus != null">
+            AND t1.callback_status =#{callbackStatus}
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            AND t1.create_time <![CDATA[ >= ]]> #{beginTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND t1.create_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        <if test="currentNodes != null">
+            <if test="currentNodes.size==0">
+                and t1.current_node = null
+            </if>
+            <if test="currentNodes.size!=0">
+                and t1.current_node in
+                <foreach item="item" index="index" collection="currentNodes" open="(" separator="," close=")">
+                    #{currentNodes[${index}]}
+                </foreach>
+            </if>
+        </if>
+        <if test="clientNameSpell != null">
+            AND t2.client_name_spell =#{clientNameSpell}
+        </if>
+        <if test="bankNo != null">
+            AND t2.bank_no =#{bankNo}
+        </if>
+        <if test="assignDrafter != null">
+            AND (t1.assign_drafter = #{assignDrafter} || t1.assign_drafter IS NULL)
+        </if>
+        ORDER BY t1.create_time DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.fund.dao.DbsIccBankFlowDao">
+
+
+    <resultMap type="com.sunline.modules.fund.entity.DbsIccBankFlowEntity" id="dbsIccBankFlowMap">
+        <result property="id" column="id"/>
+        <result property="msgId" column="msg_id"/>
+        <result property="orgId" column="org_id"/>
+        <result property="timeStamp" column="time_stamp"/>
+        <result property="ctry" column="ctry"/>
+        <result property="txnType" column="txn_type"/>
+        <result property="customerReference" column="customer_reference"/>
+        <result property="txnRefId" column="txn_ref_id"/>
+        <result property="txnDate" column="txn_date"/>
+        <result property="valueDt" column="value_dt"/>
+        <result property="receiveAccName" column="receive_acc_name"/>
+        <result property="receiveAccNo" column="receive_acc_no"/>
+        <result property="receiveVirtualAccName" column="receive_virtual_acc_name"/>
+        <result property="receiveVirtualAccNo" column="receive_virtual_acc_no"/>
+        <result property="proxyType" column="proxy_type"/>
+        <result property="proxyValue" column="proxy_value"/>
+        <result property="txnCcy" column="txn_ccy"/>
+        <result property="txnAmt" column="txn_amt"/>
+        <result property="senderAccName" column="sender_acc_name"/>
+        <result property="senderAccNo" column="sender_acc_no"/>
+        <result property="senderBankId" column="sender_bank_id"/>
+        <result property="senderBankCode" column="sender_bank_code"/>
+        <result property="senderBranchCode" column="sender_branch_code"/>
+        <result property="paymentDetails" column="payment_details"/>
+        <result property="purposeCode" column="purpose_code"/>
+        <result property="addtlInf" column="addtl_inf"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		msg_id, 
+		org_id, 
+		time_stamp, 
+		ctry, 
+		txn_type, 
+		customer_reference, 
+		txn_ref_id, 
+		txn_date, 
+		value_dt, 
+		receive_acc_name, 
+		receive_acc_no, 
+		receive_virtual_acc_name, 
+		receive_virtual_acc_no, 
+		proxy_type, 
+		proxy_value, 
+		txn_ccy, 
+		txn_amt, 
+		sender_acc_name, 
+		sender_acc_no, 
+		sender_bank_id, 
+		sender_bank_code, 
+		sender_branch_code, 
+		payment_details, 
+		purpose_code, 
+		addtl_inf,
+		is_check,
+		is_apply,
+		application_id,
+		assign_drafter,
+		create_time,
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.fund.entity.DbsIccBankFlowEntity" resultMap="dbsIccBankFlowMap">
+		select
+		<include refid="Base_Column_List" />
+		from dbs_icc_bank_flow
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.fund.entity.DbsIccBankFlowEntity" resultMap="dbsIccBankFlowMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM dbs_icc_bank_flow t1
+		WHERE 1=1
+        <if test="assignDrafter != null">
+            AND (t1.assign_drafter =#{assignDrafter}|| assign_drafter IS NULL)
+        </if>
+        <if test="isCheck != null">
+            AND t1.is_check =#{isCheck}
+        </if>
+        <if test="txnCcy != null">
+            AND t1.txn_ccy =#{txnCcy}
+        </if>
+        ORDER BY is_apply DESC,assign_drafter DESC, create_time ASC
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.fund.entity.DbsIccBankFlowEntity" resultMap="dbsIccBankFlowMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dbs_icc_bank_flow t1
+        WHERE 1=1
+        <if test="isCheck != null">
+            AND t1.is_check =#{isCheck}
+        </if>
+		<if test="msgId != null">
+			AND t1.msg_id =#{msgId}
+		</if>
+		<if test="txnRefId != null">
+			AND t1.txn_ref_id =#{txnRefId}
+		</if>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from dbs_icc_bank_flow
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.fund.entity.DbsIccBankFlowEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into dbs_icc_bank_flow
+		(
+			`msg_id`, 
+			`org_id`, 
+			`time_stamp`, 
+			`ctry`, 
+			`txn_type`, 
+			`customer_reference`, 
+			`txn_ref_id`, 
+			`txn_date`, 
+			`value_dt`, 
+			`receive_acc_name`, 
+			`receive_acc_no`, 
+			`receive_virtual_acc_name`, 
+			`receive_virtual_acc_no`, 
+			`proxy_type`, 
+			`proxy_value`, 
+			`txn_ccy`, 
+			`txn_amt`, 
+			`sender_acc_name`, 
+			`sender_acc_no`, 
+			`sender_bank_id`, 
+			`sender_bank_code`, 
+			`sender_branch_code`, 
+			`payment_details`, 
+			`purpose_code`, 
+			`addtl_inf`,
+			`is_check`,
+			`is_apply`,
+			`create_time`,
+			`update_time`
+		)
+		values
+		(
+			#{msgId}, 
+			#{orgId}, 
+			#{timeStamp}, 
+			#{ctry}, 
+			#{txnType}, 
+			#{customerReference}, 
+			#{txnRefId}, 
+			#{txnDate}, 
+			#{valueDt}, 
+			#{receiveAccName}, 
+			#{receiveAccNo}, 
+			#{receiveVirtualAccName}, 
+			#{receiveVirtualAccNo}, 
+			#{proxyType}, 
+			#{proxyValue}, 
+			#{txnCcy}, 
+			#{txnAmt}, 
+			#{senderAccName}, 
+			#{senderAccNo}, 
+			#{senderBankId}, 
+			#{senderBankCode}, 
+			#{senderBranchCode}, 
+			#{paymentDetails}, 
+			#{purposeCode}, 
+			#{addtlInf},
+			#{isCheck},
+			#{isApply},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.fund.entity.DbsIccBankFlowEntity">
+		update dbs_icc_bank_flow 
+		<set>
+			<if test="msgId != null">`msg_id` = #{msgId}, </if>
+			<if test="orgId != null">`org_id` = #{orgId}, </if>
+			<if test="timeStamp != null">`time_stamp` = #{timeStamp}, </if>
+			<if test="ctry != null">`ctry` = #{ctry}, </if>
+			<if test="txnType != null">`txn_type` = #{txnType}, </if>
+			<if test="customerReference != null">`customer_reference` = #{customerReference}, </if>
+			<if test="txnRefId != null">`txn_ref_id` = #{txnRefId}, </if>
+			<if test="txnDate != null">`txn_date` = #{txnDate}, </if>
+			<if test="valueDt != null">`value_dt` = #{valueDt}, </if>
+			<if test="receiveAccName != null">`receive_acc_name` = #{receiveAccName}, </if>
+			<if test="receiveAccNo != null">`receive_acc_no` = #{receiveAccNo}, </if>
+			<if test="receiveVirtualAccName != null">`receive_virtual_acc_name` = #{receiveVirtualAccName}, </if>
+			<if test="receiveVirtualAccNo != null">`receive_virtual_acc_no` = #{receiveVirtualAccNo}, </if>
+			<if test="proxyType != null">`proxy_type` = #{proxyType}, </if>
+			<if test="proxyValue != null">`proxy_value` = #{proxyValue}, </if>
+			<if test="txnCcy != null">`txn_ccy` = #{txnCcy}, </if>
+			<if test="txnAmt != null">`txn_amt` = #{txnAmt}, </if>
+			<if test="senderAccName != null">`sender_acc_name` = #{senderAccName}, </if>
+			<if test="senderAccNo != null">`sender_acc_no` = #{senderAccNo}, </if>
+			<if test="senderBankId != null">`sender_bank_id` = #{senderBankId}, </if>
+			<if test="senderBankCode != null">`sender_bank_code` = #{senderBankCode}, </if>
+			<if test="senderBranchCode != null">`sender_branch_code` = #{senderBranchCode}, </if>
+			<if test="paymentDetails != null">`payment_details` = #{paymentDetails}, </if>
+			<if test="purposeCode != null">`purpose_code` = #{purposeCode}, </if>
+			<if test="addtlInf != null">`addtl_inf` = #{addtlInf},</if>
+			<if test="isCheck != null">`is_check` = #{isCheck},</if>
+			<if test="isApply != null">`is_apply` = #{isApply},</if>
+			<if test="applicationId != null">`application_id` = #{applicationId},</if>
+			<if test="assignDrafter != null">`assign_drafter` = #{assignDrafter},</if>
+			<if test="createTime != null">`create_time` = #{createTime},</if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+    <update id="updateAssignDrafterById" parameterType="com.sunline.modules.fund.entity.DbsIccBankFlowEntity">
+        update dbs_icc_bank_flow set assign_drafter=#{assignDrafter}
+        where id = #{id}
+    </update>
+	
+	<delete id="delete">
+		delete from dbs_icc_bank_flow where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from dbs_icc_bank_flow where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

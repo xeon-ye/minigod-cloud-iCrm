@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.stock.dao.StockOrderInfoDao">
+
+
+    <resultMap type="com.sunline.modules.stock.entity.StockOrderInfoEntity" id="stockOrderInfoMap">
+        <result property="id" column="id"/>
+        <result property="stockCode" column="stock_code"/>
+        <result property="stockName" column="stock_name"/>
+        <result property="stockQuantity" column="stock_quantity"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="stockDirection" column="stock_direction"/>
+        <result property="maxPrice" column="max_price"/>
+        <result property="minPrice" column="min_price"/>
+        <result property="expiryDate" column="expiry_date"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		stock_code, 
+		stock_name, 
+		stock_quantity,
+		status, 
+		create_time, 
+		create_user, 
+		update_time, 
+		update_user,
+		stock_direction,
+		max_price,
+        min_price,
+        DATE_FORMAT(expiry_date,'%Y-%m-%d') as expiry_date
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.stock.entity.StockOrderInfoEntity" resultMap="stockOrderInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from stock_order_info
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.stock.entity.StockOrderInfoEntity" resultMap="stockOrderInfoMap">
+		select <include refid="Base_Column_List" /> from stock_order_info where 1 = 1
+        <if test="stockCode!=null and stockCode !=null">
+          and stock_code  =  #{stockCode}
+        </if>
+        <if test="stockName!=null and stockName !=null">
+          and stock_name   LIKE CONCAT('%',#{stockName},'%')
+        </if>
+        <if test="beginDate!=null and beginDate !=null">
+          and create_time  >=  #{beginDate}
+        </if>
+        <if test="endDate!=null and endDate !=null">
+          and create_time  &lt;=  #{endDate}
+        </if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.stock.entity.StockOrderInfoEntity" resultMap="stockOrderInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from stock_order_info
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from stock_order_info
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.stock.entity.StockOrderInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into stock_order_info
+		(
+			`stock_code`, 
+			`stock_name`, 
+			`stock_quantity`,
+			`status`, 
+			`create_time`, 
+			`create_user`, 
+			`update_time`, 
+			`update_user`,
+			stock_direction,
+            max_price,
+            min_price,
+            expiry_date
+		)
+		values
+		(
+			#{stockCode}, 
+			#{stockName}, 
+			#{stockQuantity},
+			#{status}, 
+			#{createTime}, 
+			#{createUser}, 
+			#{updateTime}, 
+			#{updateUser},
+			#{stockDirection},
+            #{maxPrice},
+            #{minPrice},
+            #{expiryDate}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.stock.entity.StockOrderInfoEntity">
+		update stock_order_info 
+		<set>
+			<if test="stockCode != null">`stock_code` = #{stockCode}, </if>
+			<if test="stockName != null">`stock_name` = #{stockName}, </if>
+			<if test="stockQuantity != null">`stock_quantity` = #{stockQuantity}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser},</if>
+			<if test="stockDirection != null">`stock_direction` = #{stockDirection},</if>
+			`max_price` = #{maxPrice},
+			`min_price` = #{minPrice},
+			<if test="expiryDate != null">`expiry_date` = DATE_FORMAT(#{expiryDate},'%Y-%m-%d')</if>
+		</set>
+		where id = #{id}
+	</update>
+
+    <!-- 更改发送状态 -->
+	<update id="updateStatus">
+		update stock_order_info set
+        status = 1
+		where id = #{value}
+	</update>
+
+	<delete id="delete">
+		delete from stock_order_info where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from stock_order_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

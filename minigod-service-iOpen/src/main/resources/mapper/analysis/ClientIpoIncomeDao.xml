@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.analysis.dao.ClientIpoIncomeDao">
+
+    <select id="queryList" resultType="com.sunline.modules.analysis.entity.ClientIpoIncomeEntity">
+        SELECT DISTINCT
+        (s.user_id) AS userId,
+        s.trade_account,
+        DATE_FORMAT(u.create_time, '%Y-%m-%d') AS registerDate,
+        DATE_FORMAT(
+        s.open_account_time,
+        '%Y-%m-%d'
+        ) AS openAccountDate,
+        (
+        SELECT
+        min(d.init_date)
+        FROM
+        client_fund_deposit d
+        WHERE
+        d.client_id = s.trade_account
+        and d.deposit_type = 'D'
+        ) AS firstIncomeDate,
+        IFNULL((
+        SELECT
+        CONVERT (
+        SUM(
+        fd.occur_balance * IFNULL(
+        (m.exch_rate / m.reverse_rate),
+        1
+        )
+        ),
+        DECIMAL (20, 5)
+        )
+        FROM
+        client_fund_deposit fd
+        LEFT JOIN money_rate_info m ON m.from_money_type = fd.money_type
+        AND m.to_money_type = '2'
+        AND m.init_date <![CDATA[ <= ]]> now() AND m.valid_date <![CDATA[ >= ]]> now()
+        WHERE
+        fd.client_id = s.trade_account
+        and fd.deposit_type = 'D'
+        AND fd.init_date = (
+        SELECT
+        init_date
+        FROM
+        client_fund_deposit
+        WHERE
+        client_id = s.trade_account
+        ORDER BY
+        init_date
+        LIMIT 1
+        )
+        ),0) AS firstIncomeMoney,
+        IFNULL((
+        SELECT
+        CONVERT (
+        SUM(
+        d.occur_balance * IFNULL(
+        (m.exch_rate / m.reverse_rate),
+        1
+        )
+        ),
+        DECIMAL (20, 5)
+        )
+        FROM
+        client_fund_deposit d
+        LEFT JOIN money_rate_info m ON m.from_money_type = d.money_type
+        AND m.to_money_type = '2'
+        AND m.init_date <![CDATA[ <= ]]> now() AND m.valid_date <![CDATA[ >= ]]> now()
+        WHERE
+        d.client_id = s.trade_account
+        and d.deposit_type = 'D'
+        <if test="beginDate!=null and beginDate!=''">
+            AND d.init_date >= #{beginDate}
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            AND d.init_date &lt;= #{endDate}
+        </if>
+        ),0) AS ipoIncomeMoney,
+        IFNULL((
+        SELECT
+        count(*)
+        FROM
+        client_ipo_detail d
+        WHERE
+        client_id = s.trade_account
+        <if test="beginDate!=null and beginDate!=''">
+            AND d.curr_date >= #{beginDate}
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            AND date_format(d.curr_date,'%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        ),0) AS ipoApplyCount,
+        IFNULL((
+        SELECT
+        count(*)
+        FROM
+        user_info u
+        WHERE
+        u.inv_user_id = s.user_id
+        ),0) AS inviteCount,
+        IFNULL((
+        SELECT
+        CONVERT (
+        SUM(
+        d.occur_balance * IFNULL(
+        (m.exch_rate / m.reverse_rate),
+        1
+        )
+        ),
+        DECIMAL (20, 5)
+        )
+        FROM
+        client_fund_deposit d
+        LEFT JOIN money_rate_info m ON m.from_money_type = d.money_type
+        AND m.to_money_type = '2'
+        AND m.init_date <![CDATA[ <= ]]> now() AND m.valid_date <![CDATA[ >= ]]> now()
+        WHERE
+        client_id IN (
+        SELECT
+        u.trade_account
+        FROM
+        securities_user_info u
+        WHERE
+        u.inviter_id = s.user_id
+        )
+        and d.deposit_type = 'D'
+        ),0) AS inviteIncomeMoney
+        FROM
+        securities_user_info s
+        LEFT JOIN user_info u ON s.user_id = u.user_id,
+        client_ipo_detail i
+        WHERE
+        s.trade_account = i.client_id
+
+        <if test="userId!=null and userId!=''">
+            and s.user_id = #{userId}
+        </if>
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ORDER BY
+        s.open_account_time DESC,s.user_id desc
+    </select>
+
+
+</mapper>

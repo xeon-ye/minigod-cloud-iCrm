@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.fund.dao.DepositBankBillFlowDao">
+
+
+    <resultMap type="com.sunline.modules.fund.entity.DepositBankBillFlowEntity" id="depositBankBillFlowMap">
+        <result property="id" column="id"/>
+        <result property="referenceNo" column="reference_no"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="creditAmount" column="credit_mount"/>
+        <result property="bankName" column="bank_name"/>
+        <result property="accNo" column="acc_no"/>
+        <result property="accName" column="acc_name"/>
+        <result property="subAccname" column="sub_accName"/>
+        <result property="subAccno" column="sub_accNO"/>
+        <result property="currency" column="currency"/>
+		<result property="particulars" column="particulars"/>
+        <result property="valueDate" column="value_date"/>
+        <result property="checkStatus" column="check_status"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+		<result property="repeat" column="is_repeat"/>
+		<result property="assignDrafter" column="assign_drafter"/>
+        <result property="msgId" column="msg_id"/>
+        <result property="customerReference" column="customer_reference"/>
+        <result property="timeStamp" column="time_stamp"/>
+        <result property="txnType" column="txn_type"/>
+        <result property="senderAccName" column="sender_acc_name"/>
+        <result property="senderAccNo" column="sender_acc_no"/>
+        <result property="senderBankId" column="sender_bank_id"/>
+        <result property="flowSource" column="flow_source"/>
+		<result property="actualMoney" column="actual_money"/>
+		<result property="areChargeMoney" column="are_charge_money"/>
+		<result property="areEnqStatus" column="are_enq_status"/>
+		<result property="areTime" column="are_time"/>
+		<result property="processingTime" column="processing_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		reference_no, 
+		application_id, 
+		credit_mount, 
+		bank_name, 
+		acc_no, 
+		acc_name, 
+		sub_accName, 
+		sub_accNO, 
+		currency,
+		particulars,
+		value_date, 
+		check_status, 
+		create_user, 
+		update_user, 
+		create_time, 
+		update_time,
+		is_repeat,
+		assign_drafter,
+		msg_id,
+		customer_reference,
+		time_stamp,
+		txn_type,
+		sender_acc_name,
+		sender_acc_no,
+		sender_bank_id,
+		flow_source,
+		actual_money,
+		are_charge_money,
+		are_enq_status,
+		are_time,
+		processing_time
+    </sql>
+
+	<sql id="Base_Where_Conditions">
+		<if test="checkStatus != null">
+			AND check_status = #{checkStatus}
+		</if>
+		<if test="creditAmountMin != null">
+			AND credit_mount &gt;= #{creditAmountMin}
+		</if>
+		<if test="creditAmountMax != null">
+			AND credit_mount &lt;= #{creditAmountMax}
+		</if>
+		<if test="currency != null">
+			AND currency = #{currency}
+		</if>
+		<if test="bankName != null">
+			AND bank_name = #{bankName}
+		</if>
+		<if test="subAccname != null">
+			AND sub_accName = #{subAccname}
+		</if>
+		<if test="subAccno != null">
+			AND sub_accNO = #{subAccno}
+		</if>
+		<if test="applicationId != null">
+			AND application_id = #{applicationId}
+		</if>
+		<if test="referenceNo != null">
+			AND reference_no = #{referenceNo}
+		</if>
+		<if test="creditAmount != null">
+			AND credit_mount = #{creditAmount}
+		</if>
+		<if test="assignDrafter != null">
+			AND (assign_drafter = #{assignDrafter} || assign_drafter IS NULL)
+		</if>
+		<if test="msgId != null">
+			AND msg_id = #{msgId}
+		</if>
+		<if test="flowSource != null">
+			AND flow_source = #{flowSource}
+		</if>
+		<if test="senderAccName != null">
+			AND sender_acc_name = #{senderAccName}
+		</if>
+		<if test="senderAccNo != null">
+			AND sender_acc_no = #{senderAccNo}
+		</if>
+		<if test="actualMoney != null">
+			AND actual_money = #{actualMoney}
+		</if>
+		<if test="areChargeMoney != null">
+			AND are_charge_money = #{areChargeMoney}
+		</if>
+		<if test="areEnqStatus != null">
+			AND are_enq_status = #{areEnqStatus}
+		</if>
+		<if test="areTime != null">
+			AND are_time = #{areTime}
+		</if>
+	</sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.fund.entity.DepositBankBillFlowEntity" resultMap="depositBankBillFlowMap">
+		select
+		<include refid="Base_Column_List" />
+		from deposit_bank_bill_flow
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.fund.entity.DepositBankBillFlowEntity" resultMap="depositBankBillFlowMap">
+		select
+		<include refid="Base_Column_List" />
+		from deposit_bank_bill_flow
+		<where>
+			<include refid="Base_Where_Conditions"/>
+		</where>
+		ORDER BY assign_drafter DESC,value_date DESC
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.fund.entity.DepositBankBillFlowEntity" resultMap="depositBankBillFlowMap">
+        select
+        <include refid="Base_Column_List" />
+        from deposit_bank_bill_flow
+		<where>
+			<include refid="Base_Where_Conditions"/>
+		</where>
+		ORDER BY assign_drafter DESC,value_date DESC
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from deposit_bank_bill_flow
+	</select>
+
+	<select id="queryRepeatBankBill" resultType="com.sunline.modules.fund.entity.DepositBankBillFlowEntity">
+		select
+		<include refid="Base_Column_List" />
+		from deposit_bank_bill_flow
+		where reference_no = #{referenceNo}
+		<if test="valueDate != null">
+			AND value_date = #{valueDate}
+		</if>
+		<if test="currency != null">
+			AND currency = #{currency}
+		</if>
+		<if test="creditAmount != null">
+			AND credit_mount = #{creditAmount}
+		</if>
+		<if test="accNo != null and accNo.trim() != ''">
+			AND acc_no = #{accNo}
+		</if>
+		<if test="subAccno != null and subAccno.trim() !=''">
+			AND sub_accNO = #{subAccno}
+		</if>
+		<if test="flowSource != null">
+			AND flow_source = #{flowSource}
+		</if>
+	</select>
+
+    <select id="queryListByIds" resultType="com.sunline.modules.fund.entity.DepositBankBillFlowEntity">
+		  SELECT * from deposit_bank_bill_flow WHERE id IN (${ids})
+	</select>
+
+    <insert id="save" parameterType="com.sunline.modules.fund.entity.DepositBankBillFlowEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into deposit_bank_bill_flow
+		(
+			`reference_no`, 
+			`application_id`, 
+			`credit_mount`, 
+			`bank_name`, 
+			`acc_no`, 
+			`acc_name`, 
+			`sub_accName`, 
+			`sub_accNO`, 
+			`currency`,
+			`particulars`,
+			`value_date`, 
+			`check_status`, 
+			`create_user`, 
+			`update_user`, 
+			`create_time`, 
+			`update_time`,
+			`is_repeat`,
+			`assign_drafter`,
+			`msg_id`,
+			`customer_reference`,
+			`time_stamp`,
+			`txn_type`,
+			`sender_acc_name`,
+			`sender_acc_no`,
+			`sender_bank_id`,
+			`flow_source`,
+			`actual_money`,
+			`processing_time`
+		)
+		values
+		(
+			#{referenceNo}, 
+			#{applicationId}, 
+			#{creditAmount},
+			#{bankName}, 
+			#{accNo}, 
+			#{accName}, 
+			#{subAccname}, 
+			#{subAccno}, 
+			#{currency},
+			#{particulars},
+			#{valueDate}, 
+			#{checkStatus}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{createTime}, 
+			#{updateTime},
+			#{repeat},
+			#{assignDrafter},
+			#{msgId},
+			#{customerReference},
+			#{timeStamp},
+			#{txnType},
+			#{senderAccName},
+			#{senderAccNo},
+			#{senderBankId},
+			#{flowSource},
+			#{actualMoney},
+			#{processingTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.fund.entity.DepositBankBillFlowEntity">
+		update deposit_bank_bill_flow 
+		<set>
+			<if test="referenceNo != null">`reference_no` = #{referenceNo}, </if>
+			`application_id` = #{applicationId},
+			<if test="creditAmount != null">`credit_mount` = #{creditAmount}, </if>
+			<if test="bankName != null">`bank_name` = #{bankName}, </if>
+			`acc_no` = #{accNo},
+			`acc_name` = #{accName},
+			`sub_accName` = #{subAccname},
+			`sub_accNO` = #{subAccno},
+			`particulars` = #{particulars},
+			<if test="currency != null">`currency` = #{currency}, </if>
+			<if test="valueDate != null">`value_date` = #{valueDate}, </if>
+			<if test="checkStatus != null">`check_status` = #{checkStatus}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="repeat != null">`is_repeat` = #{repeat}, </if>
+            <if test="assignDrafter != null">`assign_drafter` = #{assignDrafter}, </if>
+            <if test="msgId != null">`msg_id` = #{msgId}, </if>
+            <if test="customerReference != null">`customer_reference` = #{customerReference}, </if>
+            <if test="timeStamp != null">`time_stamp` = #{timeStamp}, </if>
+            <if test="txnType != null">`txn_type` = #{txnType}, </if>
+            <if test="senderAccName != null">`sender_acc_name` = #{senderAccName}, </if>
+            <if test="senderAccNo != null">`sender_acc_no` = #{senderAccNo}, </if>
+            <if test="senderBankId != null">`sender_bank_id` = #{senderBankId}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete">
+		delete from deposit_bank_bill_flow where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from deposit_bank_bill_flow where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<update id="updateRepeat">
+		update deposit_bank_bill_flow set `is_repeat`= #{repeat} where id = #{id}
+	</update>
+
+	<update id="updateAssignDrafter"
+			parameterType="com.sunline.modules.fund.entity.DepositBankBillFlowEntity">
+		update deposit_bank_bill_flow set assign_drafter=#{assignDrafter},update_time=#{updateTime}
+		where id = #{id}
+	</update>
+
+	<update id="updateAREData" parameterType="com.sunline.modules.fund.entity.DepositBankBillFlowEntity">
+		update deposit_bank_bill_flow
+		<set>
+			<if test="referenceNo != null">`reference_no` = #{referenceNo}, </if>
+			<if test="creditAmount != null">`credit_mount` = #{creditAmount}, </if>
+			<if test="bankName != null">`bank_name` = #{bankName}, </if>
+			<if test="currency != null">`currency` = #{currency}, </if>
+			<if test="valueDate != null">`value_date` = #{valueDate}, </if>
+			<if test="checkStatus != null">`check_status` = #{checkStatus}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="repeat != null">`is_repeat` = #{repeat}, </if>
+			<if test="msgId != null">`msg_id` = #{msgId}, </if>
+			<if test="customerReference != null">`customer_reference` = #{customerReference}, </if>
+			<if test="timeStamp != null">`time_stamp` = #{timeStamp}, </if>
+			<if test="txnType != null">`txn_type` = #{txnType}, </if>
+			<if test="senderAccName != null">`sender_acc_name` = #{senderAccName}, </if>
+			<if test="senderAccNo != null">`sender_acc_no` = #{senderAccNo}, </if>
+			<if test="senderBankId != null">`sender_bank_id` = #{senderBankId},</if>
+			<if test="actualMoney != null">`actual_money` = #{actualMoney},</if>
+			<if test="areChargeMoney != null">`are_charge_money` = #{areChargeMoney},</if>
+			<if test="areEnqStatus != null">`are_enq_status` = #{areEnqStatus},</if>
+			<if test="areTime != null">`are_time` = #{areTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

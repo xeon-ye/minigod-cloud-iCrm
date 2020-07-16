@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.fund.dao.ClientFundDepositApplicationDao">
+
+
+    <resultMap type="com.sunline.modules.fund.entity.ClientFundDepositApplicationEntity" id="clientFundDepositApplicationMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="swiftCode" column="swift_code"/>
+        <result property="depositType" column="deposit_type"/>
+        <result property="remittanceType" column="remittance_type"/>
+        <result property="depositBank" column="deposit_bank"/>
+        <result property="depositNo" column="deposit_no"/>
+        <result property="depositAccount" column="deposit_account"/>
+        <result property="benefitBank" column="benefit_bank"/>
+		<result property="benefitBankCode" column="benefit_bank_code"/>
+        <result property="benefitNo" column="benefit_no"/>
+        <result property="benefitAccount" column="benefit_account"/>
+        <result property="depositBalance" column="deposit_balance"/>
+        <result property="contactAddress" column="contact_address"/>
+        <result property="applicationTime" column="application_time"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="approveResult" column="approve_result"/>
+        <result property="instanceId" column="instance_id"/>
+        <result property="defid" column="defid"/>
+        <result property="applicationStatus" column="application_status"/>
+        <result property="startTime" column="start_time"/>
+        <result property="currentNode" column="current_node"/>
+        <result property="assignDrafter" column="assign_drafter"/>
+        <result property="actResult" column="act_result"/>
+        <result property="lastApprovalUser" column="last_approval_user"/>
+        <result property="approvalOpinion" column="approval_opinion"/>
+        <result property="startUserId" column="start_user_id"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="callbackStatus" column="callback_status"/>
+        <result property="hsBankId" column="hs_bank_id"/>
+        <result property="hsBankAccount" column="hs_bank_account"/>
+        <result property="hsDealStatus" column="hs_deal_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+		<result property="entryTime" column="entry_time"/>
+		<result property="fireAid" column="fire_aid"/>
+		<result property="beforeStatus" column="before_status"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		application_id, 
+		client_id, 
+		fund_account, 
+		swift_code, 
+		deposit_type, 
+		remittance_type, 
+		deposit_bank,
+		deposit_no,
+		deposit_account, 
+		benefit_bank,
+		benefit_bank_code,
+		benefit_no,
+		benefit_account,
+		deposit_balance, 
+		contact_address, 
+		application_time, 
+		money_type, 
+		approve_result, 
+		instance_id, 
+		defid, 
+		application_status, 
+		start_time, 
+		current_node, 
+		assign_drafter, 
+		act_result, 
+		last_approval_user, 
+		approval_opinion, 
+		start_user_id, 
+		create_user, 
+		update_user, 
+		callback_status, 
+		hs_bank_id, 
+		hs_bank_account, 
+		hs_deal_status, 
+		create_time, 
+		update_time,
+		entry_time,
+		fire_aid,
+		before_status
+    </sql>
+    <sql id="Base_Column_With_Table" >
+	t1.id,
+	t1.application_id,
+	t1.client_id,
+	t1.fund_account,
+	t1.swift_code,
+	t1.deposit_type,
+	t1.remittance_type,
+	t1.deposit_bank,
+	t1.deposit_no,
+	t1.deposit_account,
+	t1.benefit_bank,
+	t1.benefit_bank_code,
+	t1.benefit_no,
+	t1.benefit_account,
+	t1.deposit_balance,
+	t1.contact_address,
+	t1.application_time,
+	t1.money_type,
+	t1.approve_result,
+	t1.instance_id,
+	t1.defid,
+	t1.application_status,
+	t1.start_time,
+	t1.current_node,
+	t1.assign_drafter,
+	t1.act_result,
+	t1.last_approval_user,
+	t1.approval_opinion,
+	t1.start_user_id,
+	t1.create_user,
+	t1.update_user,
+	t1.callback_status,
+	t1.hs_bank_id,
+	t1.hs_bank_account,
+	t1.hs_deal_status,
+	t1.create_time,
+	t1.update_time,
+	t1.entry_time,
+	t1.fire_aid,
+	t1.before_status
+    </sql>
+	<sql id="Base_Where_Conditions">
+		<if test="applicationId != null and applicationId != ''">
+			AND t1.application_id =#{applicationId}
+		</if>
+		<if test="userId != null and userId != ''">
+			AND t2.user_id =#{userId}
+		</if>
+		<if test="clientId != null and clientId != ''">
+			AND t1.client_id =#{clientId}
+		</if>
+		<if test="fundAccount != null and fundAccount != ''">
+			AND t1.fund_account =#{fundAccount}
+		</if>
+		<if test="phoneNumber != null and phoneNumber != ''">
+			AND t2.phone_number =#{phoneNumber}
+		</if>
+		<if test="depositType != null">
+			AND t1.deposit_type =#{depositType}
+		</if>
+		<if test="sourceChannelId != null and sourceChannelId != ''">
+			AND t2.source_channel_id = #{sourceChannelId}
+		</if>
+		<if test="applicationStatus != null">
+			AND t1.application_status =#{applicationStatus}
+		</if>
+		<if test="beginTime != null and beginTime != ''">
+			AND t1.application_time <![CDATA[ >= ]]> #{beginTime}
+		</if>
+		<if test="endTime != null and endTime != ''">
+			AND t1.application_time <![CDATA[ <= ]]> #{endTime}
+		</if>
+		<if test="bankEntryStTime != null and bankEntryStTime != ''">
+			AND bbf.value_date <![CDATA[ >= ]]> #{bankEntryStTime}
+		</if>
+		<if test="bankEntryEdTime != null and bankEntryEdTime != ''">
+			AND bbf.value_date <![CDATA[ <= ]]> #{bankEntryEdTime}
+		</if>
+		<if test="entryStTime != null and entryStTime != ''">
+			AND t1.entry_time <![CDATA[ >= ]]> #{entryStTime}
+		</if>
+		<if test="entryEdTime != null and entryEdTime != ''">
+			AND t1.entry_time <![CDATA[ <= ]]> #{entryEdTime}
+		</if>
+		<if test="assignDrafter != null">
+			AND (t1.assign_drafter = #{assignDrafter} || t1.assign_drafter IS NULL)
+		</if>
+		<if test="currentNodes != null">
+			<if test="currentNodes.size==0">
+				and t1.current_node = null
+			</if>
+			<if test="currentNodes.size!=0">
+				and t1.current_node in
+				<foreach item="item" index="index" collection="currentNodes" open="(" separator="," close=")">
+					#{currentNodes[${index}]}
+				</foreach>
+			</if>
+		</if>
+		<if test="remittanceType != null">
+			AND t1.remittance_type = #{remittanceType}
+		</if>
+		<if test="openAccountType == 0">
+			and t2.open_account_type = 0
+		</if>
+		<if test="openAccountType == 1">
+			and t2.open_account_type = 1
+		</if>
+		<if test="openAccountType == 2">
+			and t2.open_account_type = 2
+		</if>
+		<if test="openAccountType == 3">
+			and t2.open_account_type = 3
+		</if>
+		<if test="openAccountType == 4">
+			and t2.open_account_type = 1 and t2.bank_type =0
+		</if>
+		<if test="openAccountType == 5">
+			and t2.open_account_type = 1 and t2.bank_type =1 and t2.open_account_time &lt; '2019-01-12 16:30:00'
+		</if>
+		<if test="openAccountType == 6">
+			and t2.open_account_type = 1 and t2.bank_type =1 and t2.open_account_time &gt;= '2019-01-12 16:30:00'
+		</if>
+		<if test="depositBank != null and depositBank != ''">
+			AND t1.deposit_bank LIKE CONCAT(#{depositBank},'%')
+		</if>
+		<if test="depositNo != null and depositNo != ''">
+			AND t1.deposit_No LIKE CONCAT(#{depositNo},'%')
+		</if>
+		<if test="depositAccount != null and depositAccount != ''">
+			AND REPLACE(t1.deposit_account,' ','') = REPLACE(#{depositAccount},' ','')
+		</if>
+		<if test="benefitBank != null and benefitBank != ''">
+			AND t1.benefit_bank LIKE CONCAT('%',#{benefitBank},'%')
+		</if>
+		<if test="benefitNo != null and benefitNo != ''">
+			AND t1.benefit_no LIKE CONCAT('%',#{benefitNo},'%')
+		</if>
+		<if test="moneyType != null and moneyType != ''">
+			AND t1.money_type =#{moneyType}
+		</if>
+		<if test="depositBalance != null and depositBalance != ''">
+			AND t1.deposit_balance &gt;= #{depositBalance}*0.95 AND t1.deposit_balance &lt;= #{depositBalance}*1.05
+		</if>
+		<if test="depositBalanceMin != null and depositBalanceMin != ''">
+			AND t1.deposit_balance &gt;= #{depositBalanceMin}
+		</if>
+		<if test="depositBalanceMax != null and depositBalanceMax != ''">
+			AND t1.deposit_balance &lt;= #{depositBalanceMax}
+		</if>
+		<if test="clientName != null and clientName != ''">
+			AND t2.client_name = #{clientName}
+		</if>
+		<if test="clientNameSpell != null and clientNameSpell != ''">
+			AND REPLACE(t2.client_name_spell,' ','') LIKE CONCAT('%',#{clientNameSpell},'%')
+		</if>
+		<if test="referenceNo != null and referenceNo != ''">
+			AND bbf.reference_no = #{referenceNo}
+		</if>
+		<if test="applicationIds != null">
+			<if test="applicationIds.size >0">
+				AND t1.application_id IN
+				<foreach item="item" index="index" collection="applicationIds" open="(" separator="," close=")">
+					#{applicationIds[${index}]}
+				</foreach>
+			</if>
+		</if>
+
+	</sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.fund.entity.ClientFundDepositApplicationEntity" resultMap="clientFundDepositApplicationMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_fund_deposit_application
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.fund.entity.ClientFundDepositApplicationEntity" resultMap="clientFundDepositApplicationMap">
+        SELECT
+        <include refid="Base_Column_With_Table"/>,
+        t2.user_id,
+        t2.client_name,
+        t2.sex,
+        t2.source_channel_id,
+        t2.phone_number,
+        t2.id_kind,
+        t2.id_no,
+        t2.client_name_spell,
+        t2.open_account_type,
+        t2.bank_type,
+        t2.open_account_time,
+		bbf.credit_mount AS benefitBalance,
+		bbf.value_date AS bankEntryTime,
+		bbf.reference_no AS referenceNo,
+		(SELECT COUNT(*) FROM client_fund_deposit t WHERE t.client_id=t2.trade_account AND t.deposit_type = "D"
+		AND t.init_date &lt; DATE_FORMAT(t1.application_time,'%Y-%m-%d')) AS firstDepFlag,
+		(SELECT COUNT(*) FROM client_bank_card_info c WHERE c.client_id=t2.trade_account AND c.status = 1 AND c.bank_no=t1.deposit_no) AS isBanding
+        FROM client_fund_deposit_application t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+		LEFT JOIN deposit_bank_bill_flow bbf ON t1.application_id=bbf.application_id
+		<where>
+			<include refid="Base_Where_Conditions"/>
+		</where>
+        ORDER BY t1.fire_aid DESC,t1.assign_drafter DESC,t1.application_time ASC
+	</select>
+
+	<select id="queryBankCheckList" resultType="com.sunline.modules.fund.entity.ClientFundDepositApplicationEntity" resultMap="clientFundDepositApplicationMap">
+		SELECT
+		<include refid="Base_Column_With_Table"/>,
+		t2.user_id,
+		t2.client_name,
+		t2.sex,
+		t2.source_channel_id,
+		t2.phone_number,
+		t2.id_kind,
+		t2.id_no,
+		t2.client_name_spell,
+		t2.open_account_type,
+		t2.bank_type,
+		t2.open_account_time,
+		bbf.credit_mount AS benefitBalance,
+		bbf.actual_money AS actualMoney,
+		bbf.value_date AS bankEntryTime,
+		bbf.reference_no AS referenceNo,
+		(SELECT COUNT(*) FROM client_fund_deposit t WHERE t.client_id=t2.trade_account AND t.deposit_type = "D"
+		AND t.init_date &lt; DATE_FORMAT(t1.application_time,'%Y-%m-%d')) AS firstDepFlag
+		FROM client_fund_deposit_application t1
+		LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+		LEFT JOIN deposit_bank_bill_flow bbf ON t1.application_id=bbf.application_id
+		<where>
+			<include refid="Base_Where_Conditions"/>
+		</where>
+		<choose>
+			<when test="order != null and order.trim() != ''">
+				ORDER BY t1.fire_aid DESC,t1.assign_drafter DESC,t1.application_time ${order}
+			</when>
+			<otherwise>
+				ORDER BY t1.fire_aid DESC,t1.assign_drafter DESC,t1.application_time DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="queryInfoList" resultType="com.sunline.modules.fund.entity.ClientFundDepositApplicationEntity" resultMap="clientFundDepositApplicationMap">
+		SELECT
+		<include refid="Base_Column_With_Table"/>,
+		t2.user_id,
+		t2.client_name,
+		t2.sex,
+		t2.source_channel_id,
+		t2.phone_number,
+		t2.id_kind,
+		t2.id_no,
+		t2.client_name_spell,
+		t2.open_account_type,
+		t2.bank_type,
+		t2.open_account_time,
+		bbf.credit_mount AS benefitBalance,
+		bbf.value_date AS bankEntryTime,
+		bbf.reference_no AS referenceNo,
+		(SELECT COUNT(*) FROM client_fund_deposit t WHERE t.client_id=t2.trade_account AND t.deposit_type = "D"
+		AND t.init_date &lt; DATE_FORMAT(t1.application_time,'%Y-%m-%d')) AS firstDepFlag
+		FROM client_fund_deposit_application t1
+		LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+		LEFT JOIN (SELECT application_id,value_date,reference_no,credit_mount FROM deposit_bank_bill_flow) bbf ON t1.application_id=bbf.application_id
+		<where>
+			<include refid="Base_Where_Conditions"/>
+		</where>
+		ORDER BY t1.fire_aid DESC,t1.application_time DESC
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.fund.entity.ClientFundDepositApplicationEntity" resultMap="clientFundDepositApplicationMap">
+        SELECT
+        <include refid="Base_Column_With_Table"/>,
+        t2.user_id,
+        t2.client_name,
+        t2.sex,
+        t2.source_channel_id,
+        t2.phone_number,
+        t2.id_kind,
+        t2.id_no,
+        t2.client_name_spell,
+        t2.open_account_type,
+        t2.bank_type,
+        t2.open_account_time,
+        bbf.credit_mount AS benefitBalance,
+        bbf.value_date AS bankEntryTime,
+        bbf.reference_no AS referenceNo,
+        (SELECT COUNT(*) FROM client_fund_deposit t WHERE t.client_id=t2.trade_account AND t.deposit_type = "D"
+        AND t.init_date &lt; DATE_FORMAT(t1.application_time,'%Y-%m-%d')) AS firstDepFlag,
+        (SELECT COUNT(*) FROM client_bank_card_info c WHERE c.client_id=t2.trade_account AND c.status = 1 AND c.bank_no=t1.deposit_no) AS isBanding
+        FROM client_fund_deposit_application t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN deposit_bank_bill_flow bbf ON t1.application_id=bbf.application_id
+        WHERE 1=1
+        <if test="applicationId != null and applicationId != ''">
+            AND t1.application_id =#{applicationId}
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="depositType != null">
+            AND t1.deposit_type =#{depositType}
+        </if>
+        <if test="applicationStatus != null">
+            AND t1.application_status =#{applicationStatus}
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            AND t1.application_time <![CDATA[ >= ]]> #{beginTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND t1.application_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+        <if test="assignDrafter != null">
+            AND (t1.assign_drafter = #{assignDrafter} || t1.assign_drafter IS NULL)
+        </if>
+        <if test="currentNodes != null">
+            <if test="currentNodes.size==0">
+                and t1.current_node = null
+            </if>
+            <if test="currentNodes.size!=0">
+                and t1.current_node in
+                <foreach item="item" index="index" collection="currentNodes" open="(" separator="," close=")">
+                    #{currentNodes[${index}]}
+                </foreach>
+            </if>
+        </if>
+        <if test="remittanceType != null">
+            AND t1.remittance_type = #{remittanceType}
+        </if>
+        <if test="depositBank != null and depositBank != ''">
+            AND t1.deposit_bank LIKE CONCAT(#{depositBank},'%')
+        </if>
+        <if test="benefitBank != null and benefitBank != ''">
+            AND t1.benefit_bank =#{benefitBank}
+        </if>
+        <if test="benefitNo != null and benefitNo != ''">
+            AND t1.benefit_no =#{benefitNo}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t1.money_type =#{moneyType}
+        </if>
+        <if test="depositBank != null and depositBank != ''">
+            AND t1.deposit_bank =#{depositBank}
+        </if>
+        <if test="depositAccount != null and depositAccount != ''">
+            AND REPLACE(t1.deposit_account,' ','') =REPLACE(#{depositAccount},' ','')
+        </if>
+        <if test="depositNo != null and depositNo != ''">
+            AND t1.deposit_no =#{depositNo}
+        </if>
+        <if test="depositBalance != null and depositBalance != ''">
+            AND t1.deposit_balance =#{depositBalance}
+        </if>
+        <if test="referenceNo != null and referenceNo != ''">
+            AND t1.reference_no = #{referenceNo}
+        </if>
+    </select>
+
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from client_fund_deposit_application
+	</select>
+
+    <select id="queryByApplicationId" resultType="com.sunline.modules.fund.entity.ClientFundDepositApplicationEntity">
+      SELECT
+      <include refid="Base_Column_With_Table"/>,
+        t2.user_id,
+        t2.client_name,
+        t2.sex,
+        t2.source_channel_id,
+        t2.phone_number,
+        t2.id_kind,
+        t2.id_no,
+        t2.client_name_spell,
+        t2.open_account_type,
+        t2.bank_type,
+        t2.open_account_time,
+        t2.id_kind,
+        t2.id_no,
+		bbf.credit_mount AS benefitBalance,
+		bbf.value_date AS bankEntryTime,
+		bbf.reference_no AS referenceNo,
+		t2.application_id AS openApplicationId,
+		(SELECT COUNT(*) FROM client_fund_deposit t WHERE t.client_id=t2.trade_account AND t.deposit_type = "D"
+		AND t.init_date &lt; DATE_FORMAT(t1.application_time,'%Y-%m-%d')) AS firstDepFlag
+        FROM client_fund_deposit_application t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+		LEFT JOIN deposit_bank_bill_flow bbf ON t1.application_id=bbf.application_id
+        WHERE t1.application_id = #{value}
+    </select>
+
+    <update id="updateAssignDrafter"
+            parameterType="com.sunline.modules.fund.entity.ClientFundWithdrawApplyEntity">
+        update client_fund_deposit_application set assign_drafter=#{assignDrafter},update_time=#{updateTime}
+        where application_id = #{applicationId}
+    </update>
+
+    <insert id="save" parameterType="com.sunline.modules.fund.entity.ClientFundDepositApplicationEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into client_fund_deposit_application
+		(
+			`application_id`, 
+			`client_id`, 
+			`fund_account`, 
+			`swift_code`, 
+			`deposit_type`, 
+			`remittance_type`, 
+			`deposit_bank`,
+			`deposit_no`,
+			`deposit_account`,
+			`benefit_bank`,
+			`benefit_bank_code`,
+			`benefit_no`,
+			`benefit_account`, 
+			`deposit_balance`, 
+			`contact_address`, 
+			`application_time`, 
+			`money_type`, 
+			`approve_result`, 
+			`instance_id`, 
+			`defid`, 
+			`application_status`, 
+			`start_time`, 
+			`current_node`, 
+			`assign_drafter`, 
+			`act_result`, 
+			`last_approval_user`, 
+			`approval_opinion`, 
+			`start_user_id`, 
+			`create_user`, 
+			`update_user`, 
+			`callback_status`, 
+			`hs_bank_id`, 
+			`hs_bank_account`, 
+			`hs_deal_status`, 
+			`create_time`, 
+			`update_time`,
+			`entry_time`,
+			`fire_aid`,
+			`before_status`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{clientId}, 
+			#{fundAccount}, 
+			#{swiftCode}, 
+			#{depositType}, 
+			#{remittanceType}, 
+			#{depositBank},
+			#{depositNo},
+			#{depositAccount},
+			#{benefitBank},
+			#{benefitBankCode},
+			#{benefitNo},
+			#{benefitAccount},
+			#{depositBalance}, 
+			#{contactAddress}, 
+			#{applicationTime}, 
+			#{moneyType}, 
+			#{approveResult}, 
+			#{instanceId}, 
+			#{defid}, 
+			#{applicationStatus}, 
+			#{startTime}, 
+			#{currentNode}, 
+			#{assignDrafter}, 
+			#{actResult}, 
+			#{lastApprovalUser}, 
+			#{approvalOpinion}, 
+			#{startUserId}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{callbackStatus}, 
+			#{hsBankId}, 
+			#{hsBankAccount}, 
+			#{hsDealStatus}, 
+			#{createTime}, 
+			#{updateTime},
+			#{entryTime},
+			#{fireAid},
+			#{beforeStatus}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.sunline.modules.fund.entity.ClientFundDepositApplicationEntity">
+		update client_fund_deposit_application
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="clientId != null">`client_id` = #{clientId}, </if>
+			<if test="fundAccount != null">`fund_account` = #{fundAccount}, </if>
+			<if test="swiftCode != null">`swift_code` = #{swiftCode}, </if>
+			<if test="depositType != null">`deposit_type` = #{depositType}, </if>
+			<if test="remittanceType != null">`remittance_type` = #{remittanceType}, </if>
+			<if test="depositBank != null">`deposit_bank` = #{depositBank}, </if>
+			<if test="depositNo != null">`deposit_no` = #{depositNo}, </if>
+			<if test="depositAccount != null">`deposit_account` = #{depositAccount}, </if>
+			<if test="benefitBank != null">`benefit_bank` = #{benefitBank}, </if>
+			<if test="benefitBankCode != null">`benefit_bank_code` = #{benefitBankCode}, </if>
+			<if test="benefitNo != null">`benefit_no` = #{benefitNo}, </if>
+			<if test="benefitAccount != null">`benefit_account` = #{benefitAccount}, </if>
+			<if test="depositBalance != null">`deposit_balance` = #{depositBalance}, </if>
+			<if test="contactAddress != null">`contact_address` = #{contactAddress}, </if>
+			<if test="applicationTime != null">`application_time` = #{applicationTime}, </if>
+			<if test="moneyType != null">`money_type` = #{moneyType}, </if>
+			<if test="approveResult != null">`approve_result` = #{approveResult}, </if>
+			<if test="instanceId != null">`instance_id` = #{instanceId}, </if>
+			<if test="defid != null">`defid` = #{defid}, </if>
+			<if test="applicationStatus != null">`application_status` = #{applicationStatus}, </if>
+			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="currentNode != null">`current_node` = #{currentNode}, </if>
+			<if test="assignDrafter != null">`assign_drafter` = #{assignDrafter}, </if>
+			<if test="actResult != null">`act_result` = #{actResult}, </if>
+			<if test="lastApprovalUser != null">`last_approval_user` = #{lastApprovalUser}, </if>
+			<if test="approvalOpinion != null">`approval_opinion` = #{approvalOpinion}, </if>
+			<if test="startUserId != null">`start_user_id` = #{startUserId}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="callbackStatus != null">`callback_status` = #{callbackStatus}, </if>
+			<if test="hsBankId != null">`hs_bank_id` = #{hsBankId}, </if>
+			<if test="hsBankAccount != null">`hs_bank_account` = #{hsBankAccount}, </if>
+			<if test="hsDealStatus != null">`hs_deal_status` = #{hsDealStatus}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime},</if>
+			<if test="entryTime != null">`entry_time` = #{entryTime},</if>
+			<if test="fireAid != null">`fire_aid` = #{fireAid},</if>
+			<if test="beforeStatus != null">`before_status` = #{beforeStatus}</if>
+		</set>
+		where application_id = #{applicationId}
+	</update>
+
+	<delete id="delete">
+		delete from client_fund_deposit_application where id = #{value}
+	</delete>
+
+	<delete id="deleteBatch">
+		delete from client_fund_deposit_application where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="myFundDepositCount" parameterType="com.sunline.modules.fund.entity.ClientFundDepositApplicationEntity"
+			resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		FROM client_fund_deposit_application t1
+		LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+		LEFT JOIN deposit_bank_bill_flow bbf ON t1.application_id=bbf.application_id
+		WHERE 1=1
+		AND t1.application_status in (1,3,4)
+		<if test="sourceChannelId != null and sourceChannelId != ''">
+			AND t2.source_channel_id = #{sourceChannelId}
+		</if>
+		<if test="applicationStatus != null">
+			AND t1.application_status =#{applicationStatus}
+		</if>
+		<if test="assignDrafter != null">
+			AND (t1.assign_drafter = #{assignDrafter} || t1.assign_drafter IS NULL)
+		</if>
+		<if test="currentNodes != null">
+			<if test="currentNodes.size==0">
+				and t1.current_node = null
+			</if>
+			<if test="currentNodes.size!=0">
+				and t1.current_node in
+				<foreach item="item" index="index" collection="currentNodes" open="(" separator="," close=")">
+					#{currentNodes[${index}]}
+				</foreach>
+			</if>
+		</if>
+	</select>
+
+	<update id="updateBatchByApplicationIds" parameterType="java.lang.String" >
+		update client_fund_deposit_application
+		set fire_aid = 1 where application_id in
+		<foreach item="applicationId" collection="array" open="(" separator="," close=")">
+			#{applicationId}
+		</foreach>
+	</update>
+
+</mapper>

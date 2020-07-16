@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.notice.dao.NoticeCaseDao">
+
+
+    <resultMap type="com.sunline.modules.notice.entity.NoticeCaseEntity" id="noticeCaseMap">
+        <result property="noticeCaseId" column="notice_case_id"/>
+        <result property="noticeCaseName" column="notice_case_name"/>
+        <result property="noticeCaseCode" column="notice_case_code"/>
+        <result property="createUser" column="create_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="noticeContext" column="notice_context"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		notice_case_id, 
+		notice_case_name, 
+		notice_case_code, 
+		create_user, 
+		create_time, 
+		update_user, 
+		update_time,
+		notice_context
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.notice.entity.NoticeCaseEntity" resultMap="noticeCaseMap">
+		select
+		<include refid="Base_Column_List" />
+		from notice_case
+		where notice_case_id = #{value}
+	</select>
+
+	<select id="queryByCode" resultType="com.sunline.modules.notice.entity.NoticeCaseEntity" resultMap="noticeCaseMap">
+		select
+		<include refid="Base_Column_List" />
+		from notice_case
+		where notice_case_code = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.notice.entity.NoticeCaseEntity" resultMap="noticeCaseMap">
+		select
+		<include refid="Base_Column_List" />
+		from notice_case
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by notice_case_code
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.notice.entity.NoticeCaseEntity" resultMap="noticeCaseMap">
+        select
+        <include refid="Base_Column_List" />
+        from notice_case
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from notice_case
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.notice.entity.NoticeCaseEntity" useGeneratedKeys="true" keyProperty="noticeCaseId">
+		insert into notice_case
+		(
+		    `notice_case_id`,
+			`notice_case_name`, 
+			`create_user`,
+			`create_time`, 
+			`update_user`, 
+			`update_time`,
+			notice_context
+		)
+		values
+		(
+		    #{noticeCaseId},
+			#{noticeCaseName}, 
+			#{createUser},
+			#{createTime}, 
+			#{updateUser}, 
+			#{updateTime},
+			#{noticeContext}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.notice.entity.NoticeCaseEntity">
+		update notice_case 
+		<set>
+			<if test="noticeCaseName != null">`notice_case_name` = #{noticeCaseName}, </if>
+			<if test="noticeCaseCode != null">`notice_case_code` = #{noticeCaseCode}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime},</if>
+			<if test="noticeContext != null">`notice_context` = #{noticeContext}</if>
+		</set>
+		where notice_case_id = #{noticeCaseId}
+	</update>
+	
+	<delete id="delete">
+		delete from notice_case where notice_case_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from notice_case where notice_case_id in 
+		<foreach item="noticeCaseId" collection="array" open="(" separator="," close=")">
+			#{noticeCaseId}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.analysis.dao.MoneyRateInfoDao">
+
+
+    <resultMap type="com.sunline.modules.analysis.entity.MoneyRateInfoEntity" id="moneyRateInfoMap">
+        <result property="id" column="id"/>
+        <result property="initDate" column="init_date"/>
+        <result property="fromMoneyType" column="from_money_type"/>
+        <result property="toMoneyType" column="to_money_type"/>
+        <result property="exchRate" column="exch_rate"/>
+        <result property="reverseRate" column="reverse_rate"/>
+        <result property="validDate" column="valid_date"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="exchangeRate" column="exchange_rate"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, 
+		init_date, 
+		from_money_type, 
+		to_money_type, 
+		exch_rate, 
+		reverse_rate, 
+		valid_date, 
+		DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+		DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') AS update_time
+    </sql>
+
+    <!-- 汇率查询-->
+    <select id="queryList" resultType="com.sunline.modules.analysis.entity.MoneyRateInfoEntity"
+            resultMap="moneyRateInfoMap">
+        SELECT
+        init_date,
+        from_money_type,
+        to_money_type,
+        exch_rate,
+        reverse_rate,
+        valid_date,
+        CONVERT(exch_rate / reverse_rate,DECIMAL(20,8)) AS exchange_rate,
+        DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+        DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') AS update_time
+        FROM money_rate_info
+        WHERE 1=1
+        <if test="initDate != null and initDate != ''">
+            AND init_date <![CDATA[ <= ]]> #{initDate}
+            AND valid_date <![CDATA[ >= ]]> #{initDate}
+        </if>
+        <if test="initDate == null || initDate == ''">
+            AND init_date <![CDATA[ <= ]]> (SELECT MAX(init_date) FROM money_rate_info WHERE valid_date >= DATE_FORMAT(NOW(),'%Y-%m-%d'))
+            AND valid_date <![CDATA[ >= ]]> (SELECT MAX(init_date) FROM money_rate_info WHERE valid_date >= DATE_FORMAT(NOW(),'%Y-%m-%d'))
+        </if>
+        <if test="fromMoneyType != null and fromMoneyType != ''">
+            AND from_money_type =#{fromMoneyType}
+        </if>
+        <if test="toMoneyType != null and toMoneyType != ''">
+            AND to_money_type =#{toMoneyType}
+        </if>
+        ORDER BY
+        from_money_type
+        ASC
+    </select>
+
+    <select id="queryObject" resultType="com.sunline.modules.analysis.entity.MoneyRateInfoEntity"
+            resultMap="moneyRateInfoMap">
+        SELECT
+        init_date,
+        from_money_type,
+        to_money_type,
+        exch_rate,
+        reverse_rate,
+        valid_date,
+        CONVERT(exch_rate / reverse_rate,DECIMAL(20,2)) AS exchange_rate,
+        DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+        DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') AS update_time
+        FROM money_rate_info
+        WHERE 1=1
+        <if test="initDate != null and initDate != ''">
+            AND init_date <![CDATA[ <= ]]> #{initDate} AND valid_date <![CDATA[ >= ]]> #{initDate}
+        </if>
+        <if test="fromMoneyType != null and fromMoneyType != ''">
+            AND from_money_type =#{fromMoneyType}
+        </if>
+        <if test="toMoneyType != null and toMoneyType != ''">
+            AND to_money_type =#{toMoneyType}
+        </if>
+        ORDER BY
+        from_money_type
+        ASC
+    </select>
+</mapper>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>&#xe705; 佣金套餐列表</title>
+    #parse("modules/sys/header.html")
+</head>
+<body>
+<div v-show="showPackageList" class="col-md-5 col-sm-10" style="width: 100%;">
+    <div class="panel panel-default">
+        <!--<div class="panel-heading"><i class="layui-icon" style="font-size: 20px; color: #4caf50;" >&#xe705; </i> 佣金方案列表</div>-->
+        <div class="grid-btn"></div>
+        <div class="grid-btn"></div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+        <div id="page"></div>
+    </div>
+</div>
+<script>
+    var vm = new Vue({
+        el: '#rrapp',
+        data: {
+            showList: true,
+            title: null,
+            query: {}
+        },
+        methods: {
+            ensure: function () {
+                vm.reload();
+            }
+        }
+    });
+
+    $("#jqGrid").jqGrid(
+        {
+            url: '../channelFareSetupLog/list?channelId=' +  parent.ToChildren(),
+            datatype: "json",
+            colModel: [
+                {
+                    label: '时间', name: 'createTime', sortable: false, formatter: function (value) {
+                    var dateObj = new Date(value);
+
+                    var year = dateObj.getFullYear();//年
+                    var month = dateObj.getMonth() + 1;//月  (注意：月份+1)
+                    var date = dateObj.getDate();//日
+                    var hours = dateObj.getHours();//小时
+                    var minutes = dateObj.getMinutes();//分钟
+                    var seconds = dateObj.getSeconds();//秒
+
+                    if (month < 10) {
+                        month = "0" + month;
+                    }
+                    if (date < 10) {
+                        date = "0" + date;
+                    }
+                    if (hours < 10) {
+                        hours = "0" + hours;
+                    }
+                    if (minutes < 10) {
+                        minutes = "0" + minutes;
+                    }
+                    if (seconds < 10) {
+                        seconds = "0" + seconds;
+                    }
+
+                    var newDate = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+                    return newDate;
+                }
+                },
+                {label: '操作人员', name: 'createUser', sortable: false},
+                {
+                    label: '操作', name: 'opFlag', width: 80, sortable: false,
+                    formatter: function (value) {
+                        if (value == 0) {
+                            return "新增";
+                        } else if (value == 1) {
+                            return "修改";
+                        } else if (value == 2) {
+                            return "删除";
+                        }
+                    }
+                },
+                {
+                    label: '上一套餐', name: 'lastFareKind', width: 90, sortable: false
+                },
+                {
+                    label: '方案类型', name: 'channelFareType', width: 110, sortable: false,
+                    formatter: function (value) {
+                        if (value == 0) {
+                            return "目前方案";
+                        } else if (value == 1) {
+                            return "下一方案";
+                        }
+                    }
+                },
+                {label: '套餐编号', name: 'fareKind', width: 90, sortable: false},
+                {
+                    label: '开始时间', name: 'beginDate', sortable: false,
+                    formatter: function (value) {
+                        var dateObj = new Date(value);
+                        var year = dateObj.getFullYear();//年
+                        var month = dateObj.getMonth() + 1;//月  (注意：月份+1)
+                        var date = dateObj.getDate();//日
+
+                        if (month < 10) {
+                            month = "0" + month;
+                        }
+                        if (date < 10) {
+                            date = "0" + date;
+                        }
+                        var newDate = year + "-" + month + "-" + date;
+                        return newDate;
+                    }
+                },
+                {
+                    label: '结束时间', name: 'endDate', sortable: false,
+                    formatter: function (value) {
+                        var dateObj = new Date(value);
+                        var year = dateObj.getFullYear();//年
+                        var month = dateObj.getMonth() + 1;//月  (注意：月份+1)
+                        var date = dateObj.getDate();//日
+
+                        if (month < 10) {
+                            month = "0" + month;
+                        }
+                        if (date < 10) {
+                            date = "0" + date;
+                        }
+                        var newDate = year + "-" + month + "-" + date;
+                        return newDate;
+                    }
+                },
+                {
+                    label: '审核状态', name: 'auditStatus', sortable: false,
+                    formatter: function (value) {
+                        if (value == 0) {
+                            return "未审核";
+                        } else if (value == 1) {
+                            return "审核中";
+                        } else if (value == 2) {
+                            return "审核通过";
+                        } else if (value == 3) {
+                            return "审核不通过";
+                        }
+                    }
+                }
+            ],
+            viewrecords: true,
+            height: 'auto',
+            rowNum: 10,
+            rowList: [10, 30, 50],
+            rownumbers: true,
+            rownumWidth: 25,
+            autowidth: true,
+            width: "100%",
+            pager: "#jqGridPager",
+            jsonReader: {
+                root: "page.list",
+                page: "page.currPage",
+                total: "page.totalPage",
+                records: "page.totalCount"
+            },
+            prmNames: {
+                page: "page",
+                rows: "limit",
+                order: "order"
+            },
+            gridComplete: function () {
+                //隐藏grid底部滚动条
+                $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+            }
+        });
+</script>
+</body>
+</html>

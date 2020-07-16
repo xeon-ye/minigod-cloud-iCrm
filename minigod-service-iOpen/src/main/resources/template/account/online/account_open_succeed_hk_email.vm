@@ -1,0 +1,16 @@
+<div style="font-size:14px; color:#333; line-height:26px;">
+<div style="line-height:26px;"><b>尊敬的<font>${clientName}</font>，您好！</b></div>
+    <div style="line-height:26px; margin-top:15px;">
+        恭喜您已經成功獲得【一世免傭】資格！<br>
+        您可登錄APP後，點擊【我的】→【證券服務】→【我的傭金】進行查看。<br>
+        免傭優惠僅適用於港股買賣免除經紀傭金。<br>
+
+        <div style="margin-top:15px; line-height:26px;">
+            此致<br>
+            <b><a  style="text-decoration:none; color:#e21e10;" href="www.zszhizhu.com">智珠證券（香港）有限公司</a></b>
+        </div>
+    </div>
+
+    <div style="background-color:#d73f3c;  padding:0px;"><a href="https://sns.zszhizhu.com/webstatic/Infomation/onload.html" target="_blank" style="border:0px;"><img src="https://sns.zszhizhu.com:8000/static/openaccount/email/free.jpg" width="720" border="0"></a></div>
+
+</div>

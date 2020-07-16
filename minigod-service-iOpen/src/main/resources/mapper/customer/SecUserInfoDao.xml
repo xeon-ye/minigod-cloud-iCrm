@@ -1,0 +1,1580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.customer.dao.SecUserInfoDao">
+
+
+    <resultMap type="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity" id="securitiesUserInfoMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="openAccountType" column="open_account_type"/>
+        <result property="openAccountAccessWay" column="open_account_access_way"/>
+        <result property="openAccountTime" column="open_account_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="inviterId" column="inviter_id"/>
+        <result property="tradeAccount" column="trade_account"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="clientStatus" column="client_status"/>
+        <result property="fundAccountType" column="fund_account_type"/>
+        <result property="sourceChannelId" column="source_channel_id"/>
+        <result property="clientName" column="client_name"/>
+        <result property="familyName" column="family_name"/>
+        <result property="givenName" column="given_name"/>
+        <result property="clientNameSpell" column="client_name_spell"/>
+        <result property="givenNameSpell" column="given_name_spell"/>
+        <result property="familyNameSpell" column="family_name_spell"/>
+        <result property="idKind" column="id_kind"/>
+        <result property="idNo" column="id_no"/>
+        <result property="sex" column="sex"/>
+        <result property="birthday" column="birthday"/>
+        <result property="idCardAddress" column="id_card_address"/>
+        <result property="idCardValidDateStart" column="id_card_valid_date_start"/>
+        <result property="idCardValidDateEnd" column="id_card_valid_date_end"/>
+        <result property="identitySimilarityPercent" column="identity_similarity_percent"/>
+        <result property="isPassIdentityAuthentication" column="is_pass_identity_authentication"/>
+        <result property="bankType" column="bank_type"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="bankNo" column="bank_no"/>
+        <result property="bankAccountName" column="bank_account_name"/>
+        <result property="otherBankName" column="other_bank_name"/>
+        <result property="nationality" column="nationality"/>
+        <result property="isAmericanGreenCardHolder" column="is_american_green_card_holder"/>
+        <result property="contactRepublicName" column="contact_republic_name"/>
+        <result property="contactProvinceName" column="contact_province_name"/>
+        <result property="contactCityName" column="contact_city_name"/>
+        <result property="contactCountyName" column="contact_county_name"/>
+        <result property="contactDetailAddress" column="contact_detail_address"/>
+        <result property="companyRepublicName" column="company_republic_name"/>
+        <result property="companyProvinceName" column="company_province_name"/>
+        <result property="companyCityName" column="company_city_name"/>
+        <result property="companyCountyName" column="company_county_name"/>
+        <result property="companyDetailAddress" column="company_detail_address"/>
+        <result property="familyRepublicName" column="family_republic_name"/>
+        <result property="familyProvinceName" column="family_province_name"/>
+        <result property="familyCityName" column="family_city_name"/>
+        <result property="familyCountyName" column="family_county_name"/>
+        <result property="familyDetailAddress" column="family_detail_address"/>
+        <result property="familyAddress" column="family_address"/>
+        <result property="contactAddress" column="contact_address"/>
+        <result property="email" column="email"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="professionCode" column="profession_code"/>
+        <result property="otherProfession" column="other_profession"/>
+        <result property="professionType" column="profession_type"/>
+        <result property="companyName" column="company_name"/>
+        <result property="companyAddress" column="company_address"/>
+        <result property="companyPhoneNumber" column="company_phone_number"/>
+        <result property="jobPosition" column="job_position"/>
+        <result property="industryRange" column="industry_range"/>
+        <result property="capitalSource" column="capital_source"/>
+        <result property="annualIncome" column="annual_income"/>
+        <result property="netCapital" column="net_capital"/>
+        <result property="investTarget" column="invest_target"/>
+        <result property="investTargetOther" column="invest_target_other"/>
+        <result property="stocksInvestmentExperienceType" column="stocks_investment_experience_type"/>
+        <result property="warrantsInvestmentExperienceType" column="warrants_investment_experience_type"/>
+        <result property="futuresInvestmentExperienceType" column="futures_investment_experience_type"/>
+        <result property="isKnowDerivativeProducts" column="is_know_derivative_products"/>
+        <result property="derivativeProductsStudyType" column="derivative_products_study_type"/>
+        <result property="derivativeProductsStudyTypeOther" column="derivative_products_study_type_other"/>
+        <result property="financingInstitutionWorkExperienceType" column="financing_institution_work_experience_type"/>
+        <result property="financingInstitutionWorkExperienceTypeOther" column="financing_institution_work_experience_type_other"/>
+        <result property="isTradedDerivativeProducts" column="is_traded_derivative_products"/>
+        <result property="isOpenUsaStockMarket" column="is_open_usa_stock_market"/>
+        <result property="isOpenHkStockMarket" column="is_open_hk_stock_market"/>
+        <result property="isAllowDerivativesTransaction" column="is_allow_derivatives_transaction"/>
+        <result property="isAllowProvidePrivacy" column="is_allow_provide_privacy"/>
+        <result property="isAmlSuspicious" column="is_aml_suspicious"/>
+        <result property="recordStatus" column="record_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="northTrade" column="north_trade"/>
+        <result property="fatca" column="fatca"/>
+        <result property="acceptRisk" column="accept_risk"/>
+        <result property="otherNationality" column="other_nationality"/>
+        <result property="otherContactRepublic" column="other_contact_republic"/>
+        <result property="otherCompanyRepublic" column="other_company_republic"/>
+        <result property="otherFamilyRepublic" column="other_family_republic"/>
+        <result property="cancelDate" column="cancel_date"/>
+        <result property="roomCode" column="room_code"/>
+        <result property="freelanceCode" column="freelance_code"/>
+        <result property="freelanceOther" column="freelance_other"/>
+    </resultMap>
+
+    <resultMap type="com.sunline.modules.customer.entity.ActivityStatisticsEntity" id="activityStatisticsMap">
+        <result property="regTime" column="reg_time"/>
+        <result property="openAccountTime" column="open_account_time"/>
+        <result property="firstDepositDate" column="first_deposit_date"/>
+        <result property="firstTradeDate" column="first_trade_date"/>
+        <result property="firstDepositBalance" column="first_deposit_balance"/>
+        <result property="availablePoints" column="available_points"/>
+        <result property="firstTransferDate" column="first_transfer_date"/>
+        <result property="firstTransferBalance" column="first_transfer_balance"/>
+        <result property="userId" column="user_id"/>
+        <result property="regPhoneNumber" column="reg_phone_number"/>
+        <result property="regSource" column="reg_source"/>
+        <result property="userSourceChannelId" column="user_source_channel_id"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		s1.id,
+		s1.application_id,
+		s1.open_account_type,
+		s1.open_account_access_way,
+		s1.user_id,
+		s1.inviter_id,
+		s1.trade_account,
+		s1.fund_account,
+		s1.client_status,
+		s1.fund_account_type,
+		s1.source_channel_id,
+		s1.client_name,
+		s1.family_name,
+		s1.given_name,
+		s1.client_name_spell,
+		s1.given_name_spell,
+		s1.family_name_spell,
+		s1.id_kind,
+		s1.id_no,
+		s1.sex,
+		s1.birthday,
+		s1.id_card_address,
+		s1.id_card_valid_date_start,
+		s1.id_card_valid_date_end,
+		s1.identity_similarity_percent,
+		s1.is_pass_identity_authentication,
+		s1.bank_type,
+		s1.bank_id,
+		s1.bank_no,
+		s1.bank_account_name,
+		s1.other_bank_name,
+		s1.nationality,
+		s1.is_american_green_card_holder,
+        s1.contact_republic_name,
+		s1.contact_province_name,
+		s1.contact_city_name,
+		s1.contact_county_name,
+		s1.contact_detail_address,
+		s1.company_republic_name,
+		s1.company_province_name,
+        s1.company_city_name,
+        s1.company_county_name,
+        s1.company_detail_address,
+        s1.family_republic_name,
+        s1.family_province_name,
+        s1.family_city_name,
+        s1.family_county_name,
+        s1.family_detail_address,
+		s1.family_address,
+		s1.contact_address,
+		s1.email,
+		s1.phone_number,
+		s1.profession_code,
+		s1.freelance_code,
+		s1.freelance_other,
+		s1.other_profession,
+		s1.profession_type,
+		s1.company_name,
+		s1.company_address,
+		s1.company_phone_number,
+		s1.job_position,
+		s1.industry_range,
+		s1.capital_source,
+		s1.annual_income,
+		s1.net_capital,
+		s1.invest_target,
+		s1.invest_target_other,
+		s1.stocks_investment_experience_type,
+		s1.warrants_investment_experience_type,
+		s1.futures_investment_experience_type,
+		s1.is_know_derivative_products,
+		s1.derivative_products_study_type,
+		s1.derivative_products_study_type_other,
+		s1.financing_institution_work_experience_type,
+		s1.financing_institution_work_experience_type_other,
+		s1.is_traded_derivative_products,
+		s1.is_open_usa_stock_market,
+		s1.is_open_hk_stock_market,
+		s1.is_allow_derivatives_transaction,
+		s1.is_allow_provide_privacy,
+		s1.is_aml_suspicious,
+		s1.address_id,
+		s1.record_status,
+		s1.create_time,
+		s1.update_time,
+		s1.north_trade,
+        s1.fatca,
+        s1.accept_risk,
+        s1.other_nationality,
+        s1.other_contact_republic,
+        s1.other_company_republic,
+        s1.other_family_republic,
+        s1.cancel_date,
+        s1.room_code
+    </sql>
+
+    <sql id="Base_Column_List1">
+       	s.id,
+        s.application_id,
+        s.open_account_type,
+        s.open_account_access_way,
+        s.user_id,
+        s.inviter_id,
+        s.trade_account,
+        s.fund_account,
+        s.client_status,
+        s.fund_account_type,
+        s.source_channel_id,
+        s.client_name,
+        s.family_name,
+        s.given_name,
+        s.client_name_spell,
+        s.given_name_spell,
+		s.family_name_spell,
+        s.id_kind,
+        s.id_no,
+        s.sex,
+        s.birthday,
+        s.id_card_address,
+        s.id_card_valid_date_start,
+        s.id_card_valid_date_end,
+        s.identity_similarity_percent,
+        s.is_pass_identity_authentication,
+        s.bank_type,
+        s.bank_id,
+        s.bank_no,
+        s.bank_account_name,
+        s.other_bank_name,
+        s.nationality,
+        s.is_american_green_card_holder,
+        s.contact_republic_name,
+		s.contact_province_name,
+		s.contact_city_name,
+		s.contact_county_name,
+		s.contact_detail_address,
+		s.company_republic_name,
+		s.company_province_name,
+        s.company_city_name,
+        s.company_county_name,
+        s.company_detail_address,
+        s.family_republic_name,
+        s.family_province_name,
+        s.family_city_name,
+        s.family_county_name,
+        s.family_detail_address,
+		s.family_address,
+		s.contact_address,
+        s.email,
+        s.phone_number,
+        s.profession_code,
+        s.freelance_code,
+		s.freelance_other,
+        s.other_profession,
+        s.profession_type,
+        s.company_name,
+        s.company_address,
+        s.company_phone_number,
+        s.job_position,
+        s.industry_range,
+        s.capital_source,
+        s.annual_income,
+        s.net_capital,
+        s.invest_target,
+        s.invest_target_other,
+        s.stocks_investment_experience_type,
+        s.warrants_investment_experience_type,
+        s.futures_investment_experience_type,
+        s.is_know_derivative_products,
+        s.derivative_products_study_type,
+        s.derivative_products_study_type_other,
+        s.financing_institution_work_experience_type,
+        s.financing_institution_work_experience_type_other,
+        s.is_traded_derivative_products,
+        s.is_open_usa_stock_market,
+        s.is_open_hk_stock_market,
+        s.is_allow_derivatives_transaction,
+        s.is_allow_provide_privacy,
+        s.is_aml_suspicious,
+        s.address_id,
+        s.record_status,
+        s.create_time,
+        s.update_time,
+        s.open_account_time,
+        s.north_trade,
+        s.fatca,
+        s.accept_risk,
+        s.other_nationality,
+        s.other_contact_republic,
+        s.other_company_republic,
+        s.other_family_republic,
+        s.cancel_date,
+        s.room_code
+    </sql>
+
+    <select id="queryObject" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+        SELECT
+        DATE_FORMAT(s.open_account_time,"%Y-%m-%d %T") AS open_account_time,
+        DATE_FORMAT(s.create_time,"%Y-%m-%d %T") AS create_time,
+        DATE_FORMAT(s.update_time,"%Y-%m-%d %T") AS update_time,
+        s.*
+        FROM securities_user_info s
+        where 1=1
+        <if test="id!=null">
+            AND id = #{id}
+        </if>
+        <if test="tradeAccount!=null">
+            AND trade_account = #{tradeAccount}
+        </if>
+        <if test="fundAccount!=null">
+            AND fund_account = #{fundAccount}
+        </if>
+        <if test="userId!=null">
+            AND user_id = #{userId}
+        </if>
+    </select>
+
+    <!-- 根据小神号查是否存在客户-->
+    <select id="queryByUserId" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+        select
+        *
+        from securities_user_info
+        where user_id = #{userId}
+    </select>
+
+
+    <!-- 根据交易号查客户数量-->
+    <select id="queryByTradeAcc" resultType="java.lang.Integer">
+        select
+        count(*)
+        from securities_user_info
+        where trade_account = #{tradeAccount}
+    </select>
+
+    <!-- 综合查询详情-->
+    <select id="queryById" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+         SELECT
+            s.*, u.reg_source_type,
+            date_format(u.create_time,'%Y-%m-%d %T') AS registerTime,
+            (
+                SELECT
+                    i.client_name
+                FROM
+                    securities_user_info i
+                WHERE
+                    i.user_id = s.inviter_id
+            ) AS inviterName,
+            count(DISTINCT (dd.id)) AS depositInCount,
+            count(DISTINCT (dw.id)) AS depositOutCount,
+            min(dd.init_date) AS firstIncomeTime,
+            max(dd.init_date) AS nearIncomeTime,
+            max(dw.init_date) AS nearOutcomeTime,
+            IFNULL(
+            (
+            SELECT
+            CONVERT (
+            SUM(
+            t1.total_assets * IFNULL(
+            (
+            t3.exch_rate / t3.reverse_rate
+            ),
+            1
+            )
+            ),
+            DECIMAL (20, 5)
+            ) AS totalAssets
+            FROM
+            ${tableName} t1
+            LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+            AND t3.to_money_type = '2'
+            AND t3.init_date <![CDATA[ <= ]]> CURDATE() - 1 AND t3.valid_date <![CDATA[ >= ]]> CURDATE() - 1
+            WHERE
+            t1.client_id = s.trade_account
+            and t1.trade_date = CURDATE() - 1
+            ),
+            0
+            ) AS totalAssets,
+            count(DISTINCT (t.id)) AS tradeCount,
+            min(t.trade_date) AS firstTradeTime,
+            max(t.trade_date) AS nearTradeTime,
+            max(p.curr_date) as nearIpoTime,
+            count(DISTINCT (p.id)) AS ipoCount,
+            (SELECT SUM(TIMESTAMPDIFF(HOUR, begin_date, end_date))
+            FROM client_free_commission_info fc
+            WHERE fc.client_id = s.trade_account and fc.entrust_way = 7) AS freeTotalTime,
+						(select max(fi.end_date) from client_free_commission_info fi where fi.client_id = s.trade_account) as freeEndDate,
+						(select TIMESTAMPDIFF(MINUTE,MAX(fci.end_date),SYSDATE()) from client_free_commission_info fci where fci.client_id = s.trade_account) as freeStatus
+        FROM
+            securities_user_info s
+        LEFT JOIN user_info u ON s.user_id = u.user_id
+        LEFT JOIN client_fund_deposit dd ON dd.client_id = s.trade_account
+        AND dd.deposit_type = 'D'
+        LEFT JOIN client_fund_deposit dw ON dw.client_id = s.trade_account
+        AND dw.deposit_type = 'W'
+        LEFT JOIN client_trade_flow_info t ON t.client_id = s.trade_account
+        LEFT JOIN client_ipo_detail p ON p.client_id = s.trade_account
+        WHERE
+            s.id = #{id}
+	</select>
+
+    <!-- 客户基本查询列表 -->
+    <select id="queryList" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+        select
+             <include refid="Base_Column_List"/>
+            ,DATE_FORMAT(s1.open_account_time,'%Y-%m-%d %T') AS open_account_time
+        from securities_user_info s1
+        where 1=1
+        <if test="userId != null">
+            and s1.user_id = #{userId}
+        </if>
+        <if test="clientName != null">
+            and s1.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="clientNameSpell != null">
+            and s1.client_name_spell = #{clientNameSpell}
+        </if>
+        <if test="phoneNumber != null">
+            and s1.phone_number = #{phoneNumber}
+        </if>
+        <if test="tradeAccount != null">
+            and s1.trade_account = #{tradeAccount}
+        </if>
+        <if test="fundAccount != null">
+            and s1.fund_account = #{fundAccount}
+        </if>
+        <if test="idNo != null">
+            and s1.id_no = #{idNo}
+        </if>
+        <if test="idKind != null">
+            and s1.id_kind = #{idKind}
+        </if>
+        <if test="sourceChannelId != null">
+            and s1.source_channel_id = #{sourceChannelId}
+        </if>
+        <if test="bankType != null">
+            and s1.bank_type = #{bankType}
+        </if>
+        <if test="applicationId != null ">
+            and s1.application_id = #{applicationId}
+        </if>
+        <if test="inviterId != null ">
+            and s1.inviter_id = #{inviterId}
+        </if>
+        <if test="clientStatus != null and clientStatus!=''">
+            and s1.client_status = #{clientStatus}
+        </if>
+        <if test="openAccountType == 0">
+            and s1.open_account_type = 0
+        </if>
+        <if test="openAccountType == 1">
+            and s1.open_account_type = 1
+        </if>
+        <if test="openAccountType == 2">
+            and s1.open_account_type = 2
+        </if>
+        <if test="openAccountType == 3">
+            and s1.open_account_type = 3
+        </if>
+        <if test="openAccountType == 4">
+            and s1.open_account_type = 1 and s1.bank_type =0
+        </if>
+        <if test="openAccountType == 5">
+            and s1.open_account_type = 1 and s1.bank_type =1
+        </if>
+        <if test="openAccountStartTime != null">
+            and DATE_FORMAT(s1.open_account_time,"%Y-%m-%d %T") >= #{openAccountStartTime}
+        </if>
+        <if test="cancelDate != null">
+            AND s1.cancel_date = #{cancelDate}
+        </if>
+        <if test="roomCode != null">
+            AND s1.room_code = #{roomCode}
+        </if>
+        <if test="openAccountEndTime != null">
+            and DATE_FORMAT(s1.open_account_time,"%Y-%m-%d %T") &lt;= #{openAccountEndTime}
+        </if>
+        <if test="channelIds != null">
+            and s1.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and s1.source_channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+        ORDER by s1.open_account_time desc
+    </select>
+
+    <!-- 综合查询列表 -->
+    <select id="querySynList" resultType="com.sunline.modules.group.entity.ClientGroupMemberInfoEntity"
+            resultMap="securitiesUserInfoMap">
+        SELECT
+        s.id,s.open_account_time,s.user_id,s.client_name,s.trade_account,s.phone_number,u.reg_source_type,s.source_channel_id,s.annual_income,
+        s.open_account_type,s.id_kind,s.id_no,s.inviter_id,s.bank_type,u.reg_source,s.client_status,
+        count(DISTINCT(dd.id)) AS depositInCount,
+        count(DISTINCT(dw.id)) AS depositOutCount,
+        IFNULL(
+        (
+        SELECT
+        CONVERT (
+        SUM(
+        t1.total_assets * IFNULL(
+        (
+        t3.exch_rate / t3.reverse_rate
+        ),
+        1
+        )
+        ),
+        DECIMAL (20, 5)
+        ) AS totalAssets
+        FROM
+        ${tableName} t1
+        LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> CURDATE() - 1 AND t3.valid_date <![CDATA[ >= ]]> CURDATE() - 1
+        WHERE
+        t1.client_id = s.trade_account
+        and t1.trade_date = CURDATE() - 1
+        ),
+        0
+        ) AS totalAssets,
+        count(DISTINCT(t.id)) AS tradeCount,
+        (SELECT COUNT(DISTINCT(p.id))FROM client_ipo_detail p WHERE p.client_id =s.trade_account) AS ipoCount
+        FROM
+        securities_user_info s
+        LEFT JOIN user_info u ON s.user_id = u.user_id
+        LEFT JOIN client_trade_flow_info t ON t.client_id = s.trade_account
+        LEFT JOIN client_fund_deposit dd ON dd.client_id = s.trade_account
+        AND dd.deposit_type = 'D'
+        LEFT JOIN client_fund_deposit dw ON dw.client_id = s.trade_account
+        AND dw.deposit_type = 'W'
+        WHERE 1= 1
+        <if test="regSourceType != null and regSourceType!=''">
+            and u.reg_source_type = #{regSourceType}
+        </if>
+        <if test="annualIncome != null and annualIncome!=''">
+            and s.annual_income= #{annualIncome}
+        </if>
+        <if test="clientStatus != null and clientStatus!=''">
+            and s.client_status = #{clientStatus}
+        </if>
+        <if test="totalAssets == 0 ">
+            and t.totalAssets &lt; 10000
+        </if>
+        <if test="totalAssets == 1 ">
+            and t.totalAssets BETWEEN 10000 and 100000
+        </if>
+        <if test="totalAssets == 2 ">
+            and t.totalAssets BETWEEN 100000 and 200000
+        </if>
+        <if test="totalAssets == 3 ">
+            and t.totalAssets BETWEEN 200000 and 500000
+        </if>
+        <if test="totalAssets == 4 ">
+            and t.totalAssets BETWEEN 500000 and 1000000
+        </if>
+        <if test="totalAssets == 5 ">
+            and t.totalAssets > 1000000
+        </if>
+        <if test="depositInCount == 0">
+            and t.depositInCount = 0
+        </if>
+        <if test="depositInCount == 1">
+            and t.depositInCount > 0
+        </if>
+        <if test="depositOutCount == 0">
+            and t.depositOutCount =0
+        </if>
+        <if test="depositOutCount == 1">
+            and t.depositOutCount >0
+        </if>
+        <if test="tradeCount == 0">
+            and t.tradeCount = 0
+        </if>
+        <if test="tradeCount == 1">
+            and t.tradeCount > 0
+        </if>
+        <if test="ipoCount == 0">
+            and t.ipoCount = 0
+        </if>
+        <if test="ipoCount == 1">
+            and t.ipoCount > 0
+        </if>
+        <if test="inviterId != null and inviterId!=''">
+            and s.inviter_id = #{inviterId}
+        </if>
+        <if test="clientName != null and clientName!=''">
+            and s.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="sourceChannelId != null and sourceChannelId!=''">
+            and s.source_channel_id = #{sourceChannelId}
+        </if>
+        <if test="userId != null and userId!=''">
+            and s.user_id = #{userId}
+        </if>
+        <if test="idKind != null and idKind!=''">
+            and s.id_kind = #{idKind}
+        </if>
+        <if test="idNo != null and idNo!=''">
+            and s.id_no = #{idNo}
+        </if>
+        <if test="phoneNumber != null and phoneNumber!=''">
+            and s.phone_number = #{phoneNumber}
+        </if>
+        <if test="openAccountType == 0">
+            and s.open_account_type = 0
+        </if>
+        <if test="openAccountType == 1">
+            and s.open_account_type = 1
+        </if>
+        <if test="openAccountType == 2">
+            and s.open_account_type = 2
+        </if>
+        <if test="openAccountType == 3">
+            and s.open_account_type = 3
+        </if>
+        <if test="openAccountType == 4">
+            and s.open_account_type = 1 and bank_type =0
+        </if>
+        <if test="openAccountType == 5">
+            and s.open_account_type = 1 and bank_type =1
+        </if>
+        <if test="tradeAccount != null and tradeAccount!=''">
+            and s.trade_account = #{tradeAccount}
+        </if>
+        <if test="openAccountStartTime != null ">
+            and DATE_FORMAT(s.open_account_time,"%Y-%m-%d %T") >= #{openAccountStartTime}
+        </if>
+        <if test="openAccountEndTime != null ">
+            and DATE_FORMAT(s.open_account_time,"%Y-%m-%d %T") &lt;= #{openAccountEndTime}
+        </if>
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+        GROUP BY s.trade_account
+        ORDER by s.open_account_time desc
+    </select>
+
+
+    <!-- 分组查询  组内不存在的客户 （可添加进分组的客户） -->
+    <select id="queryListFilter" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+        select * from securities_user_info s where s.trade_account NOT in
+        (select client_id from client_group_member_info where group_no = #{groupNo} ) and s.client_type = '0'
+        <if test="clientName != null and clientName!=''">
+            and s.client_name = #{clientName}
+        </if>
+        <if test="userId != null and userId!=''">
+            and s.user_id = #{userId}
+        </if>
+        <if test="sourceChannelName != null and sourceChannelName!=''">
+            and s.company_name = #{sourceChannelName}
+        </if>
+        <if test="sourceChannelId != null and sourceChannelId!=''">
+            and s.company_id = #{sourceChannelId}
+        </if>
+        <if test="beginId != null and beginId!=''">
+            and s.id &gt; #{benginId}
+        </if>
+        <if test="endId != null and endId!=''">
+            and s.id &lt; #{endId}
+        </if>
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+
+    </select>
+
+
+    <!--小神用户查询列表 -->
+    <select id="queryUserList" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+        select u.user_id,
+        u.nick_name as client_name,
+        u.gender as sex,
+        Date_format(u.create_time,'%Y-%m-%d %T') as registerTime,
+        u.user_status,
+        u.cell_phone as phone_number,
+        u.user_source_channel_id as source_channel_id,
+        u.reg_source_type as regSourceType,
+        Date_format(u.last_login_time,'%Y-%m-%d %T') as lastLoginTime,
+        reg_source as regSource,
+        (case when a2.application_status is null and b.user_id is null then '已注册'
+        WHEN b.user_id IS NOT NULL AND d.client_id IS NULL THEN '已开户'
+        when a2.application_status = '1' or a2.application_status ='2' or a2.application_status ='3' or a2.application_status ='5' or a2.application_status ='11'	then '开户中'
+        when a2.application_status = '7' or a2.application_status ='8' or a2.application_status ='9' or a2.application_status ='10' then '已终止'
+        WHEN d.client_id >0 THEN '已入金'
+        ELSE '已注册' end) as userStatus
+        from user_info u
+        JOIN user_channel_info ui on u.user_source_channel_id = ui.channel_id
+        LEFT JOIN (select max(a1.application_id) as application_id,user_id  from customer_account_open_info a1 group by a1.user_id) a1 on a1.user_id = u.user_id
+        left JOIN customer_account_open_application a2 on a1.application_id = a2.application_id
+        LEFT JOIN securities_user_info b on u.user_id = b.user_id
+        LEFT JOIN (SELECT client_id,MIN(position_str) AS position_str FROM client_fund_deposit WHERE deposit_type='D' GROUP BY client_id) d ON d.client_id=b.trade_account
+        where  1=1
+        <if test="userId != null and userId !=''">
+            and u.user_id = #{userId}
+        </if>
+        <if test="phoneNumber != null">
+            and u.cell_phone = #{phoneNumber}
+        </if>
+        <if test="sourceChannelId != null">
+            and ui.channel_id = #{sourceChannelId}
+        </if>
+        <if test="regSourceType != null">
+            and u.reg_source_type = #{regSourceType}
+        </if>
+        <if test="registerStartTime != null">
+            and u.create_time >= #{registerStartTime}
+        </if>
+        <if test="registerEndTime != null">
+            and u.create_time &lt;= #{registerEndTime}
+        </if>
+        <if test="lastLoginStartTime != null">
+            and u.last_login_time >= #{lastLoginStartTime}
+        </if>
+        <if test="lastLoginEndTime != null">
+            and u.last_login_time &lt;= #{lastLoginEndTime}
+        </if>
+        <!--已注册 还未提交开户申请的用户-->
+        <if test="userStatus ==1">
+            and (a2.application_status is null and b.user_id is null)
+        </if>
+        <!--已开户 预批成功归档的客户-->
+        <if test="userStatus ==2">
+            and b.user_id is not null
+        </if>
+        <!--开户中 初审中、复审中、终审中、预批中、预批失败-->
+        <if test="userStatus ==3">
+            and a2.application_status in ('1','2','3','5','11')
+        </if>
+        <!--已终止 已退回、已拒绝、已终止、已拒绝(加入黑名单)-->
+        <if test="userStatus ==4">
+            and a2.application_status in ('7','8','9','10')
+        </if>
+        <if test="userStatus ==5">
+            and d.client_id >0
+        </if>
+        <if test="regSource != null">
+            and u.reg_source = #{regSource}
+        </if>
+        <if test="channelIds != null">
+            and u.user_source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and u.user_source_channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+        order by u.create_time desc
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+        select
+        *
+        from securities_user_info
+        WHERE 1=1
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from securities_user_info
+	</select>
+
+    <insert id="save" parameterType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity">
+				insert into securities_user_info
+		(
+			`application_id`,
+			`open_account_type`,
+			`open_account_access_way`,
+			`open_account_time`,
+			`user_id`,
+			`inviter_id`,
+			`trade_account`,
+			`fund_account`,
+			`client_status`,
+			`fund_account_type`,
+			`source_channel_id`,
+			`client_name`,
+			`family_name`,
+			`given_name`,
+			`client_name_spell`,
+			`given_name_spell`,
+			`family_name_spell`,
+			`id_kind`,
+			`id_no`,
+			`sex`,
+			`birthday`,
+			`id_card_address`,
+			`id_card_valid_date_start`,
+			`id_card_valid_date_end`,
+			`identity_similarity_percent`,
+			`is_pass_identity_authentication`,
+			`bank_type`,
+			`bank_id`,
+			`bank_no`,
+			`bank_account_name`,
+			`other_bank_name`,
+			`nationality`,
+			`is_american_green_card_holder`,
+			`contact_republic_name`,
+			`contact_province_name`,
+			`contact_city_name`,
+			`contact_county_name`,
+			`contact_detail_address`,
+			`company_republic_name`,
+			`company_province_name`,
+            `company_city_name`,
+            `company_county_name`,
+            `company_detail_address`,
+            `family_republic_name`,
+            `family_province_name`,
+            `family_city_name`,
+            `family_county_name`,
+            `family_detail_address`,
+			`family_address`,
+			`contact_address`,
+			`email`,
+			`phone_number`,
+			`profession_code`,
+			`freelance_code`,
+			`freelance_other`,
+			`other_profession`,
+			`profession_type`,
+			`company_name`,
+			`company_address`,
+			`company_phone_number`,
+			`job_position`,
+			`industry_range`,
+			`capital_source`,
+			`annual_income`,
+			`net_capital`,
+			`invest_target`,
+			`invest_target_other`,
+			`stocks_investment_experience_type`,
+			`warrants_investment_experience_type`,
+			`futures_investment_experience_type`,
+			`is_know_derivative_products`,
+			`derivative_products_study_type`,
+			`derivative_products_study_type_other`,
+			`financing_institution_work_experience_type`,
+			`financing_institution_work_experience_type_other`,
+			`is_traded_derivative_products`,
+			`is_open_usa_stock_market`,
+			`is_open_hk_stock_market`,
+			`is_allow_derivatives_transaction`,
+			`is_allow_provide_privacy`,
+			`is_aml_suspicious`,
+			`record_status`,
+			`create_time`,
+			`update_time`,
+			`north_trade`,
+            `fatca`,
+            `accept_risk`,
+            `other_nationality`,
+            `other_contact_republic`,
+            `other_company_republic`,
+            `other_family_republic`,
+            `cancel_date`,
+            `room_code`
+		)
+		values
+		(
+			#{applicationId},
+			#{openAccountType},
+			#{openAccountAccessWay},
+			#{openAccountTime},
+			#{userId},
+			#{inviterId},
+			#{tradeAccount},
+			#{fundAccount},
+			#{clientStatus},
+			#{fundAccountType},
+			#{sourceChannelId},
+			#{clientName},
+			#{familyName},
+			#{givenName},
+			#{clientNameSpell},
+			#{givenNameSpell},
+			#{familyNameSpell},
+			#{idKind},
+			#{idNo},
+			#{sex},
+			#{birthday},
+			#{idCardAddress},
+			#{idCardValidDateStart},
+			#{idCardValidDateEnd},
+			#{identitySimilarityPercent},
+			#{isPassIdentityAuthentication},
+			#{bankType},
+			#{bankId},
+			#{bankNo},
+			#{bankAccountName},
+			#{otherBankName},
+			#{nationality},
+			#{isAmericanGreenCardHolder},
+			#{contactRepublicName},
+			#{contactProvinceName},
+			#{contactCityName},
+			#{contactCountyName},
+			#{contactDetailAddress},
+			#{companyRepublicName},
+			#{companyProvinceName},
+			#{companyCityName},
+			#{companyCountyName},
+			#{companyDetailAddress},
+			#{familyRepublicName},
+			#{familyProvinceName},
+			#{familyCityName},
+			#{familyCountyName},
+			#{familyDetailAddress},
+			#{familyAddress},
+			#{contactAddress},
+			#{email},
+			#{phoneNumber},
+			#{professionCode},
+			#{freelanceCode},
+			#{freelanceOther},
+			#{otherProfession},
+			#{professionType},
+			#{companyName},
+			#{companyAddress},
+			#{companyPhoneNumber},
+			#{jobPosition},
+			#{industryRange},
+			#{capitalSource},
+			#{annualIncome},
+			#{netCapital},
+			#{investTarget},
+			#{investTargetOther},
+			#{stocksInvestmentExperienceType},
+			#{warrantsInvestmentExperienceType},
+			#{futuresInvestmentExperienceType},
+			#{isKnowDerivativeProducts},
+			#{derivativeProductsStudyType},
+			#{derivativeProductsStudyTypeOther},
+			#{financingInstitutionWorkExperienceType},
+			#{financingInstitutionWorkExperienceTypeOther},
+			#{isTradedDerivativeProducts},
+			#{isOpenUsaStockMarket},
+			#{isOpenHkStockMarket},
+			#{isAllowDerivativesTransaction},
+			#{isAllowProvidePrivacy},
+			#{isAmlSuspicious},
+			1,
+			#{createTime},
+			#{updateTime},
+			#{northTrade},
+			#{fatca},
+			#{acceptRisk},
+			#{otherNationality},
+			#{otherContactRepublic},
+			#{otherCompanyRepublic},
+			#{otherFamilyRepublic},
+			#{cancelDate},
+			#{roomCode}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity">
+        update securities_user_info
+        <set>
+            <if test="applicationId != null">`application_id` = #{applicationId}, </if>
+            <if test="openAccountType != null">`open_account_type` = #{openAccountType}, </if>
+            <if test="openAccountAccessWay != null">`open_account_access_way` = #{openAccountAccessWay}, </if>
+            <if test="openAccountTime != null">`open_account_time` = #{openAccountTime}, </if>
+            <if test="userId != null">`user_id` = #{userId}, </if>
+            <if test="inviterId != null">`inviter_id` = #{inviterId}, </if>
+            <if test="tradeAccount != null">`trade_account` = #{tradeAccount}, </if>
+            <if test="fundAccount != null">`fund_account` = #{fundAccount}, </if>
+            <if test="clientStatus != null">`client_status` = #{clientStatus}, </if>
+            <if test="fundAccountType != null">`fund_account_type` = #{fundAccountType}, </if>
+            <if test="sourceChannelId != null">`source_channel_id` = #{sourceChannelId}, </if>
+            <if test="clientName != null">`client_name` = #{clientName}, </if>
+            <if test="familyName != null">`family_name` = #{familyName}, </if>
+            <if test="givenName != null">`given_name` = #{givenName}, </if>
+            <if test="clientNameSpell != null">`client_name_spell` = #{clientNameSpell}, </if>
+            <if test="givenNameSpell != null">`given_name_spell` = #{givenNameSpell},</if>
+            <if test="familyNameSpell != null">`family_name_spell` = #{familyNameSpell},</if>
+            <if test="idKind != null">`id_kind` = #{idKind}, </if>
+            <if test="idNo != null">`id_no` = #{idNo}, </if>
+            <if test="sex != null">`sex` = #{sex}, </if>
+            <if test="birthday != null">`birthday` = #{birthday}, </if>
+            <if test="idCardAddress != null">`id_card_address` = #{idCardAddress}, </if>
+            <if test="idCardValidDateStart != null">`id_card_valid_date_start` = #{idCardValidDateStart}, </if>
+            <if test="idCardValidDateEnd != null">`id_card_valid_date_end` = #{idCardValidDateEnd}, </if>
+            <if test="identitySimilarityPercent != null">`identity_similarity_percent` = #{identitySimilarityPercent}, </if>
+            <if test="isPassIdentityAuthentication != null">`is_pass_identity_authentication` = #{isPassIdentityAuthentication}, </if>
+            <if test="bankType != null">`bank_type` = #{bankType}, </if>
+            <if test="bankId != null">`bank_id` = #{bankId}, </if>
+            <if test="bankNo != null">`bank_no` = #{bankNo}, </if>
+            <if test="bankAccountName != null">`bank_account_name` = #{bankAccountName}, </if>
+            <if test="otherBankName != null">`other_bank_name` = #{otherBankName}, </if>
+            <if test="nationality != null">`nationality` = #{nationality}, </if>
+            <if test="isAmericanGreenCardHolder != null">`is_american_green_card_holder` = #{isAmericanGreenCardHolder}, </if>
+            <if test="contactRepublicName != null">`contact_republic_name` = #{contactRepublicName},</if>
+            <if test="contactProvinceName != null">`contact_province_name` = #{contactProvinceName},</if>
+            <if test="contactCityName != null">`contact_city_name` = #{contactCityName},</if>
+            <if test="contactCountyName != null">`contact_county_name` = #{contactCountyName},</if>
+            <if test="contactDetailAddress != null">`contact_detail_address` = #{contactDetailAddress},</if>
+            <if test="companyRepublicName != null">`company_republic_name` = #{companyRepublicName},</if>
+            <if test="companyProvinceName != null">`company_province_name` = #{companyProvinceName},</if>
+            <if test="companyCityName != null">`company_city_name` = #{companyCityName},</if>
+            <if test="companyCountyName != null">`company_county_name` = #{companyCountyName},</if>
+            <if test="companyDetailAddress != null">`company_detail_address` = #{companyDetailAddress},</if>
+            <if test="familyRepublicName != null">`family_republic_name` = #{familyRepublicName},</if>
+            <if test="familyProvinceName != null">`family_province_name` = #{familyProvinceName},</if>
+            <if test="familyCityName != null">`family_city_name` = #{familyCityName},</if>
+            <if test="familyCountyName != null">`family_county_name` = #{familyCountyName},</if>
+            <if test="familyDetailAddress != null">`family_detail_address` = #{familyDetailAddress},</if>
+            <if test="familyAddress != null">`family_address` = #{familyAddress},</if>
+            <if test="contactAddress != null">`contact_address` = #{contactAddress},</if>
+            <if test="email != null">`email` = #{email}, </if>
+            <if test="phoneNumber != null">`phone_number` = #{phoneNumber}, </if>
+            <if test="professionCode != null">`profession_code` = #{professionCode}, </if>
+            <if test="freelanceCode != null">`freelance_code` = #{freelanceCode},</if>
+            <if test="freelanceOther != null">`freelance_other` = #{freelanceOther},</if>
+            <if test="otherProfession != null">`other_profession` = #{otherProfession}, </if>
+            <if test="professionType != null">`profession_type` = #{professionType}, </if>
+            <if test="companyName != null">`company_name` = #{companyName}, </if>
+            <if test="companyAddress != null">`company_address` = #{companyAddress}, </if>
+            <if test="companyPhoneNumber != null">`company_phone_number` = #{companyPhoneNumber}, </if>
+            <if test="jobPosition != null">`job_position` = #{jobPosition}, </if>
+            <if test="industryRange != null">`industry_range` = #{industryRange}, </if>
+            <if test="capitalSource != null">`capital_source` = #{capitalSource}, </if>
+            <if test="annualIncome != null">`annual_income` = #{annualIncome}, </if>
+            <if test="netCapital != null">`net_capital` = #{netCapital}, </if>
+            <if test="investTarget != null">`invest_target` = #{investTarget}, </if>
+            <if test="investTargetOther != null">`invest_target_other` = #{investTargetOther}, </if>
+            <if test="stocksInvestmentExperienceType != null">`stocks_investment_experience_type` = #{stocksInvestmentExperienceType}, </if>
+            <if test="warrantsInvestmentExperienceType != null">`warrants_investment_experience_type` = #{warrantsInvestmentExperienceType}, </if>
+            <if test="futuresInvestmentExperienceType != null">`futures_investment_experience_type` = #{futuresInvestmentExperienceType}, </if>
+            <if test="isKnowDerivativeProducts != null">`is_know_derivative_products` = #{isKnowDerivativeProducts}, </if>
+            <if test="derivativeProductsStudyType != null">`derivative_products_study_type` = #{derivativeProductsStudyType}, </if>
+            <if test="derivativeProductsStudyTypeOther != null">`derivative_products_study_type_other` = #{derivativeProductsStudyTypeOther}, </if>
+            <if test="financingInstitutionWorkExperienceType != null">`financing_institution_work_experience_type` = #{financingInstitutionWorkExperienceType}, </if>
+            <if test="financingInstitutionWorkExperienceTypeOther != null">`financing_institution_work_experience_type_other` = #{financingInstitutionWorkExperienceTypeOther}, </if>
+            <if test="isTradedDerivativeProducts != null">`is_traded_derivative_products` = #{isTradedDerivativeProducts}, </if>
+            <if test="isOpenUsaStockMarket != null">`is_open_usa_stock_market` = #{isOpenUsaStockMarket}, </if>
+            <if test="isOpenHkStockMarket != null">`is_open_hk_stock_market` = #{isOpenHkStockMarket}, </if>
+            <if test="isAllowDerivativesTransaction != null">`is_allow_derivatives_transaction` = #{isAllowDerivativesTransaction}, </if>
+            <if test="isAllowProvidePrivacy != null">`is_allow_provide_privacy` = #{isAllowProvidePrivacy}, </if>
+            <if test="isAmlSuspicious != null">`is_aml_suspicious` = #{isAmlSuspicious}, </if>
+            <if test="recordStatus != null">`record_status` = #{recordStatus}, </if>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="northTrade != null">`north_trade` = #{northTrade},</if>
+            <if test="fatca != null">`fatca` = #{fatca},</if>
+            <if test="acceptRisk != null">`accept_risk` = #{acceptRisk},</if>
+            <if test="otherNationality != null">`other_nationality` = #{otherNationality},</if>
+            <if test="otherContactRepublic != null">`other_contact_republic` = #{otherContactRepublic},</if>
+            <if test="otherCompanyRepublic != null">`other_company_republic` = #{otherCompanyRepublic},</if>
+            <if test="otherFamilyRepublic != null">`other_family_republic` = #{otherFamilyRepublic},</if>
+            <if test="cancelDate != null">`cancel_date` = #{cancelDate},</if>
+            <if test="roomCode != null">`room_code` = #{roomCode}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- API 查询单个客户-->
+    <select id="selectClientInfo" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+        select
+        *
+        from
+        securities_user_info
+        where 1=1
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+        <if test="openAccountType != null and openAccountType !='' ">
+            and open_account_type = #{openAccountType}
+        </if>
+        <if test="userId != null and userId != ''">
+            and user_id = #{userId}
+        </if>
+        <if test="clientName != null and clientName !=''">
+            and `client_name` = #{clientName}
+        </if>
+        <if test="familyName != null and familyName != '' ">
+            and `family_name` = #{familyName}
+        </if>
+        <if test="givenName != null and givenName!= ''">
+            and `given_name` = #{givenName}
+        </if>
+        <if test="clientNameSpell != null and clientNameSpell!=''">
+            and `client_name_spell` = #{clientNameSpell}
+        </if>
+        <if test="idKind != null and idKind!=''">
+            and `id_kind` = #{idKind}
+        </if>
+        <if test="idNo != null and idNo!=''">
+            and `id_no` = #{idNo}
+        </if>
+        <if test="idCardAddress != null and idCardAddress!=''">
+            and `id_card_address` = #{idCardAddress}
+        </if>
+        <if test="birthday != null and birthday!=''">
+            and `birthday` = #{birthday}
+        </if>
+        <if test="sex != null and sex!=''">
+            and `sex` = #{sex}
+        </if>
+        <if test="bankId != null and bankId!=''">
+            and `bank_id` = #{bankId}
+        </if>
+        <if test="bankNo != null and bankNo!=''">
+            and `bank_no` = #{bankNo}
+        </if>
+        <if test="nationality != null and nationality!='' ">
+            and `nationality` = #{nationality}
+        </if>
+        <if test="isAmericanGreenCardHolder != null and isAmericanGreenCardHolder!= ''">
+            and `is_american_green_card_holder` = #{isAmericanGreenCardHolder}
+        </if>
+        <if test="contactProvinceName != null and contactProvinceName!=''">
+            and `contact_province_name` = #{contactProvinceName}
+        </if>
+        <if test="contactCityName != null and contactCityName!=''">
+            and `contact_city_name` = #{contactCityName}
+        </if>
+        <if test="contactCountyName != null and contactCountyName!=''">
+            and `contact_county_name` = #{contactCountyName}
+        </if>
+        <if test="contactDetailAddress != null and contactDetailAddress!=''">
+            and `contact_detail_address` = #{contactDetailAddress}
+        </if>
+        <if test="email != null and email!=''">
+            and `email` = #{email}
+        </if>
+        <if test="phoneNumber != null and phoneNumber!=''">
+            and `phone_number` = #{phoneNumber}
+        </if>
+        <if test="professionCode != null and professionCode!=''">
+            and `profession_code` = #{professionCode}
+        </if>
+        <if test="otherProfession != null and otherProfession!=''">
+            and `other_profession` = #{otherProfession}
+        </if>
+        <if test="companyName != null and companyName!=''">
+            and `company_name` = #{companyName}
+        </if>
+        <if test="companyPhoneNumber != null and companyPhoneNumber!=''">
+            and `company_phone_number` = #{companyPhoneNumber}
+        </if>
+        <if test="jobPosition != null and jobPosition!=''">
+            and `job_position` = #{jobPosition}
+        </if>
+        <if test="industryRange != null and industryRange!=''">
+            and `industry_range` = #{industryRange}
+        </if>
+        <if test="annualIncome != null and annualIncome!=''">
+            and `annual_income` = #{annualIncome}
+        </if>
+        <if test="netCapital != null and netCapital!=''">
+            and `net_capital` = #{netCapital}
+        </if>
+        <if test="investTarget != null and investTarget!=''">
+            and `invest_target` = #{investTarget}
+        </if>
+        <if test="investTargetOther != null and investTargetOther!=''">
+            and `invest_target_other` = #{investTargetOther}
+        </if>
+        <if test="stocksInvestmentExperienceType != null and stocksInvestmentExperienceType!=''">
+            and `stocks_investment_experience_type` = #{stocksInvestmentExperienceType}
+        </if>
+        <if test="warrantsInvestmentExperienceType != null and warrantsInvestmentExperienceType!=''">
+            and `warrants_investment_experience_type` = #{warrantsInvestmentExperienceType}
+        </if>
+        <if test="futuresInvestmentExperienceType != null and futuresInvestmentExperienceType!=''">
+            and `futures_investment_experience_type` = #{futuresInvestmentExperienceType}
+        </if>
+        <if test="isKnowDerivativeProducts != null and isKnowDerivativeProducts!=''">
+            and `is_know_derivative_products` = #{isKnowDerivativeProducts}
+        </if>
+        <if test="derivativeProductsStudyType != null and derivativeProductsStudyType!=''">
+            and `derivative_products_study_type` = #{derivativeProductsStudyType}
+        </if>
+        <if test="derivativeProductsStudyTypeOther != null and derivativeProductsStudyTypeOther!=''">
+            and `derivative_products_study_type_other` = #{derivativeProductsStudyTypeOther}
+        </if>
+        <if test="financingInstitutionWorkExperienceType != null and financingInstitutionWorkExperienceType!=''">
+            and `financing_institution_work_experience_type` = #{financingInstitutionWorkExperienceType}
+        </if>
+        <if test="financingInstitutionWorkExperienceTypeOther != null and financingInstitutionWorkExperienceType!=''">
+            and `financing_institution_work_experience_type_other` = #{financingInstitutionWorkExperienceTypeOther}
+        </if>
+        <if test="isTradedDerivativeProducts != null and isTradedDerivativeProducts!=''">
+            and `is_traded_derivative_products` = #{isTradedDerivativeProducts}
+        </if>
+        <if test="ownerOfAccountType != null and ownerOfAccountType!=''">
+            and `owner_of_account_type` = #{ownerOfAccountType}
+        </if>
+        <if test="ownerOfAccountsDetail != null and ownerOfAccountsDetail!=''">
+            and `owner_of_accounts_detail` = #{ownerOfAccountsDetail}
+        </if>
+        <if test="isSfcEmployee != null and isSfcEmployee!=''">
+            and `is_sfc_employee` = #{isSfcEmployee}
+        </if>
+        <if test="registeredPersonName != null and registeredPersonName!=''">
+            and `registered_person_name` = #{registeredPersonName}
+        </if>
+        <if test="isClerkRelation != null and isClerkRelation!=''">
+            and `is_clerk_relation` = #{isClerkRelation}
+        </if>
+        <if test="clerkRelationInfo != null and clerkRelationInfo!=''">
+            and `clerk_relation_info` = #{clerkRelationInfo}
+        </if>
+        <if test="hasOtherAccount != null and hasOtherAccount!=''">
+            and `has_other_account` = #{hasOtherAccount}
+        </if>
+        <if test="otherAccountsDetailInfo != null and otherAccountsDetailInfo!=''">
+            and `other_accounts_detail_info` = #{otherAccountsDetailInfo}
+        </if>
+        <if test="inviterId != null and inviterId!=''">
+            and `inviter_id` = #{inviterId}
+        </if>
+        <if test="sourceChannelId != null and sourceChannelId!=''">
+            and `source_channel_id` = #{sourceChannelId}
+        </if>
+        <!--<if test="sourceChannelName != null and sourceChannelName!=''">-->
+            <!--and `source_channel_name` = #{sourceChannelName}-->
+        <!--</if>-->
+        <if test="isOpenUsaStockMarket != null and isOpenUsaStockMarket!=''">
+            and `is_open_usa_stock_market` = #{isOpenUsaStockMarket}
+        </if>
+        <if test="isOpenHkStockMarket != null and isOpenHkStockMarket!=''">
+            and `is_open_hk_stock_market` = #{isOpenHkStockMarket}
+        </if>
+        <if test="isAllowDerivativesTransaction != null and isAllowDerivativesTransaction!=''">
+            and `is_allow_derivatives_transaction` = #{isAllowDerivativesTransaction}
+        </if>
+        <if test="tradeAccount != null and tradeAccount!=''">
+            and `trade_account` = #{tradeAccount}
+        </if>
+        <if test="fundAccount != null and fundAccount!=''">
+            and `fund_account` = #{fundAccount}
+        </if>
+        <if test="openAccountTime != null and openAccountTime!=''">
+            and `open_account_time` = #{openAccountTime}
+        </if>
+        <if test="recordStatus != null and recordStatus!=''">
+            and `record_status` = #{recordStatus}
+        </if>
+        <if test="clientStatus != null and clientStatus!=''">
+            and `client_status` = #{clientStatus}
+        </if>
+        <!--<if test="remark != null and remark!=''">-->
+            <!--and `remark` = #{remark}-->
+        <!--</if>-->
+        <!--<if test="clientType != null and clientType!=''">-->
+            <!--and `client_type` = #{clientType}-->
+        <!--</if>-->
+    </select>
+
+    <!-- API 查询客户列表 -->
+    <select id="selectClientInfoList" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+        select
+        *
+        from
+        securities_user_info
+        where 1=1
+        <if test="id != null and id != ''">
+            and id = #{id}
+        </if>
+        <if test="openAccountType != null and openAccountType !='' ">
+            and open_account_type = #{openAccountType}
+        </if>
+        <if test="userId != null and userId != ''">
+            and user_id = #{userId}
+        </if>
+        <if test="clientName != null and clientName !=''">
+            and `client_name` = #{clientName}
+        </if>
+        <if test="familyName != null and familyName != '' ">
+            and `family_name` = #{familyName}
+        </if>
+        <if test="givenName != null and givenName!= ''">
+            and `given_name` = #{givenName}
+        </if>
+        <if test="clientNameSpell != null and clientNameSpell!=''">
+            and `client_name_spell` = #{clientNameSpell}
+        </if>
+        <if test="idKind != null and idKind!=''">
+            and `id_kind` = #{idKind}
+        </if>
+        <if test="idNo != null and idNo!=''">
+            and `id_no` = #{idNo}
+        </if>
+        <if test="idCardAddress != null and idCardAddress!=''">
+            and `id_card_address` = #{idCardAddress}
+        </if>
+        <if test="birthday != null and birthday!=''">
+            and `birthday` = #{birthday}
+        </if>
+        <if test="sex != null and sex!=''">
+            and `sex` = #{sex}
+        </if>
+        <if test="bankId != null and bankId!=''">
+            and `bank_id` = #{bankId}
+        </if>
+        <if test="bankNo != null and bankNo!=''">
+            and `bank_no` = #{bankNo}
+        </if>
+        <if test="nationality != null and nationality!='' ">
+            and `nationality` = #{nationality}
+        </if>
+        <if test="isAmericanGreenCardHolder != null and isAmericanGreenCardHolder!= ''">
+            and `is_american_green_card_holder` = #{isAmericanGreenCardHolder}
+        </if>
+        <if test="contactProvinceName != null and contactProvinceName!=''">
+            and `contact_province_name` = #{contactProvinceName}
+        </if>
+        <if test="contactCityName != null and contactCityName!=''">
+            and `contact_city_name` = #{contactCityName}
+        </if>
+        <if test="contactCountyName != null and contactCountyName!=''">
+            and `contact_county_name` = #{contactCountyName}
+        </if>
+        <if test="contactDetailAddress != null and contactDetailAddress!=''">
+            and `contact_detail_address` = #{contactDetailAddress}
+        </if>
+        <if test="email != null and email!=''">
+            and `email` = #{email}
+        </if>
+        <if test="phoneNumber != null and phoneNumber!=''">
+            and `phone_number` = #{phoneNumber}
+        </if>
+        <if test="professionCode != null and professionCode!=''">
+            and `profession_code` = #{professionCode}
+        </if>
+        <if test="otherProfession != null and otherProfession!=''">
+            and `other_profession` = #{otherProfession}
+        </if>
+        <if test="companyName != null and companyName!=''">
+            and `company_name` = #{companyName}
+        </if>
+        <if test="companyPhoneNumber != null and companyPhoneNumber!=''">
+            and `company_phone_number` = #{companyPhoneNumber}
+        </if>
+        <if test="jobPosition != null and jobPosition!=''">
+            and `job_position` = #{jobPosition}
+        </if>
+        <if test="industryRange != null and industryRange!=''">
+            and `industry_range` = #{industryRange}
+        </if>
+        <if test="annualIncome != null and annualIncome!=''">
+            and `annual_income` = #{annualIncome}
+        </if>
+        <if test="netCapital != null and netCapital!=''">
+            and `net_capital` = #{netCapital}
+        </if>
+        <if test="investTarget != null and investTarget!=''">
+            and `invest_target` = #{investTarget}
+        </if>
+        <if test="investTargetOther != null and investTargetOther!=''">
+            and `invest_target_other` = #{investTargetOther}
+        </if>
+        <if test="stocksInvestmentExperienceType != null and stocksInvestmentExperienceType!=''">
+            and `stocks_investment_experience_type` = #{stocksInvestmentExperienceType}
+        </if>
+        <if test="warrantsInvestmentExperienceType != null and warrantsInvestmentExperienceType!=''">
+            and `warrants_investment_experience_type` = #{warrantsInvestmentExperienceType}
+        </if>
+        <if test="futuresInvestmentExperienceType != null and futuresInvestmentExperienceType!=''">
+            and `futures_investment_experience_type` = #{futuresInvestmentExperienceType}
+        </if>
+        <if test="isKnowDerivativeProducts != null and isKnowDerivativeProducts!=''">
+            and `is_know_derivative_products` = #{isKnowDerivativeProducts}
+        </if>
+        <if test="derivativeProductsStudyType != null and derivativeProductsStudyType!=''">
+            and `derivative_products_study_type` = #{derivativeProductsStudyType}
+        </if>
+        <if test="derivativeProductsStudyTypeOther != null and derivativeProductsStudyTypeOther!=''">
+            and `derivative_products_study_type_other` = #{derivativeProductsStudyTypeOther}
+        </if>
+        <if test="financingInstitutionWorkExperienceType != null and financingInstitutionWorkExperienceType!=''">
+            and `financing_institution_work_experience_type` = #{financingInstitutionWorkExperienceType}
+        </if>
+        <if test="financingInstitutionWorkExperienceTypeOther != null and financingInstitutionWorkExperienceType!=''">
+            and `financing_institution_work_experience_type_other` = #{financingInstitutionWorkExperienceTypeOther}
+        </if>
+        <if test="inviterId != null and inviterId!=''">
+            and `inviter_id` = #{inviterId}
+        </if>
+        <if test="sourceChannelId != null and sourceChannelId!=''">
+            and `source_channel_id` = #{sourceChannelId}
+        </if>
+        <if test="isOpenUsaStockMarket != null and isOpenUsaStockMarket!=''">
+            and `is_open_usa_stock_market` = #{isOpenUsaStockMarket}
+        </if>
+        <if test="isOpenHkStockMarket != null and isOpenHkStockMarket!=''">
+            and `is_open_hk_stock_market` = #{isOpenHkStockMarket}
+        </if>
+        <if test="isAllowDerivativesTransaction != null and isAllowDerivativesTransaction!=''">
+            and `is_allow_derivatives_transaction` = #{isAllowDerivativesTransaction}
+        </if>
+        <if test="tradeAccount != null and tradeAccount!=''">
+            and `trade_account` = #{tradeAccount}
+        </if>
+        <if test="fundAccount != null and fundAccount!=''">
+            and `fund_account` = #{fundAccount}
+        </if>
+        <if test="openAccountTime != null and openAccountTime!=''">
+            and `open_account_time` = #{openAccountTime}
+        </if>
+        <if test="recordStatus != null and recordStatus!=''">
+            and `record_status` = #{recordStatus}
+        </if>
+        <if test="clientStatus != null and clientStatus!=''">
+            and `client_status` = #{clientStatus}
+        </if>
+    </select>
+
+
+    <!-- 根据 userId idKind idNo tradeAccount 查客户是否已存在 -->
+    <select id="queryClient" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+        select
+        *
+        from securities_user_info
+        where 1=1
+        <if test="userId!=null and userId!=''">
+            and user_id = #{userId}
+        </if>
+        <if test="idKind!=null and idKind!='' and idNo!=null and idNo!=''">
+            OR id_kind = #{idKind} and id_no = #{idNo}
+        </if>
+        <if test="tradeAccount!=null and tradeAccount!=''">
+            OR trade_account = #{tradeAccount}
+        </if>
+        <if test="fundAccount!=null and fundAccount!=''">
+            OR fund_account = #{fundAccount}
+        </if>
+    </select>
+
+    <!-- 小神用户详细信息 -->
+    <select id="getUserInfo" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
+            resultMap="securitiesUserInfoMap">
+      SELECT
+            u.user_id,
+            u.nick_name AS client_name,
+            u.cell_phone AS phone_number,
+            Date_format(u.create_time,'%Y-%m-%d %T') as registerTime,
+            Date_format(u.last_login_time,'%Y-%m-%d %T') as lastLoginTime,
+            u.reg_source as  regSource,
+            u.friend_limit as friendLimit,
+            u.gender as sex,
+            u.user_source_channel_id as source_channel_id,
+            u.reg_source_type as regSourceType,
+               (case when a2.application_status is null and b.user_id is null then '已注册'
+            when b.user_id is not null  then '已开户'
+                when a2.application_status = '1' or a2.application_status ='2' or a2.application_status ='3' or a2.application_status ='5' or a2.application_status ='11'	then '开户中'
+                when a2.application_status = '7' or a2.application_status ='8' or a2.application_status ='9' or a2.application_status ='10' then '已终止' end) as userStatus,
+            	count(DISTINCT (a4.friend_id)) AS friendCount,
+            a3.cert_code as certCode
+        from user_info u
+        LEFT JOIN (select max(a1.application_id) as application_id,user_id  from customer_account_open_info a1 group by a1.user_id) a1 on a1.user_id = u.user_id
+        left JOIN customer_account_open_application a2 on a1.application_id = a2.application_id
+		LEFT JOIN user_cert a3 on u.user_id = a3.user_id and a3.cert_type = 2
+		LEFT JOIN user_friend a4 on u.user_id = a4.user_id
+		LEFT JOIN securities_user_info b on u.user_id = b.user_id
+        where 1=1
+         and u.user_id = #{userId}
+    </select>
+
+    <!-- 小神用户修改信息 -->
+    <update id="updateUserInfo" parameterType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity">
+        update user_info set user_status = #{userStatus}
+        <if test="sourceChannelId!=null and sourceChannelId!=''">
+            ,source_channel_id = #{sourceChannelId}
+        </if>
+        ,friend_limit = #{friendLimit} where user_id = #{userId}
+
+    </update>
+
+    <select id="queryActivityStatistics" resultType="com.sunline.modules.customer.entity.ActivityStatisticsEntity"
+            resultMap="activityStatisticsMap">
+        SELECT
+            t1.create_time AS reg_time,
+            t2.open_account_time,
+            (SELECT MIN(init_date) FROM client_fund_deposit WHERE client_id=t2.trade_account AND deposit_type='D') AS first_deposit_date,
+            (SELECT MIN(trade_date) FROM client_trade_flow_info WHERE client_id=t2.trade_account) AS first_trade_date,
+            (SELECT CONVERT(SUM(s1.occur_balance * IFNULL((s2.exch_rate / s2.reverse_rate), 1)),DECIMAL(20,5))
+            FROM client_fund_deposit s1
+            LEFT JOIN money_rate_info s2 ON s2.from_money_type = s1.money_type
+            AND s2.to_money_type = '2' AND s2.init_date <![CDATA[ <= ]]> s1.init_date AND s2.valid_date <![CDATA[ >= ]]> s1.init_date
+            WHERE client_id=t2.trade_account AND s1.deposit_type='D'
+            AND s1.init_date =(SELECT MIN(init_date) FROM client_fund_deposit WHERE deposit_type='D' AND client_id=t2.trade_account)) AS first_deposit_balance,
+            IFNULL((SELECT SUM(points) FROM user_group_points WHERE is_status=1 AND user_id=t1.user_id),0) AS available_points,
+            (SELECT MIN(trade_date) FROM stock_transfer_info WHERE client_id=t2.trade_account AND business_flag='3101') AS first_transfer_date,
+            (SELECT SUM(s1.stock_mkt_value) FROM stock_transfer_info s1 WHERE s1.client_id=t2.trade_account AND s1.business_flag='3101'
+            AND s1.trade_date =(SELECT MIN(trade_date) FROM stock_transfer_info WHERE client_id=t2.trade_account AND business_flag='3101')) AS first_transfer_balance,
+            t1.user_id,
+            t1.cell_phone AS reg_phone_number,
+            t1.reg_source,
+            t1.user_source_channel_id,
+            t1.last_login_time
+        FROM user_info t1
+        LEFT JOIN securities_user_info t2 ON t2.user_id=t1.user_id
+        WHERE 1=1
+        <if test="userId != null and userId !=''">
+            and t1.user_id = #{userId}
+        </if>
+        <if test="regPhoneNumber != null">
+            and t1.cell_phone = #{regPhoneNumber}
+        </if>
+        <if test="userSourceChannelId != null">
+            and t1.user_source_channel_id = #{userSourceChannelId}
+        </if>
+        <if test="regSource != null">
+            and t1.reg_source = #{regSource}
+        </if>
+        <if test="regStartTime != null">
+            and t1.create_time <![CDATA[ >= ]]> #{regStartTime}
+        </if>
+        <if test="regEndTime != null">
+            and t1.create_time <![CDATA[ <= ]]> #{regEndTime}
+        </if>
+        <if test="lastLoginStartTime != null">
+            and t1.last_login_time <![CDATA[ >= ]]> #{lastLoginStartTime}
+        </if>
+        <if test="lastLoginEndTime != null">
+            and t1.last_login_time <![CDATA[ <= ]]> #{lastLoginEndTime}
+        </if>
+
+        order by t1.create_time desc
+    </select>
+
+</mapper>

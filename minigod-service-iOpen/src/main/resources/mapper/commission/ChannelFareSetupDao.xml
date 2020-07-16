@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.commission.dao.ChannelFareSetupDao">
+
+
+    <resultMap type="com.sunline.modules.commission.entity.ChannelFareSetupEntity" id="channelFareSetupMap">
+        <result property="id" column="id"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="busId" column="bus_id"/>
+        <result property="isFreeCommission" column="is_free_commission"/>
+        <result property="freeCommissionDays" column="free_commission_days"/>
+        <result property="fareKind" column="fare_kind"/>
+        <result property="channelFareType" column="channel_fare_type"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="auditUser" column="audit_user"/>
+        <result property="auditStatus" column="audit_status"/>
+        <result property="auditTime" column="audit_time"/>
+        <result property="syncStatus" column="sync_status"/>
+        <result property="syncTime" column="sync_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="openAccountTime" column="open_account_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,
+		bus_id,
+		code,
+		channel_id,
+		is_free_commission,
+		free_commission_days,
+		fare_kind,
+		channel_fare_type,
+		begin_date,
+		end_date,
+		create_user,
+		update_user,
+		audit_user,
+		audit_status,
+		audit_time,
+		sync_status,
+		sync_time,
+		create_time,
+		update_time,
+		record_status
+    </sql>
+
+    <select id="queryObject" resultType="com.sunline.modules.commission.entity.ChannelFareSetupEntity"
+            resultMap="channelFareSetupMap">
+        select
+        <include refid="Base_Column_List"/>
+        from channel_fare_setup
+        where id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.sunline.modules.commission.entity.ChannelFareSetupEntity"
+            resultMap="channelFareSetupMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM channel_fare_setup
+        WHERE 1=1
+        <if test="channelId != null and channelId != ''">
+            AND channel_id =#{channelId}
+        </if>
+        <if test="channelFareType != null and channelFareType != ''">
+            AND channel_fare_type =#{channelFareType}
+        </if>
+        <if test="isFreeCommission != null and isFreeCommission != ''">
+            AND is_free_commission =#{isFreeCommission}
+        </if>
+        <if test="auditStatus != null and auditStatus != ''">
+            AND audit_status =#{auditStatus}
+        </if>
+        <if test="syncStatus != null and syncStatus != ''">
+            AND sync_status =#{syncStatus}
+        </if>
+        <if test="fareKind != null">
+            AND fare_kind =#{fareKind}
+        </if>
+        <if test="fareKindList != null">
+            <if test="fareKindList.size==0">
+                AND fare_kind = NULL
+            </if>
+            <if test="fareKindList.size!=0">
+                AND fare_kind IN
+                <foreach item="item" index="index" collection="fareKindList" open="(" separator="," close=")">
+                    #{fareKindList[${index}]}
+                </foreach>
+            </if>
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.commission.entity.ChannelFareSetupEntity"
+            resultMap="channelFareSetupMap">
+        SELECT
+            t1.id,
+            t1.bus_id,
+            t1.channel_id,
+            t1.is_free_commission,
+            t1.free_commission_days,
+            t1.fare_kind,
+            t1.channel_fare_type,
+            t1.begin_date,
+            t1.end_date,
+            t1.create_user,
+            t1.update_user,
+            t1.audit_user,
+            t1.audit_status,
+            t1.audit_time,
+            t1.sync_status,
+            t1.sync_time,
+            t1.record_status,
+            t1.create_time,
+            t1.update_time,
+            t2.channel_name
+        FROM channel_fare_setup t1
+        LEFT JOIN user_channel_info t2 ON t1.channel_id=t2.channel_id
+        WHERE 1=1
+        <if test="channelId != null and channelId != ''">
+            AND t1.channel_id =#{channelId}
+        </if>
+        <if test="channelFareType != null and channelFareType != ''">
+            AND t1.channel_fare_type =#{channelFareType}
+        </if>
+        <if test="isFreeCommission != null and isFreeCommission != ''">
+            AND t1.is_free_commission =#{isFreeCommission}
+        </if>
+        <if test="auditStatus != null and auditStatus != ''">
+            AND t1.audit_status =#{auditStatus}
+        </if>
+        <if test="syncStatus != null and syncStatus != ''">
+            AND t1.sync_status =#{syncStatus}
+        </if>
+        <if test="endDate != null">
+            AND DATE_FORMAT(t1.end_date,'%Y-%m-%d') = DATE_FORMAT(#{endDate},'%Y-%m-%d')
+        </if>
+        <if test="busId != null and busId != ''">
+            AND t1.bus_id =#{busId}
+        </if>
+        <if test="fareKindList != null">
+            <if test="fareKindList.size==0">
+                AND t1.fare_kind = NULL
+            </if>
+            <if test="fareKindList.size!=0">
+                AND t1.fare_kind IN
+                <foreach item="item" index="index" collection="fareKindList" open="(" separator="," close=")">
+                    #{fareKindList[${index}]}
+                </foreach>
+            </if>
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from channel_fare_setup
+	</select>
+
+    <insert id="save" parameterType="com.sunline.modules.commission.entity.ChannelFareSetupEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into channel_fare_setup
+        (
+        `channel_id`,
+        `bus_id`,
+        `code`,
+        `is_free_commission`,
+        `fare_kind`,
+        `channel_fare_type`,
+        `begin_date`,
+        `end_date`,
+        `audit_status`,
+        `create_user`,
+        `update_user`,
+        `create_time`,
+        `update_time`,
+        record_status
+        )
+        values
+        (
+        #{channelId},
+        #{busId},
+        #{code},
+        #{isFreeCommission},
+        #{fareKind},
+        #{channelFareType},
+        #{beginDate},
+        #{endDate},
+        #{auditStatus},
+        #{createUser},
+        #{updateUser},
+        now(),
+        now(),
+        #{recordStatus}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.sunline.modules.commission.entity.ChannelFareSetupEntity">
+        update channel_fare_setup
+        <set>
+            <if test="channelId != null">`channel_id` = #{channelId},</if>
+            <if test="busId != null">`bus_id` = #{busId},</if>
+            <if test="isFreeCommission != null">`is_free_commission` = #{isFreeCommission},</if>
+            <if test="freeCommissionDays != null">`free_commission_days` = #{freeCommissionDays},</if>
+            <if test="fareKind != null">`fare_kind` = #{fareKind},</if>
+            <if test="channelFareType != null">`channel_fare_type` = #{channelFareType},</if>
+            <if test="beginDate != null">`begin_date` = #{beginDate},</if>
+            <if test="endDate != null">`end_date` = #{endDate},</if>
+            <if test="createUser != null">`create_user` = #{createUser},</if>
+            <if test="updateUser != null">`update_user` = #{updateUser},</if>
+            <if test="auditUser != null">`audit_user` = #{auditUser},</if>
+            <if test="auditStatus != null">`audit_status` = #{auditStatus},</if>
+            <if test="auditTime != null">`audit_time` = #{auditTime},</if>
+            <if test="syncStatus != null">`sync_status` = #{syncStatus},</if>
+            <if test="syncTime != null">`sync_time` = #{syncTime},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="recordStatus != null">`record_status` = #{recordStatus}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!-- 根据渠道号和方案类型修改 -->
+    <update id="updateByChannelId" parameterType="com.sunline.modules.commission.entity.ChannelFareSetupEntity">
+        update channel_fare_setup
+        <set>
+            <if test="channelId != null">`channel_id` = #{channelId},</if>
+            <if test="busId != null">`bus_id` = #{busId},</if>
+            <if test="isFreeCommission != null">`is_free_commission` = #{isFreeCommission},</if>
+            <if test="freeCommissionDays != null">`free_commission_days` = #{freeCommissionDays},</if>
+            <if test="fareKind != null">`fare_kind` = #{fareKind},</if>
+            <if test="channelFareType != null">`channel_fare_type` = #{channelFareType},</if>
+            <if test="beginDate != null">`begin_date` = #{beginDate},</if>
+            <if test="endDate != null">`end_date` = #{endDate},</if>
+            <if test="createUser != null">`create_user` = #{createUser},</if>
+            <if test="updateUser != null">`update_user` = #{updateUser},</if>
+            <if test="auditUser != null">`audit_user` = #{auditUser},</if>
+            <if test="auditStatus != null">`audit_status` = #{auditStatus},</if>
+            <if test="auditTime != null">`audit_time` = #{auditTime},</if>
+            <if test="syncStatus != null">`sync_status` = #{syncStatus},</if>
+            <if test="recordStatus != null">`record_status` = #{recordStatus},</if>
+            <if test="syncTime != null">`sync_time` = #{syncTime},</if>
+            `update_time` = now()
+        </set>
+        where channel_id = #{channelId}
+        and channel_fare_type = #{channelFareType}
+    </update>
+
+    <delete id="delete">
+        delete from channel_fare_setup where id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from channel_fare_setup where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getClientFreeCommConfig" resultType="com.sunline.modules.commission.entity.ChannelFareSetupEntity"
+            resultMap="channelFareSetupMap">
+        SELECT
+              t1.*,
+              t2.trade_account,
+              t2.fund_account
+        FROM channel_fare_setup t1
+        LEFT JOIN securities_user_info t2 ON t1.channel_id=t2.source_channel_id
+        WHERE t1.channel_fare_type=0 AND t1.audit_status=2
+        AND t1.begin_date <![CDATA[ <= ]]> DATE_SUB(CURDATE(),INTERVAL 0 DAY)
+        AND t2.trade_account=#{value}
+    </select>
+
+    <select id="getChannelClientFareSetInfo" resultType="com.sunline.modules.commission.entity.ChannelFareSetupEntity"
+            resultMap="channelFareSetupMap">
+        SELECT
+            t1.*,
+            t2.trade_account AS client_id,
+            t2.fund_account,
+            t2.open_account_time
+        FROM channel_fare_setup t1
+        INNER JOIN securities_user_info t2 ON t2.source_channel_id=t1.channel_id
+        WHERE t1.channel_fare_type = 0
+        AND t1.is_free_commission = 0
+        AND t1.begin_date <![CDATA[ <= ]]> CURDATE()
+        AND t1.audit_status = 2
+        AND DATE_FORMAT(t2.open_account_time,'%Y-%m-%d') = CURDATE()
+        AND NOT EXISTS (SELECT 1 FROM client_free_commission_setup t1 WHERE t1.client_id=t2.trade_account AND t1.end_date>=CURDATE())
+    </select>
+
+    <select id="getClientFreeCommDueSetInfo" resultType="com.sunline.modules.commission.entity.ChannelFareSetupEntity"
+            resultMap="channelFareSetupMap">
+        SELECT
+            t1.*,
+            t2.trade_account AS client_id,
+            t2.fund_account
+        FROM channel_fare_setup_log t1
+        INNER JOIN securities_user_info t2 ON t2.source_channel_id=t1.channel_id
+        WHERE t1.audit_status = 2
+        AND DATE_FORMAT(t2.open_account_time,'%Y-%m-%d') <![CDATA[ >= ]]> t1.begin_date AND DATE_FORMAT(t2.open_account_time,'%Y-%m-%d') <![CDATA[ <= ]]> t1.end_date
+        AND t2.trade_account IN (
+        SELECT client_id FROM client_free_commission_setup t1
+        WHERE t1.audit_status = 2
+        AND t1.sync_status = 2
+        AND t1.end_date = CURDATE()
+        )
+    </select>
+
+    <select id="qryInfoByBean" resultType="com.sunline.modules.commission.entity.ChannelFareSetupEntity"
+            resultMap="channelFareSetupMap">
+        select
+        <include refid="Base_Column_List"/>
+        from channel_fare_setup
+        where 1 = 1
+        <if test="channelId != null and channelId != ''">
+            AND channel_id =#{channelId}
+        </if>
+        <if test="channelFareType != null and channelFareType != ''">
+            AND channel_fare_type =#{channelFareType}
+        </if>
+        <if test="isFreeCommission != null and isFreeCommission != ''">
+            AND is_free_commission =#{isFreeCommission}
+        </if>
+        <if test="auditStatus != null and auditStatus != ''">
+            AND audit_status =#{auditStatus}
+        </if>
+        <if test="syncStatus != null and syncStatus != ''">
+            AND sync_status =#{syncStatus}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND end_date =#{endDate}
+        </if>
+    </select>
+
+    <select id="queryByParams" resultType="com.sunline.modules.commission.entity.ChannelFareSetupEntity" resultMap="channelFareSetupMap">
+        select * from channel_fare_setup where 1 = 1
+        <if test="channelId!=null">
+            and channel_id = #{channelId}
+        </if>
+        <if test="channelFareType!=null and channelFareType!=''">
+            and channel_fare_type = #{channelFareType}
+        </if>
+        <if test="recordStatus!=null and recordStatus!=''">
+            and record_status = #{recordStatus}
+        </if>
+    </select>
+
+    <update id="updateByBusId" parameterType="com.sunline.modules.commission.entity.ChannelFareSetupEntity">
+        update channel_fare_setup
+        <set>
+            <if test="channelId != null">`channel_id` = #{channelId},</if>
+            <if test="busId != null">`bus_id` = #{busId},</if>
+            <if test="isFreeCommission != null">`is_free_commission` = #{isFreeCommission},</if>
+            <if test="freeCommissionDays != null">`free_commission_days` = #{freeCommissionDays},</if>
+            <if test="fareKind != null">`fare_kind` = #{fareKind},</if>
+            <if test="channelFareType != null">`channel_fare_type` = #{channelFareType},</if>
+            <if test="beginDate != null">`begin_date` = #{beginDate},</if>
+            <if test="endDate != null">`end_date` = #{endDate},</if>
+            <if test="createUser != null">`create_user` = #{createUser},</if>
+            <if test="updateUser != null">`update_user` = #{updateUser},</if>
+            <if test="auditUser != null">`audit_user` = #{auditUser},</if>
+            <if test="auditStatus != null">`audit_status` = #{auditStatus},</if>
+            <if test="auditTime != null">`audit_time` = #{auditTime},</if>
+            <if test="syncStatus != null">`sync_status` = #{syncStatus},</if>
+            <if test="syncTime != null">`sync_time` = #{syncTime},</if>
+            <if test="recordStatus != null">`record_status` = #{recordStatus},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where bus_id = #{busId}
+    </update>
+
+    <delete id="deleteByChanneld">
+        DELETE FROM channel_fare_setup WHERE channel_id = #{channelId} AND record_status=#{recordStatus}
+    </delete>
+
+    <select id="checkAuditStatus" resultType="com.sunline.modules.commission.entity.ChannelFareSetupEntity" resultMap="channelFareSetupMap">
+        select * from channel_fare_setup where 1=1
+        <if test="channelId!=null and channelId != ''">
+            and channel_id = #{channelId}
+        </if>
+        <if test="auditStatus!=null and auditStatus != ''">
+            and audit_status = #{auditStatus}
+        </if>
+    </select>
+
+    <select id="getClientFarePackage" resultType="com.sunline.modules.commission.entity.ChannelFareSetupEntity"
+            resultMap="channelFareSetupMap">
+        SELECT
+            fare_kind
+        FROM channel_fare_setup
+        WHERE channel_fare_type = 0
+        AND begin_date <![CDATA[ <= ]]>  CURDATE()
+        AND audit_status = 2
+        AND channel_id=#{value}
+    </select>
+
+</mapper>

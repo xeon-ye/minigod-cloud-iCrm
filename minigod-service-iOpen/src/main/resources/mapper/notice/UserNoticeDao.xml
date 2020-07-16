@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.notice.dao.UserNoticeDao">
+
+
+    <resultMap type="com.sunline.modules.notice.entity.UserNoticeEntity" id="userNoticeMap">
+        <result property="userId" column="user_id"/>
+        <result property="noticeCaseId" column="notice_case_id"/>
+        <result property="createUser" column="create_user"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		user_id, 
+		notice_case_id, 
+		create_user, 
+		create_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.notice.entity.UserNoticeEntity" resultMap="userNoticeMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user_notice
+		where user_id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.notice.entity.UserNoticeEntity" resultMap="userNoticeMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_user_notice
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by user_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.notice.entity.UserNoticeEntity" resultMap="userNoticeMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user_notice
+        WHERE 1=1
+        <if test="noticeCaseId!=null and noticeCaseId!=''">
+            and notice_case_id = #{noticeCaseId}
+        </if>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_user_notice
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.notice.entity.UserNoticeEntity">
+		insert into sys_user_notice
+		(
+			`user_id`, 
+			`notice_case_id`, 
+			`create_user`, 
+			`create_time`
+		)
+		values
+		(
+			#{userId}, 
+			#{noticeCaseId}, 
+			#{createUser}, 
+			#{createTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.notice.entity.UserNoticeEntity">
+		update sys_user_notice 
+		<set>
+			<if test="noticeCaseId != null">`notice_case_id` = #{noticeCaseId}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_user_notice where user_id = #{value}
+	</delete>
+
+	<delete id="deleteByNoticeId">
+		delete from sys_user_notice where notice_case_id = #{value}
+	</delete>
+
+	<delete id="deleteBatch">
+		delete from sys_user_notice where user_id in 
+		<foreach item="userId" collection="array" open="(" separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+</mapper>

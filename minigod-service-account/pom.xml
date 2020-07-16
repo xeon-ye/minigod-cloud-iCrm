@@ -6,7 +6,6 @@
         <artifactId>minigod-cloud</artifactId>
         <groupId>com.minigod</groupId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath />
     </parent>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>

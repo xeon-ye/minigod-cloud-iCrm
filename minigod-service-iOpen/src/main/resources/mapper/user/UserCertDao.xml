@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.user.dao.UserCertDao">
+
+
+    <resultMap type="com.sunline.modules.user.entity.UserCertEntity" id="userCertMap">
+        <result property="certId" column="cert_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="certType" column="cert_type"/>
+        <result property="certCode" column="cert_code"/>
+        <result property="isValid" column="is_valid"/>
+        <result property="isLogin" column="is_login"/>
+        <result property="isStatus" column="is_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="lockVersion" column="lock_version"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		cert_id, 
+		user_id, 
+		cert_type, 
+		cert_code, 
+		is_valid, 
+		is_login, 
+		is_status, 
+		create_time, 
+		update_time, 
+		lock_version
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.user.entity.UserCertEntity" resultMap="userCertMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_cert
+		where 1=1
+        <if test="certCode!=null and certCode !=''">
+            and cert_code  =  #{certCode}
+        </if>
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.user.entity.UserCertEntity" resultMap="userCertMap">
+		select
+		<include refid="Base_Column_List" />
+		from user_cert
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.user.entity.UserCertEntity" resultMap="userCertMap">
+        select
+        <include refid="Base_Column_List" />
+        from user_cert
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from user_cert
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.user.entity.UserCertEntity" useGeneratedKeys="true" keyProperty="certId">
+		insert into user_cert
+		(
+			`user_id`, 
+			`cert_type`, 
+			`cert_code`, 
+			`is_valid`, 
+			`is_login`, 
+			`is_status`, 
+			`create_time`, 
+			`update_time`, 
+			`lock_version`
+		)
+		values
+		(
+			#{userId}, 
+			#{certType}, 
+			#{certCode}, 
+			#{isValid}, 
+			#{isLogin}, 
+			#{isStatus}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{lockVersion}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.user.entity.UserCertEntity">
+		update user_cert 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="certType != null">`cert_type` = #{certType}, </if>
+			<if test="certCode != null">`cert_code` = #{certCode}, </if>
+			<if test="isValid != null">`is_valid` = #{isValid}, </if>
+			<if test="isLogin != null">`is_login` = #{isLogin}, </if>
+			<if test="isStatus != null">`is_status` = #{isStatus}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="lockVersion != null">`lock_version` = #{lockVersion}</if>
+		</set>
+		where cert_id = #{certId}
+	</update>
+	
+	<delete id="delete">
+		delete from user_cert where cert_id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from user_cert where cert_id in 
+		<foreach item="certId" collection="array" open="(" separator="," close=")">
+			#{certId}
+		</foreach>
+	</delete>
+
+</mapper>

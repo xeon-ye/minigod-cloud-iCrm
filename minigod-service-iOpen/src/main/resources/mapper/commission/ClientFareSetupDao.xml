@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.commission.dao.ClientFareSetupDao">
+
+
+    <resultMap type="com.sunline.modules.commission.entity.ClientFareSetupEntity" id="clientFareSetupMap">
+        <result property="id" column="id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="busId" column="bus_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="exchangeType" column="exchange_type"/>
+        <result property="fareKind" column="fare_kind"/>
+        <result property="lastFareKind" column="last_fare_kind"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="auditUser" column="audit_user"/>
+        <result property="auditStatus" column="audit_status"/>
+        <result property="auditTime" column="audit_time"/>
+        <result property="syncStatus" column="sync_status"/>
+        <result property="syncTime" column="sync_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,
+		bus_id,
+		code,
+		client_id,
+		fund_account, 
+		exchange_type,
+		fare_kind,
+		last_fare_kind, 
+		begin_date, 
+		end_date, 
+		create_user, 
+		update_user, 
+		audit_user, 
+		audit_status, 
+		audit_time, 
+		sync_status, 
+		sync_time, 
+		create_time, 
+		update_time
+    </sql>
+
+    <select id="queryObject" resultType="com.sunline.modules.commission.entity.ClientFareSetupEntity"
+            resultMap="clientFareSetupMap">
+        select
+        <include refid="Base_Column_List"/>
+        from client_fare_setup
+        where bus_id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.sunline.modules.commission.entity.ClientFareSetupEntity"
+            resultMap="clientFareSetupMap">
+        select * from client_fare_setup where 1=1
+          order by create_time desc
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.commission.entity.ClientFareSetupEntity"
+            resultMap="clientFareSetupMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM client_fare_setup
+        WHERE 1=1
+        <if test="auditStatus != null and auditStatus != ''">
+            AND audit_status= #{auditStatus}
+        </if>
+        <if test="syncStatus != null and syncStatus != ''">
+            AND sync_status= #{syncStatus}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from client_fare_setup
+	</select>
+
+    <insert id="save" parameterType="com.sunline.modules.commission.entity.ClientFareSetupEntity"
+            useGeneratedKeys="true" keyProperty="id">
+		insert into client_fare_setup
+		(
+			`client_id`,
+			`bus_id`,
+			`code`,
+			`fund_account`, 
+			`exchange_type`,
+			`fare_kind`,
+			`last_fare_kind`, 
+			`begin_date`, 
+			`end_date`, 
+			`audit_status`,
+			`create_user`,
+			`update_user`,
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{clientId},
+			#{busId},
+			#{code},
+			#{fundAccount}, 
+			#{exchangeType},
+			#{fareKind},
+			#{lastFareKind}, 
+			#{beginDate}, 
+			#{endDate}, 
+			#{auditStatus},
+			#{createUser},
+			#{updateUser},
+			now(),
+			now()
+		)
+	</insert>
+
+    <update id="update" parameterType="com.sunline.modules.commission.entity.ClientFareSetupEntity">
+        update client_fare_setup
+        <set>
+            <if test="fundAccount != null">`fund_account` = #{fundAccount},</if>
+            <if test="busId != null">`bus_id` = #{busId},</if>
+            <if test="fareKind != null">`fare_kind` = #{fareKind},</if>
+            <if test="lastFareKind != null">`last_fare_kind` = #{lastFareKind},</if>
+            <if test="beginDate != null">`begin_date` = #{beginDate},</if>
+            <if test="endDate != null">`end_date` = #{endDate},</if>
+            <if test="createUser != null">`create_user` = #{createUser},</if>
+            <if test="updateUser != null">`update_user` = #{updateUser},</if>
+            <if test="auditUser != null">`audit_user` = #{auditUser},</if>
+            <if test="auditStatus != null">`audit_status` = #{auditStatus},</if>
+            <if test="auditTime != null">`audit_time` = #{auditTime},</if>
+            <if test="syncStatus != null">`sync_status` = #{syncStatus},</if>
+            <if test="syncTime != null">`sync_time` = #{syncTime},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where id= #{id}
+    </update>
+
+    <delete id="delete">
+		delete from client_fare_setup where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from client_fare_setup where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getClientFareSetupInfo" resultType="com.sunline.modules.commission.entity.ClientFareSetupEntity"
+            resultMap="clientFareSetupMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM client_fare_setup
+        WHERE 1=1
+        AND audit_status=2
+        AND sync_status IN (0,3)
+        <if test="exchangeType != null and exchangeType != ''">
+            AND exchange_type= #{exchangeType}
+        </if>
+    </select>
+
+    <update id="updateByBusId" parameterType="com.sunline.modules.commission.entity.ClientFareSetupEntity">
+        update client_fare_setup
+        <set>
+            <if test="fundAccount != null">`fund_account` = #{fundAccount},</if>
+            <if test="busId != null">`bus_id` = #{busId},</if>
+            <if test="fareKind != null">`fare_kind` = #{fareKind},</if>
+            <if test="lastFareKind != null">`last_fare_kind` = #{lastFareKind},</if>
+            <if test="beginDate != null">`begin_date` = #{beginDate},</if>
+            <if test="endDate != null">`end_date` = #{endDate},</if>
+            <if test="createUser != null">`create_user` = #{createUser},</if>
+            <if test="updateUser != null">`update_user` = #{updateUser},</if>
+            <if test="auditUser != null">`audit_user` = #{auditUser},</if>
+            <if test="auditStatus != null">`audit_status` = #{auditStatus},</if>
+            <if test="auditTime != null">`audit_time` = #{auditTime},</if>
+            <if test="syncStatus != null">`sync_status` = #{syncStatus},</if>
+            <if test="syncTime != null">`sync_time` = #{syncTime},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where bus_id = #{busId}
+    </update>
+
+    <select id="checkAuditStatus" resultType="com.sunline.modules.commission.entity.ClientFareSetupEntity"
+            resultMap="clientFareSetupMap">
+        select * from client_fare_setup where 1=1
+        <if test="clientId!=null and clientId!=''">
+            and client_id = #{clientId}
+        </if>
+        <if test="auditStatus!=null and auditStatus!=''">
+            and audit_status = #{auditStatus}
+        </if>
+
+    </select>
+</mapper>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.fund.dao.DbsIccDepositConfigDao">
+
+
+    <resultMap type="com.sunline.modules.fund.entity.DbsIccDepositConfigEntity" id="dbsIccDepositConfigMap">
+        <result property="id" column="id"/>
+        <result property="ccy" column="ccy"/>
+        <result property="maxAmount" column="max_amount"/>
+        <result property="validTime" column="valid_time"/>
+        <result property="invalidTime" column="invalid_time"/>
+        <result property="isInvalid" column="is_invalid"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		ccy, 
+		max_amount, 
+		valid_time, 
+		invalid_time, 
+		is_invalid, 
+		create_user, 
+		update_user, 
+		create_time, 
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.fund.entity.DbsIccDepositConfigEntity" resultMap="dbsIccDepositConfigMap">
+		select
+		id,
+		ccy,
+		max_amount,
+		valid_time,
+		invalid_time,
+		is_invalid,
+		create_user,
+		update_user,
+		create_time,
+		update_time
+		from dbs_icc_deposit_config
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.fund.entity.DbsIccDepositConfigEntity" resultMap="dbsIccDepositConfigMap">
+        SELECT
+        t1.id,
+        t1.ccy,
+        t1.max_amount,
+        t1.valid_time,
+        t1.invalid_time,
+        t1.is_invalid,
+        (CASE WHEN t1.is_invalid=0 AND t1.valid_time<![CDATA[ <= ]]>NOW() THEN 1 WHEN t1.is_invalid=0 AND t1.valid_time<![CDATA[ > ]]>NOW() THEN 0 WHEN t1.is_invalid=1 THEN 2 ELSE 2 END) AS status,
+        (SELECT user_name FROM sys_user WHERE id=t1.create_user) AS create_user,
+        (SELECT user_name FROM sys_user WHERE id=t1.update_user) AS update_user,
+        t1.create_time,
+        t1.update_time
+        FROM dbs_icc_deposit_config t1
+        WHERE 1=1
+        <if test="ccy != null">
+            AND t1.ccy =#{ccy}
+        </if>
+        ORDER BY t1.is_invalid ASC, t1.update_time DESC
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.fund.entity.DbsIccDepositConfigEntity" resultMap="dbsIccDepositConfigMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dbs_icc_deposit_config t1
+        WHERE 1=1
+        <if test="ccy != null">
+            AND t1.ccy =#{ccy}
+        </if>
+        <if test="isInvalid != null">
+            AND t1.is_invalid =#{isInvalid}
+        </if>
+        <if test="validTime != null">
+            AND t1.valid_time <![CDATA[ <= ]]> #{validTime}
+        </if>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from dbs_icc_deposit_config
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.fund.entity.DbsIccDepositConfigEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into dbs_icc_deposit_config
+		(
+			`ccy`, 
+			`max_amount`, 
+			`valid_time`, 
+			`invalid_time`, 
+			`is_invalid`, 
+			`create_user`, 
+			`update_user`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{ccy}, 
+			#{maxAmount}, 
+			#{validTime}, 
+			#{invalidTime}, 
+			#{isInvalid}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.fund.entity.DbsIccDepositConfigEntity">
+		update dbs_icc_deposit_config 
+		<set>
+			<if test="ccy != null">`ccy` = #{ccy}, </if>
+			<if test="maxAmount != null">`max_amount` = #{maxAmount}, </if>
+			<if test="validTime != null">`valid_time` = #{validTime}, </if>
+			<if test="invalidTime != null">`invalid_time` = #{invalidTime}, </if>
+			<if test="isInvalid != null">`is_invalid` = #{isInvalid}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from dbs_icc_deposit_config where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from dbs_icc_deposit_config where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

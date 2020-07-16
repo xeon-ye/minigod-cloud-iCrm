@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.group.dao.ClientGroupMemberInfoDao">
+
+
+    <resultMap type="com.sunline.modules.group.entity.ClientGroupMemberInfoEntity" id="clientGroupMemberInfoMap">
+        <result property="id" column="id"/>
+        <result property="groupNo" column="group_no"/>
+        <result property="clientId" column="client_id"/>
+        <result property="clientName" column="client_name"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="email" column="email"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="birthday" column="birthday"/>
+        <result property="openAccountTime" column="open_account_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		group_no, 
+		client_id, 
+		client_name, 
+		phone_number, 
+		email, 
+		remark, 
+		create_time, 
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.group.entity.ClientGroupMemberInfoEntity" resultMap="clientGroupMemberInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_group_member_info
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.group.entity.ClientGroupMemberInfoEntity" resultMap="clientGroupMemberInfoMap">
+		select
+		*
+		from client_group_member_info
+		where 1=1
+        <if test="groupNo != null and groupNo != ''">
+            and  group_no = #{groupNo}
+        </if>
+        <if test="clientName != null and clientName != ''">
+            and  client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.group.entity.ClientGroupMemberInfoEntity" resultMap="clientGroupMemberInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_group_member_info
+        WHERE 1=1
+    </select>
+
+    <select id="quertListByGroup" resultType="com.sunline.modules.group.entity.ClientGroupMemberInfoEntity" resultMap="clientGroupMemberInfoMap" >
+        select i.id,i.client_id,s.client_status,s.client_name,u.channel_name,DATE_FORMAT(s.birthday,'%Y-%m-%d ') as birthday,DATE_FORMAT(s.open_account_time,'%Y-%m-%d ') as open_account_time,s.user_id,s.sex,s.id,s.trade_account
+        from client_group_member_info i,securities_user_info s left JOIN  user_channel_info u on u.channel_id = s.source_channel_id
+        where  s.trade_account = i.client_id
+        <if test="groupNo != null and groupNo != ''">
+          and  i.group_no = #{groupNo}
+        </if>
+        <!--<if test="sourceChannelName != null and sourceChannelName != ''">-->
+            <!--and  s.source_channel_name = #{sourceChannelName}-->
+        <!--</if>-->
+        <if test="sourceChannelId != null and sourceChannelId != ''">
+            and  s.source_channel_id = #{sourceChannelId}
+        </if>
+        <if test="id != null and id != ''">
+            and  s.id = #{id}
+        </if>
+        <if test="clientName != null and clientName != ''">
+            and  s.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="sex != null and sex != ''">
+            and  s.sex = #{sex}
+        </if>
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from client_group_member_info
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.group.entity.ClientGroupMemberInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into client_group_member_info
+		(
+			`group_no`, 
+			`client_id`, 
+			`client_name`, 
+			`phone_number`, 
+			`email`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{groupNo}, 
+			#{clientId}, 
+			#{clientName}, 
+			#{phoneNumber}, 
+			#{email}, 
+			#{remark}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.group.entity.ClientGroupMemberInfoEntity">
+		update client_group_member_info 
+		<set>
+			<if test="groupNo != null">`group_no` = #{groupNo}, </if>
+			<if test="clientId != null">`client_id` = #{clientId}, </if>
+			<if test="clientName != null">`client_name` = #{clientName}, </if>
+			<if test="phoneNumber != null">`phone_number` = #{phoneNumber}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+    <update id="updateGroup" parameterType="com.sunline.modules.group.entity.ClientGroupMemberInfoEntity">
+        update client_group_member_info
+        <set>
+            <if test="groupNo != null">`group_no` = #{groupNo} </if>
+        </set>
+        where client_id = #{clientId}
+    </update>
+	
+	<delete id="delete">
+		delete from client_group_member_info where id = #{value}
+	</delete>
+
+	<delete id="deleteBatch">
+		delete from client_group_member_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <delete id="deleteAll">
+        delete  from client_group_member_info where group_no = #{value}
+    </delete>
+
+    <select id="selectRepeat" resultType="com.sunline.modules.group.entity.ClientGroupMemberInfoEntity" >
+      SELECT
+			*
+		FROM
+			client_group_member_info c
+		WHERE
+			(c.client_id, c.group_no) IN (
+				SELECT
+					c1.client_id,
+					c1.group_no
+				FROM
+					client_group_member_info c1
+				GROUP BY
+					c1.client_id,
+					c1.group_no
+				HAVING
+					count(*) > 1
+			)
+		AND c.id NOT IN (
+			SELECT
+				min(c2.id)
+			FROM
+				client_group_member_info c2
+			GROUP BY
+				c2.client_id,
+				c2.group_no
+			HAVING
+				count(*) > 1
+		)
+    </select>
+
+</mapper>

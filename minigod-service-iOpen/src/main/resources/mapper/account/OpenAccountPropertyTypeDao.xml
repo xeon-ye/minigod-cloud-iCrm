@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.OpenAccountPropertyTypeDao">
+
+
+    <resultMap type="com.sunline.modules.account.online.entity.OpenAccountPropertyTypeEntity" id="openAccountPropertyTypeMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="propertyType" column="property_type"/>
+        <result property="propertyAmount" column="property_amount"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		application_id, 
+		property_type, 
+		property_amount, 
+		create_time, 
+		update_time
+    </sql>
+    
+    	<sql id="Base_Where_Conditions">
+		<if test="id != null">
+			<![CDATA[ and id = #{id}]]>
+		</if>
+		<if test="applicationId != null">
+			<![CDATA[ and application_id = #{applicationId}]]>
+		</if>
+		<if test="propertyType != null">
+			<![CDATA[ and property_type = #{propertyType}]]>
+		</if>	
+		<if test="propertyAmount != null">
+			<![CDATA[ and property_amount = #{propertyAmount}]]>
+		</if>
+		<if test="updateTime != null">
+			<![CDATA[ and update_time = #{updateTime}]]>
+		</if>
+		<if test="createTime != null">
+			<![CDATA[ and create_time = #{createTime}]]>
+		</if>
+	</sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.account.online.entity.OpenAccountPropertyTypeEntity" resultMap="openAccountPropertyTypeMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_property_type
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.account.online.entity.OpenAccountPropertyTypeEntity" resultMap="openAccountPropertyTypeMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_property_type
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.OpenAccountPropertyTypeEntity" resultMap="openAccountPropertyTypeMap">
+        select
+        <include refid="Base_Column_List" />
+        from open_account_property_type
+        <where>
+			<include refid="Base_Where_Conditions"/>
+		</where>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from open_account_property_type
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.account.online.entity.OpenAccountPropertyTypeEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into open_account_property_type
+		(
+			`application_id`, 
+			`property_type`, 
+			`property_amount`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{propertyType}, 
+			#{propertyAmount}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	<insert id="saveBatch" parameterType="com.sunline.modules.account.online.entity.OpenAccountPropertyTypeEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into open_account_property_type
+		(
+			`application_id`,
+			`property_type`,
+			`property_amount`,
+			`create_time`,
+			`update_time`
+		)
+		values
+        <foreach collection ="list" item="property" separator =",">
+            (
+            #{property.applicationId},
+            #{property.propertyType},
+            #{property.propertyAmount},
+            now(),
+            now()
+            )
+        </foreach >
+	</insert>
+
+	<update id="update" parameterType="com.sunline.modules.account.online.entity.OpenAccountPropertyTypeEntity">
+		update open_account_property_type 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="propertyType != null">`property_type` = #{propertyType}, </if>
+			<if test="propertyAmount != null">`property_amount` = #{propertyAmount}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from open_account_property_type where id = #{value}
+	</delete>
+
+    <!--/**
+    * 按applicationId删除
+    * @param applicationId
+    * @return
+    */-->
+	<delete id="deleteByApplicationId">
+		delete from open_account_property_type where application_id = #{value}
+	</delete>
+
+	<delete id="deleteBatch">
+		delete from open_account_property_type where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

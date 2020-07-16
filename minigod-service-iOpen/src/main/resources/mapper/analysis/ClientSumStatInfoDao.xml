@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.analysis.dao.ClientSumStatInfoDao">
+
+
+    <resultMap type="com.sunline.modules.analysis.entity.ClientSumStatInfoEntity" id="ClientSumStatInfoMap">
+        <result property="userCount" column="userCount"/>
+        <result property="regUserCount" column="regUserCount"/>
+        <result property="openUserCount" column="openUserCount"/>
+        <result property="androidUserCount" column="androidUserCount"/>
+        <result property="iosUserCount" column="iosUserCount"/>
+        <result property="inComeCount" column="inComeCount"/>
+        <result property="outComeCount" column="outComeCount"/>
+        <result property="tradeCount" column="tradeCount"/>
+    </resultMap>
+
+    <select id="clientTotalCount" resultType="com.sunline.modules.analysis.entity.ClientSumStatInfoEntity"
+            resultMap="ClientSumStatInfoMap">
+        SELECT
+            MAX(CASE WHEN t.TYPE='注册数' THEN t.count ELSE 0 END) AS regUserCount,
+            MAX(CASE WHEN t.TYPE='开户数' THEN t.count ELSE 0 END) AS openUserCount,
+            MAX(CASE WHEN t.TYPE='入金数' THEN t.count ELSE 0 END) AS inComeCount,
+            MAX(CASE WHEN t.TYPE='出金数' THEN t.count ELSE 0 END) AS outComeCount,
+            MAX(CASE WHEN t.TYPE='交易数' THEN t.count ELSE 0 END) AS tradeCount
+            FROM (
+                SELECT '注册数' AS TYPE,COUNT(*) AS COUNT
+                FROM user_info u
+                WHERE 1 = 1 AND u.user_type != 5
+                <if test="beginDate!=null and beginDate!='' and endDate!=null and  endDate != ''">
+                    AND DATE_FORMAT(u.create_time,'%Y-%m-%d %h:%i:%s') BETWEEN #{beginDate} AND #{endDate}
+                </if>
+                <if test="channelIds != null">
+                    and u.user_source_channel_id
+                    in
+                    <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                        #{channelIds[${index}]}
+                    </foreach>
+                </if>
+
+                UNION ALL
+
+                SELECT '开户数' AS TYPE,COUNT(*) AS COUNT
+                FROM securities_user_info s
+                WHERE 1=1
+--                   and client_type = '0'
+                <if test="beginDate!=null and beginDate!='' and endDate!=null and  endDate != ''">
+                    AND DATE_FORMAT(s.open_account_time,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{beginDate}, '%Y-%m-%d') and DATE_FORMAT(#{endDate}, '%Y-%m-%d ')
+                </if>
+
+                <if test="channelIds != null">
+                    and s.source_channel_id in
+                    <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                        #{channelIds[${index}]}
+                    </foreach>
+                </if>
+
+                UNION ALL
+
+                SELECT '入金数' AS TYPE,COUNT(DISTINCT c.client_id) AS COUNT
+                FROM client_fund_deposit c
+                LEFT JOIN securities_user_info s ON c.client_id = s.trade_account
+                WHERE 1=1 AND c.deposit_type = 'D'
+                <if test="beginDate!=null and beginDate!='' and endDate!=null and  endDate != ''">
+                    AND DATE_FORMAT(c.init_date,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{beginDate}, '%Y-%m-%d') and DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+                </if>
+                <if test="channelIds != null">
+                    and s.source_channel_id in
+                    <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                        #{channelIds[${index}]}
+                    </foreach>
+                </if>
+
+                UNION ALL
+
+                SELECT '出金数' AS TYPE,COUNT(DISTINCT c.client_id) AS COUNT
+                FROM client_fund_deposit c
+                LEFT JOIN securities_user_info s ON c.client_id = s.trade_account
+                WHERE 1=1 AND c.deposit_type = 'W'
+                <if test="beginDate!=null and beginDate!='' and endDate!=null and  endDate != ''">
+                    AND DATE_FORMAT(c.init_date,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{beginDate}, '%Y-%m-%d') and DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+                </if>
+                <if test="channelIds != null">
+                    and s.source_channel_id in
+                    <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                        #{channelIds[${index}]}
+                    </foreach>
+                </if>
+
+                UNION ALL
+
+                SELECT '交易数' AS TYPE,COUNT(DISTINCT t.client_id,t.fund_account) AS COUNT
+                FROM client_trade_flow_info t
+                LEFT JOIN securities_user_info s ON t.client_id = s.trade_account
+                WHERE 1=1
+                <if test="beginDate!=null and beginDate!='' and endDate!=null and  endDate != ''">
+                    AND DATE_FORMAT(t.trade_date,'%Y-%m-%d') BETWEEN DATE_FORMAT(#{beginDate}, '%Y-%m-%d') and DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+                </if>
+                <if test="channelIds != null">
+                    and s.source_channel_id in
+                    <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                        #{channelIds[${index}]}
+                    </foreach>
+                </if>
+            ) t
+    </select>
+
+    <select id="clientTotalGroupCount" resultType="com.sunline.modules.analysis.entity.ClientSumStatInfoEntity"
+            resultMap="ClientSumStatInfoMap">
+        SELECT
+            MAX(CASE WHEN t.os_type='0' THEN t.deviceUserCount ELSE 0 END) AS androidUserCount,
+            MAX(CASE WHEN t.os_type='1' THEN t.deviceUserCount ELSE 0 END) AS iosUserCount
+        FROM(
+            SELECT
+            d.os_type,
+            COUNT(*) AS deviceUserCount
+            FROM user_info u
+            INNER JOIN user_device d ON u.user_id = d.user_id
+            WHERE u.user_type !=5
+                <if test="beginDate!=null and beginDate!='' and endDate !=null and  endDate != ''">
+                    and DATE_FORMAT(u.create_time,'%Y-%m-%d %h:%i:%s') BETWEEN #{beginDate} and #{endDate}
+                </if>
+                <if test="channelIds != null">
+                    and u.user_source_channel_id in
+                    <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                        #{channelIds[${index}]}
+                    </foreach>
+                </if>
+            GROUP BY d.os_type
+        ) t
+    </select>
+
+    <!--近一年每月个数据统计-->
+    <select id="queryDataMonth" resultType="com.sunline.modules.analysis.entity.ClientSumStatInfoEntity"
+            resultMap="ClientSumStatInfoMap">
+        SELECT
+            DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+            IFNULL((SELECT COUNT(*) FROM user_info WHERE user_type != 5
+          <if test="channelIds != null">
+            and user_source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+         AND DATE_FORMAT(create_time, '%Y-%m')=DATE_FORMAT(s.normal_date, '%Y-%m')), 0) AS regUserCount,
+            IFNULL((SELECT COUNT(*) FROM securities_user_info WHERE DATE_FORMAT(open_account_time, '%Y-%m')=DATE_FORMAT(s.normal_date, '%Y-%m')
+        <if test="channelIds != null">
+            and source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ), 0)
+        AS openUserCount,
+            IFNULL((SELECT COUNT(DISTINCT c.client_id) FROM client_fund_deposit c LEFT JOIN securities_user_info s ON c.client_id = s.trade_account WHERE deposit_type = 'D'
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        AND DATE_FORMAT(c.init_date, '%Y-%m')=DATE_FORMAT(s.normal_date, '%Y-%m')), 0) AS inComeCount,
+            IFNULL((SELECT COUNT(DISTINCT t.client_id,t.fund_account) FROM client_trade_flow_info t  LEFT JOIN securities_user_info s ON t.client_id = s.trade_account WHERE DATE_FORMAT(t.trade_date, '%Y-%m')=DATE_FORMAT(s.normal_date, '%Y-%m')
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ), 0) AS tradeCount
+        FROM
+            stk_trd_cale s
+        WHERE
+            DATE_FORMAT(s.normal_date, '%Y-%m') BETWEEN DATE_FORMAT(
+                DATE_SUB(CURDATE(), INTERVAL 11 month),
+                '%Y-%m'
+            )
+            AND DATE_FORMAT(CURDATE(), '%Y-%m')
+        GROUP BY DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY s.normal_date
+    </select>
+
+    <!-- 一年每月 RegCount-->
+    <select id="queryMonthRegCount" resultType="com.sunline.modules.analysis.entity.ClientSumStatInfoEntity">
+        SELECT
+        DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+        IFNULL((SELECT COUNT(*) FROM user_info WHERE user_type != 5
+        <if test="channelIds != null">
+            and user_source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        AND DATE_FORMAT(create_time, '%Y-%m')=DATE_FORMAT(s.normal_date, '%Y-%m')), 0) AS regUserCount
+        FROM
+        stk_trd_cale s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m') BETWEEN DATE_FORMAT(
+        DATE_SUB(CURDATE(), INTERVAL 11 month),
+        '%Y-%m'
+        )
+        AND DATE_FORMAT(CURDATE(), '%Y-%m')
+        GROUP BY DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY s.normal_date
+    </select>
+    <!-- 一年每月 OpenCount-->
+    <select id="queryMonthOpenCount" resultType="com.sunline.modules.analysis.entity.ClientSumStatInfoEntity">
+        SELECT
+        DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+        IFNULL((SELECT COUNT(*) FROM securities_user_info WHERE DATE_FORMAT(open_account_time, '%Y-%m')=DATE_FORMAT(s.normal_date, '%Y-%m')
+        <if test="channelIds != null">
+            and source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ), 0)
+        AS openUserCount
+        FROM
+        stk_trd_cale s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m') BETWEEN DATE_FORMAT(
+        DATE_SUB(CURDATE(), INTERVAL 11 month),
+        '%Y-%m'
+        )
+        AND DATE_FORMAT(CURDATE(), '%Y-%m')
+        GROUP BY DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY s.normal_date
+    </select>
+    <!-- 一年每月 inComeCount-->
+    <select id="queryMonthIncomeCount" resultType="com.sunline.modules.analysis.entity.ClientSumStatInfoEntity">
+        SELECT
+        DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+        IFNULL((SELECT COUNT(DISTINCT c.client_id) FROM client_fund_deposit c LEFT JOIN securities_user_info s ON c.client_id = s.trade_account WHERE deposit_type = 'D'
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        AND DATE_FORMAT(c.init_date, '%Y-%m')=DATE_FORMAT(s.normal_date, '%Y-%m')), 0) AS inComeCount
+        FROM
+        stk_trd_cale s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m') BETWEEN DATE_FORMAT(
+        DATE_SUB(CURDATE(), INTERVAL 11 month),
+        '%Y-%m'
+        )
+        AND DATE_FORMAT(CURDATE(), '%Y-%m')
+        GROUP BY DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY s.normal_date
+    </select>
+    <!-- 一年每月 TradeCount-->
+    <select id="queryMonthTradeCount" resultType="com.sunline.modules.analysis.entity.ClientSumStatInfoEntity">
+        SELECT
+        DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+        IFNULL((SELECT COUNT(DISTINCT t.client_id,t.fund_account) FROM client_trade_flow_info t  LEFT JOIN securities_user_info s ON t.client_id = s.trade_account WHERE DATE_FORMAT(t.trade_date, '%Y-%m')=DATE_FORMAT(s.normal_date, '%Y-%m')
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ), 0) AS tradeCount
+        FROM
+        stk_trd_cale s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m') BETWEEN DATE_FORMAT(
+        DATE_SUB(CURDATE(), INTERVAL 11 month),
+        '%Y-%m'
+        )
+        AND DATE_FORMAT(CURDATE(), '%Y-%m')
+        GROUP BY DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY s.normal_date
+    </select>
+
+    <!--近一个月每一天个数据统计-->
+    <select id="queryDataDay" resultType="com.sunline.modules.analysis.entity.ClientSumStatInfoEntity"
+            resultMap="ClientSumStatInfoMap">
+        SELECT
+            DATE_FORMAT(s.normal_date, '%Y-%m-%d') AS DATETIME,
+            IFNULL((SELECT COUNT(*) FROM user_info WHERE user_type != 5
+            <if test="channelIds != null">
+                and user_source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+            AND DATE_FORMAT(create_time, '%Y-%m-%d')=DATE_FORMAT(s.normal_date, '%Y-%m-%d')), 0) AS regUserCount,
+            IFNULL((SELECT COUNT(*) FROM securities_user_info WHERE DATE_FORMAT(open_account_time, '%Y-%m-%d')=DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+            <if test="channelIds != null">
+                and source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+            ), 0) AS openUserCount,
+            IFNULL((SELECT COUNT(DISTINCT c.client_id) FROM client_fund_deposit c LEFT JOIN securities_user_info s ON c.client_id = s.trade_account WHERE deposit_type = 'D'
+            <if test="channelIds != null">
+                and s.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+            AND DATE_FORMAT(init_date, '%Y-%m-%d')=DATE_FORMAT(s.normal_date, '%Y-%m-%d')), 0) AS inComeCount,
+            IFNULL((SELECT COUNT(DISTINCT client_id,t.fund_account) FROM client_trade_flow_info t LEFT JOIN securities_user_info s ON t.client_id = s.trade_account WHERE DATE_FORMAT(trade_date, '%Y-%m-%d')=DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+            <if test="channelIds != null">
+                and s.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+            ), 0) AS tradeCount
+        FROM stk_trd_cale s
+            WHERE
+                DATE_FORMAT(s.normal_date, '%Y-%m-%d') BETWEEN DATE_FORMAT(
+                    DATE_SUB(CURDATE(), INTERVAL 1 MONTH),
+                    '%Y-%m-%d'
+                )
+            AND DATE_FORMAT(CURDATE(), '%Y-%m-%d')
+            <if test="type!=null and type !='' ">
+                <if test="type=='income' or type =='trade' ">
+                    AND s.is_trade_day = 1
+                </if>
+            </if>
+        GROUP BY DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+        ORDER BY s.normal_date
+    </select>
+
+    <!--近三个月每周个数据统计-->
+    <select id="queryDataWeek" resultType="com.sunline.modules.analysis.entity.ClientSumStatInfoEntity"
+            resultMap="ClientSumStatInfoMap">
+        SELECT
+            DATE_SUB(s.normal_date, INTERVAL 4 DAY) AS monday,
+            DATE_ADD(s.normal_date, INTERVAL 2 DAY) AS sunday,
+            IFNULL((SELECT COUNT(*) FROM user_info WHERE user_type != 5
+            <if test="channelIds != null">
+                and user_source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+            AND DATE_FORMAT(create_time, '%Y-%m-%d') BETWEEN DATE_SUB(s.normal_date, INTERVAL 4 DAY) AND DATE_ADD(s.normal_date, INTERVAL 2 DAY)), 0) AS regUserCount,
+            IFNULL((SELECT COUNT(*) FROM securities_user_info WHERE DATE_FORMAT(open_account_time, '%Y-%m-%d')BETWEEN DATE_SUB(s.normal_date, INTERVAL 4 DAY)
+            <if test="channelIds != null">
+                and source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+            AND DATE_ADD(s.normal_date, INTERVAL 2 DAY)), 0) AS openUserCount,
+            IFNULL((SELECT COUNT(DISTINCT c.client_id) FROM client_fund_deposit c LEFT JOIN securities_user_info s ON c.client_id = s.trade_account WHERE deposit_type = 'D'
+            <if test="channelIds != null">
+                and s.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+            AND DATE_FORMAT(init_date, '%Y-%m-%d')BETWEEN DATE_SUB(s.normal_date, INTERVAL 4 DAY) AND DATE_ADD(s.normal_date, INTERVAL 2 DAY)), 0) AS inComeCount,
+            IFNULL((SELECT COUNT(DISTINCT client_id,t.fund_account) FROM client_trade_flow_info t LEFT JOIN securities_user_info s ON t.client_id = s.trade_account WHERE DATE_FORMAT(trade_date, '%Y-%m-%d')BETWEEN DATE_SUB(s.normal_date, INTERVAL 4 DAY)
+            <if test="channelIds != null">
+                and s.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+            AND DATE_ADD(s.normal_date, INTERVAL 2 DAY)), 0) AS tradeCount
+        FROM
+            stk_trd_cale s
+        WHERE s.is_week_end = '1'
+        AND s.normal_date BETWEEN DATE_SUB(NOW(), INTERVAL 6 MONTH) AND NOW()
+        GROUP BY DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+        ORDER BY s.normal_date
+    </select>
+
+
+</mapper>

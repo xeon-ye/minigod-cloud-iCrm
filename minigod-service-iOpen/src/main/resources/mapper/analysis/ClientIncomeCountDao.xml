@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.analysis.dao.ClienIncomeCountDao">
+
+
+    <resultMap type="com.sunline.modules.analysis.entity.ClienIncomeCountEntity" id="ClienIncomeCountEntity">
+        <result property="dateTime" column="dateTime"></result>
+        <result property="incomeMoney" column="incomeMoney"></result>
+        <result property="incomeCount" column="incomeCount"></result>
+        <result property="tradeMoney" column="tradeMoney"></result>
+        <result property="tradeCount" column="tradeCount"></result>
+    </resultMap>
+
+
+    <select id="queryCount" resultType="com.sunline.modules.analysis.entity.ClienIncomeCountEntity"
+            resultMap="ClienIncomeCountEntity">
+        SELECT
+        SUM(
+            CASE
+            WHEN t.type = '入金' THEN
+            total_balance
+            ELSE
+            0
+            END
+        ) AS incomeMoney,
+        SUM(
+            CASE
+            WHEN t.type = '入金' THEN
+            total_count
+            ELSE
+            0
+            END
+        ) AS incomeCount,
+        SUM(
+            CASE
+            WHEN t.type = '交易' THEN
+            total_balance
+            ELSE
+            0
+            END
+        ) AS tradeMoney,
+        SUM(
+            CASE
+            WHEN t.type = '交易' THEN
+            total_count
+            ELSE
+            0
+            END
+        ) AS tradeCount
+        FROM
+        (
+            SELECT
+            '入金' AS TYPE,
+            ifnull(CONVERT(SUM(d.occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)AS total_balance,
+            COUNT(*) AS total_count
+            FROM
+            client_fund_deposit d
+            left JOIN securities_user_info s
+            on s.trade_account = d.client_id
+            LEFT JOIN money_rate_info t3
+            ON t3.from_money_type = d.money_type
+            AND t3.to_money_type = '2'
+            AND t3.init_date <![CDATA[ <= ]]> #{endDate} AND t3.valid_date <![CDATA[ >= ]]> #{endDate}
+            WHERE
+            deposit_type = 'D'
+            <if test="channelIds != null">
+                and s.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+            <if test="beginDate!=null and beginDate !='' and endDate !=null and endDate != ''">
+                and date_format(d.init_date,'%Y-%m-%d') BETWEEN #{beginDate}and #{endDate}
+            </if>
+        UNION ALL
+            SELECT
+            '交易' AS TYPE,
+            ifnull(CONVERT(SUM(c.BUSINESS_BALANCE * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)AS total_balance,
+            COUNT(*) AS total_count
+            FROM
+            client_trade_flow_info c
+            left JOIN securities_user_info s
+            on s.trade_account = c.client_id
+            LEFT JOIN money_rate_info t3
+            ON t3.from_money_type = c.money_type
+            AND t3.to_money_type = '2'
+            AND t3.init_date <![CDATA[ <= ]]> #{endDate} AND t3.valid_date <![CDATA[ >= ]]> #{endDate}
+            where 1=1
+            <if test="beginDate!=null and beginDate !='' and endDate !=null and endDate != ''">
+                and date_format(c.trade_date,'%Y-%m-%d') BETWEEN #{beginDate}and #{endDate}
+            </if>
+            <if test="channelIds != null">
+                and s.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+        ) t
+
+    </select>
+
+    <select id="queryDataMonth" resultType="com.sunline.modules.analysis.entity.ClienIncomeCountEntity"
+            resultMap="ClienIncomeCountEntity">
+        SELECT
+        DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+        IFNULL(
+        (
+        select count(*) from client_fund_deposit d
+        left JOIN securities_user_info s  on s.trade_account = d.client_id
+        where DATE_FORMAT(init_date, '%Y-%m') = DATE_FORMAT(s.normal_date, '%Y-%m')
+        and deposit_type = 'D'
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0 ) AS incomeCount,
+        IFNULL(
+        (
+        SELECT COUNT(*) FROM client_trade_flow_info c
+        left JOIN securities_user_info s  on s.trade_account = c.client_id
+        WHERE DATE_FORMAT( trade_date, '%Y-%m' ) = DATE_FORMAT(s.normal_date, '%Y-%m')
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ), 0  ) AS tradeCount,
+        IFNULL(
+        (
+        SELECT
+        ifnull(CONVERT(SUM(c.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)AS total_balance
+        FROM
+        client_trade_flow_info c
+        left JOIN securities_user_info s  on s.trade_account = c.client_id
+        LEFT JOIN money_rate_info t3  ON t3.from_money_type = c.money_type
+        AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> now() AND t3.valid_date <![CDATA[ >= ]]> now()
+        WHERE
+        DATE_FORMAT(
+        trade_date,
+        '%Y-%m'
+        ) = DATE_FORMAT(s.normal_date, '%Y-%m')
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ), 0 ) AS tradeMoney,
+        IFNULL(
+        (
+        SELECT
+        ifnull(CONVERT(SUM(d.occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)AS total_balance
+        FROM
+        client_fund_deposit d
+        left JOIN securities_user_info s  on s.trade_account = d.client_id
+        LEFT JOIN money_rate_info t3  ON t3.from_money_type = d.money_type
+        AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> now() AND t3.valid_date <![CDATA[ >= ]]> now()
+        WHERE
+        DATE_FORMAT(
+        d.init_date,
+        '%Y-%m'
+        ) = DATE_FORMAT(s.normal_date, '%Y-%m')
+        and deposit_type = 'D'
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),  0 ) AS incomeMoney
+        FROM
+        stk_trd_cale s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m') BETWEEN DATE_FORMAT(
+        DATE_SUB(CURDATE(), INTERVAL 1 YEAR),
+        '%Y-%m'
+        )
+        AND DATE_FORMAT(CURDATE(), '%Y-%m')
+        GROUP BY
+        DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY
+        s.normal_date
+    </select>
+
+    <!-- 按月查询 IncomeCount-->
+    <select id="queryMonthIncomeCount" resultType="com.sunline.modules.analysis.entity.ClienIncomeCountEntity"
+            resultMap="ClienIncomeCountEntity">
+        SELECT
+        DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+        IFNULL(
+        (
+        select count(*) from client_fund_deposit d
+        left JOIN securities_user_info s  on s.trade_account = d.client_id
+        where DATE_FORMAT(init_date, '%Y-%m') = DATE_FORMAT(s.normal_date, '%Y-%m')
+        and deposit_type = 'D'
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),0 ) AS incomeCount
+        FROM
+        stk_trd_cale s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m') BETWEEN DATE_FORMAT(
+        DATE_SUB(CURDATE(), INTERVAL 1 YEAR),
+        '%Y-%m'
+        )
+        AND DATE_FORMAT(CURDATE(), '%Y-%m')
+        GROUP BY
+        DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY
+        s.normal_date
+    </select>
+    <!-- 按月查询 tradeCount -->
+    <select id="queryMonthTradeCount" resultType="com.sunline.modules.analysis.entity.ClienIncomeCountEntity"
+            resultMap="ClienIncomeCountEntity">
+        SELECT
+        DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+        IFNULL(
+        (
+        SELECT COUNT(*) FROM client_trade_flow_info c
+        left JOIN securities_user_info s  on s.trade_account = c.client_id
+        WHERE DATE_FORMAT( trade_date, '%Y-%m' ) = DATE_FORMAT(s.normal_date, '%Y-%m')
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ), 0  ) AS tradeCount
+        FROM
+        stk_trd_cale s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m') BETWEEN DATE_FORMAT(
+        DATE_SUB(CURDATE(), INTERVAL 1 YEAR),
+        '%Y-%m'
+        )
+        AND DATE_FORMAT(CURDATE(), '%Y-%m')
+        GROUP BY
+        DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY
+        s.normal_date
+    </select>
+    <!-- 按月查询 tradeMoney-->
+    <select id="queryMonthTradeMoney" resultType="com.sunline.modules.analysis.entity.ClienIncomeCountEntity"
+            resultMap="ClienIncomeCountEntity">
+        SELECT
+        DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+        IFNULL(
+        (
+        SELECT
+        ifnull(CONVERT(SUM(c.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)AS total_balance
+        FROM
+        client_trade_flow_info c
+        left JOIN securities_user_info s  on s.trade_account = c.client_id
+        LEFT JOIN money_rate_info t3  ON t3.from_money_type = c.money_type
+        AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> now() AND t3.valid_date <![CDATA[ >= ]]> now()
+        WHERE
+        DATE_FORMAT(
+        trade_date,
+        '%Y-%m'
+        ) = DATE_FORMAT(s.normal_date, '%Y-%m')
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ), 0 ) AS tradeMoney
+        FROM
+        stk_trd_cale s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m') BETWEEN DATE_FORMAT(
+        DATE_SUB(CURDATE(), INTERVAL 1 YEAR),
+        '%Y-%m'
+        )
+        AND DATE_FORMAT(CURDATE(), '%Y-%m')
+        GROUP BY
+        DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY
+        s.normal_date
+    </select>
+    <!-- 按月查询 incomeMoney-->
+    <select id="queryMonthIncomeMoney" resultType="com.sunline.modules.analysis.entity.ClienIncomeCountEntity"
+            resultMap="ClienIncomeCountEntity">
+        SELECT
+        DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+        IFNULL(
+        (
+        SELECT
+        ifnull(CONVERT(SUM(d.occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)AS total_balance
+        FROM
+        client_fund_deposit d
+        left JOIN securities_user_info s  on s.trade_account = d.client_id
+        LEFT JOIN money_rate_info t3  ON t3.from_money_type = d.money_type
+        AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> now() AND t3.valid_date <![CDATA[ >= ]]> now()
+        WHERE
+        DATE_FORMAT(
+        d.init_date,
+        '%Y-%m'
+        ) = DATE_FORMAT(s.normal_date, '%Y-%m')
+        and deposit_type = 'D'
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ),  0 ) AS incomeMoney
+        FROM
+        stk_trd_cale s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m') BETWEEN DATE_FORMAT(
+        DATE_SUB(CURDATE(), INTERVAL 1 YEAR),
+        '%Y-%m'
+        )
+        AND DATE_FORMAT(CURDATE(), '%Y-%m')
+        GROUP BY
+        DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY
+        s.normal_date
+    </select>
+
+    <select id="queryDataDay" resultType="com.sunline.modules.analysis.entity.ClienIncomeCountEntity"
+            resultMap="ClienIncomeCountEntity">
+        SELECT
+          DATE_FORMAT(s.normal_date, '%Y-%m-%d') AS DATETIME,
+        IFNULL(
+            (
+                select count(*) from client_fund_deposit d
+                left JOIN securities_user_info s  on s.trade_account = d.client_id
+                where
+                deposit_type = 'D'
+                and DATE_FORMAT(init_date, '%Y-%m-%d') = DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+                <if test="channelIds != null">
+                    and s.source_channel_id in
+                    <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                        #{channelIds[${index}]}
+                    </foreach>
+                </if>
+            ),0 ) AS incomeCount,
+        IFNULL(
+            (
+                SELECT COUNT(*) FROM client_trade_flow_info c
+                left JOIN securities_user_info s  on s.trade_account = c.client_id
+                WHERE DATE_FORMAT( trade_date, '%Y-%m-%d' ) = DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+                <if test="channelIds != null">
+                    and s.source_channel_id in
+                    <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                        #{channelIds[${index}]}
+                    </foreach>
+                </if>
+            ), 0  ) AS tradeCount,
+        IFNULL(
+            (
+                SELECT
+                ifnull(CONVERT(SUM(c.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)AS total_balance
+                FROM
+                client_trade_flow_info c
+                left JOIN securities_user_info s  on s.trade_account = c.client_id
+                LEFT JOIN money_rate_info t3  ON t3.from_money_type = c.money_type
+                AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> now() AND t3.valid_date <![CDATA[ >= ]]> now()
+        WHERE
+            DATE_FORMAT(
+                trade_date,
+                '%Y-%m-%d'
+            ) = DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+            <if test="channelIds != null">
+                and s.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+            ), 0 ) AS tradeMoney,
+        IFNULL(
+            (
+                SELECT
+                ifnull(CONVERT(SUM(d.occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)AS total_balance
+                FROM
+                client_fund_deposit d
+                left JOIN securities_user_info s  on s.trade_account = d.client_id
+                LEFT JOIN money_rate_info t3  ON t3.from_money_type = d.money_type
+                AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> now() AND t3.valid_date <![CDATA[ >= ]]> now()
+        WHERE
+        deposit_type = 'D'
+        and DATE_FORMAT(
+            d.init_date,
+            '%Y-%m-%d'
+            ) = DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+            <if test="channelIds != null">
+                and s.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+        ),  0 ) AS incomeMoney
+        FROM
+        stk_trd_cale s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m-%d') BETWEEN DATE_FORMAT(
+            DATE_SUB(CURDATE(), INTERVAL 1 MONTH),
+            '%Y-%m-%d'
+        )
+        AND DATE_FORMAT(CURDATE(), '%Y-%m-%d')
+        GROUP BY
+        DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+        ORDER BY
+        s.normal_date
+    </select>
+
+    <select id="queryDataWeek" resultType="com.sunline.modules.analysis.entity.ClienIncomeCountEntity"
+            resultMap="ClienIncomeCountEntity">
+        SELECT
+        DATE_SUB(s.normal_date, INTERVAL 4 DAY) AS monday,
+        DATE_ADD(s.normal_date, INTERVAL 2 DAY) AS sunday,
+        IFNULL( (
+            select count(*) from client_fund_deposit d
+            left JOIN securities_user_info s  on s.trade_account = d.client_id
+            where DATE_FORMAT(init_date, '%Y-%m-%d') BETWEEN DATE_SUB(s.normal_date, INTERVAL 4 DAY) AND DATE_ADD(s.normal_date, INTERVAL 2 DAY)
+            and deposit_type = 'D'
+            <if test="channelIds != null">
+                and s.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+        ), 0 ) AS incomeCount,
+        IFNULL( (
+            SELECT COUNT(*) FROM client_trade_flow_info c
+            left JOIN securities_user_info s  on s.trade_account = c.client_id
+            WHERE DATE_FORMAT(trade_date, '%Y-%m-%d') BETWEEN DATE_SUB(s.normal_date, INTERVAL 4 DAY) AND DATE_ADD(s.normal_date, INTERVAL 2 DAY)
+            <if test="channelIds != null">
+                and s.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    #{channelIds[${index}]}
+                </foreach>
+            </if>
+        ),  0 ) AS tradeCount,
+        IFNULL( (
+            SELECT
+            ifnull(CONVERT(SUM(c.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)AS total_balance
+            FROM  client_trade_flow_info c
+                left JOIN securities_user_info s  on s.trade_account = c.client_id
+                LEFT JOIN money_rate_info t3  ON t3.from_money_type = c.money_type
+                AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> now() AND t3.valid_date <![CDATA[ >= ]]> now()
+        WHERE DATE_FORMAT(c.trade_date, '%Y-%m-%d') BETWEEN DATE_SUB(s.normal_date, INTERVAL 4 DAY) AND DATE_ADD(s.normal_date, INTERVAL 2 DAY)
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ), 0 ) AS tradeMoney,
+        IFNULL( (
+        SELECT
+        ifnull(CONVERT(SUM(d.occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)AS total_balance
+        FROM
+            client_fund_deposit d
+            left JOIN securities_user_info s  on s.trade_account = d.client_id
+            LEFT JOIN money_rate_info t3  ON t3.from_money_type = d.money_type
+            AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> now() AND t3.valid_date <![CDATA[ >= ]]> now()
+        WHERE
+        DATE_FORMAT(d.init_date, '%Y-%m-%d') BETWEEN DATE_SUB(s.normal_date, INTERVAL 4 DAY) AND DATE_ADD(s.normal_date, INTERVAL 2 DAY)
+        and deposit_type = 'D'
+        <if test="channelIds != null">
+            and s.source_channel_id in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ), 0 ) AS incomeMoney
+        FROM
+        stk_trd_cale s
+        WHERE
+        s.normal_date BETWEEN date_sub(now(), INTERVAL 6 MONTH) AND now() AND is_week_end = '1'
+        GROUP BY
+        s.normal_date
+    </select>
+
+</mapper>

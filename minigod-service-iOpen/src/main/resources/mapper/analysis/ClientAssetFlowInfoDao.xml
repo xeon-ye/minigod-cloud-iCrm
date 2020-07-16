@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.analysis.dao.ClientAssetFlowInfoDao">
+
+
+    <resultMap type="com.sunline.modules.analysis.entity.ClientAssetFlowInfoEntity" id="clientAssetFlowInfoMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="tradeDate" column="trade_date"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="currentBalance" column="current_balance"/>
+        <result property="frozenBalance" column="frozen_balance"/>
+        <result property="marketValueCur" column="market_value_cur"/>
+        <result property="totalAssets" column="total_assets"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="clientName" column="client_name"/>
+        <result property="channelName" column="channel_name"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		t1.id,
+		t1.user_id,
+		t1.client_id,
+		t1.fund_account,
+		t1.trade_date,
+		t1.money_type,
+		t1.current_balance,
+		t1.frozen_balance,
+		t1.market_value_cur,
+		t1.total_assets,
+		DATE_FORMAT(t1.create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+		DATE_FORMAT(t1.update_time,'%Y-%m-%d %H:%i:%s') AS update_time
+    </sql>
+
+    <!-- 资金查询-->
+    <select id="queryList" resultType="com.sunline.modules.analysis.entity.ClientAssetFlowInfoEntity"
+            resultMap="clientAssetFlowInfoMap">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        t2.client_name,
+        t2.source_channel_id as channel_id,
+        t4.channel_name as channel_name
+        FROM ${tableName} t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN user_channel_info t4 ON t2.source_channel_id = t4.channel_id
+        WHERE 1=1
+        <if test="userId != null and userId != ''">
+            AND t1.user_id =#{userId}
+        </if>
+        <if test="clientName != null and clientName != ''">
+            AND t2.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t1.money_type =#{moneyType}
+        </if>
+        <!--<if test="channelName != null and channelName != ''">-->
+            <!--AND t2.source_channel_name LIKE CONCAT('%',#{channelName},'%')-->
+        <!--</if>-->
+        <if test="channelId != null and channelId != ''">
+            AND t2.source_channel_id = #{channelId}
+        </if>
+        <if test="tradeDate != null and tradeDate != ''">
+            AND t1.trade_date = #{tradeDate}
+        </if>
+        <if test="minTotalAssets != null and minTotalAssets != ''">
+            AND t1.total_assets <![CDATA[ >= ]]> #{minTotalAssets}
+        </if>
+        <if test="maxTotalAssets != null and maxTotalAssets != ''">
+            AND t1.total_assets <![CDATA[ <= ]]> #{maxTotalAssets}
+        </if>
+        <if test="channelIds != null">
+            and t2.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and t2.source_channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+        ORDER BY
+        t1.client_id,t1.fund_account,t1.trade_date,t1.money_type
+        DESC
+    </select>
+
+    <!-- 资金统计-->
+    <select id="queryGroupList" resultType="com.sunline.modules.analysis.entity.ClientAssetFlowInfoEntity"
+            resultMap="clientAssetFlowInfoMap">
+        SELECT * FROM (
+        SELECT
+        t1.user_id,
+        t1.client_id,
+        t1.fund_account,
+        t1.trade_date,
+        CONVERT(SUM(t1.current_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS current_balance,
+        CONVERT(SUM(t1.frozen_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS frozen_balance,
+        CONVERT(SUM(t1.market_value_cur * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS
+        market_value_cur,
+        CONVERT(SUM(t1.total_assets * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS total_assets,
+        t2.client_name,
+        t2.source_channel_id as channel_id,
+        t4.channel_name as channel_name
+        FROM ${tableName} t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN user_channel_info t4 ON t2.source_channel_id = t4.channel_id
+        LEFT JOIN money_rate_info t3
+        ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> #{tradeDate} AND t3.valid_date <![CDATA[ >= ]]>
+        #{tradeDate}
+        WHERE 1=1
+        <if test="userId != null and userId != ''">
+            AND t1.user_id =#{userId}
+        </if>
+        <if test="clientName != null and clientName != ''">
+            AND t2.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id = #{clientId}
+        </if>
+        <if test="clientIds != null">
+            and t1.client_id
+            in
+            <foreach item="item" index="index" collection="clientIds" open="(" separator="," close=")">
+                #{clientIds[${index}]}
+            </foreach>
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t1.money_type =#{moneyType}
+        </if>
+        <!--<if test="channelName != null and channelName != ''">-->
+        <!--AND t2.source_channel_name LIKE CONCAT('%',#{channelName},'%')-->
+        <!--</if>-->
+        <if test="channelId != null and channelId != ''">
+            AND t2.source_channel_id = #{channelId}
+        </if>
+        <if test="tradeDate != null and tradeDate != ''">
+            AND t1.trade_date = #{tradeDate}
+        </if>
+        <if test="channelIds != null">
+            and t2.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and t2.source_channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+        GROUP BY t1.user_id,
+        t1.client_id,
+        t1.fund_account,
+        t1.trade_date,
+        t2.client_name,
+        t4.channel_name
+        ORDER BY
+        t1.client_id,t1.fund_account,t1.trade_date,t1.money_type
+        DESC
+        ) t
+        WHERE 1=1
+        <if test="minTotalAssets != null and minTotalAssets != ''">
+            AND t.total_assets <![CDATA[ >= ]]> #{minTotalAssets}
+        </if>
+        <if test="maxTotalAssets != null and maxTotalAssets != ''">
+            AND t.total_assets <![CDATA[ <= ]]> #{maxTotalAssets}
+        </if>
+    </select>
+
+    <!-- 获取总资产大于0的客户名单-->
+    <select id="getAssetGtZeroClientList" resultType="com.sunline.modules.analysis.entity.ClientAssetFlowInfoEntity"
+            resultMap="clientAssetFlowInfoMap">
+        SELECT
+        t.user_id,
+        t.client_id,
+        t.fund_account,
+        t.trade_date,
+        t.current_balance,
+        t.frozen_balance,
+        t.market_value_cur,
+        t.total_assets,
+        t.client_name,
+        t.channel_id,
+        t.channel_name
+        FROM (
+                SELECT
+                t1.user_id,
+                t1.client_id,
+                t1.fund_account,
+                t1.trade_date,
+                CONVERT(SUM(t1.current_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS current_balance,
+                CONVERT(SUM(t1.frozen_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS frozen_balance,
+                CONVERT(SUM(t1.market_value_cur * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS
+                market_value_cur,
+                CONVERT(SUM(t1.total_assets * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS total_assets,
+                t2.client_name,
+                t2.source_channel_id as channel_id,
+                t4.channel_name as channel_name
+                FROM ${tableName} t1
+                LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+                LEFT JOIN user_channel_info t4 ON t2.source_channel_id = t4.channel_id
+                LEFT JOIN money_rate_info t3
+                ON t3.from_money_type = t1.money_type
+                AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> #{tradeDate} AND t3.valid_date <![CDATA[ >= ]]> #{tradeDate}
+                WHERE 1=1
+                <if test="userId != null and userId != ''">
+                    AND t1.user_id =#{userId}
+                </if>
+                <if test="clientName != null and clientName != ''">
+                    AND t2.client_name LIKE CONCAT('%',#{clientName},'%')
+                </if>
+                <if test="clientId != null and clientId != ''">
+                    AND t1.client_id = #{clientId}
+                </if>
+                <if test="clientIds != null">
+                    and t1.client_id
+                    in
+                    <foreach item="item" index="index" collection="clientIds" open="(" separator="," close=")">
+                        #{clientIds[${index}]}
+                    </foreach>
+                </if>
+                <if test="fundAccount != null and fundAccount != ''">
+                    AND t1.fund_account =#{fundAccount}
+                </if>
+                <if test="moneyType != null and moneyType != ''">
+                    AND t1.money_type =#{moneyType}
+                </if>
+                <!--<if test="channelName != null and channelName != ''">-->
+                <!--AND t2.source_channel_name LIKE CONCAT('%',#{channelName},'%')-->
+                <!--</if>-->
+                <if test="channelId != null and channelId != ''">
+                    AND t2.source_channel_id = #{channelId}
+                </if>
+                <if test="tradeDate != null and tradeDate != ''">
+                    AND t1.trade_date = #{tradeDate}
+                </if>
+                <if test="minTotalAssets != null and minTotalAssets != ''">
+                    AND t1.total_assets <![CDATA[ >= ]]> #{minTotalAssets}
+                </if>
+                <if test="maxTotalAssets != null and maxTotalAssets != ''">
+                    AND t1.total_assets <![CDATA[ <= ]]> #{maxTotalAssets}
+                </if>
+                <if test="channelIds != null">
+                    and t2.source_channel_id
+                    in
+                    <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                        #{channelIds[${index}]}
+                    </foreach>
+                </if>
+                <if test="checkedChannelIds != null">
+                    and t2.source_channel_id
+                    in
+                    <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                        #{checkedChannelIds[${index}]}
+                    </foreach>
+                </if>
+                GROUP BY t1.user_id,
+                t1.client_id,
+                t1.fund_account,
+                t1.trade_date,
+                t2.client_name,
+                t4.channel_name
+                ORDER BY
+                t1.client_id,t1.fund_account,t1.trade_date,t1.money_type
+                DESC
+        ) t
+        WHERE t.total_assets >0
+    </select>
+
+    <select id = "countFundByDay" resultType="com.sunline.modules.analysis.entity.ClientFundCountEntity">
+        SELECT
+        DATE_FORMAT(s.normal_date, '%Y-%m-%d') AS DATETIME,
+        IFNULL((SELECT SUM(t.total_assets)
+        FROM (
+        (SELECT * FROM ${tableName1} t1
+        WHERE t1.client_id =#{clientId} AND t1.`fund_account` = #{fundAccount}
+        AND t1.`money_type`='0')
+        UNION
+        (SELECT * FROM ${tableName2} t2
+        WHERE t2.client_id =#{clientId} AND t2.`fund_account` = #{fundAccount}
+        AND t2.`money_type`='0'
+        )
+        )t WHERE DATE_FORMAT(t.`trade_date`,'%Y-%m-%d')= DATE_FORMAT(s.normal_date, '%Y-%m-%d')),0) AS CNYAssets,
+        IFNULL((SELECT SUM(t.total_assets)
+        FROM (
+        (SELECT * FROM ${tableName1} t1
+        WHERE t1.client_id =#{clientId} AND t1.`fund_account` = #{fundAccount}
+        AND t1.`money_type`='1')
+        UNION
+        (SELECT * FROM ${tableName2} t2
+        WHERE t2.client_id =#{clientId} AND t2.`fund_account` = #{fundAccount}
+        AND t2.`money_type`='1'
+        )
+        )t WHERE DATE_FORMAT(t.`trade_date`,'%Y-%m-%d')= DATE_FORMAT(s.normal_date, '%Y-%m-%d')),0) AS USDAssets,
+        IFNULL((SELECT SUM(t.total_assets)
+        FROM (
+        (SELECT * FROM ${tableName1} t1
+        WHERE t1.client_id =#{clientId} AND t1.`fund_account` = #{fundAccount}
+        AND t1.`money_type`='2')
+        UNION
+        (SELECT * FROM ${tableName2} t2
+        WHERE t2.client_id =#{clientId} AND t2.`fund_account` = #{fundAccount}
+        AND t2.`money_type`='2'
+        )
+        )t WHERE DATE_FORMAT(t.`trade_date`,'%Y-%m-%d')= DATE_FORMAT(s.normal_date, '%Y-%m-%d')),0) AS HKDAssets,
+        IFNULL( (SELECT (CONVERT(SUM(t.total_assets * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) )
+        FROM (
+        (SELECT * FROM ${tableName1} t1
+        WHERE t1.client_id =#{clientId} AND t1.`fund_account` = #{fundAccount})
+        UNION
+        (SELECT * FROM ${tableName2} t2
+        WHERE t2.client_id =#{clientId} AND t2.`fund_account` = #{fundAccount}
+        ) )AS t
+        LEFT JOIN money_rate_info t3 ON t3.from_money_type = t.money_type AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> t.trade_date AND t3.valid_date <![CDATA[ >= ]]> t.trade_date
+        WHERE DATE_FORMAT(t.`trade_date`,'%Y-%m-%d')= DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+        ),0) AS total_assets
+        FROM `stk_trd_cale` s
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y-%m-%d') BETWEEN DATE_FORMAT(
+        DATE_SUB(#{tradeDate}, INTERVAL 1 MONTH),
+        '%Y-%m-%d')
+        AND DATE_FORMAT(#{tradeDate}, '%Y-%m-%d')
+        AND s.is_trade_day=1 AND s.region_code = 'HK'
+        GROUP BY DATE_FORMAT(s.normal_date, '%Y-%m-%d')
+        ORDER BY s.normal_date
+    </select>
+
+    <select id = "countFundByMonth" resultType="com.sunline.modules.analysis.entity.ClientFundCountEntity">
+        SELECT DATE_FORMAT(s.normal_date, '%Y-%m') AS DATETIME,
+        IFNULL((SELECT sum(t.total_assets) FROM ${tableName1} t WHERE t.client_id =#{clientId} AND t.`fund_account` = #{fundAccount}
+        AND DATE_FORMAT(t.`trade_date`,'%Y-%m')= DATE_FORMAT(s.normal_date, '%Y-%m') AND t.`money_type`='0'),0) AS CNYAssets,
+        IFNULL((SELECT sum(t.total_assets) FROM ${tableName1} t WHERE t.client_id =#{clientId} AND t.`fund_account` = #{fundAccount}
+        AND DATE_FORMAT(t.`trade_date`,'%Y-%m')= DATE_FORMAT(s.normal_date, '%Y-%m') AND t.`money_type`='1'),0) AS USDAssets,
+        IFNULL((SELECT sum(t.total_assets) FROM ${tableName1} t WHERE t.client_id =#{clientId} AND t.`fund_account` = #{fundAccount}
+        AND DATE_FORMAT(t.`trade_date`,'%Y-%m')= DATE_FORMAT(s.normal_date, '%Y-%m') AND t.`money_type`='2'),0) AS HKDAssets,
+        IFNULL(
+        (SELECT
+        (CONVERT(SUM(t.total_assets * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) )
+        FROM ${tableName1} t
+        LEFT JOIN money_rate_info t3
+        ON t3.from_money_type = t.money_type
+        AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> t.trade_date AND t3.valid_date  <![CDATA[ >= ]]> t.trade_date
+        WHERE t.client_id =#{clientId} AND t.`fund_account` = #{fundAccount}  AND DATE_FORMAT(t.`trade_date`,'%Y-%m')= DATE_FORMAT(s.normal_date, '%Y-%m')),0) AS total_assets
+        FROM `stk_trd_cale` s,
+        WHERE
+        DATE_FORMAT(s.normal_date, '%Y%m') = #{tradeDate}
+        AND s.is_trade_day=1 AND s.region_code = 'HK'
+        GROUP BY
+        DATE_FORMAT(s.normal_date, '%Y-%m')
+        ORDER BY
+        s.normal_date
+    </select>
+
+    <select id = "queryAssetsByDate" resultType="com.sunline.modules.analysis.entity.ClientFundCountEntity">
+        SELECT tradeDate,total_assets AS totalAssets
+        FROM (
+        SELECT DATE_FORMAT(t1.`trade_date`, '%Y-%m-%d') AS tradeDate,
+        CONVERT(SUM(t1.total_assets * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS total_assets
+        FROM  ${tableName1} t1
+        LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type AND t3.to_money_type = '2'
+        AND t3.init_date  <![CDATA[ <= ]]> t1.trade_date  AND t3.valid_date <![CDATA[ >= ]]> t1.trade_date
+        WHERE t1.client_id =#{clientId}
+        <if test="stDate != null and stDate != ''">
+            AND t1.trade_date <![CDATA[ >= ]]> #{stDate}
+        </if>
+        <if test="edDate != null and edDate != ''">
+            AND t1.trade_date <![CDATA[ <= ]]> #{edDate}
+        </if>
+
+        GROUP BY t1.trade_date
+        ) t
+        WHERE t.total_assets >= 8000000.00
+        ORDER BY tradeDate DESC LIMIT 1
+
+    </select>
+
+    <select id="getAssetGtTradeDateClientInfoList" resultType="java.util.Map">
+        SELECT userId,
+            clientId,
+            fundAccount,
+            phoneNumber,
+            channelId
+        FROM (
+            SELECT t1.user_id userId,
+            t1.client_id clientId,
+            t1.fund_account fundAccount,
+            t2.`phone_number`phoneNumber,
+            t2.source_channel_id channelId,
+            COUNT(t1.trade_date) tradeDateNum
+            FROM client_asset_flow_info t1
+            LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+            WHERE 1=1
+            AND t1.trade_date>=#{beginDate}
+            <![CDATA[AND t1.`trade_date`<=#{endDate}]]>
+            AND t1.`total_assets`>=#{minTotalAssets}
+            GROUP BY t1.user_id,
+            t1.client_id,
+            t1.fund_account
+        ) t WHERE tradeDateNum>=#{tradeDateNum}
+    </select>
+
+</mapper>

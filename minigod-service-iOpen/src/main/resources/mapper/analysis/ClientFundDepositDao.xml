@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.analysis.dao.ClientFundDepositDao">
+
+
+    <resultMap type="com.sunline.modules.analysis.entity.ClientFundDepositEntity" id="clientFundDepositMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="initDate" column="init_date"/>
+        <result property="depositType" column="deposit_type"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="opEntrustWay" column="op_entrust_way"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="bankAccount" column="bank_account"/>
+        <result property="occurBalance" column="occur_balance"/>
+        <result property="remark" column="remark"/>
+        <result property="localeRemark" column="locale_remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="clientName" column="client_name"/>
+        <result property="channelName" column="channel_name"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="positionStr" column="position_str"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="inviterId" column="inviter_id"/>
+        <result property="email" column="email"/>
+        <result property="firstDepFlag" column="first_dep_flag"/>
+        <result property="clientNameSpell" column="client_name_spell"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		t1.id,
+		t1.client_id,
+		t1.fund_account,
+		t1.init_date,
+		t1.deposit_type,
+		t1.money_type,
+		t1.op_entrust_way,
+		t1.bank_id,
+		t1.bank_account,
+		t1.occur_balance,
+		t1.remark,
+		t1.locale_remark,
+		t1.position_str,
+		DATE_FORMAT(t1.create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+		DATE_FORMAT(t1.update_time,'%Y-%m-%d %H:%i:%s') AS update_time
+    </sql>
+
+    <!-- 客户出入金查询-->
+    <select id="queryList" resultType="com.sunline.modules.analysis.entity.ClientFundDepositEntity"
+            resultMap="clientFundDepositMap">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        t2.client_name,
+        t2.user_id,
+        t4.channel_name AS channel_name,
+        t2.source_channel_id AS channel_id,
+        t2.phone_number AS phone_number,
+        (SELECT COUNT(*) FROM client_fund_deposit t2 WHERE t2.client_id=t1.client_id AND t2.init_date <![CDATA[ < ]]> t1.init_date) AS first_dep_flag
+        FROM client_fund_deposit t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN user_channel_info t4 ON t2.source_channel_id = t4.channel_id
+        WHERE 1=1
+        <if test="userId != null and userId != ''">
+            AND t2.user_id =#{userId}
+        </if>
+        <if test="clientName != null and clientName != ''">
+            AND t2.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="depositType != null and depositType != ''">
+            AND t1.deposit_type =#{depositType}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t1.money_type =#{moneyType}
+        </if>
+        <!--<if test="channelName != null and channelName != ''">-->
+            <!--AND t2.source_channel_name LIKE CONCAT('%',#{channelName},'%')-->
+        <!--</if>-->
+        <if test="channelId != null and channelId != ''">
+            AND t2.source_channel_id = #{channelId}
+        </if>
+        <if test="initDate != null and initDate != ''">
+            AND t1.init_date = #{initDate}
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            AND t1.init_date <![CDATA[ >= ]]> #{beginDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND t1.init_date <![CDATA[ <= ]]> #{endDate}
+        </if>
+
+        <if test="channelIds != null">
+            and t2.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and t2.source_channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="batchUserIdList != null">
+            AND t2.user_id
+            IN
+            <foreach item="item" index="index" collection="batchUserIdList" open="(" separator="," close=")">
+                #{batchUserIdList[${index}]}
+            </foreach>
+        </if>
+        ORDER BY
+        t1.init_date
+        DESC
+    </select>
+
+    <!-- 客户出入金发送记录查询-->
+    <select id="queryClientFundDepositSend" resultType="com.sunline.modules.analysis.entity.ClientFundDepositEntity"
+            resultMap="clientFundDepositMap">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        t2.client_name,
+        t2.user_id,
+        t3.channel_name as channel_name,
+        t2.source_channel_id as channel_id,
+        t2.net_capital,
+        t2.email,
+        t2.phone_number AS phone_number,
+        t2.client_name_spell
+        FROM client_fund_deposit t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN user_channel_info t3 ON t2.source_channel_id = t3.channel_id
+        WHERE t1.init_date=DATE_SUB(CURDATE(), INTERVAL 0 DAY)
+        AND NOT EXISTS (SELECT 1 FROM client_fund_deposit_send_log WHERE send_type=0 AND is_first=0 AND position_str=t1.position_str)
+        <if test="depositType != null and depositType != ''">
+            AND t1.deposit_type =#{depositType}
+        </if>
+    </select>
+
+    <!-- 客户首次入金发送记录查询-->
+    <select id="queryClientFirstDepositSend" resultType="com.sunline.modules.analysis.entity.ClientFundDepositEntity"
+            resultMap="clientFundDepositMap">
+        SELECT * FROM (
+            SELECT
+            t1.client_id,
+            t1.fund_account,
+            t1.init_date,
+            t1.deposit_type,
+            t1.money_type,
+            t1.op_entrust_way,
+            t1.bank_id,
+            t1.bank_account,
+            CONVERT(SUM(t1.occur_balance * IFNULL((t5.exch_rate / t5.reverse_rate), 1)),DECIMAL(20,5)) AS occur_balance,
+            t1.remark,
+            t1.locale_remark,
+            MIN(t1.position_str) AS position_str,
+            t2.client_name,
+            t2.user_id,
+            t3.channel_name as channel_name,
+            t2.source_channel_id as channel_id,
+            t2.net_capital,
+            t2.inviter_id,
+            t2.client_name_spell
+            FROM client_fund_deposit t1
+            LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+            LEFT JOIN user_channel_info t3 ON t2.source_channel_id = t3.channel_id
+            LEFT JOIN money_rate_info t5
+            ON t5.from_money_type = t1.money_type
+            AND t5.to_money_type = '2' AND t5.init_date <![CDATA[ <= ]]> DATE_SUB(CURDATE(), INTERVAL 0 DAY) AND t5.valid_date <![CDATA[ >= ]]> DATE_SUB(CURDATE(), INTERVAL 0 DAY)
+            WHERE t1.init_date=DATE_SUB(CURDATE(), INTERVAL 0 DAY)
+--             AND t1.position_str = (SELECT MIN(t2.position_str) FROM client_fund_deposit t2 WHERE t2.client_id=t1.client_id AND t1.deposit_type ='D' AND t2.init_date <![CDATA[ <= ]]> DATE_SUB(CURDATE(), INTERVAL 1 DAY))
+--             AND NOT EXISTS (SELECT 1 FROM client_fund_deposit_send_log WHERE send_type=0 AND is_first=1 AND position_str=t1.position_str)
+            <if test="depositType != null and depositType != ''">
+                AND t1.deposit_type =#{depositType}
+            </if>
+            GROUP BY
+            t1.client_id,
+            t1.fund_account,
+            t1.init_date,
+            t1.deposit_type,
+            t1.money_type,
+            t1.op_entrust_way,
+            t1.bank_id,
+            t1.bank_account,
+            t1.remark,
+            t2.client_name,
+            t2.user_id,
+            t3.channel_name,
+            t2.source_channel_id,
+            t2.net_capital,
+            t2.inviter_id,
+            t2.client_name_spell
+        ) t WHERE NOT EXISTS (SELECT 1 FROM client_fund_deposit_send_log WHERE send_type=0 AND is_first=1 AND position_str=(SELECT MIN(t2.position_str) FROM client_fund_deposit t2
+        WHERE t2.client_id=t.client_id AND t2.deposit_type = #{depositType} AND t2.init_date  <![CDATA[ <= ]]>  DATE_SUB(CURDATE(), INTERVAL 0 DAY)))
+        AND NOT EXISTS (SELECT 1 FROM client_fund_deposit WHERE client_id=t.client_id AND deposit_type = #{depositType} AND init_date <![CDATA[ <= ]]> '2018-08-01')
+    </select>
+
+
+    <!-- 客户累计入金额大于年收入or财产总额 -->
+    <select id="queryTotalIncAmountAbnormal" resultType="com.sunline.modules.analysis.entity.ClientFundDepositEntity"
+            resultMap="clientFundDepositMap">
+        SELECT t.* FROM (
+        SELECT
+        client_id,
+        t2.client_name,
+        MAX(position_str) AS position_str,
+        MAX(t2.application_id) AS application_id,
+        (CONVERT(SUM(t1.occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) +
+        (SELECT IFNULL(CONVERT(SUM(occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)
+        FROM client_fund_deposit WHERE client_id = t1.client_id AND deposit_type='W')) AS total_amount,
+        CONVERT(SUM(t1.occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS total_inc_amount,
+        (SELECT IFNULL(CONVERT(SUM(occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)),0)
+        FROM client_fund_deposit WHERE client_id = t1.client_id AND deposit_type='W') AS total_out_amount,
+        (SELECT CONVERT(SUM(occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5))
+        FROM client_fund_deposit WHERE client_id = t1.client_id AND deposit_type='D' AND init_date  =  DATE_SUB(CURDATE(), INTERVAL 0 DAY)) AS occur_balance,
+        CONVERT((CASE WHEN t2.annual_income=1 THEN 200000 WHEN t2.annual_income=2 THEN 500000
+        WHEN t2.annual_income=3 THEN 1000000
+        WHEN t2.annual_income=4 THEN 5000000
+        ELSE 100000000000 END),DECIMAL(20,5)) AS max_annual_income,
+        (CONVERT((CASE WHEN t4.property_amount=1 THEN 100000
+        WHEN t4.property_amount=2 THEN 500000
+        WHEN t4.property_amount=3 THEN 1000000
+        WHEN t4.property_amount=4 THEN 1000000000000
+        ELSE 100000000000 END),DECIMAL(20,5)) +
+        CONVERT((CASE WHEN t5.property_amount=1 THEN 100000
+        WHEN t5.property_amount=2 THEN 500000
+        WHEN t5.property_amount=3 THEN 1000000
+        WHEN t5.property_amount=4 THEN 1000000000000
+        ELSE 100000000000 END),DECIMAL(20,5)) +
+        CONVERT((CASE WHEN t6.property_amount=1 THEN 100000
+        WHEN t6.property_amount=2 THEN 500000
+        WHEN t6.property_amount=3 THEN 1000000
+        WHEN t6.property_amount=4 THEN 5000000
+        WHEN t6.property_amount=5 THEN 10000000
+        WHEN t6.property_amount=5 THEN 1000000000000
+        ELSE 100000000000 END),DECIMAL(20,5))) AS max_property_amount,
+        t2.annual_income
+        FROM client_fund_deposit t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> t1.init_date AND t3.valid_date <![CDATA[ >= ]]> t1.init_date
+        LEFT JOIN open_account_property_type t4 ON t4.application_id=t2.application_id AND t4.property_type=1
+        LEFT JOIN open_account_property_type t5 ON t5.application_id=t2.application_id AND t5.property_type=2
+        LEFT JOIN open_account_property_type t6 ON t6.application_id=t2.application_id AND t6.property_type=3
+        WHERE t1.deposit_type=#{depositType} AND t1.init_date <![CDATA[ <= ]]> DATE_SUB(CURDATE(), INTERVAL 0 DAY)
+        GROUP BY client_id,t2.annual_income,t2.application_id,t2.client_name
+        ) t
+        WHERE (t.total_amount <![CDATA[ > ]]> t.max_annual_income OR t.total_amount <![CDATA[ > ]]> t.max_property_amount)
+        AND t.client_id IN (SELECT client_id FROM client_fund_deposit WHERE init_date=DATE_SUB(CURDATE(), INTERVAL 0 DAY) AND deposit_type=#{depositType})
+        AND position_str NOT IN (SELECT position_str FROM client_fund_deposit_send_log WHERE send_type=3)
+    </select>
+
+    <!-- 获取客户首天累计入金金额-->
+    <select id="queryFirstFundDepTotal" resultType="com.sunline.modules.analysis.entity.ClientFundDepositEntity"
+            resultMap="clientFundDepositMap">
+        SELECT
+            t1.client_id,
+            t1.fund_account,
+            t1.init_date,
+            t2.user_id,
+            t2.source_channel_id AS channel_id,
+            t2.inviter_id,
+        SUM(ROUND(t1.occur_balance * IFNULL((t5.exch_rate / t5.reverse_rate), 1),5)) AS occur_balance
+        FROM client_fund_deposit t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN (SELECT client_id,MIN(init_date) AS init_date FROM client_fund_deposit t1 WHERE t1.deposit_type=#{depositType}
+        <if test="batchTradeAccountList != null">
+            AND t1.client_id
+            IN
+            <foreach item="item" index="index" collection="batchTradeAccountList" open="(" separator="," close=")">
+                #{batchTradeAccountList[${index}]}
+            </foreach>
+        </if>
+        GROUP BY client_id) t6
+        ON t1.client_id=t6.client_id AND t1.init_date=t6. init_date
+        LEFT JOIN money_rate_info t5
+        ON t5.from_money_type = t1.money_type
+        AND t5.to_money_type = '2' AND t5.init_date <![CDATA[ <= ]]> t1.init_date AND t5.valid_date  <![CDATA[ >= ]]> t1.init_date
+        WHERE t1.deposit_type=#{depositType}
+        AND t1.client_id=t6.client_id
+        AND t1.init_date=t6.init_date
+        GROUP BY
+            t1.client_id,
+            t1.fund_account,
+            t1.init_date,
+            t2.user_id,
+            t2.source_channel_id,
+            t2.inviter_id
+
+    </select>
+
+    <!-- 获取客户累计出/入金金额-->
+    <select id="queryFundDepTotal" resultType="com.sunline.modules.analysis.entity.ClientFundDepositEntity"
+            resultMap="clientFundDepositMap">
+        SELECT
+        t1.client_id,
+        t1.fund_account,
+        t1.deposit_type,
+        t2.user_id,
+        SUM(ROUND(t1.occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1),5)) AS occur_balance
+        FROM client_fund_deposit t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> t1.init_date AND t3.valid_date  <![CDATA[ >= ]]> t1.init_date
+        WHERE 1=1
+        AND t1.deposit_type=#{depositType}
+        <if test="beginDate != null and endDate != null" >
+            AND t1.init_date BETWEEN #{beginDate} AND #{endDate}
+        </if>
+        <if test="batchUserIdList != null">
+            AND t2.user_id
+            IN
+            <foreach item="item" index="index" collection="batchUserIdList" open="(" separator="," close=")">
+                #{batchUserIdList[${index}]}
+            </foreach>
+        </if>
+        GROUP BY
+        t1.client_id,
+        t1.fund_account,
+        t2.user_id,
+        t2.source_channel_id,
+        t2.inviter_id
+
+    </select>
+
+    <select id="queryAddAsset" resultType="com.sunline.modules.analysis.entity.ClientFundDepositEntity"
+            resultMap="clientFundDepositMap">
+        SELECT
+            t1.trade_account AS client_id,
+            (IFNULL(t2.deposit_amount,0) + IFNULL(t4.transfer_amount,0) - IFNULL(t3.withdraw_amount,0)) AS occur_balance
+        FROM securities_user_info t1
+        LEFT JOIN (SELECT s1.client_id,IFNULL(SUM(ROUND(s1.occur_balance * IFNULL((m1.exch_rate / m1.reverse_rate), 1),5)),0) AS deposit_amount
+        FROM client_fund_deposit s1 LEFT JOIN money_rate_info m1 ON m1.from_money_type = s1.money_type AND m1.to_money_type = '2' AND m1.init_date <![CDATA[ >= ]]> s1.init_date
+        AND m1.valid_date  >= s1.init_date WHERE s1.deposit_type='D' AND s1.init_date <![CDATA[ >= ]]> #{beginDate} GROUP BY s1.client_id) t2 ON t2.client_id=t1.trade_account
+        LEFT JOIN (SELECT s1.client_id,IFNULL(SUM(ROUND(s1.occur_balance * IFNULL((m1.exch_rate / m1.reverse_rate), 1),5)),0) AS withdraw_amount
+        FROM client_fund_deposit s1 LEFT JOIN money_rate_info m1 ON m1.from_money_type = s1.money_type AND m1.to_money_type = '2' AND m1.init_date <![CDATA[ >= ]]> s1.init_date
+        AND m1.valid_date >= s1.init_date WHERE s1.deposit_type='W' AND s1.init_date  <![CDATA[ >= ]]> #{beginDate} GROUP BY s1.client_id) t3 ON t3.client_id=t1.trade_account
+        LEFT JOIN (SELECT s1.client_id,IFNULL(SUM(ROUND(s1.stock_mkt_value * IFNULL((m1.exch_rate / m1.reverse_rate), 1),5)),0) AS transfer_amount
+        FROM stock_transfer_info s1 LEFT JOIN money_rate_info m1 ON m1.from_money_type = s1.money_type AND m1.to_money_type = '2' AND m1.init_date <![CDATA[ >= ]]> s1.trade_date
+        AND m1.valid_date >= s1.trade_date WHERE s1.business_flag IN ('3101','3027') AND s1.trade_date  <![CDATA[ >= ]]> #{beginDate} GROUP BY s1.client_id) t4 ON t4.client_id=t1.trade_account
+        WHERE 1=1
+        <if test="batchUserIdList != null">
+            AND t1.user_id
+            IN
+            <foreach item="item" index="index" collection="batchUserIdList" open="(" separator="," close=")">
+                #{batchUserIdList[${index}]}
+            </foreach>
+        </if>
+        GROUP BY t1.user_id
+    </select>
+
+</mapper>

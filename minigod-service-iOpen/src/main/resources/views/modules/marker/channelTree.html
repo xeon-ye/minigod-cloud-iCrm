@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>渠道维护和设置</title>
+#parse("modules/sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<!--.container （固定宽度）或 .container-fluid （100% 宽度）-->
+	<div class="container-fluid">
+        <input id="flag" name="flag" value="channelTree" hidden="hidden">
+		<div class="row">
+			<div class="col-md-4">
+				#if($shiro.hasPermission("userChannelInfo:update"))
+					<button class="layui-btn layui-btn-small" @click="add" type="button" @click="add"><i class="layui-icon">&#xe61f;</i> 新 增</button>
+				#end
+				#if($shiro.hasPermission("userChannelInfo:delete"))
+					<button class="layui-btn layui-btn-danger layui-btn-small" type="button" @click="del"><i class="layui-icon">&#xe640;</i>删 除</button>
+				#end
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<div style="font-size: 20px;margin-bottom: 10px">
+					<i class="layui-icon" style="font-size: 20px; color: #4caf50">&#xe62e;</i> 渠道管理
+				</div>
+                <div style="overflow-y:auto; width:300px; height:600px">
+				    <div class="col-sm-10">
+					    <ul id="allMenuTree" class="ztree"></ul>
+				    </div>
+                </div>
+			</div>
+            <div v-show="showInfo" class="col-md-5 col-sm-10">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="layui-icon" style="font-size: 20px; color: #4caf50;">&#xe63c;</i> {{title}}</div>
+                    <form class="form-horizontal" id="menuFrom" method="post" style="width: 60%">
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">上级菜单</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" style="cursor:pointer;" v-model="menu.parentName" @click="menuTree" readonly="readonly" placeholder="一级渠道"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">所属片区</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" style="cursor:pointer;" v-model="menu.areaName" @click="areaTree" readonly="readonly" placeholder="暂无所属片区"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">渠道号</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" onchange="changeFareCase();" v-model="menu.channelId" placeholder="渠道号"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">渠道名</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" v-model="menu.channelName" placeholder="渠道名"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 control-label">备注</div>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" v-model="menu.rmk" />
+                            </div>
+                        </div>
+                        <div v-show="fareCase">
+                            <div class="form-group">
+                                <div class="col-sm-6 control-label" style="font-weight: bold;display:inline;">目前方案</div>
+                                <div v-show="nextCaseButton" class="col-sm-5 control-label" style="font-weight: bold;display:inline;">
+                                    <button type="button" id="newNextCase" class="layui-btn layui-btn-mini" >添加下一方案</button>
+                                </div>
+                                <div v-show="delCaseButton" class="col-sm-5 control-label" style="font-weight: bold">
+                                    <button type="button" id="delNextCase" class="layui-btn layui-btn-mini" >删除下一方案</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 control-label">是否参与官方开户免佣活动</div>
+                                <div class="col-sm-2">
+                                    <input type="radio" id="free" name="radio" value="1">是
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="radio" id="noFree" name="radio" value="0">否
+                                </div>
+                                <input hidden="hidden" type="text" v-model="menu.isFreeCommission"/>
+                            </div>
+                           <!--<div class="form-group">-->
+                                <!--<div class="col-sm-4 control-label">免佣期</div>-->
+                                <!--<div class="col-sm-3 ">-->
+                                    <!--<input type="text" id="freeCommissionDays" class="form-control" style="width:75%;display:inline;" v-model="menu.freeCommissionDays"  placeholder="正整数"/> &nbsp;天-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="form-group">
+                                <div class="col-sm-4 control-label">佣金方案</div>
+                                <div class="col-sm-3 ">
+                                    <input type="text" id="fareKind" onclick="showFareProList();" class="form-control" style="width:75%;display:inline;" v-model="menu.fareKind"  placeholder="请选择"/>
+                                    <i v-show="icon" id="iconTips"    class="layui-icon" style="font-size: 20px; color: #4caf50;">  &#xe607;</i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 control-label">方案有效期</div>
+                                <div class="col-sm-5 ">
+                                    <input type="text" id="beginDate" class="form-control" style="width:45%;display:inline;"  v-model="menu.beginDate"  placeholder="请选择"/>至
+                                    <input type="text" id="endDate" class="form-control" style="width:45%;display:inline;"  v-model="menu.endDate"   placeholder="请选择"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-show="nextFareCase">
+                            <div class="form-group">
+                                <div class="col-sm-6 control-label" style="font-weight: bold">下一方案</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 control-label">是否参与官方开户免佣活动</div>
+                                <div class="col-sm-2">
+                                    <input type="radio" id="nextFree" name="nextRadio" value="1">是
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="radio" id="noNextFree" name="nextRadio" value="0">否
+                                </div>
+                                <input hidden="hidden" type="text" v-model="menu.nextFreeCommission"/>
+                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<div class="col-sm-4 control-label">免佣期</div>-->
+                                <!--<div class="col-sm-3 ">-->
+                                    <!--<input type="text" id="nextFreeCommissionDays" class="form-control" style="width:75%;display:inline;" v-model="menu.nextFreeCommissionDays"  placeholder="正整数"/> &nbsp;天-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="form-group">
+                                <div class="col-sm-4 control-label">佣金方案</div>
+                                <div class="col-sm-3 ">
+                                    <input type="text" id="nextFareKind" onclick="showNextFareProList();" class="form-control" style="width:75%;display:inline;" v-model="menu.nextFareKind"  placeholder="请选择"/>
+                                    <i v-show="icon" id="nextIconTips"   class="layui-icon" style="font-size: 20px; color: #4caf50;">  &#xe607;</i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4 control-label">方案有效期</div>
+                                <div class="col-sm-5 ">
+                                    <input type="text" id="nextBeginDate" class="form-control" style="width:45%;display:inline;"  v-model="menu.nextBeginDate" disabled   placeholder="请选择"/>至
+                                    <input type="text" id="nextEndDate" class="form-control" style="width:45%;display:inline;"  v-model="menu.nextEndDate"   placeholder="请选择"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-group">
+                                <div class="col-sm-2 control-label"></div>
+                                #if($shiro.hasPermission("userChannelInfo:update"))
+                                <button class="layui-btn" style="margin-right:20px; float:left;" @click="saveOrUpdate" type="button">保 存</button>
+                                #end
+                                <button class="layui-btn layui-btn-warm" style="margin-right:20px; float:left;" @click="reload" type="button">重 置</button>
+                                <div v-show="showPlanButton" >
+                                    <a href="javascript:void(0)" onclick="historyOnClick()" style="color: red"><span style="margin-right:20px; float:left;">&nbsp;佣金方案记录</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+            <div v-show="showHistory" class="col-md-5 col-sm-10">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="layui-icon" style="font-size: 20px; color: #4caf50;">&#xe705; </i> 历史佣金套餐</div>
+                    <table id="jqGrid"></table>
+                    <div id="jqGridPager"></div>
+                    <div id="page"></div>
+                </div>
+            </div>
+
+		</div>
+	</div>
+</div>
+
+<!-- 选择菜单 -->
+<div id="menuLayer" style="display: none;padding:10px;">
+	<ul id="menuTree" class="ztree"></ul>
+</div>
+<div id="areaLayer" style="display: none;padding:10px;">
+    <ul id="areaTree" class="ztree"></ul>
+</div>
+
+<script src="${rc.contextPath}/js/marker/channelTree.js?_${date.systemTime}"></script>
+</body>
+</html>

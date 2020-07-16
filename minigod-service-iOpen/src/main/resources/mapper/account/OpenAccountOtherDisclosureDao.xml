@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.OpenAccountOtherDisclosureDao">
+
+
+    <resultMap type="com.sunline.modules.account.online.entity.OpenAccountOtherDisclosureEntity"
+               id="openAccountOtherDisclosureMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="disclosureCode" column="disclosure_code"/>
+        <result property="disclosureIsTrue" column="disclosure_is_true"/>
+        <result property="disclosure1" column="disclosure1"/>
+        <result property="disclosure2" column="disclosure2"/>
+        <result property="disclosure3" column="disclosure3"/>
+        <result property="disclosure4" column="disclosure4"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, 
+		application_id, 
+		disclosure_code, 
+		disclosure_is_true, 
+		disclosure1,
+		disclosure2,
+		disclosure3,
+		disclosure4,
+		create_time, 
+		update_time
+    </sql>
+
+
+    <sql id="Base_Where_Conditions">
+        <if test="id != null">
+            <![CDATA[ and id = #{id}]]>
+        </if>
+        <if test="applicationId != null">
+            <![CDATA[ and application_id = #{applicationId}]]>
+        </if>
+        <if test="disclosureCode != null">
+            <![CDATA[ and disclosure_code = #{disclosureCode}]]>
+        </if>
+        <if test="disclosureIsTrue != null">
+            <![CDATA[ and disclosure_is_true = #{disclosureIsTrue}]]>
+        </if>
+        <if test="disclosure1 != null">
+            <![CDATA[ and disclosure1 = #{disclosure1}]]>
+        </if>
+        <if test="disclosure2 != null">
+            <![CDATA[ and disclosure2 = #{disclosure2}]]>
+        </if>
+        <if test="disclosure3 != null">
+            <![CDATA[ and disclosure3 = #{disclosure3}]]>
+        </if>
+        <if test="disclosure4 != null">
+            <![CDATA[ and disclosure4 = #{disclosure4}]]>
+        </if>
+        <if test="updateTime != null">
+            <![CDATA[ and update_time = #{updateTime}]]>
+        </if>
+        <if test="createTime != null">
+            <![CDATA[ and create_time = #{createTime}]]>
+        </if>
+    </sql>
+
+    <select id="queryObject" resultType="com.sunline.modules.account.online.entity.OpenAccountOtherDisclosureEntity"
+            resultMap="openAccountOtherDisclosureMap">
+        select
+        <include refid="Base_Column_List"/>
+        from open_account_other_disclosure
+        where id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.sunline.modules.account.online.entity.OpenAccountOtherDisclosureEntity"
+            resultMap="openAccountOtherDisclosureMap">
+        select
+        <include refid="Base_Column_List"/>
+        from open_account_other_disclosure
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.OpenAccountOtherDisclosureEntity"
+            resultMap="openAccountOtherDisclosureMap">
+        select
+        <include refid="Base_Column_List"/>
+        from open_account_other_disclosure
+        <where>
+            <include refid="Base_Where_Conditions"/>
+        </where>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from open_account_other_disclosure
+	</select>
+
+    <insert id="save" parameterType="com.sunline.modules.account.online.entity.OpenAccountOtherDisclosureEntity"
+            useGeneratedKeys="true" keyProperty="id">
+		insert into open_account_other_disclosure
+		(
+			`application_id`, 
+			`disclosure_code`, 
+			`disclosure_is_true`, 
+			`disclosure1`,
+			`disclosure2`,
+			`disclosure3`,
+			`disclosure4`,
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{disclosureCode}, 
+			#{disclosureIsTrue}, 
+			#{disclosure1},
+			#{disclosure2},
+			#{disclosure3},
+			#{disclosure4},
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+
+    <insert id="saveBatch" parameterType="com.sunline.modules.account.online.entity.OpenAccountOtherDisclosureEntity"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into open_account_other_disclosure
+        (
+        `application_id`,
+        `disclosure_code`,
+        `disclosure_is_true`,
+        `disclosure1`,
+        `disclosure2`,
+        `disclosure3`,
+        `disclosure4`,
+        `create_time`,
+        `update_time`
+        )
+        values
+
+        <foreach collection="list" item="disclosure" separator=",">
+            (
+            #{disclosure.applicationId},
+            #{disclosure.disclosureCode},
+            #{disclosure.disclosureIsTrue},
+            #{disclosure.disclosure1},
+            #{disclosure.disclosure2},
+            #{disclosure.disclosure3},
+            #{disclosure.disclosure4},
+            #{disclosure.createTime},
+            #{disclosure.updateTime}
+            )
+        </foreach>
+
+    </insert>
+
+    <update id="update" parameterType="com.sunline.modules.account.online.entity.OpenAccountOtherDisclosureEntity">
+        update open_account_other_disclosure
+        <set>
+            <if test="applicationId != null">`application_id` = #{applicationId},</if>
+            <if test="disclosureCode != null">`disclosure_code` = #{disclosureCode},</if>
+            <if test="disclosureIsTrue != null">`disclosure_is_true` = #{disclosureIsTrue},</if>
+            <if test="disclosure1 != null">`disclosure1` = #{disclosure1},</if>
+            <if test="disclosure2 != null">`disclosure2` = #{disclosure2},</if>
+            <if test="disclosure3 != null">`disclosure3` = #{disclosure3},</if>
+            <if test="disclosure4 != null">`disclosure4` = #{disclosure4},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		delete from open_account_other_disclosure where id = #{value}
+	</delete>
+
+    <delete id="deleteByApplicationId">
+		delete from open_account_other_disclosure where application_id = #{value}
+	</delete>
+
+    <!--/**
+    * 按applicationId删除
+    * @param applicationId
+    * @return
+    */-->
+    <delete id="deleteBatch">
+        delete from open_account_other_disclosure where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

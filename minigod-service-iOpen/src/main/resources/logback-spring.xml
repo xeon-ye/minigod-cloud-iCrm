@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+
+    <contextName>Logback For CUBP</contextName>
+
+    <!-- 设置log日志存放地址 -->
+    <!--单环境设置 -->
+    <!--<property name="LOG_HOME" value="D:/logs"/>-->
+    <property name="logback.name" value="cubp"/>
+
+    <!-- 多环境设置-->
+    <springProfile name="dev">
+        <property name="LOG_HOME" value="/data/logs/cubp/dev/logs"/>
+    </springProfile>
+    <springProfile name="test">
+        <property name="LOG_HOME" value="/data/logs/cubp/logs"/>
+    </springProfile>
+    <springProfile name="pro">
+        <property name="LOG_HOME" value="/data/logs/cubp/logs"/>
+    </springProfile>
+
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder默认配置为PartternLayoutEncoder -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80} -%msg%n</pattern>
+        </encoder>
+        <target>System.out</target>
+    </appender>
+
+    <!-- 生成日志文件 -->
+    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/info.${logback.name}.log</file>
+        <!--滚动策略，按照时间滚动 TimeBasedRollingPolicy-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件名 ,每天保存（侧翻）一次 -->
+            <FileNamePattern>${LOG_HOME}/info.${logback.name}.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!--只保留最近90天的日志-->
+            <maxHistory>365</maxHistory>
+            <!--用来指定日志文件的上限大小，那么到了这个值，就会删除旧的日志-->
+            <!--<totalSizeCap>1GB</totalSizeCap>-->
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{25} -%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 过滤器，可以指定哪些包，哪个记录到等级-->
+    <!--<logger name="com" level="INFO">-->
+    <!--<appender-ref ref="ROLLING_FILE"/>-->
+    <!--</logger>-->
+    <logger name="org.activiti" level="DEBUG" />
+    <!--<logger name="org.activiti" level="DEBUG"/>-->
+
+    <!-- 全局，控制台遇到INFO及以上级别就进行输出 -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ROLLING_FILE"/>
+    </root>
+
+</configuration>

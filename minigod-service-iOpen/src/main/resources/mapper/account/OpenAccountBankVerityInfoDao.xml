@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.OpenAccountBankVerityInfoDao">
+
+
+    <resultMap type="com.sunline.modules.account.online.entity.OpenAccountBankVerityInfoEntity" id="openAccountBankVerityInfoMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="clientName" column="client_name"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="idNo" column="id_no"/>
+        <result property="bankCard" column="bank_card"/>
+        <result property="verifyStatus" column="verify_status"/>
+        <result property="verifyCount" column="verify_count"/>
+        <result property="verityTime" column="verity_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		application_id, 
+		user_id, 
+		client_name, 
+		phone_number, 
+		id_no, 
+		bank_card, 
+		verify_status, 
+		verify_count, 
+		verity_time
+    </sql>
+
+	<sql id="Base_Where_Conditions">
+		<if test="id != null">
+			<![CDATA[ and id = #{id}]]>
+		</if>
+		<if test="applicationId != null">
+			<![CDATA[ and application_id = #{applicationId}]]>
+		</if>
+		<if test="userId != null">
+			<![CDATA[ and user_id = #{userId}]]>
+		</if>
+		<if test="clientName != null">
+			<![CDATA[ and client_name = #{clientName}]]>
+		</if>			
+		<if test="phoneNumber != null">
+			<![CDATA[ and phone_number = #{phoneNumber}]]>
+		</if>	
+		<if test="idNo != null">
+			<![CDATA[ and id_no = #{idNo}]]>
+		</if>
+		<if test="bankCard != null">
+			<![CDATA[ and bank_card = #{bankCard}]]>
+		</if>
+		<if test="verifyStatus != null">
+			<![CDATA[ and verify_status = #{verifyStatus}]]>
+		</if>
+		<if test="verifyCount != null">
+			<![CDATA[ and verify_count = #{verifyCount}]]>
+		</if>
+		<if test="verityTime != null">
+			<![CDATA[ and verity_time = #{verityTime}]]>
+		</if>
+	</sql>
+	
+	<select id="queryObject" resultType="com.sunline.modules.account.online.entity.OpenAccountBankVerityInfoEntity" resultMap="openAccountBankVerityInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_bank_verity_info
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.account.online.entity.OpenAccountBankVerityInfoEntity" resultMap="openAccountBankVerityInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_bank_verity_info
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.OpenAccountBankVerityInfoEntity" resultMap="openAccountBankVerityInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from open_account_bank_verity_info
+        <where>
+			<include refid="Base_Where_Conditions"/>
+		</where>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from open_account_bank_verity_info
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.account.online.entity.OpenAccountBankVerityInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into open_account_bank_verity_info
+		(
+			`application_id`, 
+			`user_id`, 
+			`client_name`, 
+			`phone_number`, 
+			`id_no`, 
+			`bank_card`, 
+			`verify_status`, 
+			`verify_count`, 
+			`verity_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{userId}, 
+			#{clientName}, 
+			#{phoneNumber}, 
+			#{idNo}, 
+			#{bankCard}, 
+			#{verifyStatus}, 
+			#{verifyCount}, 
+			#{verityTime}
+		)
+	</insert>
+
+	<insert id="saveBatch" parameterType="com.sunline.modules.account.online.entity.OpenAccountBankVerityInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into open_account_bank_verity_info
+		(
+			`application_id`,
+			`user_id`,
+			`client_name`,
+			`phone_number`,
+			`id_no`,
+			`bank_card`,
+			`verify_status`,
+			`verify_count`,
+			`verity_time`
+		)
+		values
+        <foreach collection ="list" item="bankVerity" separator =",">
+		(
+			#{bankVerity.applicationId},
+			#{bankVerity.userId},
+			#{bankVerity.clientName},
+			#{bankVerity.phoneNumber},
+			#{bankVerity.idNo},
+			#{bankVerity.bankCard},
+			#{bankVerity.verifyStatus},
+			#{bankVerity.verifyCount},
+			#{bankVerity.verityTime}
+		)
+        </foreach>
+	</insert>
+
+	<update id="update" parameterType="com.sunline.modules.account.online.entity.OpenAccountBankVerityInfoEntity">
+		update open_account_bank_verity_info 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="clientName != null">`client_name` = #{clientName}, </if>
+			<if test="phoneNumber != null">`phone_number` = #{phoneNumber}, </if>
+			<if test="idNo != null">`id_no` = #{idNo}, </if>
+			<if test="bankCard != null">`bank_card` = #{bankCard}, </if>
+			<if test="verifyStatus != null">`verify_status` = #{verifyStatus}, </if>
+			<if test="verifyCount != null">`verify_count` = #{verifyCount}, </if>
+			<if test="verityTime != null">`verity_time` = #{verityTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from open_account_bank_verity_info where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from open_account_bank_verity_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

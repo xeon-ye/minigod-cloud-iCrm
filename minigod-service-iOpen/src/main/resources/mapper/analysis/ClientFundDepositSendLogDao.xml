@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.analysis.dao.ClientFundDepositSendLogDao">
+
+
+    <resultMap type="com.sunline.modules.analysis.entity.ClientFundDepositSendLogEntity" id="clientFundDepositSendLogMap">
+        <result property="id" column="id"/>
+        <result property="positionStr" column="position_str"/>
+        <result property="sendStatus" column="send_status"/>
+        <result property="sendType" column="send_type"/>
+        <result property="isFirst" column="is_first"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		position_str, 
+		send_status,
+		send_type,
+		is_first,
+		create_time, 
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.analysis.entity.ClientFundDepositSendLogEntity" resultMap="clientFundDepositSendLogMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_fund_deposit_send_log
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.analysis.entity.ClientFundDepositSendLogEntity" resultMap="clientFundDepositSendLogMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_fund_deposit_send_log
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.analysis.entity.ClientFundDepositSendLogEntity" resultMap="clientFundDepositSendLogMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_fund_deposit_send_log
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from client_fund_deposit_send_log
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.analysis.entity.ClientFundDepositSendLogEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into client_fund_deposit_send_log
+		(
+			`position_str`, 
+			`send_status`, 
+			`send_type`,
+			`is_first`,
+			`create_time`,
+			`update_time`
+		)
+		values
+		(
+			#{positionStr}, 
+			#{sendStatus}, 
+			#{sendType},
+			#{isFirst},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.analysis.entity.ClientFundDepositSendLogEntity">
+		update client_fund_deposit_send_log 
+		<set>
+			<if test="positionStr != null">`position_str` = #{positionStr}, </if>
+			<if test="sendStatus != null">`send_status` = #{sendStatus}, </if>
+			<if test="sendType != null">`send_type` = #{sendType}, </if>
+			<if test="isFirst != null">`is_first` = #{isFirst}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from client_fund_deposit_send_log where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from client_fund_deposit_send_log where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

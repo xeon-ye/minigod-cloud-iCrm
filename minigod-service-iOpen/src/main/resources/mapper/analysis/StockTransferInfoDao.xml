@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.analysis.dao.StockTransferInfoDao">
+
+
+    <resultMap type="com.sunline.modules.analysis.entity.StockTransferInfoEntity" id="stockTransferInfoMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="tradeDate" column="trade_date"/>
+        <result property="exchangeType" column="exchange_type"/>
+        <result property="stockCode" column="stock_code"/>
+        <result property="occurAmount" column="occur_amount"/>
+        <result property="stockType" column="stock_type"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="businessFlag" column="business_flag"/>
+        <result property="lastPrice" column="last_price"/>
+        <result property="stockMktValue" column="stock_mkt_value"/>
+        <result property="positionStr" column="position_str"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="clientName" column="client_name"/>
+        <result property="stockName" column="stock_name"/>
+        <result property="channelName" column="channel_name"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="clientNameSpell" column="client_name_spell"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        t1.id,
+        t1.client_id,
+        t1.fund_account,
+        t1.trade_date,
+        t1.exchange_type,
+        t1.stock_code,
+        t1.occur_amount,
+        t1.stock_type,
+        t1.money_type,
+        t1.business_flag,
+        t1.last_price,
+        t1.stock_mkt_value,
+        t1.position_str,
+        t1.remark,
+        DATE_FORMAT(t1.create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+        DATE_FORMAT(t1.update_time,'%Y-%m-%d %H:%i:%s') AS update_time
+    </sql>
+
+    <!-- 客户转仓查询-->
+    <select id="queryList" resultType="com.sunline.modules.analysis.entity.StockTransferInfoEntity"
+            resultMap="stockTransferInfoMap">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        t2.client_name,
+        t2.user_id,
+        t3.stock_name,
+        t4.channel_name as channel_name,
+        t2.source_channel_id as channel_id,
+        t2.phone_number AS phone_number,
+        t2.net_capital,
+        t2.email AS email
+        FROM stock_transfer_info t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN stock_info t3 ON t3.stock_code=t1.stock_code AND t1.exchange_type=t3.exchange_type
+        LEFT JOIN user_channel_info t4 ON t2.source_channel_id = t4.channel_id
+        WHERE 1=1
+        <if test="userId != null and userId != ''">
+            AND t2.user_id =#{userId}
+        </if>
+        <if test="clientName != null and clientName != ''">
+            AND t2.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t1.money_type =#{moneyType}
+        </if>
+        <!--<if test="channelName != null and channelName != ''">-->
+            <!--AND t2.source_channel_name LIKE CONCAT('%',#{channelName},'%')-->
+        <!--</if>-->
+        <if test="tradeDate != null and tradeDate != ''">
+            AND t1.trade_date = #{tradeDate}
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            AND t1.trade_date <![CDATA[ >= ]]> #{beginDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND t1.trade_date <![CDATA[ <= ]]> #{endDate}
+        </if>
+        <if test="stockType != null and stockType != ''">
+            AND t1.stock_type =#{stockType}
+        </if>
+        <if test="businessFlag != null and businessFlag != ''">
+            AND t1.business_flag =#{businessFlag}
+        </if>
+        <if test="stockCode != null and stockCode != ''">
+            AND t1.stock_code =#{stockCode}
+        </if>
+        <if test="channelId != null and channelId != ''">
+            AND t2.source_channel_id = #{channelId}
+        </if>
+        <if test="channelIds != null">
+            and t2.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and t2.source_channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+        ORDER BY
+        t1.client_id,t1.fund_account,t1.trade_date,t1.money_type
+        DESC
+    </select>
+
+    <!-- 客户转仓查询-->
+    <select id="queryStockTransferInfoSend" resultType="com.sunline.modules.analysis.entity.StockTransferInfoEntity"
+            resultMap="stockTransferInfoMap">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        t2.client_name,
+        t2.user_id,
+        t3.stock_name,
+        t4.channel_name as channel_name,
+        t2.source_channel_id as channel_id,
+        t2.phone_number AS phone_number,
+        t2.net_capital,
+        t2.email AS email,
+        t2.client_name_spell
+        FROM stock_transfer_info t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN stock_info t3 ON t3.stock_code=t1.stock_code AND t1.exchange_type=t3.exchange_type
+        LEFT JOIN user_channel_info t4 ON t2.source_channel_id = t4.channel_id
+        WHERE t1.trade_date=DATE_SUB(CURDATE(), INTERVAL 0 DAY)
+        AND NOT EXISTS (SELECT 1 FROM client_fund_deposit_send_log WHERE send_type=1 AND is_first=0 AND  position_str=t1.position_str)
+        <if test="businessFlag != null and businessFlag != ''">
+            AND t1.business_flag =#{businessFlag}
+        </if>
+        <if test="businessFlagList != null">
+            <if test="businessFlagList.size > 0">
+                and t1.business_flag in
+                <foreach item="item" index="index" collection="businessFlagList" open="(" separator="," close=")">
+                    ${item}
+                </foreach>
+            </if>
+        </if>
+    </select>
+
+    <!-- 客户首次转入股票-->
+    <select id="queryFirstStockTransferInfoSend" resultType="com.sunline.modules.analysis.entity.StockTransferInfoEntity"
+            resultMap="stockTransferInfoMap">
+        SELECT *  FROM (
+            SELECT
+                t1.client_id,
+                t1.fund_account,
+                t1.trade_date,
+                t1.money_type,
+                t1.business_flag,
+                CONVERT(SUM(t1.stock_mkt_value * IFNULL((t5.exch_rate / t5.reverse_rate), 1)),DECIMAL(20,5)) AS stock_mkt_value,
+                MIN(t1.position_str) AS position_str,
+                t2.client_name,
+                t2.user_id,
+                t3.stock_name,
+                t4.channel_name as channel_name,
+                t2.source_channel_id as channel_id,
+                t2.phone_number AS phone_number,
+                t2.net_capital,
+                t2.email AS email,
+                t2.inviter_id
+            FROM stock_transfer_info t1
+            LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+            LEFT JOIN stock_info t3 ON t3.stock_code=t1.stock_code AND t1.exchange_type=t3.exchange_type
+            LEFT JOIN user_channel_info t4 ON t2.source_channel_id = t4.channel_id
+            LEFT JOIN money_rate_info t5
+            ON t5.from_money_type = t1.money_type
+            AND t5.to_money_type = '2' AND t5.init_date <![CDATA[ <= ]]> DATE_SUB(CURDATE(), INTERVAL 0 DAY) AND t5.valid_date <![CDATA[ >= ]]> DATE_SUB(CURDATE(), INTERVAL 0 DAY)
+            WHERE t1.trade_date=DATE_SUB(CURDATE(), INTERVAL 0 DAY)
+            -- AND t1.position_str = (SELECT MIN(t2.position_str) FROM stock_transfer_info t2 WHERE t2.client_id=t1.client_id AND t1.business_flag IN ('3101','3027') AND t2.trade_date <![CDATA[ <= ]]> DATE_SUB(CURDATE(), INTERVAL 0 DAY))
+            -- AND NOT EXISTS (SELECT 1 FROM client_fund_deposit_send_log WHERE send_type=1 AND is_first=1 AND position_str=t1.position_str)
+            AND t1.remark NOT LIKE CONCAT('STOCK AWARD','%')
+            <if test="businessFlag != null and businessFlag != ''">
+                AND t1.business_flag =#{businessFlag}
+            </if>
+            GROUP BY
+            t1.client_id,
+            t1.fund_account,
+            t1.trade_date,
+            t1.money_type,
+            t1.business_flag,
+            t2.client_name,
+            t2.user_id,
+            t3.stock_name,
+            t4.channel_name,
+            t2.source_channel_id,
+            t2.phone_number,
+            t2.net_capital,
+            t2.email,
+            t2.inviter_id
+        ) t WHERE NOT EXISTS (SELECT 1 FROM client_fund_deposit_send_log WHERE send_type=1 AND is_first=1 AND position_str=(SELECT MIN(t2.position_str) FROM stock_transfer_info t2
+        WHERE t2.client_id=t.client_id AND t2.business_flag = #{businessFlag} AND t2.remark NOT LIKE CONCAT('STOCK AWARD','%') AND t2.trade_date  <![CDATA[ <= ]]>  DATE_SUB(CURDATE(), INTERVAL 0 DAY)))
+        AND NOT EXISTS (SELECT 1 FROM stock_transfer_info WHERE client_id=t.client_id AND business_flag = #{businessFlag} AND trade_date <![CDATA[ <= ]]> '2018-08-01')
+    </select>
+
+</mapper>

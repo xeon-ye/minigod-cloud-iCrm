@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.customer.dao.TmkCustomerDao">
+
+
+    <resultMap type="com.sunline.modules.customer.entity.TmkCustomerEntity" id="tmkCustomerMap">
+        <result property="id" column="id"/>
+        <result property="distributionDate" column="distribution_date"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="isOpenWechat" column="is_open_wechat"/>
+        <result property="sex" column="sex"/>
+        <result property="stockExperience" column="stock_experience"/>
+        <result property="assetLevel" column="asset_level"/>
+        <result property="remark" column="remark"/>
+        <result property="contactStatus" column="contact_status"/>
+        <result property="addWechat" column="add_wechat"/>
+        <result property="openAccountStatus" column="open_account_status"/>
+        <result property="depositStatus" column="deposit_status"/>
+        <result property="isBankCard" column="is_bank_card"/>
+        <result property="contentDescription" column="content_description"/>
+        <result property="operator" column="operator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id,
+        distribution_date,
+        phone_number,
+        is_open_wechat,
+        sex,
+        stock_experience,
+        asset_level,
+        remark,
+        contact_status,
+        add_wechat,
+        open_account_status,
+        deposit_status,
+        is_bank_card,
+        content_description,
+        operator,
+        create_time,
+        update_time
+    </sql>
+
+    <select id="queryObject" resultType="com.sunline.modules.customer.entity.TmkCustomerEntity" resultMap="tmkCustomerMap">
+        select
+        <include refid="Base_Column_List" />
+        from telemarketing_customer_manage_info
+        where id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.sunline.modules.customer.entity.TmkCustomerEntity" resultMap="tmkCustomerMap">
+        SELECT
+        t1.id,
+        t1.distribution_date,
+        t1.phone_number,
+        t1.is_open_wechat,
+        t1.sex,
+        t1.stock_experience,
+        t1.asset_level,
+        t1.remark,
+        t1.contact_status,
+        t1.add_wechat,
+        t1.open_account_status,
+        t1.deposit_status,
+        t1.is_bank_card,
+        t1.content_description,
+        t2.user_name AS operator,
+        t1.create_time,
+        t1.update_time
+        FROM telemarketing_customer_manage_info t1
+        LEFT JOIN sys_user t2 ON t2.login_name=t1.operator
+        WHERE 1=1
+        <if test="distributionDate != null">
+            AND t1.distribution_date = #{distributionDate}
+        </if>
+        <if test="phoneNumber != null">
+            AND t1.phone_number = #{phoneNumber}
+        </if>
+        <if test="contactStatus != null">
+            AND t1.contact_status = #{contactStatus}
+        </if>
+        <if test="addWechat != null">
+            AND t1.add_wechat = #{addWechat}
+        </if>
+        <if test="openAccountStatus != null">
+            AND t1.open_account_status = #{openAccountStatus}
+        </if>
+        <if test="depositStatus != null">
+            AND t1.deposit_status = #{depositStatus}
+        </if>
+        <if test="operator != null">
+            AND t1.operator =  #{operator}
+        </if>
+        <if test="isBankCard != null">
+            AND t1.is_bank_card = #{isBankCard}
+        </if>
+        <if test="assetLevel != null">
+            AND t1.asset_level = #{assetLevel}
+        </if>
+        ORDER BY t1.update_time DESC
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.customer.entity.TmkCustomerEntity" resultMap="tmkCustomerMap">
+        select
+        <include refid="Base_Column_List" />
+        from telemarketing_customer_manage_info
+        WHERE 1=1
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from telemarketing_customer_manage_info
+    </select>
+
+    <insert id="save" parameterType="com.sunline.modules.customer.entity.TmkCustomerEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into telemarketing_customer_manage_info
+        (
+        `distribution_date`,
+        `phone_number`,
+        `is_open_wechat`,
+        `sex`,
+        `stock_experience`,
+        `asset_level`,
+        `remark`,
+        `contact_status`,
+        `add_wechat`,
+        `open_account_status`,
+        `deposit_status`,
+        `is_bank_card`,
+        `content_description`,
+        `operator`,
+        `create_time`,
+        `update_time`
+        )
+        values
+        (
+        #{distributionDate},
+        #{phoneNumber},
+        #{isOpenWechat},
+        #{sex},
+        #{stockExperience},
+        #{assetLevel},
+        #{remark},
+        #{contactStatus},
+        #{addWechat},
+        #{openAccountStatus},
+        #{depositStatus},
+        #{isBankCard},
+        #{contentDescription},
+        #{operator},
+        #{createTime},
+        #{updateTime}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.sunline.modules.customer.entity.TmkCustomerEntity">
+        update telemarketing_customer_manage_info
+        <set>
+            <if test="distributionDate != null">`distribution_date` = #{distributionDate}, </if>
+            <if test="phoneNumber != null">`phone_number` = #{phoneNumber}, </if>
+            <if test="isOpenWechat != null">`is_open_wechat` = #{isOpenWechat}, </if>
+            <if test="sex != null">`sex` = #{sex}, </if>
+            <if test="stockExperience != null">`stock_experience` = #{stockExperience}, </if>
+            <if test="assetLevel != null">`asset_level` = #{assetLevel}, </if>
+            <if test="remark != null">`remark` = #{remark}, </if>
+            <if test="contactStatus != null">`contact_status` = #{contactStatus}, </if>
+            <if test="addWechat != null">`add_wechat` = #{addWechat}, </if>
+            <if test="openAccountStatus != null">`open_account_status` = #{openAccountStatus}, </if>
+            <if test="depositStatus != null">`deposit_status` = #{depositStatus}, </if>
+            <if test="isBankCard != null">`is_bank_card` = #{isBankCard}, </if>
+            <if test="contentDescription != null">`content_description` = #{contentDescription}, </if>
+            <if test="operator != null">`operator` = #{operator}, </if>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete from telemarketing_customer_manage_info where id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from telemarketing_customer_manage_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

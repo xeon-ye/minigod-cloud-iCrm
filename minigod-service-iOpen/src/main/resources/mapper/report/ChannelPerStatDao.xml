@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.report.dao.ChannelPerStatDao">
+
+    <resultMap type="com.sunline.modules.report.entity.ChannelPerformanceStatEntity" id="channelPerformanceStatMap">
+        <result property="channelId" column="channel_id"/>
+        <result property="channelName" column="channel_name"/>
+        <result property="addUserQuantity" column="add_user_quantity"/>
+        <result property="totalUserQuantity" column="total_user_quantity"/>
+        <result property="addClientQuantity" column="add_client_quantity"/>
+        <result property="totalClientQuantity" column="total_client_quantity"/>
+        <result property="addDepClientQuantity" column="add_dep_client_quantity"/>
+        <result property="totalDepClientQuantity" column="total_dep_client_quantity"/>
+        <result property="addWitClientQuantity" column="add_wit_client_quantity"/>
+        <result property="totalWitClientQuantity" column="total_wit_client_quantity"/>
+        <result property="addStkTranQuantity" column="add_stk_tran_quantity"/>
+        <result property="totalStkTranQuantity" column="total_stk_tran_quantity"/>
+        <result property="addTradeClientQuantity" column="add_trade_client_quantity"/>
+        <result property="totalTradeClientQuantity" column="total_trade_client_quantity"/>
+        <result property="addIncomeBalance" column="add_income_balance"/>
+        <result property="totalIncomeBalance" column="total_income_balance"/>
+        <result property="addOutBalance" column="add_out_balance"/>
+        <result property="totalOutBalance" column="total_out_balance"/>
+        <result property="addTradeAmount" column="add_trade_amount"/>
+        <result property="totalTradeAmount" column="total_trade_amount"/>
+        <result property="addTradeBalance" column="add_trade_balance"/>
+        <result property="totalTradeBalance" column="total_trade_balance"/>
+        <result property="addTradeBrokerage" column="add_trade_brokerage"/>
+        <result property="totalTradeBrokerage" column="total_trade_brokerage"/>
+        <result property="addClientAsset" column="add_client_asset"/>
+        <result property="totalClientAsset" column="total_client_asset"/>
+
+        <result property="beginDate" column="beginDate"/>
+        <result property="endDate" column="endDate"/>
+    </resultMap>
+
+    <select id="queryList" resultMap="channelPerformanceStatMap"
+            resultType="com.sunline.modules.report.entity.ChannelPerformanceStatEntity">
+
+        CALL qry_channel_performance_info(
+        <if test="channelId != null and channelId != ''">
+        #{channelId},
+        </if>
+        <if test="channelId == null || channelId == ''">
+            '',
+        </if>
+        <if test="channelIds != null">
+            '
+            <foreach item="id" index="index" collection="channelIds" open="" separator="," close="">
+                ${id}
+            </foreach>
+            ',
+        </if>
+        <if test="channelIds == null">
+            '',
+        </if>
+        #{beginDate},#{endDate}
+        )
+
+    </select>
+</mapper>

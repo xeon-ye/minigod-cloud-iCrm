@@ -1,0 +1,33 @@
+<div style="padding:30px 55px 50px 55px; font-size:14px; color:#333; line-height:26px;">
+    <div style="padding:0px; margin:0px; line-height:26px;">尊敬的${clientName}先生/女士：</div>
+    <div style="padding:0px; margin:0px; line-height:26px; margin-top:15px;">
+        <b><u>有关：关闭股票交易账户</u></b><br/>
+
+        现告知 阁下的股票交易账户（帐号${clientAccount}-${fundAccount}）已于${canceltDate}被关闭。若有任何疑问，请与客户服务部联络（电话：+852 25238211（香港）/
+        400-688-3187（中国内陆））。<br/>
+
+        <div style="padding:0px; margin:0px;margin-top:15px; line-height:26px;">
+            此致<br/>
+
+            智珠证券有限公司 谨启<br/>
+            ${currentDate}
+        </div>
+    </div>
+
+    <div style="padding:0px; margin:0px; line-height:26px;margin-top:30px;">Dear Sir/Madam,</div>
+
+    <div style="padding:0px; margin:0px; line-height:26px; margin-top:15px;">
+        <b><u>Re: Closure of Securities Trading Account</u></b><br/>
+
+        Please be informed that your securities trading account ${clientAccount}-${fundAccount} was closed
+        on ${canceltDate},
+        if you have any enquiries, please contact our Customer Service Hotline (Tel. +852 25238211 / 400-688-3187) for
+        further information.<br/>
+
+        <div style="padding:0px; margin:0px;margin-top:15px; line-height:26px;">
+            Yours faithfully,<br/>
+            ZSDP PRIMASIA Securities<br/>
+            ${currentDate}
+        </div>
+    </div>
+</div>

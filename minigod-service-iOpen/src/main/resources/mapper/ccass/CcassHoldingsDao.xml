@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.ccass.dao.CcassHoldingsDao">
+
+
+    <resultMap type="com.sunline.modules.ccass.entity.CcassHoldingsEntity" id="ccassHoldingsMap">
+        <result property="id" column="id"/>
+        <result property="participantId" column="participant_id"/>
+        <result property="stockCode" column="stock_code"/>
+        <result property="stockNameEn" column="stock_name_en"/>
+        <result property="stockHolding" column="stock_holding"/>
+        <result property="stockValue" column="stock_value"/>
+        <result property="stakePercentage" column="stake_percentage"/>
+        <result property="holdDate" column="hold_date"/>
+        <result property="updateDate" column="update_date"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, 
+		participant_id,
+		stock_code,
+		stock_name_en, 
+		stock_holding, 
+		stock_value, 
+		stake_percentage, 
+		hold_date,
+		update_date,
+		DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') AS create_time,
+		DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') AS update_time
+    </sql>
+
+    <select id="queryObject" resultType="com.sunline.modules.ccass.entity.CcassHoldingsEntity"
+            resultMap="ccassHoldingsMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ccass_holdings
+        where stock_code = #{stockCode}
+    </select>
+
+    <select id="queryList" resultType="com.sunline.modules.ccass.entity.CcassHoldingsEntity"
+            resultMap="ccassHoldingsMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ccass_holdings
+        WHERE 1=1
+        <if test="participantId != null and participantId != ''">
+            AND participant_id =#{participantId}
+        </if>
+        <if test="stockCode != null and stockCode != ''">
+            AND stock_code =#{stockCode}
+        </if>
+        <if test="stockNameEn != null and stockNameEn != ''">
+            AND stock_name_en LIKE CONCAT('%',#{stockNameEn},'%')
+        </if>
+        <if test="holdDate != null and holdDate != ''">
+            AND hold_date =#{holdDate}
+        </if>
+        <if test="updateDate != null and updateDate != ''">
+            AND update_date =#{updateDate}
+        </if>
+        ORDER BY stake_percentage DESC
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.ccass.entity.CcassHoldingsEntity"
+            resultMap="ccassHoldingsMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ccass_holdings
+        WHERE 1=1
+        <if test="participantId != null and participantId != ''">
+            AND participant_id =#{participantId}
+        </if>
+        <if test="stockCode != null and stockCode != ''">
+            AND stock_code =#{stockCode}
+        </if>
+        <if test="holdDate != null and holdDate != ''">
+            AND hold_date =#{holdDate}
+        </if>
+        <if test="updateDate != null and updateDate != ''">
+            AND update_date =#{updateDate}
+        </if>
+        ORDER BY stake_percentage DESC
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from ccass_holdings
+	</select>
+
+    <insert id="save" parameterType="com.sunline.modules.ccass.entity.CcassHoldingsEntity" useGeneratedKeys="true"
+            keyProperty="id">
+		insert into ccass_holdings
+		(
+			`participant_id`, 
+			`stock_code`, 
+			`stock_name_en`, 
+			`stock_holding`, 
+			`stock_value`, 
+			`stake_percentage`, 
+			`hold_date`,
+			`update_date`,
+			`create_time`,
+			`update_time`
+		)
+		values
+		(
+			#{participantId}, 
+			#{stockCode}, 
+			#{stockNameEn}, 
+			#{stockHolding}, 
+			#{stockValue}, 
+			#{stakePercentage}, 
+			#{holdDate},
+			#{updateDate},
+			NOW(),
+			NOW()
+		)
+	</insert>
+
+    <insert id="saveBatch" parameterType="com.sunline.modules.ccass.entity.CcassParticipantsEntity">
+        insert into ccass_holdings
+        (
+        `participant_id`,
+        `stock_code`,
+        `stock_name_en`,
+        `stock_holding`,
+        `stock_value`,
+        `stake_percentage`,
+        `hold_date`,
+        `update_date`,
+        `create_time`,
+        `update_time`
+        )
+        values
+        <foreach item="item" collection="list" separator=",">
+            (
+            #{item.participantId},
+            #{item.stockCode},
+            #{item.stockNameEn},
+            #{item.stockHolding},
+            #{item.stockValue},
+            #{item.stakePercentage},
+            #{item.holdDate},
+            #{item.updateDate},
+            NOW(),
+            NOW()
+            )
+        </foreach>
+
+    </insert>
+
+    <update id="update" parameterType="com.sunline.modules.ccass.entity.CcassHoldingsEntity">
+        update ccass_holdings
+        <set>
+            <if test="participantId != null">`participant_id` = #{participantId},</if>
+            <if test="stockCode != null">`stock_code` = #{stockCode},</if>
+            <if test="stockNameEn != null">`stock_name_en` = #{stockNameEn},</if>
+            <if test="stockHolding != null">`stock_holding` = #{stockHolding},</if>
+            <if test="stockValue != null">`stock_value` = #{stockValue},</if>
+            <if test="stakePercentage != null">`stake_percentage` = #{stakePercentage},</if>
+            <if test="holdDate != null">`hold_date` = #{holdDate},</if>
+            <if test="updateDate != null">`update_date` = #{updateDate},</if>
+            `update_time` = NOW()
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		delete from ccass_holdings where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from ccass_holdings where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.customer.dao.ClientFareListDao">
+
+
+    <resultMap type="com.sunline.modules.customer.entity.ClientFareListEntity" id="clientFareListMap">
+        <result property="id" column="id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="exchangeType" column="exchange_type"/>
+        <result property="fareDict" column="fare_dict"/>
+        <result property="feeType" column="fee_type"/>
+        <result property="feeCount" column="fee_count"/>
+        <result property="feeCountFix" column="fee_count_fix"/>
+        <result property="minFare" column="min_fare"/>
+        <result property="maxFare" column="max_fare"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="clientName" column="client_name"/>
+        <result property="channelId" column="source_channel_id"/>
+        <result property="channelName" column="channel_name"/>
+        <result property="fareKind" column="fare_kind"/>
+        <result property="lastFareKind" column="last_fare_kind"/>
+        <result property="auditStatus" column="audit_status"/>
+        <result property="syncStatus" column="sync_status"/>
+        <result property="updateUser" column="update_user"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, 
+		client_id, 
+		fund_account, 
+		exchange_type, 
+		fare_dict, 
+		fee_type, 
+		fee_count, 
+		fee_count_fix, 
+		min_fare, 
+		max_fare, 
+		begin_date, 
+		end_date,
+		create_time,
+		update_time
+    </sql>
+
+    <select id="queryObject" resultType="com.sunline.modules.customer.entity.ClientFareListEntity"
+            resultMap="clientFareListMap">
+        select
+        <include refid="Base_Column_List"/>
+        from client_fare_list
+        where id = #{value}
+    </select>
+
+    <select id="queryList" resultType="com.sunline.modules.customer.entity.ClientFareListEntity"
+            resultMap="clientFareListMap">
+        SELECT
+        s.user_id,
+        s.client_name,
+        s.source_channel_id,
+        t3.channel_name,
+        f.fare_kind,
+        f.last_fare_kind,
+        f.audit_status,
+        f.sync_status,
+        DATE_format(f.update_time,'%Y-%m-%d %T') as modifyTime,
+        f.update_user,
+        f.id as fId,
+        c.*
+        FROM
+        client_fare_list c
+        LEFT JOIN securities_user_info s ON c.client_id = s.trade_account
+        LEFT JOIN user_channel_info t3 ON s.source_channel_id = t3.channel_id
+        LEFT JOIN client_fare_setup f ON c.client_id = f.client_id and c.exchange_type = f.exchange_type
+        WHERE
+        c.end_date >= CURDATE()
+        <if test="userId != null and  userId !=''">
+            and s.user_id = #{userId}
+        </if>
+        <if test="clientName != null and  clientName !=''">
+            and   s.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <!--<if test="channelName != null and channelName !=''">-->
+            <!--and   s.source_channel_name = #{channelName}-->
+        <!--</if>-->
+        <if test="channelId != null and channelId !=''">
+            and   s.source_channel_id = #{channelId}
+        </if>
+        <if test="clientId != null and  clientId !=''">
+            and   c.client_id = #{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount !=''">
+            and   c.fund_account = #{fundAccount}
+        </if>
+        <if test="exchangeType != null and exchangeType !=''">
+            and   c.exchange_type = #{exchangeType}
+        </if>
+        <if test="fareDict != null and fareDict !=''">
+            and   c.fare_dict = #{fareDict}
+        </if>
+        <if test="feeType != null and feeType !=''">
+            and   c.fee_type = #{feeType}
+        </if>
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.customer.entity.ClientFareListEntity"
+            resultMap="clientFareListMap">
+        select
+        <include refid="Base_Column_List"/>
+        from client_fare_list
+        WHERE 1=1
+        <if test="clientId != null and  clientId !=''">
+            and   client_id = #{clientId}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+		select count(*) from client_fare_list
+	</select>
+
+    <insert id="save" parameterType="com.sunline.modules.customer.entity.ClientFareListEntity" useGeneratedKeys="true"
+            keyProperty="id">
+		insert into client_fare_list
+		(
+			`client_id`, 
+			`fund_account`, 
+			`exchange_type`, 
+			`fare_dict`, 
+			`fee_type`, 
+			`fee_count`, 
+			`fee_count_fix`, 
+			`min_fare`, 
+			`max_fare`, 
+			`begin_date`, 
+			`end_date`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{clientId}, 
+			#{fundAccount}, 
+			#{exchangeType}, 
+			#{fareDict}, 
+			#{feeType}, 
+			#{feeCount}, 
+			#{feeCountFix}, 
+			#{minFare}, 
+			#{maxFare}, 
+			#{beginDate}, 
+			#{endDate}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.sunline.modules.customer.entity.ClientFareListEntity">
+        update client_fare_list
+        <set>
+            <if test="clientId != null">`client_id` = #{clientId},</if>
+            <if test="fundAccount != null">`fund_account` = #{fundAccount},</if>
+            <if test="exchangeType != null">`exchange_type` = #{exchangeType},</if>
+            <if test="fareDict != null">`fare_dict` = #{fareDict},</if>
+            <if test="feeType != null">`fee_type` = #{feeType},</if>
+            <if test="feeCount != null">`fee_count` = #{feeCount},</if>
+            <if test="feeCountFix != null">`fee_count_fix` = #{feeCountFix},</if>
+            <if test="minFare != null">`min_fare` = #{minFare},</if>
+            <if test="maxFare != null">`max_fare` = #{maxFare},</if>
+            <if test="beginDate != null">`begin_date` = #{beginDate},</if>
+            <if test="endDate != null">`end_date` = #{endDate},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+		delete from client_fare_list where id = #{value}
+	</delete>
+
+    <delete id="deleteBatch">
+        delete from client_fare_list where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="queryByBean" resultType="com.sunline.modules.customer.entity.ClientFareListEntity" resultMap="clientFareListMap">
+          select *  from client_fare_list where 1=1
+           <if test="clientId!=null and clientId!=''">
+             and  client_id = #{clientId}
+           </if>
+           <if test="exchangeType!=null and exchangeType!=''">
+             and  exchange_type = #{exchangeType}
+           </if>
+    </select>
+
+</mapper>

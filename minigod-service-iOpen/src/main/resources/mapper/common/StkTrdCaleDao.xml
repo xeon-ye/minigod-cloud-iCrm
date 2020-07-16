@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.common.dao.StkTrdCaleDao">
+
+
+    <resultMap type="com.sunline.modules.common.entity.StkTrdCaleEntity" id="stkTrdCaleMap">
+        <result property="calendarId" column="calendar_id"/>
+        <result property="normalDate" column="normal_date"/>
+        <result property="regionCode" column="region_code"/>
+        <result property="isTradeDay" column="is_trade_day"/>
+        <result property="lastTrd" column="last_trd"/>
+        <result property="nextTrd" column="next_trd"/>
+        <result property="isWeekEnd" column="is_week_end"/>
+        <result property="isMonthEnd" column="is_month_end"/>
+        <result property="isYearEnd" column="is_year_end"/>
+        <result property="lastWeekTrd" column="last_week_trd"/>
+        <result property="lastMonthTrd" column="last_month_trd"/>
+        <result property="lastYearTrd" column="last_year_trd"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="extTime" column="ext_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		calendar_id, 
+		normal_date, 
+		region_code, 
+		is_trade_day, 
+		last_trd, 
+		next_trd, 
+		is_week_end, 
+		is_month_end, 
+		is_year_end, 
+		last_week_trd, 
+		last_month_trd, 
+		last_year_trd,
+		ext_time, 
+		remark
+    </sql>
+
+	<select id="queryByDateAndCode" resultType="com.sunline.modules.common.entity.StkTrdCaleEntity" resultMap="stkTrdCaleMap">
+		select
+		<include refid="Base_Column_List" />
+		from stk_trd_cale
+		where 1 = 1
+        <if test="normalDate!=null and normalDate!=''">
+           and normal_date = DATE_FORMAT(#{normalDate},'%Y-%m-%d')
+        </if>
+        <if test="regionCode!=null and regionCode!=''">
+           and region_code = #{regionCode}
+        </if>
+	</select>
+
+    <select id="getTrdDayNumByTrdDate" resultType="java.lang.Integer">
+        SELECT COUNT(normal_date) normalDateNum FROM(
+            SELECT s.`normal_date`
+            FROM stk_trd_cale s
+            WHERE s.`normal_date`>=#{trdBeginDate}
+            <![CDATA[AND s.`normal_date`<=#{trdEndDate}]]>
+            AND s.is_trade_day=1
+            GROUP BY s.`normal_date`
+        ) tab
+    </select>
+</mapper>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.OpenAccountTaxationInfoDao">
+
+
+    <resultMap type="com.sunline.modules.account.online.entity.OpenAccountTaxationInfoEntity" id="openAccountTaxationInfoMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="taxCountry" column="tax_country"/>
+        <result property="taxNumber" column="tax_number"/>
+        <result property="hasTaxNumber" column="has_tax_number"/>
+        <result property="reasonType" column="reason_type"/>
+        <result property="reasonDesc" column="reason_desc"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		application_id, 
+		tax_country, 
+		tax_number, 
+		has_tax_number, 
+		reason_type, 
+		reason_desc,
+		create_time, 
+		update_time
+    </sql>
+
+	<sql id="Base_Where_Conditions">
+		<if test="id != null">
+			<![CDATA[ and id = #{id}]]>
+		</if>
+		<if test="applicationId != null">
+			<![CDATA[ and application_id = #{applicationId}]]>
+		</if>
+		<if test="taxCountry != null">
+			<![CDATA[ and tax_country = #{taxCountry}]]>
+		</if>	
+		<if test="taxNumber != null">
+			<![CDATA[ and tax_number = #{taxNumber}]]>
+		</if>
+		<if test="hasTaxNumber != null">
+			<![CDATA[ and has_tax_number = #{hasTaxNumber}]]>
+		</if>	
+		<if test="reasonType != null">
+			<![CDATA[ and reason_type = #{reasonType}]]>
+		</if>
+		<if test="reasonDesc != null">
+			<![CDATA[ and reason_desc = #{reasonDesc}]]>
+		</if>
+		<if test="updateTime != null">
+			<![CDATA[ and update_time = #{updateTime}]]>
+		</if>
+		<if test="createTime != null">
+			<![CDATA[ and create_time = #{createTime}]]>
+		</if>
+	</sql>
+	
+	<select id="queryObject" resultType="com.sunline.modules.account.online.entity.OpenAccountTaxationInfoEntity" resultMap="openAccountTaxationInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_taxation_info
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.account.online.entity.OpenAccountTaxationInfoEntity" resultMap="openAccountTaxationInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_taxation_info
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.OpenAccountTaxationInfoEntity" resultMap="openAccountTaxationInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from open_account_taxation_info
+        <where>
+			<include refid="Base_Where_Conditions"/>
+		</where>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from open_account_taxation_info
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.account.online.entity.OpenAccountTaxationInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into open_account_taxation_info
+		(
+			`application_id`, 
+			`tax_country`, 
+			`tax_number`, 
+			`has_tax_number`, 
+			`reason_type`, 
+			`reason_desc`,
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{taxCountry}, 
+			#{taxNumber}, 
+			#{hasTaxNumber}, 
+			#{reasonType}, 
+			#{reasonDesc},
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+
+	<insert id="saveBatch" parameterType="com.sunline.modules.account.online.entity.OpenAccountTaxationInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into open_account_taxation_info
+		(
+			`application_id`,
+			`tax_country`,
+			`tax_number`,
+			`has_tax_number`,
+			`reason_type`,
+			`reason_desc`,
+			`create_time`,
+			`update_time`
+		)
+		values
+        <foreach collection ="list" item="taxation" separator =",">
+            (
+            #{taxation.applicationId},
+            #{taxation.taxCountry},
+            #{taxation.taxNumber},
+            #{taxation.hasTaxNumber},
+            #{taxation.reasonType},
+            #{taxation.reasonDesc},
+            #{taxation.createTime},
+            #{taxation.updateTime}
+            )
+        </foreach>
+
+	</insert>
+
+	<update id="update" parameterType="com.sunline.modules.account.online.entity.OpenAccountTaxationInfoEntity">
+		update open_account_taxation_info 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="taxCountry != null">`tax_country` = #{taxCountry}, </if>
+			<if test="taxNumber != null">`tax_number` = #{taxNumber}, </if>
+			<if test="hasTaxNumber != null">`has_tax_number` = #{hasTaxNumber}, </if>
+			<if test="reasonType != null">`reason_type` = #{reasonType}, </if>
+			<if test="reasonDesc != null">`reason_desc` = #{reasonDesc}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from open_account_taxation_info where id = #{value}
+	</delete>
+
+    <!--/**
+    * 按applicationId删除
+    * @param applicationId
+    * @return
+    */-->
+	<delete id="deleteByApplicationId">
+		delete from open_account_taxation_info where application_id = #{value}
+	</delete>
+
+	<delete id="deleteBatch">
+		delete from open_account_taxation_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

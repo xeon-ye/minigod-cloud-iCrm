@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.OpenAccountCaVerityInfoDao">
+
+
+    <resultMap type="com.sunline.modules.account.online.entity.OpenAccountCaVerityInfoEntity" id="openAccountCaVerityInfoMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="caCertDn" column="ca_cert_dn"/>
+        <result property="caCertSn" column="ca_cert_sn"/>
+        <result property="certTime" column="cert_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		application_id, 
+		user_id,
+		ca_cert_dn,
+		ca_cert_sn,
+		cert_time,
+		create_time, 
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.account.online.entity.OpenAccountCaVerityInfoEntity" resultMap="openAccountCaVerityInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_ca_verity_info
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.account.online.entity.OpenAccountCaVerityInfoEntity" resultMap="openAccountCaVerityInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from open_account_ca_verity_info
+		where 1=1
+        <if test="userId!=null and userId!=''">
+            AND user_id = #{userId}
+        </if>
+        <if test="applicationId!=null and applicationId!=''">
+            AND application_id = #{applicationId}
+        </if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.OpenAccountCaVerityInfoEntity" resultMap="openAccountCaVerityInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from open_account_ca_verity_info
+        WHERE 1=1
+        <if test="userId!=null and userId!=''">
+            AND user_id = #{userId}
+        </if>
+        <if test="applicationId!=null and applicationId!=''">
+            AND application_id = #{applicationId}
+        </if>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from open_account_ca_verity_info
+	</select>
+
+    <select id="queryRecentByApplicationId" resultType="com.sunline.modules.account.online.entity.OpenAccountCaVerityInfoEntity" resultMap="openAccountCaVerityInfoMap">
+		SELECT
+            *
+        FROM
+            open_account_ca_verity_info o
+        WHERE
+            o.application_id = #{applicationId}
+        AND o.cert_time = (
+            SELECT
+                MAX(cert_time) as cert_time
+            FROM
+                open_account_ca_verity_info
+            WHERE
+                application_id = #{applicationId}
+        )
+
+        LIMIT 1
+	</select>
+
+	<insert id="save" parameterType="com.sunline.modules.account.online.entity.OpenAccountCaVerityInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into open_account_ca_verity_info
+		(
+			`application_id`, 
+			`user_id`,
+			`ca_cert_dn`,
+			`ca_cert_sn`, 
+			`cert_time`,
+			`create_time`,
+			`update_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{userId},
+			#{caCertDn},
+			#{caCertSn}, 
+			#{certTime},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.account.online.entity.OpenAccountCaVerityInfoEntity">
+		update open_account_ca_verity_info 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="caCertDn != null">`ca_cert_dn` = #{caCertDn}, </if>
+			<if test="caCertSn != null">`ca_cert_sn` = #{caCertSn}, </if>
+			<if test="certTime != null">`cert_time` = #{certTime}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from open_account_ca_verity_info where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from open_account_ca_verity_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

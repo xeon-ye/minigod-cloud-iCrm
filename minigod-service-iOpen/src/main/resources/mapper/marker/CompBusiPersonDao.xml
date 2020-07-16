@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.marker.dao.CompBusiPersonDao">
+
+
+    <resultMap type="com.sunline.modules.marker.entity.CompBusiPersonEntity" id="compBusiPersonEntity">
+        <result property="id" column="id"/>
+        <result property="personnelName" column="personnel_name"/>
+        <result property="personnelRole" column="personnel_role"/>
+        <result property="sex" column="sex"/>
+        <result property="educationType" column="education_type"/>
+        <result property="personnelStatus" column="personnel_status"/>
+        <result property="birthdayDate" column="birthday_date"/>
+        <result property="idType" column="id_type"/>
+        <result property="idNo" column="id_no"/>
+        <result property="jobPosition" column="job_position"/>
+        <result property="sacNo" column="sac_no"/>
+        <result property="witnessNo" column="witness_no"/>
+        <result property="officePhone" column="office_phone"/>
+        <result property="mobilePhone" column="mobile_phone"/>
+        <result property="homePhone" column="home_phone"/>
+        <result property="faxPhone" column="fax_phone"/>
+        <result property="contactAddress" column="contact_address"/>
+        <result property="postCode" column="post_code"/>
+        <result property="email" column="email"/>
+        <result property="aeCode" column="ae_code"/>
+        <result property="createUser" column="create_user"/>
+        <result property="modifyUser" column="modify_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		personnel_name, 
+		personnel_role, 
+		sex, 
+		education_type, 
+		personnel_status, 
+		birthday_date, 
+		id_type, 
+		id_no, 
+		job_position, 
+		sac_no, 
+		witness_no, 
+		office_phone, 
+		mobile_phone, 
+		home_phone, 
+		fax_phone, 
+		contact_address, 
+		post_code, 
+		email, 
+		ae_code, 
+		create_user, 
+		modify_user
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.marker.entity.CompBusiPersonEntity" resultMap="compBusiPersonEntity">
+		select
+		<include refid="Base_Column_List" />
+		from company_business_personnel
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.marker.entity.CompBusiPersonEntity" resultMap="compBusiPersonEntity">
+		select
+		<include refid="Base_Column_List" />,DATE_FORMAT(create_time,'%Y-%m-%d %h:%m:%s') as create_time,
+        DATE_FORMAT(update_time,'%Y-%m-%d %h:%m:%s') as update_time 
+		from company_business_personnel
+        where 1=1
+        <if test="personnelName != null">and `personnel_name` = #{personnelName} </if>
+        <if test="personnelRole != null">and `personnel_role` = #{personnelRole} </if>
+        <if test="sex != null">and `sex` = #{sex} </if>
+        <if test="educationType != null">and `education_type` = #{educationType} </if>
+        <if test="personnelStatus != null">and `personnel_status` = #{personnelStatus} </if>
+        <if test="birthdayDate != null">and `birthday_date` = #{birthdayDate} </if>
+        <if test="idType != null">and `id_type` = #{idType} </if>
+        <if test="idNo != null">and `id_no` = #{idNo} </if>
+        <if test="jobPosition != null">and `job_position` = #{jobPosition} </if>
+        <if test="sacNo != null">and `sac_no` = #{sacNo}</if>
+        <if test="witnessNo != null">and `witness_no` = #{witnessNo} </if>
+        <if test="officePhone != null">and `office_phone` = #{officePhone} </if>
+        <if test="mobilePhone != null">and `mobile_phone` = #{mobilePhone} </if>
+        <if test="homePhone != null">and `home_phone` = #{homePhone} </if>
+        <if test="faxPhone != null">and `fax_phone` = #{faxPhone} </if>
+        <if test="contactAddress != null">and `contact_address` = #{contactAddress} </if>
+        <if test="postCode != null">and `post_code` = #{postCode} </if>
+        <if test="email != null">and `email` like CONCAT('%',#{email},'%')</if>
+        <if test="aeCode != null">and `ae_code` = #{aeCode}</if>
+        <if test="createUser != null">and `create_user` like CONCAT('%',#{createUser},'%')</if>
+        <if test="modifyUser != null">and `modify_user` = #{modifyUser} </if>
+        <if test="createTime != null">and `create_time` = #{createTime} </if>
+        <if test="updateTime != null">and `update_time` = #{updateTime}</if>
+        order by id desc
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.marker.entity.CompBusiPersonEntity" resultMap="compBusiPersonEntity">
+        select
+        <include refid="Base_Column_List" />
+        from company_business_personnel
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from company_business_personnel
+	</select>
+
+    <select id="getObjectByAeCode" resultType="int">
+        select count(*) from company_business_personnel where ae_code = #{value}
+    </select>
+
+	<insert id="save" parameterType="com.sunline.modules.marker.entity.CompBusiPersonEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into company_business_personnel
+		(
+			`personnel_name`, 
+			`personnel_role`, 
+			`sex`, 
+			`education_type`, 
+			`personnel_status`, 
+			`birthday_date`, 
+			`id_type`, 
+			`id_no`, 
+			`job_position`, 
+			`sac_no`, 
+			`witness_no`, 
+			`office_phone`, 
+			`mobile_phone`, 
+			`home_phone`, 
+			`fax_phone`, 
+			`contact_address`, 
+			`post_code`, 
+			`email`, 
+			`ae_code`, 
+			`create_user`, 
+			`modify_user`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{personnelName}, 
+			#{personnelRole}, 
+			#{sex}, 
+			#{educationType}, 
+			#{personnelStatus}, 
+			#{birthdayDate}, 
+			#{idType}, 
+			#{idNo}, 
+			#{jobPosition}, 
+			#{sacNo}, 
+			#{witnessNo}, 
+			#{officePhone}, 
+			#{mobilePhone}, 
+			#{homePhone}, 
+			#{faxPhone}, 
+			#{contactAddress}, 
+			#{postCode}, 
+			#{email}, 
+			#{aeCode}, 
+			#{createUser},
+			#{modifyUser}, 
+			SYSDATE(),
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.marker.entity.CompBusiPersonEntity">
+		update company_business_personnel 
+		<set>
+			<if test="personnelName != null">`personnel_name` = #{personnelName}, </if>
+			<if test="personnelRole != null">`personnel_role` = #{personnelRole}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="educationType != null">`education_type` = #{educationType}, </if>
+			<if test="personnelStatus != null">`personnel_status` = #{personnelStatus}, </if>
+			<if test="birthdayDate != null">`birthday_date` = #{birthdayDate}, </if>
+			<if test="idType != null">`id_type` = #{idType}, </if>
+			<if test="idNo != null">`id_no` = #{idNo}, </if>
+			<if test="jobPosition != null">`job_position` = #{jobPosition}, </if>
+			<if test="sacNo != null">`sac_no` = #{sacNo}, </if>
+			<if test="witnessNo != null">`witness_no` = #{witnessNo}, </if>
+			<if test="officePhone != null">`office_phone` = #{officePhone}, </if>
+			<if test="mobilePhone != null">`mobile_phone` = #{mobilePhone}, </if>
+			<if test="homePhone != null">`home_phone` = #{homePhone}, </if>
+			<if test="faxPhone != null">`fax_phone` = #{faxPhone}, </if>
+			<if test="contactAddress != null">`contact_address` = #{contactAddress}, </if>
+			<if test="postCode != null">`post_code` = #{postCode}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="aeCode != null">`ae_code` = #{aeCode}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="modifyUser != null">`modify_user` = #{modifyUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			`update_time` = sysDate()
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from company_business_personnel where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		update company_business_personnel set personnel_status = '0' where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

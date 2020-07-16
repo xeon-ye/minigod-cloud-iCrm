@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.group.dao.ClientGroupManagerDao">
+
+
+    <resultMap type="com.sunline.modules.group.entity.ClientGroupManagerEntity" id="clientGroupManagerMap">
+        <result property="id" column="id"/>
+        <result property="groupNo" column="group_no"/>
+        <result property="groupName" column="group_name"/>
+        <result property="groupType" column="group_type"/>
+        <result property="remark" column="remark"/>
+        <result property="createUser" column="create_user"/>
+        <result property="modifyUser" column="modify_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		group_no, 
+		group_name, 
+		group_type, 
+		remark, 
+		create_user, 
+		modify_user, 
+		create_time, 
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.group.entity.ClientGroupManagerEntity" resultMap="clientGroupManagerMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_group_manager
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.group.entity.ClientGroupManagerEntity" resultMap="clientGroupManagerMap">
+        select m.*,(SELECT COUNT(*) from client_group_member_info i where i.group_no = m.group_no) as client_number from client_group_manager m
+        where 1=1
+        <if test="groupNo!=null and groupNo !=''">
+            and   m.group_no = #{groupNo}
+        </if>
+        <if test="groupType!=null and groupType !=''">
+            and   m.group_type = #{groupType}
+        </if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.group.entity.ClientGroupManagerEntity" resultMap="clientGroupManagerMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_group_manager
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from client_group_manager
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.group.entity.ClientGroupManagerEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into client_group_manager
+		(
+			`group_no`, 
+			`group_name`, 
+			`group_type`, 
+			`remark`, 
+			`create_user`, 
+			`modify_user`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{groupNo},
+			#{groupName}, 
+			#{groupType}, 
+			#{remark}, 
+			#{createUser}, 
+			#{modifyUser}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.group.entity.ClientGroupManagerEntity">
+		update client_group_manager 
+		<set>
+			<if test="groupNo != null">`group_no` = #{groupNo}, </if>
+			<if test="groupName != null">`group_name` = #{groupName}, </if>
+			<if test="groupType != null">`group_type` = #{groupType}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="modifyUser != null">`modify_user` = #{modifyUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from client_group_manager where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from client_group_manager where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <select id="queryByGroupNo" resultType="java.lang.Integer">
+        select count(*)
+        <include refid="Base_Column_List" />
+        from client_group_manager
+        where group_no = #{groupNo}
+    </select>
+
+    <select id="queryByGroupName" resultType="java.lang.Integer">
+        select count(*)
+        <include refid="Base_Column_List" />
+        from client_group_manager
+        where group_name = #{groupName}
+    </select>
+
+</mapper>

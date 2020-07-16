@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.analysis.dao.ChannelReturnDao">
+
+
+    <resultMap type="com.sunline.modules.analysis.entity.ChannelReturnEntity" id="channelBrokerageReturnInfoMap">
+        <result property="id" column="id"/>
+        <result property="serialNo" column="serial_no"/>
+        <result property="userId" column="user_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="tradeDate" column="trade_date"/>
+        <result property="exchangeType" column="exchange_type"/>
+        <result property="stockCode" column="stock_code"/>
+        <result property="tradeKind" column="trade_kind"/>
+        <result property="stockType" column="stock_type"/>
+        <result property="entrustWay" column="entrust_way"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="businessAmount" column="business_amount"/>
+        <result property="businessBalance" column="business_balance"/>
+        <result property="businessPrice" column="business_price"/>
+        <result property="feeCount" column="fee_count"/>
+        <result property="profitFeeCount" column="profit_fee_count"/>
+        <result property="otherFeeCount" column="other_fee_count"/>
+        <result property="occurBalance" column="occur_balance"/>
+        <result property="sessionType" column="session_type"/>
+        <result property="sequenceNo" column="sequence_no"/>
+        <result property="allocationId" column="allocation_id"/>
+        <result property="entryStatus" column="entry_status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		t1.id,
+		t1.serial_no,
+		t1.user_id,
+		t1.client_id,
+		t1.fund_account,
+		t1.trade_date,
+		t1.exchange_type,
+		t1.stock_code,
+		t1.trade_kind,
+		t1.stock_type,
+		t1.entrust_way,
+		t1.money_type,
+		t1.business_amount,
+		t1.business_balance,
+		t1.business_price,
+		t1.fee_count,
+		t1.profit_fee_count,
+		t1.other_fee_count,
+		t1.occur_balance,
+		t1.session_type,
+		t1.sequence_no,
+		t1.allocation_id,
+		t1.entry_status,
+		t1.create_time,
+		t1.update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.analysis.entity.ChannelReturnEntity" resultMap="channelBrokerageReturnInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from channel_brokerage_return_info
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.analysis.entity.ChannelReturnEntity" resultMap="channelBrokerageReturnInfoMap">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        CONVERT((t1.fee_count / IFNULL(t1.business_balance,1)) * 100,DECIMAL(20,2)) AS fee_count_ratio,
+        t2.client_name,
+        t3.stock_name,
+        t2.source_channel_id as channel_id,
+        t4.channel_name as channel_name
+        FROM channel_brokerage_return_info t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN stock_info t3 ON t3.stock_code=t1.stock_code AND t1.exchange_type=t3.exchange_type
+        LEFT JOIN user_channel_info t4 on t2.source_channel_id = t4.channel_id
+        WHERE 1=1
+        <if test="entryStatus != null">
+            AND t1.entry_status =#{entryStatus}
+        </if>
+        <if test="userId != null and userId != ''">
+            AND t1.user_id =#{userId}
+        </if>
+        <if test="clientName != null and clientName != ''">
+            AND t2.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="stockCode != null and stockCode != ''">
+            AND t1.stock_code =#{stockCode}
+        </if>
+        <if test="tradeKind != null and tradeKind != ''">
+            AND t1.trade_kind =#{tradeKind}
+        </if>
+        <if test="stockType != null and stockType != ''">
+            AND t1.stock_type =#{stockType}
+        </if>
+        <if test="exchangeType != null and exchangeType != ''">
+            AND t1.exchange_type =#{exchangeType}
+        </if>
+        <if test="entrustWay != null and entrustWay != ''">
+            AND t1.entrust_way =#{entrustWay}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t1.money_type =#{moneyType}
+        </if>
+        <if test="minFeeCount != null and minFeeCount != ''">
+            AND t1.fee_count <![CDATA[ >= ]]> #{minFeeCount}
+        </if>
+        <if test="maxFeeCount != null and maxFeeCount != ''">
+            AND t1.fee_count <![CDATA[ <= ]]> #{maxFeeCount}
+        </if>
+        <!--<if test="channelName != null and channelName != ''">-->
+        <!--AND t2.source_channel_name LIKE CONCAT('%',#{channelName},'%')-->
+        <!--</if>-->
+        <if test="channelId != null and channelId != ''">
+            AND t2.source_channel_id IN (${channelId})
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            AND t1.trade_date <![CDATA[ >= ]]> #{beginDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND t1.trade_date <![CDATA[ <= ]]> #{endDate}
+        </if>
+        ORDER BY
+        t1.client_id,t1.fund_account,t1.trade_date,t1.exchange_type,t1.trade_kind
+        DESC
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.analysis.entity.ChannelReturnEntity" resultMap="channelBrokerageReturnInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from channel_brokerage_return_info
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from channel_brokerage_return_info
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.analysis.entity.ChannelReturnEntity">
+		insert into channel_brokerage_return_info
+		(
+			`serial_no`,
+			`user_id`, 
+			`client_id`, 
+			`fund_account`, 
+			`trade_date`, 
+			`exchange_type`, 
+			`stock_code`, 
+			`trade_kind`, 
+			`stock_type`, 
+			`entrust_way`, 
+			`money_type`, 
+			`business_amount`, 
+			`business_balance`, 
+			`business_price`, 
+			`fee_count`, 
+			`profit_fee_count`, 
+			`other_fee_count`, 
+			`occur_balance`, 
+			`session_type`, 
+			`sequence_no`, 
+			`allocation_id`, 
+			`entry_status`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{serialNo},
+			#{userId}, 
+			#{clientId}, 
+			#{fundAccount}, 
+			#{tradeDate}, 
+			#{exchangeType}, 
+			#{stockCode}, 
+			#{tradeKind}, 
+			#{stockType}, 
+			#{entrustWay}, 
+			#{moneyType}, 
+			#{businessAmount}, 
+			#{businessBalance}, 
+			#{businessPrice}, 
+			#{feeCount}, 
+			#{profitFeeCount}, 
+			#{otherFeeCount}, 
+			#{occurBalance}, 
+			#{sessionType}, 
+			#{sequenceNo}, 
+			#{allocationId}, 
+			#{entryStatus}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.analysis.entity.ChannelReturnEntity">
+		update channel_brokerage_return_info 
+		<set>
+			<if test="serialNo != null">`serial_no` = #{serialNo}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="clientId != null">`client_id` = #{clientId}, </if>
+			<if test="fundAccount != null">`fund_account` = #{fundAccount}, </if>
+			<if test="tradeDate != null">`trade_date` = #{tradeDate}, </if>
+			<if test="exchangeType != null">`exchange_type` = #{exchangeType}, </if>
+			<if test="stockCode != null">`stock_code` = #{stockCode}, </if>
+			<if test="tradeKind != null">`trade_kind` = #{tradeKind}, </if>
+			<if test="stockType != null">`stock_type` = #{stockType}, </if>
+			<if test="entrustWay != null">`entrust_way` = #{entrustWay}, </if>
+			<if test="moneyType != null">`money_type` = #{moneyType}, </if>
+			<if test="businessAmount != null">`business_amount` = #{businessAmount}, </if>
+			<if test="businessBalance != null">`business_balance` = #{businessBalance}, </if>
+			<if test="businessPrice != null">`business_price` = #{businessPrice}, </if>
+			<if test="feeCount != null">`fee_count` = #{feeCount}, </if>
+			<if test="profitFeeCount != null">`profit_fee_count` = #{profitFeeCount}, </if>
+			<if test="otherFeeCount != null">`other_fee_count` = #{otherFeeCount}, </if>
+			<if test="occurBalance != null">`occur_balance` = #{occurBalance}, </if>
+			<if test="sessionType != null">`session_type` = #{sessionType}, </if>
+			<if test="sequenceNo != null">`sequence_no` = #{sequenceNo}, </if>
+			<if test="allocationId != null">`allocation_id` = #{allocationId}, </if>
+			<if test="entryStatus != null">`entry_status` = #{entryStatus}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from channel_brokerage_return_info where id=#{id}
+	</delete>
+
+    <delete id="clean">
+		delete from channel_brokerage_return_info where entry_status=0
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from channel_brokerage_return_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <delete id="updateBatch">
+        UPDATE channel_brokerage_return_info SET entry_status=1 WHERE id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="queryEntryNarrative" resultType="com.sunline.modules.analysis.entity.ChannelReturnEntity" resultMap="channelBrokerageReturnInfoMap">
+        SELECT MAX(t.trade_date) AS max_trade_date,MIN(t.trade_date) AS min_trade_date FROM (
+        SELECT
+        <include refid="Base_Column_List"/>,
+        CONVERT((t1.fee_count / IFNULL(t1.business_balance,1)) * 100,DECIMAL(20,2)) AS fee_count_ratio,
+        t2.client_name,
+        t3.stock_name,
+        t2.source_channel_id as channel_id,
+        t4.channel_name as channel_name
+        FROM channel_brokerage_return_info t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN stock_info t3 ON t3.stock_code=t1.stock_code AND t1.exchange_type=t3.exchange_type
+        LEFT JOIN user_channel_info t4 on t2.source_channel_id = t4.channel_id
+        WHERE 1=1
+        <if test="entryStatus != null">
+            AND t1.entry_status =#{entryStatus}
+        </if>
+        <if test="userId != null and userId != ''">
+            AND t1.user_id =#{userId}
+        </if>
+        <if test="clientName != null and clientName != ''">
+            AND t2.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="stockCode != null and stockCode != ''">
+            AND t1.stock_code =#{stockCode}
+        </if>
+        <if test="tradeKind != null and tradeKind != ''">
+            AND t1.trade_kind =#{tradeKind}
+        </if>
+        <if test="stockType != null and stockType != ''">
+            AND t1.stock_type =#{stockType}
+        </if>
+        <if test="exchangeType != null and exchangeType != ''">
+            AND t1.exchange_type =#{exchangeType}
+        </if>
+        <if test="entrustWay != null and entrustWay != ''">
+            AND t1.entrust_way =#{entrustWay}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t1.money_type =#{moneyType}
+        </if>
+        <if test="minFeeCount != null and minFeeCount != ''">
+            AND t1.fee_count <![CDATA[ >= ]]> #{minFeeCount}
+        </if>
+        <if test="maxFeeCount != null and maxFeeCount != ''">
+            AND t1.fee_count <![CDATA[ <= ]]> #{maxFeeCount}
+        </if>
+        <!--<if test="channelName != null and channelName != ''">-->
+        <!--AND t2.source_channel_name LIKE CONCAT('%',#{channelName},'%')-->
+        <!--</if>-->
+        <if test="channelId != null and channelId != ''">
+            AND t2.source_channel_id IN (${channelId})
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            AND t1.trade_date <![CDATA[ >= ]]> #{beginDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND t1.trade_date <![CDATA[ <= ]]> #{endDate}
+        </if>
+        ORDER BY
+        t1.client_id,t1.fund_account,t1.trade_date,t1.exchange_type,t1.trade_kind
+        DESC) t
+    </select>
+
+    <!-- 交易统计-->
+    <select id="queryGroupList" resultType="com.sunline.modules.analysis.entity.ChannelReturnEntity"
+            resultMap="channelBrokerageReturnInfoMap">
+        SELECT
+        t1.user_id,
+        t1.client_id,
+        t1.fund_account,
+        SUM(t1.business_amount) AS business_amount,
+        CONVERT(SUM(
+        t1.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)
+        ),DECIMAL(20,5)) AS business_balance,
+        CONVERT(SUM(t1.fee_count * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS fee_count,
+        CONVERT(SUM(t1.profit_fee_count * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS
+        profit_fee_count,
+        CONVERT(SUM(t1.other_fee_count * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS other_fee_count,
+        CONVERT(SUM(t1.occur_balance * IFNULL((t3.exch_rate / t3.reverse_rate), 1)),DECIMAL(20,5)) AS occur_balance,
+        CONVERT(SUM(t1.fee_count / IFNULL(t1.business_balance,1)) * 100,DECIMAL(20,2)) AS fee_count_ratio,
+        t2.client_name,
+        t2.source_channel_id as channel_id,
+        t4.channel_name AS channel_name,
+        (COUNT(t1.client_id)*20) AS total_refund
+        FROM channel_brokerage_return_info t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        LEFT JOIN user_channel_info t4 ON t2.source_channel_id = t4.channel_id
+        LEFT JOIN money_rate_info t3
+        ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2'
+        AND t3.init_date <![CDATA[ <= ]]> #{endDate} AND t3.valid_date <![CDATA[ >= ]]> #{endDate}
+        WHERE 1=1
+        <if test="userId != null and userId != ''">
+            AND t1.user_id =#{userId}
+        </if>
+        <if test="clientName != null and clientName != ''">
+            AND t2.client_name LIKE CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="stockCode != null and stockCode != ''">
+            AND t1.stock_code =#{stockCode}
+        </if>
+        <if test="tradeKind != null and tradeKind != ''">
+            AND t1.trade_kind =#{tradeKind}
+        </if>
+        <if test="stockType != null and stockType != ''">
+            AND t1.stock_type =#{stockType}
+        </if>
+        <if test="exchangeType != null and exchangeType != ''">
+            AND t1.exchange_type =#{exchangeType}
+        </if>
+        <if test="entrustWay != null and entrustWay != ''">
+            AND t1.entrust_way =#{entrustWay}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t1.money_type =#{moneyType}
+        </if>
+        <if test="channelId != null and channelId != ''">
+            AND t2.source_channel_id = #{channelId}
+        </if>
+        <if test="beginDate != null and beginDate != ''">
+            AND t1.trade_date <![CDATA[ >= ]]> #{beginDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND t1.trade_date <![CDATA[ <= ]]> #{endDate}
+        </if>
+        <if test="channelIds != null">
+            and t2.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="sessionType != null and sessionType != ''">
+            AND t1.session_type = #{sessionType}
+        </if>
+        GROUP BY t1.user_id,
+        t1.client_id,
+        t1.fund_account,
+        t2.client_name,
+        t4.channel_name
+        ORDER BY t1.client_id,
+        t1.fund_account DESC
+    </select>
+
+</mapper>

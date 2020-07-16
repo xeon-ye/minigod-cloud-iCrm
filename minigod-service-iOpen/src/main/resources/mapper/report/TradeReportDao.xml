@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.report.dao.TradeReportDao">
+
+
+    <resultMap type="com.sunline.modules.report.entity.TradeReportEntity" id="tradeReportMap">
+        <result property="date" column="date"/>
+        <result property="clientType" column="clientType"/>
+        <result property="entrustClientCount" column="entrustClientCount"/>
+        <result property="entrustCount" column="entrustCount"/>
+        <result property="tradeCount" column="tradeCount"/>
+        <result property="tradeBalance" column="tradeBalance"/>
+        <result property="yesTradeCount" column="yesTradeCount"/>
+        <result property="yesTradeBalance" column="yesTradeBalance"/>
+        <result property="entrustWay" column="entrustWay"/>
+    </resultMap>
+
+
+
+
+    <select id="queryReportDay" parameterType="com.sunline.modules.report.entity.TradeReportEntity" resultMap="tradeReportMap">
+        SELECT
+        t.normal_date as Date,
+        (SELECT COUNT(*) FROM client_entrust t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.op_entrust_way = #{entrustWay}
+        </if>
+        AND t1.entrust_type != '2' AND t1.init_date=t.normal_date) AS entrustCount,
+        (SELECT COUNT(DISTINCT t1.client_id) FROM client_entrust t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.op_entrust_way = #{entrustWay}
+        </if>
+        AND t1.entrust_type != '2' AND t1.init_date=t.normal_date) AS entrustClientCount,
+        (SELECT COUNT(*) FROM client_trade_flow_info t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND t1.trade_date=t.normal_date) AS tradeCount,
+        (SELECT COUNT(*) FROM client_trade_flow_info t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        		<if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND t1.trade_date=DATE_SUB(t.normal_date, INTERVAL 1 YEAR)) AS yesTradeCount,
+        (SELECT COUNT(*) FROM client_trade_flow_info t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND t1.trade_date=DATE_SUB(t.normal_date, INTERVAL 1 DAY)) AS lasTradeCount,
+        (SELECT IFNULL(CONVERT (SUM(t1.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) AS total_balance
+        FROM client_trade_flow_info t1 LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date &lt;= t1.trade_date AND t3.valid_date >= t1.trade_date
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        WHERE 1=1
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND t1.trade_date = t.normal_date) AS tradeBalance,
+        (SELECT IFNULL(CONVERT (SUM(t1.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) AS total_balance
+        FROM client_trade_flow_info t1 LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date &lt;= t1.trade_date AND t3.valid_date >= t1.trade_date
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        WHERE 1=1
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND t1.trade_date = DATE_SUB(t.normal_date, INTERVAL 1 YEAR)) AS yesTradeBalance,
+        (SELECT IFNULL(CONVERT (SUM(t1.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) AS total_balance
+        FROM client_trade_flow_info t1 LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date &lt;= t1.trade_date AND t3.valid_date >= t1.trade_date
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        WHERE 1=1
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND t1.trade_date = DATE_SUB(t.normal_date, INTERVAL 1 DAY)) AS lasTradeBalance
+        FROM stk_trd_cale t
+        WHERE t.region_code='HK' AND t.is_trade_day=1
+        <if test="beginDate!=null">
+            AND t.normal_date >= #{beginDate}
+        </if>
+        <if test="beginDate!=null">
+            AND t.normal_date &lt;= #{endDate}
+        </if>
+        ORDER BY t.normal_date desc
+    </select>
+
+
+
+    <select id="queryReportMon" parameterType="com.sunline.modules.report.entity.TradeReportEntity"
+            resultMap="tradeReportMap">
+        -- 按月
+        SELECT
+        t.normal_date as date,
+        (SELECT COUNT(*) FROM client_entrust t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.op_entrust_way = #{entrustWay}
+        </if>
+        AND t1.entrust_type != '2' AND DATE_FORMAT(t1.init_date,'%Y-%m')=t.normal_date) AS entrustCount,
+        (SELECT COUNT(DISTINCT t1.client_id) FROM client_entrust t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.op_entrust_way = #{entrustWay}
+        </if>
+        AND t1.entrust_type != '2' AND DATE_FORMAT(t1.init_date,'%Y-%m')=t.normal_date) AS entrustClientCount,
+        (SELECT COUNT(*) FROM client_trade_flow_info t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(t1.trade_date,'%Y-%m')=t.normal_date) AS tradeCount,
+        (SELECT COUNT(*) FROM client_trade_flow_info t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(DATE_ADD(t1.trade_date, INTERVAL 1 YEAR),'%Y-%m')=t.normal_date) AS yesTradeCount,
+        (SELECT COUNT(*) FROM client_trade_flow_info t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(DATE_ADD(t1.trade_date, INTERVAL 1 MONTH ),'%Y-%m')=t.normal_date) AS lasTradeCount,
+        (SELECT IFNULL(CONVERT (SUM(t1.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) AS total_balance
+        FROM client_trade_flow_info t1 LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date &lt;= t1.trade_date AND t3.valid_date >= t1.trade_date
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        WHERE 1=1
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(t1.trade_date,'%Y-%m')=t.normal_date) AS tradeBalance,
+        (SELECT IFNULL(CONVERT (SUM(t1.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) AS total_balance
+        FROM client_trade_flow_info t1 LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date &lt;= t1.trade_date AND t3.valid_date >= t1.trade_date
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        WHERE 1=1
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(DATE_ADD(t1.trade_date, INTERVAL 1 YEAR ),'%Y-%m')=t.normal_date) AS yesTradeBalance,
+        (SELECT IFNULL(CONVERT (SUM(t1.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) AS total_balance
+        FROM client_trade_flow_info t1 LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date &lt;= t1.trade_date AND t3.valid_date >= t1.trade_date
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        WHERE 1=1
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(DATE_ADD(t1.trade_date, INTERVAL 1 MONTH ),'%Y-%m')=t.normal_date) AS lasTradeBalance
+        FROM (
+        SELECT DATE_FORMAT(t.normal_date,'%Y-%m') AS normal_date FROM stk_trd_cale t
+        WHERE t.region_code='HK' AND t.is_trade_day=1
+        <if test="beginDate!=null">
+            AND t.normal_date >= #{beginDate}
+        </if>
+        <if test="beginDate!=null">
+            AND t.normal_date &lt;= #{endDate}
+        </if>
+        GROUP BY DATE_FORMAT(t.normal_date,'%Y-%m')
+        ORDER BY DATE_FORMAT(t.normal_date,'%Y-%m') desc) t
+    </select>
+
+    <select id="queryReportYear" parameterType="com.sunline.modules.report.entity.TradeReportEntity"
+            resultMap="tradeReportMap">
+        SELECT
+        t.normal_date as date,
+        (SELECT COUNT(*) FROM client_entrust t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.op_entrust_way = #{entrustWay}
+        </if>
+        AND t1.entrust_type != '2' AND DATE_FORMAT(t1.init_date,'%Y')=t.normal_date) AS entrustCount,
+        (SELECT COUNT(DISTINCT t1.client_id) FROM client_entrust t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.op_entrust_way = #{entrustWay}
+        </if>
+        AND t1.entrust_type != '2' AND DATE_FORMAT(t1.init_date,'%Y')=t.normal_date) AS entrustClientCount,
+        (SELECT COUNT(*) FROM client_trade_flow_info t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(t1.trade_date,'%Y')=t.normal_date) AS tradeCount,
+        (SELECT COUNT(*) FROM client_trade_flow_info t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(DATE_ADD(t1.trade_date,INTERVAL 1 YEAR),'%Y')=t.normal_date) AS yesTradeCount,
+        (SELECT COUNT(*) FROM client_trade_flow_info t1,securities_user_info t2
+        WHERE  t1.client_id=t2.trade_account
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(DATE_ADD(t1.trade_date,INTERVAL 1 YEAR),'%Y')=t.normal_date) AS lasTradeCount,
+        (SELECT IFNULL(CONVERT (SUM(t1.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) AS total_balance
+        FROM client_trade_flow_info t1 LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date &lt;= t1.trade_date AND t3.valid_date >= t1.trade_date
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        WHERE 1=1
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(t1.trade_date,'%Y')=t.normal_date) AS tradeBalance,
+        (SELECT IFNULL(CONVERT (SUM(t1.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) AS total_balance
+        FROM client_trade_flow_info t1 LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date &lt;= t1.trade_date AND t3.valid_date >= t1.trade_date
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        WHERE 1=1
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(DATE_ADD(t1.trade_date,INTERVAL 1 YEAR),'%Y')=t.normal_date) AS yesTradeBalance,
+        (SELECT IFNULL(CONVERT (SUM(t1.business_balance * IFNULL((t3.exch_rate / t3.reverse_rate),1)),DECIMAL (20, 5)),0) AS total_balance
+        FROM client_trade_flow_info t1 LEFT JOIN money_rate_info t3 ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date &lt;= t1.trade_date AND t3.valid_date >= t1.trade_date
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        WHERE 1=1
+        <if test="clientType == 0">
+            AND t2.organ_flag = '0'
+         </if>
+        <if test="clientType == 1">
+            AND t2.organ_flag in('1','4')
+        </if>
+        <if test="entrustWay!=null and entrustWay!=''">
+            AND t1.entrust_way = #{entrustWay}
+        </if>
+        AND DATE_FORMAT(DATE_ADD(t1.trade_date,INTERVAL 1 YEAR),'%Y')=t.normal_date) AS lasTradeBalance
+        FROM (
+        SELECT DATE_FORMAT(t.normal_date,'%Y') AS normal_date FROM stk_trd_cale t
+        WHERE t.region_code='HK' AND t.is_trade_day=1 AND t.normal_date >= '2017-01-01'
+        GROUP BY DATE_FORMAT(t.normal_date,'%Y')
+        ORDER BY DATE_FORMAT(t.normal_date,'%Y') desc) t
+    </select>
+
+</mapper>

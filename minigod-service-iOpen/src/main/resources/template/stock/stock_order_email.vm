@@ -1,0 +1,15 @@
+<div style="padding:30px 55px 50px 55px; font-size:14px; color:#333; line-height:26px;">
+    <div style="padding:0px; margin:0px; line-height:26px;"><b>【下单请求】：</b></div>
+    <div style="padding:0px; margin:0px; line-height:26px; margin-top:15px;">
+        自营账户号：${accountNo}
+        自营账户名：${accountName}
+        业务类型：赠股
+        股票代码：${stockCode}，
+        股票名称：${stockName}，
+        股票数量：${stockQuantity}，
+        买卖方向：${stockDirection}，
+        最低价：${minPrice}HKD，
+        最高价：${maxPrice}HKD，
+        请于${expiryDate}收盘前处理完毕。
+    </div>
+</div>

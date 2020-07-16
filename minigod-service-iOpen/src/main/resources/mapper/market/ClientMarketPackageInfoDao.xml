@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.market.dao.ClientMarketPackageInfoDao">
+
+
+    <resultMap type="com.sunline.modules.market.entity.ClientMarketPackageInfoEntity" id="clientMarketPackageInfoMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="packageName" column="package_name"/>
+        <result property="packageType" column="package_type"/>
+        <result property="packagePrice" column="package_price"/>
+        <result property="totalCost" column="total_cost"/>
+        <result property="validityPeriod" column="validity_period"/>
+        <result property="buyDate" column="buy_date"/>
+        <result property="moneyType" column="money_type"/>
+        <result property="deductionStatus" column="deduction_status"/>
+        <result property="hsBankId" column="hs_bank_id"/>
+        <result property="hsBankAccount" column="hs_bank_account"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		t1.id,
+		t1.application_id,
+		t1.client_id,
+		t1.fund_account,
+		t1.package_name,
+		t1.package_type,
+		t1.package_price,
+		t1.total_cost,
+		t1.validity_period,
+		t1.buy_date,
+		t1.money_type,
+		t1.deduction_status,
+		t1.hs_bank_id,
+		t1.hs_bank_account,
+		t1.create_time,
+		t1.update_time
+    </sql>
+    <sql id="Column_List_WithOutPrice" >
+        t1.id,
+        t1.application_id,
+        t1.client_id,
+        t1.fund_account,
+        t1.package_name,
+        t1.package_type,
+        t1.validity_period,
+        t1.buy_date,
+        t1.money_type,
+        t1.deduction_status,
+        t1.hs_bank_id,
+        t1.hs_bank_account,
+        t1.create_time,
+        t1.update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.market.entity.ClientMarketPackageInfoEntity" resultMap="clientMarketPackageInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_market_package_info
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.market.entity.ClientMarketPackageInfoEntity" resultMap="clientMarketPackageInfoMap">
+		select
+		<include refid="Column_List_WithOutPrice" />,
+        t2.user_id,
+        t2.client_name,
+        t2.phone_number,
+        ROUND(t1.package_price * IFNULL((t3.exch_rate / t3.reverse_rate), 1),2) as package_price,
+        ROUND(t1.total_cost * IFNULL((t3.exch_rate / t3.reverse_rate), 1),2) as total_cost
+		from client_market_package_info t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account = t1.client_id
+        LEFT JOIN money_rate_info t3
+        ON t3.from_money_type = t1.money_type
+        AND t3.to_money_type = '2' AND t3.init_date <![CDATA[ <= ]]> t1.buy_date AND t3.valid_date  <![CDATA[ >= ]]> t1.buy_date
+        WHERE 1=1
+        <if test="applicationId != null and applicationId != ''">
+            AND t1.application_id =#{applicationId}
+        </if>
+        <if test="packageName != null and packageName != ''">
+            AND t1.package_name =#{packageName}
+        </if>
+        <if test="deductionStatus != null and deductionStatus != ''">
+            AND t1.deduction_status =#{deductionStatus}
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="userId != null and userId != ''">
+            AND t2.user_id =#{userId}
+        </if>
+        <if test="phoneNumber != null and phoneNumber != ''">
+            AND t2.phone_number =#{phoneNumber}
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            AND t1.buy_date <![CDATA[ >= ]]> #{beginTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND t1.buy_date <![CDATA[ <= ]]> #{endTime}
+        </if>
+        <if test="packageType != null and packageType != ''">
+            AND t1.package_type =#{packageType}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t1.money_type =#{moneyType}
+        </if>
+        <if test="channelIds != null">
+            AND t2.source_channel_id
+            IN
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        ORDER BY t1.buy_date DESC
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.market.entity.ClientMarketPackageInfoEntity" resultMap="clientMarketPackageInfoMap">
+        select
+        <include refid="Base_Column_List" />,
+        t2.user_id,
+        t2.client_name,
+        t2.phone_number
+        from client_market_package_info t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account = t1.client_id
+        WHERE 1=1
+        <if test="applicationId != null and applicationId != ''">
+            AND t1.application_id =#{applicationId}
+        </if>
+        <if test="packageName != null and packageName != ''">
+            AND t1.package_name =#{packageName}
+        </if>
+        <if test="deductionStatus != null and deductionStatus != ''">
+            AND t1.deduction_status =#{deductionStatus}
+        </if>
+        <if test="clientId != null and clientId != ''">
+            AND t1.client_id =#{clientId}
+        </if>
+        <if test="fundAccount != null and fundAccount != ''">
+            AND t1.fund_account =#{fundAccount}
+        </if>
+        <if test="userId != null and userId != ''">
+            AND t2.user_id =#{userId}
+        </if>
+        <if test="phoneNumber != null and phoneNumber != ''">
+            AND t2.phone_number =#{phoneNumber}
+        </if>
+        <if test="beginTime != null and beginTime != ''">
+            AND t1.buy_date <![CDATA[ >= ]]> #{beginTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            AND t1.buy_date <![CDATA[ <= ]]> #{endTime}
+        </if>
+        <if test="packageType != null and packageType != ''">
+            AND t1.package_type =#{packageType}
+        </if>
+        <if test="moneyType != null and moneyType != ''">
+            AND t1.money_type =#{moneyType}
+        </if>
+        <if test="channelIds != null">
+            AND t2.source_channel_id
+            IN
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from client_market_package_info
+	</select>
+
+    <select id="queryByApplicationId" resultType="com.sunline.modules.market.entity.ClientMarketPackageInfoEntity" resultMap="clientMarketPackageInfoMap">
+        select
+        <include refid="Base_Column_List" />,
+        t2.user_id,
+        t2.client_name,
+        t2.phone_number
+        from client_market_package_info t1
+        LEFT JOIN securities_user_info t2 ON t2.trade_account=t1.client_id
+        where t1.application_id = #{value}
+    </select>
+
+    <insert id="save" parameterType="com.sunline.modules.market.entity.ClientMarketPackageInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into client_market_package_info
+		(
+			`application_id`, 
+			`client_id`, 
+			`fund_account`, 
+			`package_name`,
+			`package_type`,
+			`package_price`, 
+			`total_cost`, 
+			`validity_period`, 
+			`buy_date`,
+			`money_type`,
+			`deduction_status`,
+			`hs_bank_id`,
+			`hs_bank_account`, 
+			`create_time`,
+			`update_time`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{clientId}, 
+			#{fundAccount}, 
+			#{packageName},
+			#{packageType},
+			#{packagePrice}, 
+			#{totalCost}, 
+			#{validityPeriod}, 
+			#{buyDate},
+			#{moneyType},
+			#{deductionStatus},
+			#{hsBankId},
+			#{hsBankAccount}, 
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.market.entity.ClientMarketPackageInfoEntity">
+		update client_market_package_info 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="clientId != null">`client_id` = #{clientId}, </if>
+			<if test="fundAccount != null">`fund_account` = #{fundAccount}, </if>
+			<if test="packageName != null">`package_name` = #{packageName}, </if>
+            <if test="packageType != null">`package_type` = #{packageType}, </if>
+			<if test="packagePrice != null">`package_price` = #{packagePrice}, </if>
+			<if test="totalCost != null">`total_cost` = #{totalCost}, </if>
+			<if test="validityPeriod != null">`validity_period` = #{validityPeriod}, </if>
+			<if test="buyDate != null">`buy_date` = #{buyDate}, </if>
+            <if test="moneyType != null">`money_type` = #{moneyType}, </if>
+			<if test="deductionStatus != null">`deduction_status` = #{deductionStatus}, </if>
+			<if test="hsBankId != null">`hs_bank_id` = #{hsBankId}, </if>
+			<if test="hsBankAccount != null">`hs_bank_account` = #{hsBankAccount}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from client_market_package_info where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from client_market_package_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

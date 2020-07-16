@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.fund.dao.ClientFundDepositImageDao">
+
+
+    <resultMap type="com.sunline.modules.fund.entity.ClientFundDepositImageEntity" id="clientFundDepositImageMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="imageType" column="image_type"/>
+        <result property="fileName" column="file_name"/>
+        <result property="fileStorageName" column="file_storage_name"/>
+        <result property="extName" column="ext_name"/>
+        <result property="storagePath" column="storage_path"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		application_id, 
+		image_type, 
+		file_name, 
+		file_storage_name, 
+		ext_name, 
+		storage_path, 
+		create_user, 
+		update_user, 
+		create_time, 
+		update_time, 
+		remark
+    </sql>
+
+    <select id="queryByApplicationId" resultType="com.sunline.modules.fund.entity.ClientFundDepositImageEntity" resultMap="clientFundDepositImageMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_fund_deposit_image
+        where application_id = #{applicationId}
+    </select>
+
+    <select id="queryObject" resultType="com.sunline.modules.fund.entity.ClientFundDepositImageEntity" resultMap="clientFundDepositImageMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_fund_deposit_image
+        where id = #{value}
+    </select>
+
+	<select id="queryList" resultType="com.sunline.modules.fund.entity.ClientFundDepositImageEntity" resultMap="clientFundDepositImageMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_fund_deposit_image
+        WHERE 1=1
+        <if test="applicationId != null">
+            AND `application_id` = #{applicationId}</if>
+        <if test="imageType != null">
+            AND `image_type` = #{imageType}
+        </if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.fund.entity.ClientFundDepositImageEntity" resultMap="clientFundDepositImageMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_fund_deposit_image
+        WHERE 1=1
+        <if test="applicationId != null">
+            AND `application_id` = #{applicationId}</if>
+        <if test="imageType != null">
+            AND `image_type` = #{imageType}
+        </if>
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from client_fund_deposit_image
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.fund.entity.ClientFundDepositImageEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into client_fund_deposit_image
+		(
+			`application_id`, 
+			`image_type`, 
+			`file_name`, 
+			`file_storage_name`, 
+			`ext_name`, 
+			`storage_path`, 
+			`create_user`, 
+			`update_user`, 
+			`create_time`, 
+			`update_time`, 
+			`remark`
+		)
+		values
+		(
+			#{applicationId}, 
+			#{imageType}, 
+			#{fileName}, 
+			#{fileStorageName}, 
+			#{extName}, 
+			#{storagePath}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{remark}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.fund.entity.ClientFundDepositImageEntity">
+		update client_fund_deposit_image 
+		<set>
+			<if test="applicationId != null">`application_id` = #{applicationId}, </if>
+			<if test="imageType != null">`image_type` = #{imageType}, </if>
+			<if test="fileName != null">`file_name` = #{fileName}, </if>
+			<if test="fileStorageName != null">`file_storage_name` = #{fileStorageName}, </if>
+			<if test="extName != null">`ext_name` = #{extName}, </if>
+			<if test="storagePath != null">`storage_path` = #{storagePath}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="remark != null">`remark` = #{remark}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from client_fund_deposit_image where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from client_fund_deposit_image where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

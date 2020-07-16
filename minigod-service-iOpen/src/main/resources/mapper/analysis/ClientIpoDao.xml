@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.analysis.dao.ClientIpoDao">
+
+
+    <resultMap type="com.sunline.modules.analysis.entity.ClientIpoEntity" id="clientIpoEntity">
+        <result property="id" column="id"></result>
+        <result property="clientId" column="client_id"></result>
+        <result property="fundAccount" column="fund_account"></result>
+        <result property="currDate" column="curr_date"></result>
+        <result property="type" column="type"></result>
+        <result property="quantityApply" column="quantity_apply"></result>
+        <result property="applyAmount" column="apply_amount"></result>
+        <result property="status" column="status"></result>
+        <result property="statusCheck" column="status_check"></result>
+        <result property="stockCode" column="stock_code"></result>
+        <result property="stockName" column="stock_name"></result>
+        <result property="tradingDate" column="trading_date"></result>
+        <result property="quantityAllotted" column="quantity_allotted"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="clientName" column="client_name"></result>
+        <result property="channelName" column="channelName"></result>
+        <result property="exchangeType" column="exchange_type"></result>
+        <result property="depositRate" column="deposit_rate"></result>
+        <result property="depositAmount" column="deposit_amount"></result>
+        <result property="ipoIntrate" column="ipo_intrate"></result>
+        <result property="handlingFee" column="handling_fee"></result>
+        <result property="financingAmount" column="financing_amount"></result>
+        <result property="cutoffDate" column="cutoff_date"></result>
+        <result property="finalAmount" column="final_amount"></result>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        c.client_id,
+        c.fund_account,
+        Date_format(c.curr_date, '%Y-%m-%d') AS curr_date,
+        c.type,
+        c.quantity_apply,
+        c.apply_amount,
+        c.status_check,
+        c.status,
+        c.stock_code,
+        Date_format(c.trading_date, '%Y-%m-%d') AS trading_date,
+        c.quantity_allotted,
+        c.financing_amount,
+        c.final_amount,
+        c.exchange_type,
+        c.deposit_rate,
+        c.deposit_amount,
+        c.ipo_intrate,
+        c.handling_fee,
+        Date_format(c.cutoff_date, '%Y-%m-%d') AS cutoff_date
+    </sql>
+
+    <select id="queryList" resultType="com.sunline.modules.analysis.entity.ClientIpoEntity" resultMap="clientIpoEntity">
+        SELECT
+        <include refid="Base_Column_List"></include>, s.user_id,
+        s.client_name,
+        s.source_channel_id AS channelId,
+        t.channel_name AS channelName,
+        s.phone_number AS phone_number,
+        i.stock_name
+        FROM
+        client_ipo_detail c
+        LEFT JOIN 	securities_user_info s on c.client_id = s.trade_account
+        LEFT JOIN	stock_info i on i.stock_code = c.stock_code AND i.exchange_type=c.exchange_type
+        LEFT JOIN user_channel_info t ON s.source_channel_id = t.channel_id
+        WHERE 1 = 1
+        <if test="userId !=null and userId !=''">
+            and s.user_id = #{userId}
+        </if>
+        <if test="clientName !=null and clientName !=''">
+            and s.client_name like CONCAT('%',#{clientName},'%')
+        </if>
+        <if test="clientId !=null and clientId !=''">
+            and c.client_id = #{clientId}
+        </if>
+        <if test="fundAccount !=null and fundAccount !=''">
+            and c.fund_account = #{fundAccount}
+        </if>
+        <!--<if test=" channelName!=null and channelName !=''">
+            and s.source_channel_name LIKE CONCAT('%',#{channelName},'%')
+        </if>-->
+        <if test=" channelId!=null and channelId !=''">
+            and s.source_channel_id = #{channelId}
+        </if>
+        <if test=" checkedChannelId!=null and checkedChannelId !=''">
+            and s.source_channel_id = #{checkedChannelId}
+        </if>
+        <if test="type !=null and type !=''">
+            and c.type = #{type}
+        </if>
+        <if test="status !=null and status !=''">
+            and c.status = #{status}
+        </if>
+        <if test="statusCheck !=null and statusCheck !=''">
+            and c.status_check = #{statusCheck}
+        </if>
+        <if test="stockCode !=null and stockCode !=''">
+            and c.stock_code = #{stockCode}
+        </if>
+        <if test="quantityAllotted !=null and quantityAllotted !=''">
+            and c.quantity_allotted >= #{quantityAllotted}
+        </if>
+        <if test="tradingDate !=null and tradingDate !=''">
+            and date_format(c.trading_date,'%Y-%m-%d') = #{tradingDate}
+        </if>
+        <if test="beginDate !=null and beginDate !=''">
+            and date_format(c.curr_date,'%Y-%m-%d') >= #{beginDate}
+        </if>
+        <if test="endDate !=null and endDate !=''">
+            and date_format(c.curr_date,'%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        <if test="channelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                #{channelIds[${index}]}
+            </foreach>
+        </if>
+        <if test="checkedChannelIds != null">
+            and s.source_channel_id
+            in
+            <foreach item="item" index="index" collection="checkedChannelIds" open="(" separator="," close=")">
+                #{checkedChannelIds[${index}]}
+            </foreach>
+        </if>
+
+        <if test="batchStkCodeList != null">
+            AND s.stock_code
+            IN
+            <foreach item="item" index="index" collection="batchStkCodeList" open="(" separator="," close=")">
+                #{batchStkCodeList[${index}]}
+            </foreach>
+        </if>
+
+        order by c.curr_date desc
+    </select>
+
+
+    <select id="queryIpoFinancing" resultType="com.sunline.modules.analysis.entity.ClientIpoEntity" resultMap="clientIpoEntity">
+        SELECT
+            t1.stock_code,
+            SUM(t1.apply_amount-t1.deposit_amount) * 2 AS final_amount
+        FROM
+        client_ipo_detail t1
+        WHERE status_check != 'R'
+        <if test="clientId !=null and clientId !=''">
+            and t1.client_id = #{clientId}
+        </if>
+        <if test="fundAccount !=null and fundAccount !=''">
+            and t1.fund_account = #{fundAccount}
+        </if>
+        <if test="type !=null and type !=''">
+            and t1.type = #{type}
+        </if>
+        <if test="statusCheck !=null and statusCheck !=''">
+            and t1.status_check = #{statusCheck}
+        </if>
+        <if test="stockCode !=null and stockCode !=''">
+            and t1.stock_code = #{stockCode}
+        </if>
+        <if test="quantityAllotted !=null and quantityAllotted !=''">
+            and t1.quantity_allotted >= #{quantityAllotted}
+        </if>
+        <if test="batchStkCodeList != null">
+            AND t1.stock_code
+            IN
+            <foreach item="item" index="index" collection="batchStkCodeList" open="(" separator="," close=")">
+                #{batchStkCodeList[${index}]}
+            </foreach>
+        </if>
+
+        GROUP BY t1.stock_code
+        ORDER BY t1.curr_date DESC
+    </select>
+
+    <select id="queryFirstBuyIpo" resultType="com.sunline.modules.analysis.entity.ClientIpoEntity" resultMap="clientIpoEntity">
+        SELECT
+          t1.*
+        FROM
+          client_ipo_detail t1
+        WHERE STATUS NOT IN ('0','1') AND status_check != 'R' AND t1.cutoff_date <![CDATA[ <= ]]> CURDATE()
+        <if test="clientId !=null">
+            AND t1.client_id= #{clientId}
+        </if>
+        <if test="beginDate !=null">
+            AND t1.curr_date <![CDATA[ >= ]]> #{beginDate}
+        </if>
+        <if test="endDate !=null">
+            AND t1.curr_date <![CDATA[ <= ]]> #{endDate}
+        </if>
+    </select>
+</mapper>

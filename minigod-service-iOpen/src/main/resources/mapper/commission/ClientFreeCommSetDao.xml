@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.commission.dao.ClientFreeCommSetDao">
+
+
+    <resultMap type="com.sunline.modules.commission.entity.ClientFreeCommSetEntity" id="clientFreeCommissionSetupMap">
+        <result property="id" column="id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="exchangeType" column="exchange_type"/>
+        <result property="freeCommType" column="free_comm_type"/>
+        <result property="beginDate" column="begin_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="auditUser" column="audit_user"/>
+        <result property="auditStatus" column="audit_status"/>
+        <result property="auditTime" column="audit_time"/>
+        <result property="syncStatus" column="sync_status"/>
+        <result property="syncTime" column="sync_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		client_id, 
+		fund_account, 
+		exchange_type,
+		free_comm_type,
+		begin_date,
+		end_date, 
+		create_user, 
+		update_user, 
+		audit_user, 
+		audit_status, 
+		audit_time, 
+		sync_status, 
+		sync_time, 
+		create_time, 
+		update_time
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.commission.entity.ClientFreeCommSetEntity" resultMap="clientFreeCommissionSetupMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_free_commission_setup
+		where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.sunline.modules.commission.entity.ClientFreeCommSetEntity" resultMap="clientFreeCommissionSetupMap">
+		select
+		<include refid="Base_Column_List" />
+		from client_free_commission_setup
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.commission.entity.ClientFreeCommSetEntity" resultMap="clientFreeCommissionSetupMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_free_commission_setup
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from client_free_commission_setup
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.commission.entity.ClientFreeCommSetEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into client_free_commission_setup
+		(
+			`client_id`, 
+			`fund_account`, 
+			`exchange_type`,
+			`free_comm_type`,
+			`begin_date`,
+			`end_date`, 
+			`create_user`, 
+			`update_user`, 
+			`audit_user`, 
+			`audit_status`, 
+			`audit_time`, 
+			`sync_status`, 
+			`sync_time`, 
+			`create_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{clientId}, 
+			#{fundAccount}, 
+			#{exchangeType},
+			#{freeCommType},
+			#{beginDate},
+			#{endDate}, 
+			#{createUser}, 
+			#{updateUser}, 
+			#{auditUser}, 
+			#{auditStatus}, 
+			#{auditTime}, 
+			#{syncStatus}, 
+			#{syncTime}, 
+			#{createTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.commission.entity.ClientFreeCommSetEntity">
+		update client_free_commission_setup 
+		<set>
+			<if test="clientId != null">`client_id` = #{clientId}, </if>
+			<if test="fundAccount != null">`fund_account` = #{fundAccount}, </if>
+			<if test="exchangeType != null">`exchange_type` = #{exchangeType}, </if>
+			<if test="freeCommType != null">`free_comm_type` = #{freeCommType}, </if>
+			<if test="beginDate != null">`begin_date` = #{beginDate}, </if>
+			<if test="endDate != null">`end_date` = #{endDate}, </if>
+			<if test="createUser != null">`create_user` = #{createUser}, </if>
+			<if test="updateUser != null">`update_user` = #{updateUser}, </if>
+			<if test="auditUser != null">`audit_user` = #{auditUser}, </if>
+			<if test="auditStatus != null">`audit_status` = #{auditStatus}, </if>
+			<if test="auditTime != null">`audit_time` = #{auditTime}, </if>
+			<if test="syncStatus != null">`sync_status` = #{syncStatus}, </if>
+			<if test="syncTime != null">`sync_time` = #{syncTime}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from client_free_commission_setup where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from client_free_commission_setup where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+    <select id="getIsFreeCommClientInfo" resultType="com.sunline.modules.commission.entity.ClientFreeCommSetEntity" resultMap="clientFreeCommissionSetupMap">
+        select
+        <include refid="Base_Column_List" />
+        from client_free_commission_setup
+        WHERE audit_status=2 AND sync_status IN (0,3)
+    </select>
+
+</mapper>

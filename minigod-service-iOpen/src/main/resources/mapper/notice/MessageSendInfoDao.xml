@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.notice.dao.MessageSendInfoDao">
+
+
+    <resultMap type="com.sunline.modules.notice.entity.MessageSendInfoEntity" id="messageSendInfoMap">
+        <result property="id" column="id"/>
+        <result property="messageType" column="message_type"/>
+        <result property="recipients" column="recipients"/>
+        <result property="messageTitle" column="message_title"/>
+        <result property="messageContent" column="message_content"/>
+        <result property="contentType" column="content_type"/>
+        <result property="attachmentUris" column="attachment_uris"/>
+        <result property="sendResult" column="send_result"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="comment" column="comment"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		id, 
+		message_type, 
+		recipients, 
+		message_title, 
+		message_content, 
+		content_type,
+		attachment_uris,
+		send_result, 
+		create_time, 
+		update_time, 
+		comment
+    </sql>
+
+	<select id="queryObject" resultType="com.sunline.modules.notice.entity.MessageSendInfoEntity" resultMap="messageSendInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from message_send_info
+		where id = #{value}
+	</select>
+
+	<select id="queryUnFinishedMessage" resultType="com.sunline.modules.notice.entity.MessageSendInfoEntity" resultMap="messageSendInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from message_send_info
+		where send_result in(0,1,3,4)
+	</select>
+
+
+	<select id="queryList" resultType="com.sunline.modules.notice.entity.MessageSendInfoEntity" resultMap="messageSendInfoMap">
+		select
+		<include refid="Base_Column_List" />
+		from message_send_info
+        where 1 =1
+        <if test="messageType!=null and messageType!=''">
+           and message_type = #{messageType}
+        </if>
+        <if test="recipients!=null and recipients!=''">
+            and recipients = #{recipients}
+        </if>
+        <if test="sendResult!=null and sendResult!=''">
+            and send_result = #{sendResult}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.notice.entity.MessageSendInfoEntity" resultMap="messageSendInfoMap">
+        select
+        <include refid="Base_Column_List" />
+        from message_send_info
+        WHERE 1=1
+    </select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from message_send_info
+        where 1 =1
+        <if test="messageType!=null and messageType!=''">
+           and message_type = #{messageType}
+        </if>
+        <if test="recipients!=null and recipients!=''">
+            and  recipients = #{recipients}
+        </if>
+        <if test="sendResult!=null and sendResult!=''">
+            and  send_result = #{sendResult}
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.sunline.modules.notice.entity.MessageSendInfoEntity">
+		insert into message_send_info
+		(
+			`message_type`, 
+			`recipients`, 
+			`message_title`, 
+			`message_content`, 
+			`content_type`,
+			`attachment_uris`,
+			`send_result`, 
+			`create_time`, 
+			`update_time`, 
+			`comment`
+		)
+		values
+		(
+			#{messageType}, 
+			#{recipients}, 
+			#{messageTitle}, 
+			#{messageContent}, 
+			#{contentType},
+			#{attachmentUris},
+			#{sendResult}, 
+			#{createTime}, 
+			#{updateTime}, 
+			#{comment}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sunline.modules.notice.entity.MessageSendInfoEntity">
+		update message_send_info 
+		<set>
+			<if test="messageType != null">`message_type` = #{messageType}, </if>
+			<if test="recipients != null">`recipients` = #{recipients}, </if>
+			<if test="messageTitle != null">`message_title` = #{messageTitle}, </if>
+			<if test="messageContent != null">`message_content` = #{messageContent}, </if>
+			<if test="contentType != null">`content_type` = #{contentType}, </if>
+			<if test="attachmentUris != null">`attachment_uris` = #{attachmentUris}, </if>
+			<if test="sendResult != null">`send_result` = #{sendResult}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="comment != null">`comment` = #{comment}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from message_send_info where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from message_send_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
