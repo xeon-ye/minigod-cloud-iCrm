@@ -22,6 +22,7 @@ import com.sunline.modules.sys.entity.NoticeEntity;
 import com.sunline.modules.sys.entity.UserEntity;
 import com.sunline.modules.sys.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -36,21 +37,17 @@ import java.util.Map;
  */
 @Component
 public class StockUtils {
-
+    @Qualifier("noticeCaseService")
     private static NoticeCaseService noticeCaseService;
+    @Qualifier("userNoticeService")
     private static UserNoticeService userNoticeService;
+    @Qualifier("userService")
     private static UserServiceImpl userService;
+    @Qualifier("messageSendInfoService")
     private static MessageSendInfoService messageSendInfoService;
+    @Qualifier("secUserInfoService")
     private static SecUserInfoService secUserInfoService;
 
-    @Autowired
-    public void init(NoticeCaseService noticeService, UserNoticeService userNoticeSer, UserServiceImpl userSer, MessageSendInfoService messageSendService, SecUserInfoService secUserService) {
-        StockUtils.noticeCaseService = noticeService;
-        StockUtils.userNoticeService = userNoticeSer;
-        StockUtils.userService = userSer;
-        StockUtils.messageSendInfoService = messageSendService;
-        StockUtils.secUserInfoService = secUserService;
-    }
 
     /**
      * 发送站内通知

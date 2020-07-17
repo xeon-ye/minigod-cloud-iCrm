@@ -6,7 +6,7 @@ server:
     min-spare-threads: 30
   port: 7777
   connection-timeout: 1800
-  context-path: /cubp
+  context-path: /minigod-service-iOpen
 
 spring:
   # 环境 dev|test|pro
