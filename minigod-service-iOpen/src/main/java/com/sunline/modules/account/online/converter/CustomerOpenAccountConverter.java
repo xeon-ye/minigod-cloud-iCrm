@@ -131,6 +131,27 @@ public class CustomerOpenAccountConverter {
         model.setOtherCompanyRepublic(entity.getOtherCompanyRepublic());
         model.setOtherContactRepublic(entity.getOtherContactRepublic());
         model.setOtherFamilyRepublic(entity.getOtherFamilyRepublic());
+
+        model.setLanguage(entity.getLan());
+        model.setHomePhone(entity.getHomePhone());
+        model.setAccountType(entity.getAccountType());
+        model.setEducationLevel(entity.getEducationLevel());
+        model.setWorkingSeniority(entity.getWorkingSeniority());
+        model.setOfficePhone(entity.getOfficePhone());
+        model.setIsBankrupted(entity.getIsBankrupted());
+        model.setdStatementReceiveMode(entity.getdStatementReceiveMode());
+        model.setUnitTrustsExperience(entity.getUnitTrustsExperience());
+        model.setOtherProductsExperience(entity.getOtherProductsExperience());
+        model.setOtherProductsName(entity.getOtherProductsName());
+        model.setOptionsExperience(entity.getOptionsExperience());
+        model.setTradeStockFrequency(entity.getTradeStockFrequency());
+        model.setTradeWarrantsFrequency(entity.getTradeWarrantsFrequency());
+        model.setTradeOptionsFrequency(entity.getTradeOptionsFrequency());
+        model.setTradeFuturesFrequency(entity.getTradeFuturesFrequency());
+        model.setTradeUnitTrustsFrequency(entity.getTradeUnitTrustsFrequency());
+        model.setTradeOtherProductsFrequency(entity.getTradeOtherProductsFrequency());
+        model.setIsAgreeCollectPersonalInfo(entity.getIsAgreeCollectPersonalInfo());
+
         return model;
     }
 
@@ -239,6 +260,26 @@ public class CustomerOpenAccountConverter {
         entity.setOtherCompanyRepublic(model.getOtherCompanyRepublic());
         entity.setOtherContactRepublic(model.getOtherContactRepublic());
         entity.setOtherFamilyRepublic(model.getOtherFamilyRepublic());
+
+        entity.setLan(model.getLanguage());
+        entity.setHomePhone(model.getHomePhone());
+        entity.setAccountType(model.getAccountType());
+        entity.setEducationLevel(model.getEducationLevel());
+        entity.setWorkingSeniority(model.getWorkingSeniority());
+        entity.setOfficePhone(model.getOfficePhone());
+        entity.setIsBankrupted(model.getIsBankrupted());
+        entity.setdStatementReceiveMode(model.getdStatementReceiveMode());
+        entity.setUnitTrustsExperience(model.getUnitTrustsExperience());
+        entity.setOtherProductsExperience(model.getOtherProductsExperience());
+        entity.setOtherProductsName(model.getOtherProductsName());
+        entity.setOptionsExperience(model.getOptionsExperience());
+        entity.setTradeStockFrequency(model.getTradeStockFrequency());
+        entity.setTradeWarrantsFrequency(model.getTradeWarrantsFrequency());
+        entity.setTradeOptionsFrequency(model.getTradeOptionsFrequency());
+        entity.setTradeFuturesFrequency(model.getTradeFuturesFrequency());
+        entity.setTradeUnitTrustsFrequency(model.getTradeUnitTrustsFrequency());
+        entity.setTradeOtherProductsFrequency(model.getTradeOtherProductsFrequency());
+        entity.setIsAgreeCollectPersonalInfo(model.getIsAgreeCollectPersonalInfo());
 
         return entity;
     }
@@ -550,6 +591,27 @@ public class CustomerOpenAccountConverter {
         customerAccountOpenInfoEntity.setOtherCompanyRepublic(accountOpenApplicationprotocol.getOtherCompanyRepublic());
         customerAccountOpenInfoEntity.setOtherContactRepublic(accountOpenApplicationprotocol.getOtherContactRepublic());
         customerAccountOpenInfoEntity.setOtherFamilyRepublic(accountOpenApplicationprotocol.getOtherFamilyRepublic());
+
+        customerAccountOpenInfoEntity.setLanguage(accountOpenApplicationprotocol.getLanguage());
+        customerAccountOpenInfoEntity.setHomePhone(accountOpenApplicationprotocol.getHomePhone());
+        customerAccountOpenInfoEntity.setAccountType(accountOpenApplicationprotocol.getAccountType());
+        customerAccountOpenInfoEntity.setEducationLevel(accountOpenApplicationprotocol.getEducationLevel());
+        customerAccountOpenInfoEntity.setWorkingSeniority(accountOpenApplicationprotocol.getWorkingSeniority());
+        customerAccountOpenInfoEntity.setOfficePhone(accountOpenApplicationprotocol.getOfficePhone());
+        customerAccountOpenInfoEntity.setIsBankrupted(accountOpenApplicationprotocol.getIsBankrupted());
+        customerAccountOpenInfoEntity.setdStatementReceiveMode(accountOpenApplicationprotocol.getdStatementReceiveMode());
+        customerAccountOpenInfoEntity.setUnitTrustsExperience(accountOpenApplicationprotocol.getUnitTrustsExperience());
+        customerAccountOpenInfoEntity.setOtherProductsExperience(accountOpenApplicationprotocol.getOtherProductsExperience());
+        customerAccountOpenInfoEntity.setOtherProductsName(accountOpenApplicationprotocol.getOtherProductsName());
+        customerAccountOpenInfoEntity.setOptionsExperience(accountOpenApplicationprotocol.getOptionsExperience());
+        customerAccountOpenInfoEntity.setTradeStockFrequency(accountOpenApplicationprotocol.getTradeStockFrequency());
+        customerAccountOpenInfoEntity.setTradeWarrantsFrequency(accountOpenApplicationprotocol.getTradeWarrantsFrequency());
+        customerAccountOpenInfoEntity.setTradeOptionsFrequency(accountOpenApplicationprotocol.getTradeOptionsFrequency());
+        customerAccountOpenInfoEntity.setTradeFuturesFrequency(accountOpenApplicationprotocol.getTradeFuturesFrequency());
+        customerAccountOpenInfoEntity.setTradeUnitTrustsFrequency(accountOpenApplicationprotocol.getTradeUnitTrustsFrequency());
+        customerAccountOpenInfoEntity.setTradeOtherProductsFrequency(accountOpenApplicationprotocol.getTradeOtherProductsFrequency());
+        customerAccountOpenInfoEntity.setIsAgreeCollectPersonalInfo(accountOpenApplicationprotocol.getIsAgreeCollectPersonalInfo());
+
         return customerAccountOpenInfoEntity;
     }
 
@@ -707,6 +769,27 @@ public class CustomerOpenAccountConverter {
         securitiesUserModel.setOtherCompanyRepublic(entity.getOtherCompanyRepublic());
         securitiesUserModel.setOtherContactRepublic(entity.getOtherContactRepublic());
         securitiesUserModel.setOtherFamilyRepublic(entity.getOtherFamilyRepublic());
+
+        securitiesUserModel.setLanguage(entity.getLan());
+        securitiesUserModel.setAccountType(entity.getAccountType());
+        securitiesUserModel.setHomePhone(entity.getHomePhone());
+        securitiesUserModel.setEducationLevel(entity.getEducationLevel());
+        securitiesUserModel.setWorkingSeniority(entity.getWorkingSeniority());
+        securitiesUserModel.setOfficePhone(entity.getOfficePhone());
+        securitiesUserModel.setIsBankrupted(entity.getIsBankrupted());
+        securitiesUserModel.setdStatementReceiveMode(entity.getdStatementReceiveMode());
+        securitiesUserModel.setUnitTrustsExperience(entity.getUnitTrustsExperience());
+        securitiesUserModel.setOtherProductsExperience(entity.getOtherProductsExperience());
+        securitiesUserModel.setOtherProductsName(entity.getOtherProductsName());
+        securitiesUserModel.setOptionsExperience(entity.getOptionsExperience());
+        securitiesUserModel.setTradeStockFrequency(entity.getTradeStockFrequency());
+        securitiesUserModel.setTradeWarrantsFrequency(entity.getTradeWarrantsFrequency());
+        securitiesUserModel.setTradeOptionsFrequency(entity.getTradeOptionsFrequency());
+        securitiesUserModel.setTradeFuturesFrequency(entity.getTradeFuturesFrequency());
+        securitiesUserModel.setTradeUnitTrustsFrequency(entity.getTradeUnitTrustsFrequency());
+        securitiesUserModel.setTradeOtherProductsFrequency(entity.getTradeOtherProductsFrequency());
+        securitiesUserModel.setIsAgreeCollectPersonalInfo(entity.getIsAgreeCollectPersonalInfo());
+
         return securitiesUserModel;
     }
 }

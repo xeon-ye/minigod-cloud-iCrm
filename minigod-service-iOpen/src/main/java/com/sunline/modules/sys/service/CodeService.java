@@ -55,6 +55,6 @@ public interface CodeService {
 	 * 带状态查询所有的字典及子字典(用做字典缓存)
 	 * @return
 	 */
-	List<CodeEntity> queryChildsByMark(String mark,String codeStatus);
+	List<CodeEntity> queryChildsByMark(String mark, String codeStatus);
 
 }

@@ -44,12 +44,12 @@ public interface ClientFareListService {
      * @param clientFareListEntity
      * @return
      */
-    List<ClientFareListEntity> fareListExcelList(ClientFareListEntity  clientFareListEntity);
+    List<ClientFareListEntity> fareListExcelList(ClientFareListEntity clientFareListEntity);
 
     /**
      * 查询单个对象
      * @param clientFareListEntity
      * @return
      */
-    ClientFareListEntity queryByBean(ClientFareListEntity  clientFareListEntity);
+    ClientFareListEntity queryByBean(ClientFareListEntity clientFareListEntity);
 }

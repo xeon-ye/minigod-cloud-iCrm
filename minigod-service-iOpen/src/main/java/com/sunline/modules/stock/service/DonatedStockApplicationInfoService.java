@@ -63,7 +63,7 @@ public interface DonatedStockApplicationInfoService {
 	 * @param applicationId
 	 * @return
 	 */
-	DonatedStockApplicationInfoEntity queryByApplicationId(String  applicationId);
+	DonatedStockApplicationInfoEntity queryByApplicationId(String applicationId);
 
 	boolean terminateDonatedApplication(DonatedStockApplicationInfoEntity entity, ProcessTaskDto processTaskDto);
 
@@ -72,7 +72,7 @@ public interface DonatedStockApplicationInfoService {
 	 * @param applicationId
 	 * @return
 	 */
-	DonatedStockApplicationInfoEntity queryDetailByApplicationId(String  applicationId);
+	DonatedStockApplicationInfoEntity queryDetailByApplicationId(String applicationId);
 
 	/**
 	 * 领取列表导出查询

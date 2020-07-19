@@ -16,7 +16,7 @@ import java.util.List;
 @Mapper
 public interface UserApiDao extends BaseDao<ChannelQueryModel> {
 
-    List<CrmExternalCommonModel> queryUserStatus (CrmExternalCommonModel model);
+    List<CrmExternalCommonModel> queryUserStatus(CrmExternalCommonModel model);
 
     /**
      * 获取客户转仓信息

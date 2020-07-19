@@ -53,7 +53,7 @@ public interface DepositBankBillFlowService {
 	/**
 	 * 更新是否重复状态
 	 */
-	int updateRepeat(long id,int repeat);
+	int updateRepeat(long id, int repeat);
 
 	/**
 	 * 更新指定审核人

@@ -21,7 +21,7 @@ public interface ExtendActBusinessDao extends BaseDao<ExtendActBusinessEntity> {
      * 只查询流程业务类，不查询根目录和回调
      * @return
      */
-    List<ExtendActBusinessEntity> queryBusTree(@Param("type1") String type1,@Param("type2") String type2);
+    List<ExtendActBusinessEntity> queryBusTree(@Param("type1") String type1, @Param("type2") String type2);
 
     /**
      * 根据extend_act_model中的modelid查询对应业务

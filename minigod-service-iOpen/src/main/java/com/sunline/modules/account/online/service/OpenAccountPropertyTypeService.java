@@ -40,5 +40,5 @@ public interface OpenAccountPropertyTypeService {
      * @param applicationId
      * @return
      */
-    int deleteByApplicationId (String applicationId);
+    int deleteByApplicationId(String applicationId);
 }

@@ -5,7 +5,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -62,7 +61,7 @@ import com.sunline.modules.sys.service.CodeService;
 import com.sunline.modules.sys.service.UserService;
 import com.sunline.security.SecurityKey;
 import com.sunline.security.util.AESUtil;
-
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -445,12 +444,12 @@ public class CrmExternalCommonController {
 
         ResponseVO vo = new ResponseVO();
 
-        JSONObject jsonObject = new JSONObject(request);
+        JSONObject jsonObject = JSONObject.fromObject(request);
         if (jsonObject.containsKey("channelId") && jsonObject.containsKey("loginName")) {
 
             String channelId = jsonObject.get("channelId").toString();
             String loginName = jsonObject.get("loginName").toString();
-            UserEntity user = (UserEntity) jsonObject.toBean( UserEntity.class);
+            UserEntity user = (UserEntity) JSONObject.toBean(jsonObject, UserEntity.class);
 
             if (loginName == null || "".equals(loginName)) {
 

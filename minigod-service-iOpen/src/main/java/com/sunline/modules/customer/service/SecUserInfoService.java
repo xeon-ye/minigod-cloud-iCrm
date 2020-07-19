@@ -74,35 +74,35 @@ public interface SecUserInfoService {
      * @param userInfo
      * @return
      */
-    SecuritiesUserInfoEntity queryByUserId(SecuritiesUserInfoEntity  userInfo);
+    SecuritiesUserInfoEntity queryByUserId(SecuritiesUserInfoEntity userInfo);
 
     /**
      * 查询交易账户是否存在
      * @param userInfo
      * @return
      */
-    int queryByTradeAcc(SecuritiesUserInfoEntity  userInfo);
+    int queryByTradeAcc(SecuritiesUserInfoEntity userInfo);
 
     /**
      * 客户基本查询 excel导出
      * @param userInfo
      * @return
      */
-    List<SecuritiesUserInfoEntity> customerListExcelList(SecuritiesUserInfoEntity  userInfo);
+    List<SecuritiesUserInfoEntity> customerListExcelList(SecuritiesUserInfoEntity userInfo);
 
     /**
      * 客户综合查询 excel导出
      * @param userInfo
      * @return
      */
-    List<SecuritiesUserInfoEntity> cusSynListExcelList(SecuritiesUserInfoEntity  userInfo);
+    List<SecuritiesUserInfoEntity> cusSynListExcelList(SecuritiesUserInfoEntity userInfo);
 
     /**
      * 小神用户查询 excel导出
      * @param userInfo
      * @return
      */
-    List<SecuritiesUserInfoEntity> cusUserListExcelList(SecuritiesUserInfoEntity  userInfo);
+    List<SecuritiesUserInfoEntity> cusUserListExcelList(SecuritiesUserInfoEntity userInfo);
 
     /**
      * 小神用户资料详情
@@ -111,7 +111,7 @@ public interface SecUserInfoService {
      */
     SecuritiesUserInfoEntity getUserInfo(String userId);
 
-    int updateUserInfo (SecuritiesUserInfoEntity entity);
+    int updateUserInfo(SecuritiesUserInfoEntity entity);
 
     /**
      * 查询活动统计

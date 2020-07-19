@@ -27,6 +27,6 @@ public interface ExtendActNodesetDao extends BaseDao<ExtendActNodesetEntity> {
      * @param modelId
      * @return
      */
-    ExtendActNodesetEntity queryByNodeIdModelId(@Param("nodeId") String nodeId,@Param("modelId") String modelId);
+    ExtendActNodesetEntity queryByNodeIdModelId(@Param("nodeId") String nodeId, @Param("modelId") String modelId);
 
 }

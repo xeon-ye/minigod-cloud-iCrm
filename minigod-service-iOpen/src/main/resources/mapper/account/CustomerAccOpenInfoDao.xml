@@ -104,6 +104,26 @@
 		<result property="otherFamilyRepublic" column="other_family_republic"/>
 		<result property="freelanceCode" column="freelance_code"/>
 		<result property="freelanceOther" column="freelance_other"/>
+		<result property="freelanceOther" column="freelance_other"/>
+		<result property="lan" column="lan"/>
+		<result property="accountType" column="account_type"/>
+		<result property="homePhone" column="home_phone"/>
+		<result property="educationLevel" column="education_level"/>
+		<result property="workingSeniority" column="working_seniority"/>
+		<result property="officePhone" column="office_phone"/>
+		<result property="isBankrupted" column="is_bankrupted"/>
+		<result property="dStatementReceiveMode" column="d_statement_receive_mode"/>
+		<result property="unitTrustsExperience" column="unit_trusts_experience"/>
+		<result property="otherProductsExperience" column="other_products_experience"/>
+		<result property="otherProductsName" column="other_products_name"/>
+		<result property="optionsExperience" column="options_experience"/>
+		<result property="tradeStockFrequency" column="trade_stock_frequency"/>
+		<result property="tradeWarrantsFrequency" column="trade_warrants_frequency"/>
+		<result property="tradeOptionsFrequency" column="trade_options_frequency"/>
+		<result property="tradeFuturesFrequency" column="trade_futures_frequency"/>
+		<result property="tradeUnitTrustsFrequency" column="trade_unit_trusts_frequency"/>
+		<result property="tradeOtherProductsFrequency" column="trade_other_products_frequency"/>
+		<result property="isAgreeCollectPersonalInfo" column="is_agree_collect_personal_info"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -203,7 +223,26 @@
         other_nationality,
         other_contact_republic,
         other_company_republic,
-        other_family_republic
+        other_family_republic,
+        lan,
+        account_type,
+        home_phone,
+        education_level,
+        working_seniority,
+        office_phone,
+        is_bankrupted,
+        d_statement_receive_mode,
+        unit_trusts_experience,
+        other_products_experience,
+        other_products_name,
+        options_experience,
+        trade_stock_frequency,
+        trade_warrants_frequency,
+        trade_options_frequency,
+        trade_futures_frequency,
+        trade_unit_trusts_frequency,
+        trade_other_products_frequency,
+        is_agree_collect_personal_info
     </sql>
 
     <sql id="Base_Where_Conditions">
@@ -401,7 +440,26 @@
             `other_nationality`,
             `other_contact_republic`,
             `other_company_republic`,
-            `other_family_republic`
+            `other_family_republic`,
+            `lan`,
+            `account_type`,
+            `home_phone`,
+            `education_level`,
+            `working_seniority`,
+            `office_phone`,
+            `is_bankrupted`,
+            `d_statement_receive_mode`,
+            `unit_trusts_experience`,
+            `other_products_experience`,
+            `other_products_name`,
+            `options_experience`,
+            `trade_stock_frequency`,
+            `trade_warrants_frequency`,
+            `trade_options_frequency`,
+            `trade_futures_frequency`,
+            `trade_unit_trusts_frequency`,
+            `trade_other_products_frequency`,
+            `is_agree_collect_personal_info`
 		)
 		values
 		(
@@ -498,7 +556,26 @@
 			#{otherNationality},
 			#{otherContactRepublic},
 			#{otherCompanyRepublic},
-			#{otherFamilyRepublic}
+			#{otherFamilyRepublic},
+			#{lan},
+			#{accountType},
+			#{homePhone},
+			#{educationLevel},
+			#{workingSeniority},
+			#{officePhone},
+			#{isBankrupted},
+			#{dStatementReceiveMode},
+			#{unitTrustsExperience},
+			#{otherProductsExperience},
+			#{otherProductsName},
+			#{optionsExperience},
+			#{tradeStockFrequency},
+			#{tradeWarrantsFrequency},
+			#{tradeOptionsFrequency},
+			#{tradeFuturesFrequency},
+			#{tradeUnitTrustsFrequency},
+			#{tradeOtherProductsFrequency},
+			#{isAgreeCollectPersonalInfo}
 		)
 	</insert>
 
@@ -623,7 +700,27 @@
             <if test="otherNationality != null">`other_nationality` = #{otherNationality},</if>
 			<if test="otherContactRepublic != null">`other_contact_republic` = #{otherContactRepublic},</if>
 			<if test="otherCompanyRepublic != null">`other_company_republic` = #{otherCompanyRepublic},</if>
-			<if test="otherFamilyRepublic != null">`other_family_republic` = #{otherFamilyRepublic}</if>
+			<if test="otherFamilyRepublic != null">`other_family_republic` = #{otherFamilyRepublic},</if>
+			<if test="lan != null">`lan` = #{lan},</if>
+			<if test="account_type != null">`account_type` = #{accountType},</if>
+			<if test="home_phone != null">`home_phone` = #{homePhone},</if>
+			<if test="education_level != null">`education_level` = #{educationLevel},</if>
+			<if test="working_seniority != null">`working_seniority` = #{workingSeniority},</if>
+			<if test="office_phone != null">`office_phone` = #{officePhone},</if>
+			<if test="is_bankrupted != null">`is_bankrupted` = #{isBankrupted},</if>
+			<if test="d_statement_receive_mode != null">`d_statement_receive_mode` = #{dStatementReceiveMode},</if>
+			<if test="unit_trusts_experience != null">`unit_trusts_experience` = #{unitTrustsExperience},</if>
+			<if test="otherProductsExperience != null">`otherProductsExperience` = #{other_products_experience},</if>
+			<if test="otherProductsName != null">`otherProductsName` = #{otherProductsName},</if>
+			<if test="other_products_name != null">`other_products_name` = #{otherProductsName},</if>
+			<if test="options_experience != null">`options_experience` = #{optionsExperience},</if>
+			<if test="trade_stock_frequency != null">`trade_stock_frequency` = #{tradeStockFrequency},</if>
+			<if test="trade_warrants_frequency != null">`trade_warrants_frequency` = #{tradeWarrantsFrequency},</if>
+			<if test="trade_options_frequency != null">`trade_options_frequency` = #{tradeOptionsFrequency},</if>
+			<if test="trade_futures_frequency != null">`trade_futures_frequency` = #{tradeFuturesFrequency},</if>
+			<if test="trade_unit_trusts_frequency != null">`trade_unit_trusts_frequency` = #{tradeUnitTrustsFrequency},</if>
+			<if test="trade_other_products_frequency != null">`trade_other_products_frequency` = #{tradeOtherProductsFrequency},</if>
+			<if test="is_agree_collect_personal_info != null">`is_agree_collect_personal_info` = #{isAgreeCollectPersonalInfo}</if>
         </set>
         where application_id = #{applicationId}
     </update>
@@ -736,7 +833,27 @@
             <if test="otherNationality != null">`other_nationality` = #{otherNationality},</if>
 			<if test="otherContactRepublic != null">`other_contact_republic` = #{otherContactRepublic},</if>
 			<if test="otherCompanyRepublic != null">`other_company_republic` = #{otherCompanyRepublic},</if>
-			<if test="otherFamilyRepublic != null">`other_family_republic` = #{otherFamilyRepublic}</if>
+			<if test="otherFamilyRepublic != null">`other_family_republic` = #{otherFamilyRepublic},</if>
+			<if test="lan != null">`lan` = #{lan},</if>
+			<if test="account_type != null">`account_type` = #{accountType},</if>
+			<if test="home_phone != null">`home_phone` = #{homePhone},</if>
+			<if test="education_level != null">`education_level` = #{educationLevel},</if>
+			<if test="working_seniority != null">`working_seniority` = #{workingSeniority},</if>
+			<if test="office_phone != null">`office_phone` = #{officePhone},</if>
+			<if test="is_bankrupted != null">`is_bankrupted` = #{isBankrupted},</if>
+			<if test="d_statement_receive_mode != null">`d_statement_receive_mode` = #{dStatementReceiveMode},</if>
+			<if test="unit_trusts_experience != null">`unit_trusts_experience` = #{unitTrustsExperience},</if>
+			<if test="otherProductsExperience != null">`otherProductsExperience` = #{other_products_experience},</if>
+			<if test="otherProductsName != null">`otherProductsName` = #{otherProductsName},</if>
+			<if test="other_products_name != null">`other_products_name` = #{otherProductsName},</if>
+			<if test="options_experience != null">`options_experience` = #{optionsExperience},</if>
+			<if test="trade_stock_frequency != null">`trade_stock_frequency` = #{tradeStockFrequency},</if>
+			<if test="trade_warrants_frequency != null">`trade_warrants_frequency` = #{tradeWarrantsFrequency},</if>
+			<if test="trade_options_frequency != null">`trade_options_frequency` = #{tradeOptionsFrequency},</if>
+			<if test="trade_futures_frequency != null">`trade_futures_frequency` = #{tradeFuturesFrequency},</if>
+			<if test="trade_unit_trusts_frequency != null">`trade_unit_trusts_frequency` = #{tradeUnitTrustsFrequency},</if>
+			<if test="trade_other_products_frequency != null">`trade_other_products_frequency` = #{tradeOtherProductsFrequency},</if>
+			<if test="is_agree_collect_personal_info != null">`is_agree_collect_personal_info` = #{isAgreeCollectPersonalInfo}</if>
 		</set>
         where application_id = #{applicationId}
     </update>

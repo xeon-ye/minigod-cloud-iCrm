@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface StkTrdCaleDao extends BaseDao<StkTrdCaleEntity> {
 
-    StkTrdCaleEntity queryByDateAndCode(@Param("normalDate")String normalDate,@Param("regionCode")String regionCode);
+    StkTrdCaleEntity queryByDateAndCode(@Param("normalDate") String normalDate, @Param("regionCode") String regionCode);
 
-    Integer getTrdDayNumByTrdDate(@Param("trdBeginDate")String trdBeginDate, @Param("trdEndDate")String trdEndDate);
+    Integer getTrdDayNumByTrdDate(@Param("trdBeginDate") String trdBeginDate, @Param("trdEndDate") String trdEndDate);
 }

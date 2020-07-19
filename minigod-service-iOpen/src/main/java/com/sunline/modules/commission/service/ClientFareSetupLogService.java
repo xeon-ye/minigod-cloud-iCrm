@@ -19,9 +19,9 @@ public interface ClientFareSetupLogService {
 
 	ClientFareSetupLogEntity queryClientFareInfo(ClientFareSetupLogEntity entity);
 
-    Page<ClientFareSetupLogEntity> queryList(ClientFareSetupLogEntity entity,int pageNum);
+    Page<ClientFareSetupLogEntity> queryList(ClientFareSetupLogEntity entity, int pageNum);
 
-    Page<ClientFareSetupLogEntity> queryAcceptList(ClientFareSetupLogEntity entity,int pageNum);
+    Page<ClientFareSetupLogEntity> queryAcceptList(ClientFareSetupLogEntity entity, int pageNum);
 
     List<ClientFareSetupLogEntity> queryListByBean(ClientFareSetupLogEntity entity);
 	

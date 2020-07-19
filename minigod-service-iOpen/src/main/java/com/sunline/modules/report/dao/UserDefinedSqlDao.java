@@ -22,5 +22,5 @@ public interface UserDefinedSqlDao extends BaseDao<UserDefinedSqlEntity> {
 
 //    public List<LinkedHashMap<String, Object>> selectUserDefinedSqlTest(String defSql);
 
-    public List<LinkedHashMap<String, Object>> selectUserDefinedSql(Map<String,Object> map);
+    public List<LinkedHashMap<String, Object>> selectUserDefinedSql(Map<String, Object> map);
 }

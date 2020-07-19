@@ -1,7 +1,6 @@
 package com.sunline.modules.analysis.controller;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.json.JSONArray;
 import com.google.common.collect.Lists;
 import com.sunline.modules.analysis.entity.ChannelReturnEntity;
 import com.sunline.modules.analysis.entity.ClientTradeFlowInfoEntity;
@@ -18,6 +17,7 @@ import com.sunline.modules.common.entity.StkTrdCaleEntity;
 import com.sunline.modules.common.page.Page;
 import com.sunline.modules.common.service.StkTrdCaleService;
 import com.sunline.modules.common.utils.*;
+import net.sf.json.JSONArray;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -308,7 +308,7 @@ public class ClientTradeFlowInfoController extends BaseController {
             entity.setType("channel_name");
         }
         List<ClientTradeFlowInfoEntity> list = clientTradeFlowInfoService.queryListGroupByParam(entity);
-        JSONArray jsonArray = new JSONArray(list);
+        JSONArray jsonArray = JSONArray.fromObject(list);
         return Result.ok().put("jsonArray", jsonArray);
     }
 

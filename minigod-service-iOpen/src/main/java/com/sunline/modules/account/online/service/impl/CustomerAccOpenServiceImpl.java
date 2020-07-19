@@ -126,15 +126,18 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             }
             customerAccountOpenApplicationEntity.setCurrentNode("提交");
 
+            //客户申请表信息
             count = customerAccOpenApplyService.save(customerAccountOpenApplicationEntity);
 
             if (count > 0) {
+                //客户申请详细表信息
                 customerAccountOpenInfoEntity.setApplicationId(customerAccountOpenApplicationEntity.getApplicationId());
                 customerAccountOpenInfoEntity.setApplicationTime(new Date());
                 count = customerAccOpenInfoService.save(customerAccountOpenInfoEntity);
             }
 
             if (count > 0) {
+                //财产
                 if (customerAccountOpenInfoEntity.getPropertyTypeList() != null && customerAccountOpenInfoEntity.getPropertyTypeList().size() > 0) {
                     for (OpenAccountPropertyTypeEntity propertyType : customerAccountOpenInfoEntity.getPropertyTypeList()) {
                         propertyType.setApplicationId(customerAccountOpenApplicationEntity.getApplicationId());
@@ -147,6 +150,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
 
 
             if (count > 0) {
+                //税务信息
                 if (customerAccountOpenInfoEntity.getTaxationInfoList() != null && customerAccountOpenInfoEntity.getTaxationInfoList().size() > 0) {
                     for (OpenAccountTaxationInfoEntity taxationInfo : customerAccountOpenInfoEntity.getTaxationInfoList()) {
                         taxationInfo.setApplicationId(customerAccountOpenApplicationEntity.getApplicationId());
@@ -158,6 +162,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             }
 
             if (count > 0) {
+                //四要素
                 if (customerAccountOpenInfoEntity.getOpenAccountBankVerityList() != null && customerAccountOpenInfoEntity.getOpenAccountBankVerityList().size() > 0) {
                     for (OpenAccountBankVerityInfoEntity bankVerityInfo : customerAccountOpenInfoEntity.getOpenAccountBankVerityList()) {
                         bankVerityInfo.setApplicationId(customerAccountOpenApplicationEntity.getApplicationId());
@@ -167,6 +172,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             }
 
             if (count > 0) {
+                //其他信息
                 if (customerAccountOpenInfoEntity.getOtherDisclosureList() != null && customerAccountOpenInfoEntity.getOtherDisclosureList().size() > 0) {
                     for (OpenAccountOtherDisclosureEntity otherDisclosure : customerAccountOpenInfoEntity.getOtherDisclosureList()) {
                         otherDisclosure.setApplicationId(customerAccountOpenApplicationEntity.getApplicationId());

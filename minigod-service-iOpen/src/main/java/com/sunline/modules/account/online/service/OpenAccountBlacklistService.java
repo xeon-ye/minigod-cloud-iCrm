@@ -39,6 +39,6 @@ public interface OpenAccountBlacklistService {
     /*
      * 通过账户表保存黑名单
      */
-    int saveByCustomerAccountOpenInfo(OpenAccountBlacklistEntity openAccountBlacklist,CustomerAccountOpenInfoEntity customerAccountOpenInfo);
+    int saveByCustomerAccountOpenInfo(OpenAccountBlacklistEntity openAccountBlacklist, CustomerAccountOpenInfoEntity customerAccountOpenInfo);
 
 }

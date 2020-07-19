@@ -92,7 +92,7 @@ public interface UserChannelInfoDao extends BaseDao<UserChannelInfoEntity> {
     /**
      * 根据渠道号查询 授权了该渠道的角色
      */
-    List<String>  queryRoleIdsByChannelId (String channelId);
+    List<String>  queryRoleIdsByChannelId(String channelId);
 
     /**
      * 授权新增渠道给指定角色

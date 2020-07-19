@@ -1,4 +1,4 @@
-//package com.sunline.config;
+package com.sunline.config;//package com.sunline.config;
 //
 //import com.sunline.modules.common.page.PageHelper;
 //import org.springframework.context.annotation.Bean;

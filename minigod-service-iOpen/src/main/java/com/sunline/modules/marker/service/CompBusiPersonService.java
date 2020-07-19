@@ -39,5 +39,5 @@ public interface CompBusiPersonService {
      * @param compBusiPersonEntity
      * @return
      */
-    List<CompBusiPersonEntity> comBusPerListExcelList (CompBusiPersonEntity compBusiPersonEntity);
+    List<CompBusiPersonEntity> comBusPerListExcelList(CompBusiPersonEntity compBusiPersonEntity);
 }

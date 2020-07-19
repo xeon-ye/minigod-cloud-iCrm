@@ -1,13 +1,13 @@
 package com.sunline.modules.analysis.controller;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.json.JSONArray;
 import com.sunline.modules.analysis.entity.ClienIncomeCountEntity;
 import com.sunline.modules.analysis.service.ClienIncomeCountService;
 import com.sunline.modules.common.common.Constant;
 import com.sunline.modules.common.controller.BaseController;
 import com.sunline.modules.common.utils.Result;
 import com.sunline.modules.common.utils.SumDateUtil;
+import net.sf.json.JSONArray;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,7 +99,7 @@ public class ClienIncomeCountController extends BaseController {
         }else if("day".equals(cale)){
             list = clienIncomeCountService.queryDataDay(entity);
         }
-        JSONArray jsonArray = new JSONArray(list);
+        JSONArray jsonArray = JSONArray.fromObject(list);
         return Result.ok().put("jsonArray", jsonArray).put("cale","month");
     }
 

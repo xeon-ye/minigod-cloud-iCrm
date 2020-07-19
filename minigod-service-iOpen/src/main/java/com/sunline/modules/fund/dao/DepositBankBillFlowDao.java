@@ -19,7 +19,7 @@ public interface DepositBankBillFlowDao extends BaseDao<DepositBankBillFlowEntit
 
     List<DepositBankBillFlowEntity> queryRepeatBankBill(DepositBankBillFlowEntity entity);
 
-    int updateRepeat(@Param("id")long id,@Param("repeat")int repeat);
+    int updateRepeat(@Param("id") long id, @Param("repeat") int repeat);
 
     /**
      * 更新指定审核人

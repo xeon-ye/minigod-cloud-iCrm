@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public interface CallRecordService {
 
-    Page<CallRecordEntity> findPage(CallRecordEntity entity,int pageNum);
+    Page<CallRecordEntity> findPage(CallRecordEntity entity, int pageNum);
 
 	CallRecordEntity queryObject(Long id);
 	

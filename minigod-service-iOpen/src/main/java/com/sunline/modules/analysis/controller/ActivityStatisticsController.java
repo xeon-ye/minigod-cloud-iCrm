@@ -69,7 +69,7 @@ public class ActivityStatisticsController extends BaseController {
             activityStatisticsEntity.setChannelIds(getChannelIds());
         }
 
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(activityStatisticsEntity.getCheckedChannelId())) {
+        if (StringUtils.isNotBlank(activityStatisticsEntity.getCheckedChannelId())) {
             List<String> checkedChannelIds = ChannelUtil.getCheckedChannelIds(activityStatisticsEntity.getCheckedChannelId());
             if (checkedChannelIds != null && checkedChannelIds.size() > 0) {
                 activityStatisticsEntity.setCheckedChannelIds(checkedChannelIds);
@@ -124,7 +124,7 @@ public class ActivityStatisticsController extends BaseController {
                 activityStatisticsEntity.setChannelIds(getChannelIds());
             }
 
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(activityStatisticsEntity.getCheckedChannelId())) {
+            if (StringUtils.isNotBlank(activityStatisticsEntity.getCheckedChannelId())) {
                 List<String> checkedChannelIds = ChannelUtil.getCheckedChannelIds(activityStatisticsEntity.getCheckedChannelId());
                 if (checkedChannelIds != null && checkedChannelIds.size() > 0) {
                     activityStatisticsEntity.setCheckedChannelIds(checkedChannelIds);

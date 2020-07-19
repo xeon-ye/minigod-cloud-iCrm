@@ -26,5 +26,5 @@ public interface CustomerAccountOpenImageDao extends BaseDao<CustomerAccountOpen
      * @param customerAccountOpenImgEntity
      * @return
      */
-    int deleteByApplicationId (CustomerAccountOpenImgEntity customerAccountOpenImgEntity);
+    int deleteByApplicationId(CustomerAccountOpenImgEntity customerAccountOpenImgEntity);
 }

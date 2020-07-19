@@ -1,7 +1,6 @@
 package com.sunline.modules.analysis.controller;
 
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.json.JSONArray;
 import com.google.common.collect.Lists;
 import com.sunline.modules.analysis.entity.ClientAssetFlowInfoEntity;
 import com.sunline.modules.analysis.entity.ClientFundCountEntity;
@@ -21,6 +20,7 @@ import com.sunline.modules.common.utils.Result;
 import com.sunline.modules.common.utils.Utils;
 import com.sunline.modules.customer.entity.SecuritiesUserInfoEntity;
 import com.sunline.modules.customer.service.SecUserInfoService;
+import net.sf.json.JSONArray;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -308,7 +308,7 @@ public class ClientAssetFlowInfoController extends BaseController {
 
         try {
             List<ClientFundCountEntity> list = clientAssetFlowInfoService.getClientFundCountGraphic(entity);
-            JSONArray jsonArray = new JSONArray(list);
+            JSONArray jsonArray = JSONArray.fromObject(list);
             return Result.ok().put("jsonArray", jsonArray).put("dateType",entity.getDateType());
         } catch (Exception e) {
             logger.error("资金查询出现异常", e);

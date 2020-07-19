@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ProcessInstanceDiagramLayoutResource extends com.sunline.modules.activiti.org.activiti.rest.diagram.services.BaseProcessDefinitionDiagramLayoutResource {
+public class ProcessInstanceDiagramLayoutResource extends BaseProcessDefinitionDiagramLayoutResource {
 
   @RequestMapping(value="/process-instance/{processInstanceId}/diagram-layout", method = RequestMethod.GET, produces = "application/json")
   public ObjectNode getDiagram(@PathVariable String processInstanceId) {

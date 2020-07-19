@@ -98,7 +98,7 @@ public interface ClientFundDepositApplicationService {
     /**
      * 查询申请信息
      * */
-    Page<ClientFundDepositApplicationEntity> queryInfoList(ClientFundDepositApplicationEntity entity,int pageNum);
+    Page<ClientFundDepositApplicationEntity> queryInfoList(ClientFundDepositApplicationEntity entity, int pageNum);
 
     /**
      * 查询当前入金申请数量
@@ -114,7 +114,7 @@ public interface ClientFundDepositApplicationService {
      * 查询审核列表
      * 审核列表的排序等与其他审批页面不同，故单独列出
      * */
-    Page<ClientFundDepositApplicationEntity> queryBankCheckList(ClientFundDepositApplicationEntity entity,int pageNum);
+    Page<ClientFundDepositApplicationEntity> queryBankCheckList(ClientFundDepositApplicationEntity entity, int pageNum);
 
     /**
      * 星展跳过凭证处理

@@ -42,7 +42,7 @@ public interface ProfessionalInvestorApplicationService {
 	 * @param currentNode
 	 * @param processTaskDto
 	 */
-	void approveCallback(String currentNode, ProcessTaskDto processTaskDto,Task task);
+	void approveCallback(String currentNode, ProcessTaskDto processTaskDto, Task task);
 
 	/**
 	 * 短信通知生成
@@ -56,7 +56,7 @@ public interface ProfessionalInvestorApplicationService {
 	 * @param content
 	 * @param recipients
 	 */
-	void generateSendEmail(String title, String content,String recipients);
+	void generateSendEmail(String title, String content, String recipients);
 
 	/**
 	 * 更新指定审核人
@@ -90,7 +90,7 @@ public interface ProfessionalInvestorApplicationService {
 	 * @param backReasons
 	 * @return
 	 */
-	boolean terminateApply(ProcessTaskDto processTaskDto, Integer applyStatus,String backReasons);
+	boolean terminateApply(ProcessTaskDto processTaskDto, Integer applyStatus, String backReasons);
 
 	ProfessionalInvestorApplicationEntity queryObject(Long id);
 	

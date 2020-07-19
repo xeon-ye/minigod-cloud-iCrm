@@ -25,7 +25,7 @@ public interface RoleDao extends BaseDao<RoleEntity> {
      * @param userId
      * @return
      */
-    List<RoleEntity> queryByUserId(@Param("userId") String userId,@Param("status") String status);
+    List<RoleEntity> queryByUserId(@Param("userId") String userId, @Param("status") String status);
 
     /**
      * 批量保存组织机构与角色关系表

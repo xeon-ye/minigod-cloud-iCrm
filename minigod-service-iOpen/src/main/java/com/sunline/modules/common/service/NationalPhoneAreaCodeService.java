@@ -16,6 +16,6 @@ public interface NationalPhoneAreaCodeService {
 
     List<NationalPhoneAreaCodeEntity> queryList(NationalPhoneAreaCodeEntity entity);
 
-    int save (NationalPhoneAreaCodeEntity entity);
+    int save(NationalPhoneAreaCodeEntity entity);
 
 }

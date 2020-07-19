@@ -33,7 +33,7 @@ public interface UserChannelInfoService {
 	
 	int delete(Integer id);
 	
-	int deleteBatch(String [] ids);
+	int deleteBatch(String[] ids);
 
     /**
      * 添加渠道时 查询渠道的列表树
@@ -96,7 +96,7 @@ public interface UserChannelInfoService {
     /**
      * 根据渠道号查询 授权了该渠道的角色
      */
-    List<String>  queryRoleIdsByChannelId (String channelId);
+    List<String>  queryRoleIdsByChannelId(String channelId);
 
     /**
      * 授权新增渠道给指定角色

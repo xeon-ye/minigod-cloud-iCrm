@@ -56,7 +56,7 @@ public interface ChannelFareSetupService {
      * @param entity
      * @return
      */
-    ChannelFareSetupEntity queryByParams (ChannelFareSetupEntity entity);
+    ChannelFareSetupEntity queryByParams(ChannelFareSetupEntity entity);
 
     /**
      * 根据渠道号和方案类型修改

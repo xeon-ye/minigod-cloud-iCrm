@@ -13,7 +13,7 @@ import java.util.Map;
 
 public final class BpmCommonEnum {
 
-    private static final Map<Integer, BpmCommonEnum.CodeType> map = Maps.newHashMap();
+    private static final Map<Integer, CodeType> map = Maps.newHashMap();
 
     private BpmCommonEnum() {
     }
@@ -61,7 +61,7 @@ public final class BpmCommonEnum {
         }
 
         public static String getMessage(int code) {
-            BpmCommonEnum.CodeType codeType = map.get(code);
+            CodeType codeType = map.get(code);
             if (codeType == null) {
                 return ERROR_UNKNOWN.getMessage();
             }
@@ -89,7 +89,7 @@ public final class BpmCommonEnum {
         }
 
         public static String getName(int index) {
-            for (BpmCommonEnum.CommonEnum c : BpmCommonEnum.CommonEnum.values()) {
+            for (CommonEnum c : CommonEnum.values()) {
                 if (c.getIndex() == index) {
                     return c.name;
                 }
@@ -126,7 +126,7 @@ public final class BpmCommonEnum {
         }
 
         public static String getName(int index) {
-            for (BpmCommonEnum.YesNo c : BpmCommonEnum.YesNo.values()) {
+            for (YesNo c : YesNo.values()) {
                 if (c.getIndex() == index) {
                     return c.name;
                 }

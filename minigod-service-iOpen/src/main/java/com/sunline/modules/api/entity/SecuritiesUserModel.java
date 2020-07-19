@@ -220,6 +220,63 @@ public class SecuritiesUserModel {
     //大户室号(客户级别1-Common 2-Important 3- VIP 4-PI 5-Capital)
     private Integer roomCode;
 
+    //语言[0=未知 1=英文 2=繁体中文 3=简体中文]
+    private Integer language;
+
+    //账户类型[1、个人账户  2、联名账户   3、公司账户]
+    private Integer accountType;
+
+    //住所电话
+    private String homePhone;
+
+    //教育程度[0、未知  1、小学   2、中学   3、专上学院   4、大学或以上]
+    private Integer educationLevel;
+
+    //从业年限[0、未知  1、1-2年   2、2-5年   3、5-10年   4、>10年]
+    private Integer workingSeniority;
+
+    //办公室电话
+    private String officePhone;
+
+    //你是否曾经破产或被送达要将你破产的申请[0、否   1是]
+    private Integer isBankrupted;
+
+    //日结单及月结单发送方式[0、未知  1、电子邮箱  2、邮寄到住宅地址  3、邮寄到营业地址]
+    private Integer dStatementReceiveMode;
+
+    //单位信托基金/互惠基金[0、未知 1、没有  2、<1年   3、 1-2年   4、>2年]
+    private Integer unitTrustsExperience;
+
+    //其它投资产品 [0、未知  1、<10年  2、10-40年   3、 >40年]
+    private Integer otherProductsExperience;
+
+    //其它投资产品名称
+    private String otherProductsName;
+
+    //期权投资经验 [0、未知 1、没有  2、<1年   3、 1-2年   4、>2年]
+    private Integer optionsExperience;
+
+    //股票交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    private Integer tradeStockFrequency;
+
+    //认股证交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    private Integer tradeWarrantsFrequency;
+
+    //期权交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    private Integer tradeOptionsFrequency;
+
+    //期货交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    private Integer tradeFuturesFrequency;
+
+    //单位信托基金/互惠基金交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    private Integer tradeUnitTrustsFrequency;
+
+    //其它投资产品交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    private Integer tradeOtherProductsFrequency;
+
+    //是否同意收集个人资料 [0、不同意    1、同意]
+    private Integer isAgreeCollectPersonalInfo;
+
     /**
      * 设置：主键ID
      */
@@ -1283,6 +1340,158 @@ public class SecuritiesUserModel {
 
     public void setFreelanceOther(String freelanceOther) {
         this.freelanceOther = freelanceOther;
+    }
+
+    public Integer getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Integer language) {
+        this.language = language;
+    }
+
+    public Integer getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(Integer accountType) {
+        this.accountType = accountType;
+    }
+
+    public String getHomePhone() {
+        return homePhone;
+    }
+
+    public void setHomePhone(String homePhone) {
+        this.homePhone = homePhone;
+    }
+
+    public Integer getEducationLevel() {
+        return educationLevel;
+    }
+
+    public void setEducationLevel(Integer educationLevel) {
+        this.educationLevel = educationLevel;
+    }
+
+    public Integer getWorkingSeniority() {
+        return workingSeniority;
+    }
+
+    public void setWorkingSeniority(Integer workingSeniority) {
+        this.workingSeniority = workingSeniority;
+    }
+
+    public String getOfficePhone() {
+        return officePhone;
+    }
+
+    public void setOfficePhone(String officePhone) {
+        this.officePhone = officePhone;
+    }
+
+    public Integer getIsBankrupted() {
+        return isBankrupted;
+    }
+
+    public void setIsBankrupted(Integer isBankrupted) {
+        this.isBankrupted = isBankrupted;
+    }
+
+    public Integer getdStatementReceiveMode() {
+        return dStatementReceiveMode;
+    }
+
+    public void setdStatementReceiveMode(Integer dStatementReceiveMode) {
+        this.dStatementReceiveMode = dStatementReceiveMode;
+    }
+
+    public Integer getUnitTrustsExperience() {
+        return unitTrustsExperience;
+    }
+
+    public void setUnitTrustsExperience(Integer unitTrustsExperience) {
+        this.unitTrustsExperience = unitTrustsExperience;
+    }
+
+    public Integer getOtherProductsExperience() {
+        return otherProductsExperience;
+    }
+
+    public void setOtherProductsExperience(Integer otherProductsExperience) {
+        this.otherProductsExperience = otherProductsExperience;
+    }
+
+    public String getOtherProductsName() {
+        return otherProductsName;
+    }
+
+    public void setOtherProductsName(String otherProductsName) {
+        this.otherProductsName = otherProductsName;
+    }
+
+    public Integer getOptionsExperience() {
+        return optionsExperience;
+    }
+
+    public void setOptionsExperience(Integer optionsExperience) {
+        this.optionsExperience = optionsExperience;
+    }
+
+    public Integer getTradeStockFrequency() {
+        return tradeStockFrequency;
+    }
+
+    public void setTradeStockFrequency(Integer tradeStockFrequency) {
+        this.tradeStockFrequency = tradeStockFrequency;
+    }
+
+    public Integer getTradeWarrantsFrequency() {
+        return tradeWarrantsFrequency;
+    }
+
+    public void setTradeWarrantsFrequency(Integer tradeWarrantsFrequency) {
+        this.tradeWarrantsFrequency = tradeWarrantsFrequency;
+    }
+
+    public Integer getTradeOptionsFrequency() {
+        return tradeOptionsFrequency;
+    }
+
+    public void setTradeOptionsFrequency(Integer tradeOptionsFrequency) {
+        this.tradeOptionsFrequency = tradeOptionsFrequency;
+    }
+
+    public Integer getTradeFuturesFrequency() {
+        return tradeFuturesFrequency;
+    }
+
+    public void setTradeFuturesFrequency(Integer tradeFuturesFrequency) {
+        this.tradeFuturesFrequency = tradeFuturesFrequency;
+    }
+
+    public Integer getTradeUnitTrustsFrequency() {
+        return tradeUnitTrustsFrequency;
+    }
+
+    public void setTradeUnitTrustsFrequency(Integer tradeUnitTrustsFrequency) {
+        this.tradeUnitTrustsFrequency = tradeUnitTrustsFrequency;
+    }
+
+    public Integer getTradeOtherProductsFrequency() {
+        return tradeOtherProductsFrequency;
+    }
+
+    public void setTradeOtherProductsFrequency(Integer tradeOtherProductsFrequency) {
+        this.tradeOtherProductsFrequency = tradeOtherProductsFrequency;
+    }
+
+    public Integer getIsAgreeCollectPersonalInfo() {
+        return isAgreeCollectPersonalInfo;
+    }
+
+    public void setIsAgreeCollectPersonalInfo(Integer isAgreeCollectPersonalInfo) {
+        this.isAgreeCollectPersonalInfo = isAgreeCollectPersonalInfo;
     }
 }
 

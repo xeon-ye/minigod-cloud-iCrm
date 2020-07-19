@@ -1,6 +1,5 @@
 package com.sunline.modules.stock.controller;
 
-import cn.hutool.json.JSONObject;
 import com.sunline.modules.common.common.CrmCommonEnum;
 import com.sunline.modules.common.controller.BaseController;
 import com.sunline.modules.common.page.Page;
@@ -23,6 +22,7 @@ import com.sunline.modules.stock.service.StockOrderInfoService;
 import com.sunline.modules.stock.utils.StockUtils;
 import com.sunline.modules.sys.entity.NoticeEntity;
 import com.sunline.modules.sys.service.UserService;
+import net.sf.json.JSONObject;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -206,7 +206,7 @@ public class StockOrderInfoController extends BaseController {
         ResponseVO stockInfoResponseVo = HsStockManageService.getStockInfo(clientFareInfoProtoRequest);
 
         if(fundTotalResponseVo.getCode() == CrmCommonEnum.CodeType.OK.getCode()){
-            HsFundEntity stockAsset = (HsFundEntity) new JSONObject(fundTotalResponseVo.getResult()).toBean( HsFundEntity.class);
+            HsFundEntity stockAsset = (HsFundEntity) JSONObject.toBean(JSONObject.fromObject(fundTotalResponseVo.getResult()), HsFundEntity.class);
             model.addAttribute("stockAsset",stockAsset);
         }else{
             model.addAttribute("fundTotalMsg",fundTotalResponseVo.getMessage());

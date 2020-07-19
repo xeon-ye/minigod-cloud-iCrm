@@ -50,7 +50,7 @@ public interface ClientGroupMemberInfoService {
      */
     int deleteAll(Integer id);
 
-    List<ClientGroupMemberInfoEntity> clientGroupExpExcelList (ClientGroupMemberInfoEntity clientGroupMemberInfoEntity);
+    List<ClientGroupMemberInfoEntity> clientGroupExpExcelList(ClientGroupMemberInfoEntity clientGroupMemberInfoEntity);
 
     List<ClientGroupMemberInfoEntity>  selectRepeat();
 

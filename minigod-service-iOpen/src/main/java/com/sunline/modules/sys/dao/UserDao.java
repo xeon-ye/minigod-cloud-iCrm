@@ -35,14 +35,14 @@ public interface UserDao extends BaseDao<UserEntity> {
      * @param type 结点类型：0=根节点 ，1=机构，2=部门 具体见:Constant 类
      * @return key:organId 组织id key:roleId 角色id
      */
-    List<Map<String,Object>> queryOrganIdByUserId(@Param("userId")String userId, @Param("type") String type);
+    List<Map<String,Object>> queryOrganIdByUserId(@Param("userId") String userId, @Param("type") String type);
 
     /**
      * 用户对应的机构id,数据权限控制
      * @param userId
      * @param type 结点类型：0=根节点 ，1=机构，2=部门 具体见:Constant 类
      */
-    List<String> queryOrganIdByUserIdArray(@Param("userId") String userId,@Param("type") String type);
+    List<String> queryOrganIdByUserIdArray(@Param("userId") String userId, @Param("type") String type);
 
     /**
      * 查询授权渠道
@@ -85,6 +85,6 @@ public interface UserDao extends BaseDao<UserEntity> {
      * @param id
      * @return
      */
-    List<String> queryRoleName(@Param("id")String id);
+    List<String> queryRoleName(@Param("id") String id);
 
 }

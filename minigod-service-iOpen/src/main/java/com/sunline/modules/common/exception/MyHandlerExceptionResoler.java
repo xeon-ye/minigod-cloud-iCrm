@@ -89,7 +89,7 @@ public class MyHandlerExceptionResoler implements HandlerExceptionResolver {
 
             // 打印堆栈日志到日志文件中
             ByteArrayOutputStream buf = new ByteArrayOutputStream();
-            e.printStackTrace(new java.io.PrintWriter(buf, true));
+            e.printStackTrace(new PrintWriter(buf, true));
             String expMessage = buf.toString();
             try {
                 buf.close();

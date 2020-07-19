@@ -108,6 +108,6 @@ public interface UserService {
      * @param id
      * @return
      */
-	List<String> queryRoleName (String id);
+	List<String> queryRoleName(String id);
 
 }
