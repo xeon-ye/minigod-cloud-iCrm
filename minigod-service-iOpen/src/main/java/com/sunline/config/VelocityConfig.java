@@ -1,10 +1,10 @@
 package com.sunline.config;
 
 import com.google.common.collect.Maps;
+import com.sunline.velocity.VelocityConfigurer;
+import com.sunline.velocity.VelocityViewResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.view.velocity.VelocityConfigurer;
-import org.springframework.web.servlet.view.velocity.VelocityViewResolver;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -3,7 +3,8 @@ package com.sunline.modules.common.controller;
 
 import com.sunline.modules.common.utils.UserUtils;
 import com.sunline.modules.sys.entity.UserEntity;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class BaseController {
 
-    private Logger logger = Logger.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 获取当前登录用户

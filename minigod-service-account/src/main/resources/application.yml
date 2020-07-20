@@ -8,5 +8,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 
 server:
-  context-path: /account
   port: 8001
+  servlet:
+    context-path: /account
+debug: true

@@ -324,7 +324,7 @@ public class ClientGroupMemberInfoController extends BaseController {
             dataMap.put("varList", varList);
             // 执行excel操作
             ObjectExcelView erv = new ObjectExcelView();
-            mv = new ModelAndView(erv, dataMap);
+            mv = new ModelAndView(String.valueOf(erv), dataMap);
         } catch (Exception e) {
             logger.error("导出Excel文件异常", e);
         }
@@ -378,7 +378,7 @@ public class ClientGroupMemberInfoController extends BaseController {
             dataMap.put("varList", varList);
             // 执行excel操作
             ObjectExcelView erv = new ObjectExcelView();
-            mv = new ModelAndView(erv, dataMap);
+            mv = new ModelAndView(String.valueOf(erv), dataMap);
         } catch (Exception e) {
             logger.error("导出Excel文件异常", e);
         }

@@ -1638,7 +1638,7 @@
              * @returns {jsPDF}
              * @methodOf jsPDF#
              * @name lstext
-             * @deprecated We'll be removing this function. It doesn't take character width into account.
+             *  We'll be removing this function. It doesn't take character width into account.
              */
             API.lstext = function (text, x, y, spacing) {
                 console.warn('jsPDF.lstext is deprecated');
@@ -4039,7 +4039,7 @@ Q\n";
          * NOTE: Every parameter is optional except 'element' and 'callback', in such
          *       case the image is positioned at 0x0 covering the whole PDF document
          *       size. Ie, to easily take screenshots of webpages saving them to PDF.
-         * @deprecated This is being replace with a vector-supporting API. See
+         *  This is being replace with a vector-supporting API. See
          * [this link](https://cdn.rawgit.com/MrRio/jsPDF/master/examples/html2pdf/showcase_supported_html.html)
          */
 

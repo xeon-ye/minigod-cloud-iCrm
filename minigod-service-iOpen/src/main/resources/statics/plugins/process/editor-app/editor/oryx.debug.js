@@ -16148,7 +16148,7 @@ ORYX.Core.Edge = {
 	},
 	
 	/**
-     *@deprecated Use the .createDocker() Method and set the point via the bounds
+     * Use the .createDocker() Method and set the point via the bounds
      */
     addDocker: function(position, exDocker){
         var lastDocker;

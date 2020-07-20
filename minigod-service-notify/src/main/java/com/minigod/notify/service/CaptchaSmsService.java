@@ -4,7 +4,7 @@ import com.minigod.protocol.notify.enums.CaptchaSmsTypeEnum;
 import com.minigod.protocol.notify.enums.CaptchaValidEnum;
 import com.minigod.protocol.notify.request.params.CaptchaReqParams;
 import com.minigod.protocol.notify.response.CaptchaResVo;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(value = "minigod-service-notify")
 public interface CaptchaSmsService {

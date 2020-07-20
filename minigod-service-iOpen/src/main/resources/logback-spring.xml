@@ -52,6 +52,7 @@
     <!--<appender-ref ref="ROLLING_FILE"/>-->
     <!--</logger>-->
     <logger name="org.activiti" level="DEBUG" />
+    <logger name="org.apache.velocity" level="DEBUG" />
     <!--<logger name="org.activiti" level="DEBUG"/>-->
 
     <!-- 全局，控制台遇到INFO及以上级别就进行输出 -->

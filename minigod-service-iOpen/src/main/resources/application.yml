@@ -1,12 +1,8 @@
 # Tomcat
 server:
-  tomcat:
-    uri-encoding: UTF-8
-    max-threads: 1000
-    min-spare-threads: 30
   port: 7777
-  connection-timeout: 1800
-  context-path: /minigod-service-iOpen
+  servlet:
+    context-path: /minigod-service-iOpen
 
 spring:
   # 环境 dev|test|pro
@@ -14,10 +10,6 @@ spring:
     active: test2
 
   http:
-    multipart:
-      max-file-size: 100MB
-      max-request-size: 100MB
-      enabled: true
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
@@ -36,11 +28,11 @@ spring:
     port: 6380
     #password:       # 密码（默认为空）
     timeout: 6000  # 连接超时时长（毫秒）
-    pool:
-      max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
-      max-wait: -1      # 连接池最大阻塞等待时间（使用负值表示没有限制）
-      max-idle: 10      # 连接池中的最大空闲连接
-      min-idle: 5       # 连接池中的最小空闲连接
+    jedis:
+      pool:
+        max-idle: 1000
+        min-idle: 5
+        max-wait:
 
   #JSP视图解析器
   # 页面默认前缀目录
@@ -48,11 +40,16 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+      enabled: true
 
 # Mybatis配置
 mybatis:
-  mapperLocations: classpath:mapper/**/*.xml
-  configLocation: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/**/*.xml
+  config-location: classpath:mybatis-config.xml
 
 # APP模块
 jwt:
@@ -62,9 +59,7 @@ jwt:
   expire: 604800
   header: token
 
-security:
-  basic:
-    enabled: false
+
 
 # 日志配置
 logging:
@@ -87,3 +82,4 @@ activemq:
     idle-timeout: 30000
     #强制的连接过期时间，与idleTimeout的区别在于：idleTimeout是在连接空闲一段时间失效，而expiryTimeout不管当前连接的情况，只要达到指定时间就失效。默认为0
     expiry-timeout: 0
+debug: true

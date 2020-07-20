@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @date
  */
 @Component
-@ConfigurationProperties(prefix = "spring.datasource.slaveDB")
+@ConfigurationProperties(prefix = "spring.datasource.slave")
 public class SlaveDataSourceProp {
 
     private String defaultDataSourceName = "slaveDataSource";

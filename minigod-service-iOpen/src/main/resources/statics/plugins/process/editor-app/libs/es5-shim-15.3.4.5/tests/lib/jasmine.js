@@ -512,7 +512,7 @@ if (isCommonJS) exports.runs = runs;
 /**
  * Waits a fixed time period before moving to the next block.
  *
- * @deprecated Use waitsFor() instead
+ *  Use waitsFor() instead
  * @param {Number} timeout milliseconds to wait
  */
 var waits = function(timeout) {
@@ -1120,12 +1120,12 @@ jasmine.Matchers = function(env, actual, spec, opt_isNot) {
   this.reportWasCalled_ = false;
 };
 
-// todo: @deprecated as of Jasmine 0.11, remove soon [xw]
+// todo:  as of Jasmine 0.11, remove soon [xw]
 jasmine.Matchers.pp = function(str) {
   throw new Error("jasmine.Matchers.pp() is no longer supported, please use jasmine.pp() instead!");
 };
 
-// todo: @deprecated Deprecated as of Jasmine 0.10. Rewrite your custom matchers to return true or false. [xw]
+// todo:  Deprecated as of Jasmine 0.10. Rewrite your custom matchers to return true or false. [xw]
 jasmine.Matchers.prototype.report = function(result, failing_message, details) {
   throw new Error("As of jasmine 0.11, custom matchers must be implemented differently -- please see jasmine docs");
 };
@@ -1194,7 +1194,7 @@ jasmine.Matchers.prototype.toBe = function(expected) {
 /**
  * toNotBe: compares the actual to the expected using !==
  * @param expected
- * @deprecated as of 1.0. Use not.toBe() instead.
+ *  as of 1.0. Use not.toBe() instead.
  */
 jasmine.Matchers.prototype.toNotBe = function(expected) {
   return this.actual !== expected;
@@ -1212,7 +1212,7 @@ jasmine.Matchers.prototype.toEqual = function(expected) {
 /**
  * toNotEqual: compares the actual to the expected using the ! of jasmine.Matchers.toEqual
  * @param expected
- * @deprecated as of 1.0. Use not.toNotEqual() instead.
+ *  as of 1.0. Use not.toNotEqual() instead.
  */
 jasmine.Matchers.prototype.toNotEqual = function(expected) {
   return !this.env.equals_(this.actual, expected);
@@ -1231,7 +1231,7 @@ jasmine.Matchers.prototype.toMatch = function(expected) {
 /**
  * Matcher that compares the actual to the expected using the boolean inverse of jasmine.Matchers.toMatch
  * @param expected
- * @deprecated as of 1.0. Use not.toMatch() instead.
+ *  as of 1.0. Use not.toMatch() instead.
  */
 jasmine.Matchers.prototype.toNotMatch = function(expected) {
   return !(new RegExp(expected).test(this.actual));
@@ -1296,13 +1296,13 @@ jasmine.Matchers.prototype.toHaveBeenCalled = function() {
   return this.actual.wasCalled;
 };
 
-/** @deprecated Use expect(xxx).toHaveBeenCalled() instead */
+/**  Use expect(xxx).toHaveBeenCalled() instead */
 jasmine.Matchers.prototype.wasCalled = jasmine.Matchers.prototype.toHaveBeenCalled;
 
 /**
  * Matcher that checks to see if the actual, a Jasmine spy, was not called.
  *
- * @deprecated Use expect(xxx).not.toHaveBeenCalled() instead
+ *  Use expect(xxx).not.toHaveBeenCalled() instead
  */
 jasmine.Matchers.prototype.wasNotCalled = function() {
   if (arguments.length > 0) {
@@ -1352,10 +1352,10 @@ jasmine.Matchers.prototype.toHaveBeenCalledWith = function() {
   return this.env.contains_(this.actual.argsForCall, expectedArgs);
 };
 
-/** @deprecated Use expect(xxx).toHaveBeenCalledWith() instead */
+/**  Use expect(xxx).toHaveBeenCalledWith() instead */
 jasmine.Matchers.prototype.wasCalledWith = jasmine.Matchers.prototype.toHaveBeenCalledWith;
 
-/** @deprecated Use expect(xxx).not.toHaveBeenCalledWith() instead */
+/**  Use expect(xxx).not.toHaveBeenCalledWith() instead */
 jasmine.Matchers.prototype.wasNotCalledWith = function() {
   var expectedArgs = jasmine.util.argsToArray(arguments);
   if (!jasmine.isSpy(this.actual)) {
@@ -1385,7 +1385,7 @@ jasmine.Matchers.prototype.toContain = function(expected) {
  * Matcher that checks that the expected item is NOT an element in the actual Array.
  *
  * @param {Object} expected
- * @deprecated as of 1.0. Use not.toNotContain() instead.
+ *  as of 1.0. Use not.toNotContain() instead.
  */
 jasmine.Matchers.prototype.toNotContain = function(expected) {
   return !this.env.contains_(this.actual, expected);
@@ -1969,7 +1969,7 @@ jasmine.Spec.prototype.expect = function(actual) {
 /**
  * Waits a fixed time period before moving to the next block.
  *
- * @deprecated Use waitsFor() instead
+ *  Use waitsFor() instead
  * @param {Number} timeout milliseconds to wait
  */
 jasmine.Spec.prototype.waits = function(timeout) {

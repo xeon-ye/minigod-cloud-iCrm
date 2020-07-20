@@ -1,7 +1,7 @@
 package com.minigod.account.service;
 
 import com.minigod.protocol.account.model.CustomSession;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 
 @FeignClient(value = "minigod-account-service")
 public interface UserCacheService {

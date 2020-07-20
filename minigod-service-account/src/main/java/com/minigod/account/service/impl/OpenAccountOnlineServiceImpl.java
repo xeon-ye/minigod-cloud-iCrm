@@ -1,5 +1,6 @@
 package com.minigod.account.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.minigod.account.helper.CubpOpenInfoHelper;
 import com.minigod.account.utils.SzcaHttpClient;
@@ -37,8 +38,6 @@ import com.minigod.protocol.account.szca.request.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-
-import org.mortbay.util.ajax.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
@@ -563,7 +562,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             Boolean isClearImg = false;
 
             if (openStatusPojo == null || openStatusPojo.getOpenStatus().equals(OpenStatus.ACCOUNT_ABO)) {
-                log.error("开户状态信息异常：cubpOpenInfoCallbackVo" + JSON.toString(cubpOpenInfoCallbackVo));
+                log.error("开户状态信息异常：cubpOpenInfoCallbackVo" + JSON.toJSONString(cubpOpenInfoCallbackVo));
                 throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_ARGS);
             }
 

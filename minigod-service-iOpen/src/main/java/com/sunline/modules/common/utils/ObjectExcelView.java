@@ -3,7 +3,6 @@ package com.sunline.modules.common.utils;
 import cn.hutool.core.date.DateUtil;
 import com.sunline.modules.common.page.PageData;
 import org.apache.poi.hssf.usermodel.*;
-import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,9 +17,8 @@ import java.util.Map;
  * Version: 1.0
  */
 
-public class ObjectExcelView extends AbstractExcelView {
+public class ObjectExcelView {
 
-	@Override
 	protected void buildExcelDocument(Map<String, Object> model,
                                       HSSFWorkbook workbook, HttpServletRequest request,
                                       HttpServletResponse response) throws Exception {

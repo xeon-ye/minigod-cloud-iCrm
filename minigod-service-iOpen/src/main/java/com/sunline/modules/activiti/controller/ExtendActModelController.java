@@ -14,7 +14,8 @@ import com.sunline.modules.sys.service.OrganService;
 import com.sunline.modules.sys.service.RoleService;
 import com.sunline.modules.sys.service.UserService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("act/model")
 public class ExtendActModelController {
-    private Logger log = Logger.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     ExtendActModelerService extendActModelService;

@@ -28,7 +28,6 @@ import java.util.Properties;
 @Configuration
 // 由于引入多数据源，所以让spring事务的aop要在多数据源切换aop的后面
 @EnableTransactionManagement(order = 2)
-@MapperScan(basePackages = {"com.sunline.*.dao"})
 public class MybatisPlusConfig {
 
     @Autowired
@@ -71,7 +70,7 @@ public class MybatisPlusConfig {
      * 单数据源连接池配置
      */
     @Bean
-    @ConditionalOnProperty(prefix = "masterDB", name = "muti-datasource-open", havingValue = "false")
+    @ConditionalOnProperty(prefix = "master", name = "muti-datasource-open", havingValue = "false")
     public DruidDataSource singleDatasource() {
         return masterDataSource();
     }
@@ -80,7 +79,7 @@ public class MybatisPlusConfig {
      * 多数据源连接池配置
      */
     @Bean
-    @ConditionalOnProperty(prefix = "masterDB", name = "muti-datasource-open", havingValue = "true")
+    @ConditionalOnProperty(prefix = "master", name = "muti-datasource-open", havingValue = "true")
     public DynamicDataSource mutiDataSource() {
 
         DruidDataSource masterDataSource = masterDataSource();

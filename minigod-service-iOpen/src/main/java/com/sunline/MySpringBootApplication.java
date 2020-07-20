@@ -1,13 +1,13 @@
 package com.sunline;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ServletComponentScan;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
@@ -20,10 +20,8 @@ import org.springframework.jms.annotation.EnableJms;
  * @version: v1.0
  */
 
-@SpringBootApplication
-@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = "com.sunline")
 @ServletComponentScan
-@ComponentScan({"com.sunline"})
 @ImportResource(locations = {"classpath:captcher-config.xml"})
 @EnableJms
 public class MySpringBootApplication extends SpringBootServletInitializer {
@@ -37,12 +35,5 @@ public class MySpringBootApplication extends SpringBootServletInitializer {
         return builder.sources(MySpringBootApplication.class);
     }
 
-    @Bean
-    public EmbeddedServletContainerCustomizer containerCustomizer() {
-        return container -> {
-            // 单位为S
-            container.setSessionTimeout(1800);
-        };
-    }
 
 }

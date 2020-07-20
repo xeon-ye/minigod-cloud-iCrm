@@ -8,7 +8,7 @@ import com.minigod.protocol.account.szca.request.SzcaCertApplyP10ReqVo;
 import com.minigod.protocol.account.szca.request.SzcaCertDnReqVo;
 import com.minigod.protocol.account.szca.request.SzcaPdfInfoForSignReqVo;
 import com.minigod.protocol.account.szca.request.SzcaSignP7ForPdfReqVo;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.InputStream;

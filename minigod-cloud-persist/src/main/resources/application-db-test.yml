@@ -1,6 +1,6 @@
 spring:
   datasource:
-    driverClassName: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://10.1.2.82:3306/mg_main?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
     username:  root
     password:  minigod@123
@@ -8,3 +8,4 @@ spring:
 # Mybatis配置
 mybatis:
   mapper-locations: classpath*:com/minigod/persist/*/mapper/impl/*.xml
+  type-aliases-package: com.minigod.persist.spring_boot.bean

@@ -6,10 +6,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.apache.poi.ss.usermodel.CellType.*;
@@ -23,8 +24,7 @@ import static org.apache.poi.ss.usermodel.CellType.*;
  */
 public class ObjectExcelRead {
 
-    private static Logger logger = Logger.getLogger(ObjectExcelRead.class);
-    private final static String XLS = "xls";
+    private static final Logger logger = LoggerFactory.getLogger(ObjectExcelRead.class);    private final static String XLS = "xls";
     private final static String XLSX = "xlsx";
 
     /**

@@ -61,6 +61,12 @@
             <artifactId>minigod-service-account</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>29.0-android</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

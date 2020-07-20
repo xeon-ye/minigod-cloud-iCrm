@@ -17,7 +17,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -36,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2017/2/21 0021 下午 6:25
  */
 public class HttpClientUtils {
-    private static final Logger logger = Logger.getLogger(HttpClientUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
     private static final ThreadLocal<Map<String, QNHttpClient>> threadLocal = new ThreadLocal<Map<String, QNHttpClient>>();
 
     /**
@@ -590,7 +591,7 @@ public class HttpClientUtils {
             try {
                 response.getEntity().getContent().close();
             } catch (Exception e) {
-                logger.error(e);
+                logger.error("",e);
             }
         }
     }

@@ -1,9 +1,9 @@
-masterDB:
+master:
   muti-datasource-open: true #是否开启多数据源(true/false)
 spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
-        driverClassName: com.mysql.jdbc.Driver
+        driver-class-name: com.mysql.jdbc.Driver
         druid:
             url: jdbc:mysql://10.1.2.82:3306/wls_cubp?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
             username: root
@@ -32,7 +32,7 @@ spring:
                     config:
                         multi-statement-allow: true
 
-        slaveDB:
+        slave:
             url: jdbc:mysql://10.1.2.82:3306/wls_cubp?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
             username: root
             password: minigod@123
@@ -61,7 +61,7 @@ spring:
             # 合并多个DruidDataSource的监控数据
             useGlobalDataSourceStat: true
 
-        sunlineDB:
+        sunline:
           url: jdbc:mysql://10.1.5.101:3306/sunline?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
           username: root
           password: 9fstockdb

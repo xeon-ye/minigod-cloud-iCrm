@@ -13,7 +13,8 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -32,7 +33,7 @@ import java.util.zip.ZipOutputStream;
 public class GenUtils {
 	//配置信息
 	private final static Configuration config = getConfig();
-	private static Logger log = Logger.getLogger(GenUtils.class);
+	private static Logger logger = LoggerFactory.getLogger(GenUtils.class);
 
 	public static List<String> getTemplates(){
 		List<String> templates = new ArrayList<String>();
@@ -104,7 +105,7 @@ public class GenUtils {
 		
 		//设置velocity资源加载器
 		Properties prop = new Properties();
-		prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");  
+		prop.put("file.resource.loader.class", "org.apache.org.springframework.web.servlet.view.org.springframework.ui.velocity.runtime.resource.loader.ClasspathResourceLoader");
 		Velocity.init(prop);
 		
 		//封装模板数据
@@ -186,7 +187,7 @@ public class GenUtils {
 			BufferedWriter writer  = new BufferedWriter(new OutputStreamWriter(
 					fos,"UTF-8"));
 			tpl.merge(context, writer);
-			log.info("生成文件"+tableEntity.getClassName()+"生成成功！");
+			logger.info("生成文件"+tableEntity.getClassName()+"生成成功！");
 			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();

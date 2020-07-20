@@ -21,8 +21,9 @@ import com.sunline.modules.common.utils.Utils;
 import com.sunline.modules.sys.entity.UserEntity;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
-import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,8 +51,7 @@ import java.util.Set;
 @Controller
 @RequestMapping("act/deal")
 public class ExtendActDealController {
-    private Logger logger = Logger.getLogger(getClass());
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     ExtendActModelerService extendActModelService;
 

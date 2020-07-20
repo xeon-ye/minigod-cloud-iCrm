@@ -1,5 +1,6 @@
 package com.minigod.account.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.common.exception.InternalApiException;
@@ -22,7 +23,6 @@ import com.minigod.account.service.OpenAccountOnlineService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.mortbay.util.ajax.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -81,7 +81,7 @@ public class OpenAccountOnlineHKServiceImpl extends BaseBeanFactory implements O
     public void saveOrUpdateCacheInfoStep(Integer userId, OpenCacheInfoReqParams params) {
         // 参数校验
         if (params == null) {
-            log.error("参数异常: OpenCacheInfoReqParams_HK", JSON.toString(params));
+            log.error("参数异常: OpenCacheInfoReqParams_HK", JSON.toJSONString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -106,7 +106,7 @@ public class OpenAccountOnlineHKServiceImpl extends BaseBeanFactory implements O
     public OpenImgResVo saveOrUpdateImg(Integer userId, OpenImgReqParams params) {
         // 参数校验
         if (userId == null || params == null) {
-            log.error("参数异常: OpenImgResVo_HK", JSON.toString(params));
+            log.error("参数异常: OpenImgResVo_HK", JSON.toJSONString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -157,7 +157,7 @@ public class OpenAccountOnlineHKServiceImpl extends BaseBeanFactory implements O
     public void saveErrorImg(Integer userId, CubpOpenAccountImageInfoReqVo params) {
         // 参数校验
         if (userId == null || params == null) {
-            log.error("saveErrorImg参数异常: OpenImgResVo_HK", JSON.toString(params));
+            log.error("saveErrorImg参数异常: OpenImgResVo_HK", JSON.toJSONString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -202,7 +202,7 @@ public class OpenAccountOnlineHKServiceImpl extends BaseBeanFactory implements O
     public OpenCacheDataResVo getCacheData(Integer userId, OpenCacheDataReqParams params) {
         // 参数校验
         if (params == null) {
-            log.error("参数异常: OpenCacheDataReqParams_HK", JSON.toString(params));
+            log.error("参数异常: OpenCacheDataReqParams_HK", JSON.toJSONString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 

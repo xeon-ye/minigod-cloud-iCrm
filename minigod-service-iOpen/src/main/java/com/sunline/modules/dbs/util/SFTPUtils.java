@@ -12,7 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cn.hutool.core.date.DateUtil;
 
@@ -24,7 +25,7 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
 public class SFTPUtils {
-	private static final Logger logger = Logger.getLogger(SFTPUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(SFTPUtils.class);
 	private static Session session = null;
 	public static ChannelSftp channel = null;
 	private static int ftpPort = 22;

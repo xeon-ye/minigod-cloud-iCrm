@@ -9,7 +9,8 @@ import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.Properties;
 @Intercepts({@Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class,Integer.class }),
         @Signature(type = ResultSetHandler.class, method = "handleResultSets", args = {Statement.class})})
 public class PageHelper implements Interceptor {
-    private static final Logger logger = Logger.getLogger(PageHelper.class);
+    private final Logger logger = LoggerFactory.getLogger(PageHelper.class);
   
     public static final ThreadLocal<Page> localPage = new ThreadLocal<Page>();  
   

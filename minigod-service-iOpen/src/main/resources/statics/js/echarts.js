@@ -3411,7 +3411,7 @@ function fastLerp(normalizedValue, colors, out) {
 }
 
 /**
- * @deprecated
+ * 
  */
 var fastMapToColor = fastLerp;
 
@@ -3458,7 +3458,7 @@ function lerp$1(normalizedValue, colors, fullOutput) {
 }
 
 /**
- * @deprecated
+ * 
  */
 var mapToColor = lerp$1;
 
@@ -6281,7 +6281,7 @@ Style.prototype = {
 
     /**
      * The same as font. Use font please.
-     * @deprecated
+     * 
      * @type {string}
      */
     textFont: null,
@@ -16466,7 +16466,7 @@ function setTextStyle(
 
 /**
  * Set text option in the style.
- * @deprecated
+ * 
  * @param {Object} textStyle
  * @param {module:echarts/model/Model} labelModel
  * @param {string|boolean} defaultColor Default text color.
@@ -23164,7 +23164,7 @@ var SeriesModel = ComponentModel.extend({
 
     /**
      * Use `data.mapDimension(coordDim, true)` instead.
-     * @deprecated
+     * 
      */
     coordDimToDataDim: function (coordDim) {
         return this.getRawData().mapDimension(coordDim, true);
@@ -25430,7 +25430,7 @@ echartsProto.setOption = function (option, notMerge, lazyUpdate) {
 };
 
 /**
- * @DEPRECATED
+ * 
  */
 echartsProto.setTheme = function () {
     console.log('ECharts#setTheme() is DEPRECATED in ECharts 3.0');
@@ -26889,7 +26889,7 @@ function connect(groupId) {
 }
 
 /**
- * @DEPRECATED
+ * 
  * @return {string} groupId
  */
 function disConnect(groupId) {
@@ -29431,7 +29431,7 @@ listProto.CHANGABLE_METHODS = ['filterSelf', 'selectRange'];
 */
 
 /**
- * @deprecated
+ * 
  * Use `echarts/data/helper/createDimensions` instead.
  */
 

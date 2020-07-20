@@ -1,5 +1,6 @@
 package com.minigod.account.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.minigod.account.service.VerifyService;
 import com.minigod.common.exception.InternalApiException;
@@ -28,7 +29,6 @@ import com.minigod.protocol.account.response.VerifyResVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.mortbay.util.ajax.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -87,7 +87,7 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
     public void saveOrUpdateCacheInfoStep(Integer userId, OpenCacheInfoReqParams params) {
         // 参数校验
         if (params == null) {
-            log.error("参数异常: OpenCacheInfoReqParams_CN", JSON.toString(params));
+            log.error("参数异常: OpenCacheInfoReqParams_CN", JSON.toJSONString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
         Integer step = params.getStep();
@@ -111,7 +111,7 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
     public OpenImgResVo saveOrUpdateCnImg(Integer userId, OpenImgReqParams params) {
         // 参数校验
         if (userId == null || params == null) {
-            log.error("参数异常: OpenImgResVo_CN", JSON.toString(params));
+            log.error("参数异常: OpenImgResVo_CN", JSON.toJSONString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -174,7 +174,7 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
     public void saveErrorImg(Integer userId, CubpOpenAccountImageInfoReqVo params) {
         // 参数校验
         if (userId == null || params == null) {
-            log.error("saveErrorImg参数异常: OpenImgResVo_CN", JSON.toString(params));
+            log.error("saveErrorImg参数异常: OpenImgResVo_CN", JSON.toJSONString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -221,7 +221,7 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
 
         // 参数校验
         if (params == null) {
-            log.error("参数异常: OpenCacheDataReqParams_CN", JSON.toString(params));
+            log.error("参数异常: OpenCacheDataReqParams_CN", JSON.toJSONString(params));
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @date
  */
 @Component
-@ConfigurationProperties(prefix = "spring.datasource.sunlineDB")
+@ConfigurationProperties(prefix = "spring.datasource.sunline")
 public class SunlineDataSourceProp {
 
     private String defaultDataSourceName = "sunlineDataSource";

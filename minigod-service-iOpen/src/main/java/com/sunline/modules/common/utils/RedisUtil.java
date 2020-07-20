@@ -1,6 +1,7 @@
 package com.sunline.modules.common.utils;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
@@ -20,8 +21,7 @@ import java.util.Set;
 
 @Component
 public class RedisUtil {
-
-    private Logger logger = Logger.getLogger(RedisUtil.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JedisPool jedisPool;

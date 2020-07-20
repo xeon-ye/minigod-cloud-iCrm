@@ -4,7 +4,8 @@ import com.sunline.modules.common.utils.FileDownload;
 import com.sunline.modules.common.utils.FileUtil;
 import com.sunline.modules.common.utils.ShiroUtils;
 import com.sunline.modules.sys.entity.UserEntity;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +29,7 @@ import java.io.OutputStream;
 @Controller
 public class CommonController {
 
-    private static final Logger logger = Logger.getLogger(CommonController.class);
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     /**
      * 文件下载
      *

@@ -1,6 +1,7 @@
 package com.sunline.config;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @EnableAutoConfiguration
 @ConfigurationProperties(prefix = "spring.redis")
 public class RedisConfig {
-    private static Logger logger = Logger.getLogger(RedisConfig.class);
+    private static Logger logger = LoggerFactory.getLogger(RedisConfig.class);
 
     private String hostName;
 

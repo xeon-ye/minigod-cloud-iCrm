@@ -3,7 +3,8 @@ package com.sunline.modules.common.cache.ehcache;
 import com.google.common.collect.Maps;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Map;
 
 public class CacheHelper extends UCacheManager
 {
-  protected static final Logger log = Logger.getLogger(CacheHelper.class);
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
   protected static Map<String, CacheHelper> helpers = Maps.newHashMap();
   protected Cache cache;
 
