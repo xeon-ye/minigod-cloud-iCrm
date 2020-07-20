@@ -14,5 +14,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         
         http.authorizeRequests()
                 .anyRequest().permitAll().and().logout().permitAll().and().csrf().disable();//配置不需要登录验证
+        http.headers().frameOptions().sameOrigin();
     }
 }
