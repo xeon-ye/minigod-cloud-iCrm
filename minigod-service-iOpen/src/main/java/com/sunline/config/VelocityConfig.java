@@ -26,7 +26,7 @@ public class VelocityConfig {
         viewResolver.setSuffix("");
         viewResolver.setDateToolAttribute("date");
         viewResolver.setNumberToolAttribute("number");
-        viewResolver.setToolboxConfigLocation("WEB-INF/velocity-toolbox.xml");
+        viewResolver.setToolboxConfigLocation("velocity-toolbox.xml");
         viewResolver.setRequestContextAttribute("rc");
         viewResolver.setOrder(1);
         return viewResolver;
