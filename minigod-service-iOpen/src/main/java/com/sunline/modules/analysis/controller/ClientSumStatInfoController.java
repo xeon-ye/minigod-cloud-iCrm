@@ -1,13 +1,13 @@
 package com.sunline.modules.analysis.controller;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.json.JSONArray;
 import com.sunline.modules.analysis.entity.ClientSumStatInfoEntity;
 import com.sunline.modules.analysis.service.ClientSumStatInfoService;
 import com.sunline.modules.common.common.Constant;
 import com.sunline.modules.common.controller.BaseController;
 import com.sunline.modules.common.utils.Result;
 import com.sunline.modules.common.utils.SumDateUtil;
-import net.sf.json.JSONArray;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,7 +138,7 @@ public class ClientSumStatInfoController extends BaseController {
             entity.setType(dataType);
             list = clientSumStatInfoService.queryDataDay(entity);
         }
-        JSONArray jsonArray = JSONArray.fromObject(list);
+        JSONArray jsonArray = new JSONArray(list);
         return Result.ok().put("jsonArray", jsonArray).put("cale", "month");
     }
 }
