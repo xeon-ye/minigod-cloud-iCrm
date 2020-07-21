@@ -22,7 +22,41 @@
     }
 </style>
 <body>
+<div id="div01" v-cloak>
+    <div v-show="!showList" class="panel panel-default">
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">语言</label>
+                <div class="col-xs-9">
+                           <span class="col-sm-12 block input-icon input-icon-right">
+                                <input name="lan" type="radio" value="0" disabled="disabled"
+                                       <c:if test="${customerAccountOpenInfoEntity.accountType==0}">checked</c:if>  />未知
+                                             <input name="lan" type="radio" value="1" disabled="disabled"
+                                                    <c:if test="${customerAccountOpenInfoEntity.accountType==1}">checked</c:if> />英文
+                                            <input name="lan" type="radio" value="2" disabled="disabled"
+                                                   <c:if test="${customerAccountOpenInfoEntity.accountType==2}">checked</c:if> />繁体中文
+                               <input name="lan" type="radio" value="3" disabled="disabled"
+                                      <c:if test="${customerAccountOpenInfoEntity.accountType==3}">checked</c:if> />简体中文
+                            </span>
+                </div>
+            </div>
 
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-3 control-label no-padding-right">账户类型</label>
+                <div class="col-xs-9">
+                               <span class="col-sm-12 block input-icon input-icon-right">
+                                             <input name="accountType" type="radio" value="1" disabled="disabled"
+                                                    <c:if test="${customerAccountOpenInfoEntity.accountType==1}">checked</c:if>  />个人账户
+                                             <input name="accountType" type="radio" value="2" disabled="disabled"
+                                                    <c:if test="${customerAccountOpenInfoEntity.accountType==2}">checked</c:if> />联名账户
+                                            <input name="accountType" type="radio" value="3" disabled="disabled"
+                                                   <c:if test="${customerAccountOpenInfoEntity.accountType==3}">checked</c:if> />公司账户
+                                        </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <%-- 预约信息 Start --%>
 <div id="div1" v-cloak>
     <div v-show="!showList" class="panel panel-default">
