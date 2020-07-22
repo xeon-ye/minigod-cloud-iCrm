@@ -444,10 +444,6 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     @JSONField(name = "tradeOtherProductsFrequency")
     private Integer tradeOtherProductsFrequency;
 
-    //是否同意收集个人资料 [0、不同意    1、同意]
-    @JSONField(name = "isAgreeCollectPersonalInfo")
-    private Integer isAgreeCollectPersonalInfo;
-
     //是否开通期权 [0、不同意    1、同意]
     @JSONField(name = "isOpenOptions")
     private Integer isOpenOptions;
@@ -1318,14 +1314,6 @@ public class AccountOpenApplyProtocol extends BaseParameter {
 
     public void setTradeOtherProductsFrequency(Integer tradeOtherProductsFrequency) {
         this.tradeOtherProductsFrequency = tradeOtherProductsFrequency;
-    }
-
-    public Integer getIsAgreeCollectPersonalInfo() {
-        return isAgreeCollectPersonalInfo;
-    }
-
-    public void setIsAgreeCollectPersonalInfo(Integer isAgreeCollectPersonalInfo) {
-        this.isAgreeCollectPersonalInfo = isAgreeCollectPersonalInfo;
     }
 
     public Integer getIsOpenOptions() {

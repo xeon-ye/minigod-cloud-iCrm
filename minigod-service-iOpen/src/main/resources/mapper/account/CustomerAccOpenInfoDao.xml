@@ -123,7 +123,6 @@
 		<result property="tradeFuturesFrequency" column="trade_futures_frequency"/>
 		<result property="tradeUnitTrustsFrequency" column="trade_unit_trusts_frequency"/>
 		<result property="tradeOtherProductsFrequency" column="trade_other_products_frequency"/>
-		<result property="isAgreeCollectPersonalInfo" column="is_agree_collect_personal_info"/>
 		<result property="isOpenOptions" column="is_open_options"/>
 		<result property="accUsageScenarios" column="acc_usage_scenarios"/>
     </resultMap>
@@ -244,7 +243,6 @@
         trade_futures_frequency,
         trade_unit_trusts_frequency,
         trade_other_products_frequency,
-        is_agree_collect_personal_info,
         is_open_options,
         acc_usage_scenarios
     </sql>
@@ -463,7 +461,6 @@
             `trade_futures_frequency`,
             `trade_unit_trusts_frequency`,
             `trade_other_products_frequency`,
-            `is_agree_collect_personal_info`,
             `is_open_options`,
             `acc_usage_scenarios`
 		)
@@ -581,7 +578,6 @@
 			#{tradeFuturesFrequency},
 			#{tradeUnitTrustsFrequency},
 			#{tradeOtherProductsFrequency},
-			#{isAgreeCollectPersonalInfo},
 			#{isOpenOptions},
 			#{accUsageScenarios}
 		)
@@ -728,7 +724,6 @@
 			<if test="trade_futures_frequency != null">`trade_futures_frequency` = #{tradeFuturesFrequency},</if>
 			<if test="trade_unit_trusts_frequency != null">`trade_unit_trusts_frequency` = #{tradeUnitTrustsFrequency},</if>
 			<if test="trade_other_products_frequency != null">`trade_other_products_frequency` = #{tradeOtherProductsFrequency},</if>
-			<if test="is_agree_collect_personal_info != null">`is_agree_collect_personal_info` = #{isAgreeCollectPersonalInfo},</if>
 			<if test="is_open_options != null">`is_open_options` = #{isOpenOptions},</if>
 			<if test="acc_usage_scenarios != null">`acc_usage_scenarios` = #{accUsageScenarios}</if>
         </set>
@@ -863,7 +858,6 @@
 			<if test="trade_futures_frequency != null">`trade_futures_frequency` = #{tradeFuturesFrequency},</if>
 			<if test="trade_unit_trusts_frequency != null">`trade_unit_trusts_frequency` = #{tradeUnitTrustsFrequency},</if>
 			<if test="trade_other_products_frequency != null">`trade_other_products_frequency` = #{tradeOtherProductsFrequency},</if>
-			<if test="is_agree_collect_personal_info != null">`is_agree_collect_personal_info` = #{isAgreeCollectPersonalInfo},</if>
 			<if test="is_open_options != null">`is_open_options` = #{isOpenOptions},</if>
 			<if test="acc_usage_scenarios != null">`acc_usage_scenarios` = #{accUsageScenarios}</if>
 		</set>

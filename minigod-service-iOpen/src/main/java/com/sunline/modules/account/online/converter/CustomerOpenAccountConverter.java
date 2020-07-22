@@ -150,7 +150,6 @@ public class CustomerOpenAccountConverter {
         model.setTradeFuturesFrequency(entity.getTradeFuturesFrequency());
         model.setTradeUnitTrustsFrequency(entity.getTradeUnitTrustsFrequency());
         model.setTradeOtherProductsFrequency(entity.getTradeOtherProductsFrequency());
-        model.setIsAgreeCollectPersonalInfo(entity.getIsAgreeCollectPersonalInfo());
         model.setIsOpenOptions(entity.getIsOpenOptions());
         model.setAccUsageScenarios(entity.getAccUsageScenarios());
 
@@ -281,7 +280,6 @@ public class CustomerOpenAccountConverter {
         entity.setTradeFuturesFrequency(model.getTradeFuturesFrequency());
         entity.setTradeUnitTrustsFrequency(model.getTradeUnitTrustsFrequency());
         entity.setTradeOtherProductsFrequency(model.getTradeOtherProductsFrequency());
-        entity.setIsAgreeCollectPersonalInfo(model.getIsAgreeCollectPersonalInfo());
         entity.setIsOpenOptions(model.getIsOpenOptions());
         entity.setAccUsageScenarios(model.getAccUsageScenarios());
 
@@ -614,7 +612,6 @@ public class CustomerOpenAccountConverter {
         customerAccountOpenInfoEntity.setTradeFuturesFrequency(accountOpenApplicationprotocol.getTradeFuturesFrequency());
         customerAccountOpenInfoEntity.setTradeUnitTrustsFrequency(accountOpenApplicationprotocol.getTradeUnitTrustsFrequency());
         customerAccountOpenInfoEntity.setTradeOtherProductsFrequency(accountOpenApplicationprotocol.getTradeOtherProductsFrequency());
-        customerAccountOpenInfoEntity.setIsAgreeCollectPersonalInfo(accountOpenApplicationprotocol.getIsAgreeCollectPersonalInfo());
         customerAccountOpenInfoEntity.setIsOpenOptions(accountOpenApplicationprotocol.getIsOpenOptions());
         customerAccountOpenInfoEntity.setAccUsageScenarios(accountOpenApplicationprotocol.getAccUsageScenarios());
 
@@ -794,7 +791,6 @@ public class CustomerOpenAccountConverter {
         securitiesUserModel.setTradeFuturesFrequency(entity.getTradeFuturesFrequency());
         securitiesUserModel.setTradeUnitTrustsFrequency(entity.getTradeUnitTrustsFrequency());
         securitiesUserModel.setTradeOtherProductsFrequency(entity.getTradeOtherProductsFrequency());
-        securitiesUserModel.setIsAgreeCollectPersonalInfo(entity.getIsAgreeCollectPersonalInfo());
         securitiesUserModel.setIsOpenOptions(entity.getIsOpenOptions());
         securitiesUserModel.setAccUsageScenarios(entity.getAccUsageScenarios());
 

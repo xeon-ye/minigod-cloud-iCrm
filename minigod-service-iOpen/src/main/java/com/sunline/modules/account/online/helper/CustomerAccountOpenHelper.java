@@ -714,13 +714,6 @@ public class CustomerAccountOpenHelper {
             }
         }
 
-        if (null == openAccountInfo.getIsAgreeCollectPersonalInfo()) {
-            logger.error("【开户预约接口数据完整性校验】：请填写是否同意收集个人资料");
-            responseVO.setCode(-1);
-            responseVO.setMessage("请填写是否同意收集个人资料");
-            return responseVO;
-        }
-
         if (null == openAccountInfo.getIsOpenOptions()){
             logger.error("【开户预约接口数据完整性校验】：请填写开通期权");
             responseVO.setCode(-1);

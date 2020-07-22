@@ -299,9 +299,6 @@ public class CustomerAccOpenInfoModel {
     //其它投资产品交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
     private Integer tradeOtherProductsFrequency;
 
-    //是否同意收集个人资料 [0、不同意    1、同意]
-    private Integer isAgreeCollectPersonalInfo;
-
     //是否开通期权 [0、不同意    1、同意]
     private Integer isOpenOptions;
 
@@ -1274,14 +1271,6 @@ public class CustomerAccOpenInfoModel {
 
     public void setTradeOtherProductsFrequency(Integer tradeOtherProductsFrequency) {
         this.tradeOtherProductsFrequency = tradeOtherProductsFrequency;
-    }
-
-    public Integer getIsAgreeCollectPersonalInfo() {
-        return isAgreeCollectPersonalInfo;
-    }
-
-    public void setIsAgreeCollectPersonalInfo(Integer isAgreeCollectPersonalInfo) {
-        this.isAgreeCollectPersonalInfo = isAgreeCollectPersonalInfo;
     }
 
     public Integer getIsOpenOptions() {

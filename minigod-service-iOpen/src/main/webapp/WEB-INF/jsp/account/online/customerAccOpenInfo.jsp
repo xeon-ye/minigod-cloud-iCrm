@@ -320,19 +320,6 @@
         </div>
         <div class="row">
             <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">是否同意收集个人资料</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="isAgreeCollectPersonalInfo" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.isAgreeCollectPersonalInfo==0}">checked</c:if>  />不同意
-                            <input name="isAgreeCollectPersonalInfo" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.isAgreeCollectPersonalInfo==1}">checked</c:if>  />同意
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
                 <label class="col-sm-2 control-label no-padding-right">是否开通期权</label>
                 <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
