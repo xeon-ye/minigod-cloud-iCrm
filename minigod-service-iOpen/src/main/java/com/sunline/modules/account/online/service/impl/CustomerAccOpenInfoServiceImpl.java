@@ -1,23 +1,13 @@
 package com.sunline.modules.account.online.service.impl;
 
-import com.google.common.collect.Lists;
 import com.sunline.modules.account.online.dao.CustomerAccountOpenInfoDao;
-import com.sunline.modules.account.online.entity.CustomerAccountOpenApplyEntity;
 import com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity;
-import com.sunline.modules.account.online.entity.OpenAccountProcessLogEntity;
-import com.sunline.modules.account.online.protocol.AccountOpenApplyCallBackProtocol;
 import com.sunline.modules.account.online.service.CustomerAccOpenInfoService;
-import com.sunline.modules.activiti.dto.ProcessTaskDto;
 import com.sunline.modules.common.common.BpmCommonEnum;
-import com.sunline.modules.common.utils.UserUtils;
-import com.sunline.modules.sys.entity.UserEntity;
 import com.sunline.mutidatasource.DataSourceContextHolder;
 import com.sunline.mutidatasource.constant.DataSourceEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import org.springframework.util.LinkedCaseInsensitiveMap;
 
 import java.util.Date;
 import java.util.List;

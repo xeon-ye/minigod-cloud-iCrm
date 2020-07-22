@@ -316,6 +316,12 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
     //是否同意收集个人资料 [0、不同意    1、同意]
     private Integer isAgreeCollectPersonalInfo;
 
+    //是否开通期权 [0、不同意    1、同意]
+    private Integer isOpenOptions;
+
+    //使用场景 [1、互联网交易（默认）   2、全权委托交易]
+    private Integer accUsageScenarios;
+
     /**
      * 设置：自增ID
      */
@@ -1764,5 +1770,21 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
 
     public void setIsAgreeCollectPersonalInfo(Integer isAgreeCollectPersonalInfo) {
         this.isAgreeCollectPersonalInfo = isAgreeCollectPersonalInfo;
+    }
+
+    public Integer getIsOpenOptions() {
+        return isOpenOptions;
+    }
+
+    public void setIsOpenOptions(Integer isOpenOptions) {
+        this.isOpenOptions = isOpenOptions;
+    }
+
+    public Integer getAccUsageScenarios() {
+        return accUsageScenarios;
+    }
+
+    public void setAccUsageScenarios(Integer accUsageScenarios) {
+        this.accUsageScenarios = accUsageScenarios;
     }
 }

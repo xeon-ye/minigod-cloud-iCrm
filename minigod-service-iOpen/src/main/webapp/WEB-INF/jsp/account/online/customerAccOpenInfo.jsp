@@ -331,6 +331,30 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">是否开通期权</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="isOpenOptions" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.isOpenOptions==0}">checked</c:if>  />不同意
+                            <input name="isOpenOptions" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.isOpenOptions==1}">checked</c:if>  />同意
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">使用场景</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="accUsageScenarios" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.accUsageScenarios==1}">checked</c:if>  />互联网交易
+                            <input name="accUsageScenarios" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.accUsageScenarios==2}">checked</c:if>  />全权委托交易
+                    </span>
+                </div>
+            </div>
+        </div>
 </div>
 <%-- 预约信息 Start --%>
 <div id="div1" v-cloak>

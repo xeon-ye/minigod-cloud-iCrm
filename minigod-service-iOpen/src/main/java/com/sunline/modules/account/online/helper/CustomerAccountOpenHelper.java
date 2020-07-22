@@ -721,6 +721,20 @@ public class CustomerAccountOpenHelper {
             return responseVO;
         }
 
+        if (null == openAccountInfo.getIsOpenOptions()){
+            logger.error("【开户预约接口数据完整性校验】：请填写开通期权");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写开通期权");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getAccUsageScenarios()){
+            logger.error("【开户预约接口数据完整性校验】：请填写账号使用场景");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写账号使用场景");
+            return responseVO;
+        }
+
         //2020-7-22 16:30添加------------------
 
         responseVO.setCode(0);

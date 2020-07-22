@@ -448,6 +448,14 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     @JSONField(name = "isAgreeCollectPersonalInfo")
     private Integer isAgreeCollectPersonalInfo;
 
+    //是否开通期权 [0、不同意    1、同意]
+    @JSONField(name = "isOpenOptions")
+    private Integer isOpenOptions;
+
+    //使用场景 [1、互联网交易（默认）   2、全权委托交易]
+    @JSONField(name = "accUsageScenarios")
+    private Integer accUsageScenarios;
+
     public String getIsAmlSuspicious() {
         return isAmlSuspicious;
     }
@@ -1318,5 +1326,21 @@ public class AccountOpenApplyProtocol extends BaseParameter {
 
     public void setIsAgreeCollectPersonalInfo(Integer isAgreeCollectPersonalInfo) {
         this.isAgreeCollectPersonalInfo = isAgreeCollectPersonalInfo;
+    }
+
+    public Integer getIsOpenOptions() {
+        return isOpenOptions;
+    }
+
+    public void setIsOpenOptions(Integer isOpenOptions) {
+        this.isOpenOptions = isOpenOptions;
+    }
+
+    public Integer getAccUsageScenarios() {
+        return accUsageScenarios;
+    }
+
+    public void setAccUsageScenarios(Integer accUsageScenarios) {
+        this.accUsageScenarios = accUsageScenarios;
     }
 }
