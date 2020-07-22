@@ -573,6 +573,156 @@ public class CustomerAccountOpenHelper {
             return responseVO;
         }
 
+        //2020-7-22 16:30添加------------------
+        if (null == openAccountInfo.getLanguage()) {
+            logger.error("【开户预约接口数据完整性校验】：请填写语言信息");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写语言信息");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getAccountType()) {
+            logger.error("【开户预约接口数据完整性校验】：请填写账户类型");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写账户类型");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getHomePhone() || StringUtils.isBlank(openAccountInfo.getHomePhone())) {
+            logger.error("【开户预约接口数据完整性校验】：请填写住所电话");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写住所电话");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getEducationLevel()) {
+            logger.error("【开户预约接口数据完整性校验】：请填写教育程度");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写教育程度");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getWorkingSeniority()) {
+            logger.error("【开户预约接口数据完整性校验】：请填写从业年限");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写从业年限");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getOfficePhone() || StringUtils.isBlank(openAccountInfo.getOfficePhone())) {
+            logger.error("【开户预约接口数据完整性校验】：请填写办公室电话");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写办公室电话");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getIsBankrupted()) {
+            logger.error("【开户预约接口数据完整性校验】：请填写你是否曾经破产或被送达要将你破产的申请");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写你是否曾经破产或被送达要将你破产的申请");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getdStatementReceiveMode()) {
+            logger.error("【开户预约接口数据完整性校验】：请填写日结单及月结单发送方式");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写日结单及月结单发送方式");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getUnitTrustsExperience()) {
+            logger.error("【开户预约接口数据完整性校验】：请填写单位信托基金/互惠基金");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写单位信托基金/互惠基金");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getOtherProductsExperience()) {
+            logger.error("【开户预约接口数据完整性校验】：请填写其它投资产品");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写其它投资产品");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getOptionsExperience()) {
+            logger.error("【开户预约接口数据完整性校验】：请填写期权投资经验");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写期权投资经验");
+            return responseVO;
+        }
+
+        if (openAccountInfo.getOtherProductsExperience() > 0) {
+            if (openAccountInfo.getOtherProductsName() == null || StringUtils.isBlank(openAccountInfo.getOtherProductsName())) {
+                logger.error("【开户预约接口数据完整性校验】：请填写其它投资产品名称");
+                responseVO.setCode(-1);
+                responseVO.setMessage("请填写其它其它投资产品名称");
+                return responseVO;
+            }
+        }
+
+        if (openAccountInfo.getStocksInvestmentExperienceType() > 0) {
+            if (null == openAccountInfo.getTradeStockFrequency()) {
+                logger.error("【开户预约接口数据完整性校验】：请填写股票交易频率");
+                responseVO.setCode(-1);
+                responseVO.setMessage("请填写股票交易频率");
+                return responseVO;
+            }
+        }
+
+        if (openAccountInfo.getWarrantsInvestmentExperienceType() > 0){
+            if (null == openAccountInfo.getTradeWarrantsFrequency()) {
+                logger.error("【开户预约接口数据完整性校验】：请填写认股证交易频");
+                responseVO.setCode(-1);
+                responseVO.setMessage("请填写认股证交易频");
+                return responseVO;
+            }
+        }
+
+        if (openAccountInfo.getOptionsExperience() > 0){
+            if (null == openAccountInfo.getTradeOptionsFrequency()) {
+                logger.error("【开户预约接口数据完整性校验】：请填写期权交易频率");
+                responseVO.setCode(-1);
+                responseVO.setMessage("请填写期权交易频率");
+                return responseVO;
+            }
+        }
+
+        if (openAccountInfo.getOptionsExperience() > 0){
+            if (null == openAccountInfo.getTradeOptionsFrequency()) {
+                logger.error("【开户预约接口数据完整性校验】：请填写期货交易频率");
+                responseVO.setCode(-1);
+                responseVO.setMessage("请填写期货交易频率");
+                return responseVO;
+            }
+        }
+
+        if (openAccountInfo.getUnitTrustsExperience() > 0){
+            if (null == openAccountInfo.getTradeUnitTrustsFrequency()) {
+                logger.error("【开户预约接口数据完整性校验】：请填写单位信托基金/互惠基金交易频率");
+                responseVO.setCode(-1);
+                responseVO.setMessage("请填写单位信托基金/互惠基金交易频率");
+                return responseVO;
+            }
+        }
+
+        if (openAccountInfo.getOtherProductsExperience() > 0){
+            if (null == openAccountInfo.getTradeOtherProductsFrequency()) {
+                logger.error("【开户预约接口数据完整性校验】：请填写其它投资产品交易频率");
+                responseVO.setCode(-1);
+                responseVO.setMessage("请填写其它投资产品交易频率");
+                return responseVO;
+            }
+        }
+
+        if (null == openAccountInfo.getIsAgreeCollectPersonalInfo()) {
+            logger.error("【开户预约接口数据完整性校验】：请填写是否同意收集个人资料");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写是否同意收集个人资料");
+            return responseVO;
+        }
+
+        //2020-7-22 16:30添加------------------
+
         responseVO.setCode(0);
         responseVO.setMessage(CrmCommonEnum.CodeType.OK.getMessage());
         return responseVO;
