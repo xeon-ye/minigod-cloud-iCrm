@@ -262,7 +262,7 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
     //语言[0=未知 1=英文 2=繁体中文 3=简体中文]
     private Integer lan;
 
-    //账户类型[1、个人账户  2、联名账户   3、公司账户]
+    //账户类型[0、未知  1、个人账户  2、联名账户   3、公司账户]
     private Integer accountType;
 
     //住所电话

@@ -24,19 +24,20 @@
 <body>
 <div id="div01" v-cloak>
     <div v-show="!showList" class="panel panel-default">
+        </br>
         <div class="row">
             <div class="form-group col-sm-6 col-md-6">
                 <label class="col-sm-2 control-label no-padding-right">语言</label>
                 <div class="col-xs-9">
                            <span class="col-sm-12 block input-icon input-icon-right">
-                                <input name="lan" type="radio" value="0" disabled="disabled"
-                                       <c:if test="${customerAccountOpenInfoEntity.accountType==0}">checked</c:if>  />未知
-                                             <input name="lan" type="radio" value="1" disabled="disabled"
-                                                    <c:if test="${customerAccountOpenInfoEntity.accountType==1}">checked</c:if> />英文
-                                            <input name="lan" type="radio" value="2" disabled="disabled"
-                                                   <c:if test="${customerAccountOpenInfoEntity.accountType==2}">checked</c:if> />繁体中文
-                               <input name="lan" type="radio" value="3" disabled="disabled"
-                                      <c:if test="${customerAccountOpenInfoEntity.accountType==3}">checked</c:if> />简体中文
+                               <input name="language" type="radio" value="0" disabled="disabled"
+                                      <c:if test="${customerAccountOpenInfoEntity.language==0}">checked</c:if>  />未知
+                               <input name="language" type="radio" value="1" disabled="disabled"
+                                      <c:if test="${customerAccountOpenInfoEntity.language==1}">checked</c:if> />英文
+                               <input name="language" type="radio" value="2" disabled="disabled"
+                                      <c:if test="${customerAccountOpenInfoEntity.language==2}">checked</c:if> />繁体中文
+                               <input name="language" type="radio" value="3" disabled="disabled"
+                                      <c:if test="${customerAccountOpenInfoEntity.language==3}">checked</c:if> />简体中文
                             </span>
                 </div>
             </div>
@@ -44,18 +45,292 @@
             <div class="form-group col-sm-6 col-md-6">
                 <label class="col-sm-3 control-label no-padding-right">账户类型</label>
                 <div class="col-xs-9">
-                               <span class="col-sm-12 block input-icon input-icon-right">
-                                             <input name="accountType" type="radio" value="1" disabled="disabled"
-                                                    <c:if test="${customerAccountOpenInfoEntity.accountType==1}">checked</c:if>  />个人账户
-                                             <input name="accountType" type="radio" value="2" disabled="disabled"
-                                                    <c:if test="${customerAccountOpenInfoEntity.accountType==2}">checked</c:if> />联名账户
-                                            <input name="accountType" type="radio" value="3" disabled="disabled"
-                                                   <c:if test="${customerAccountOpenInfoEntity.accountType==3}">checked</c:if> />公司账户
-                                        </span>
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="accountType" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.accountType==0}">checked</c:if>  />未知
+                            <input name="accountType" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.accountType==1}">checked</c:if> />个人账户
+                            <input name="accountType" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.accountType==2}">checked</c:if> />联名账户
+                            <input name="accountType" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.accountType==3}">checked</c:if> />公司账户
+                        </span>
+                    </span>
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">住所电话</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input id="homePhone" name="homePhone" type="text" class="form-control"
+                               value="${customerAccountOpenInfoEntity.homePhone}" readonly/>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-3 control-label no-padding-right">教育程度</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="educationLevel" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.educationLevel==0}">checked</c:if>  />未知
+                            <input name="educationLevel" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.educationLevel==1}">checked</c:if>  />小学
+                            <input name="educationLevel" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.educationLevel==2}">checked</c:if> />中学
+                            <input name="educationLevel" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.educationLevel==3}">checked</c:if> />专上学院
+                            <input name="educationLevel" type="radio" value="4" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.educationLevel==4}">checked</c:if> />大学或以上
+                        </span>
+                    </span>
+                </div>
+            </div>
     </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">办公室电话</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input id="officePhone" name="homePhone" type="text" class="form-control"
+                               value="${customerAccountOpenInfoEntity.officePhone}" readonly/>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-3 control-label no-padding-right">从业年限</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="workingSeniority" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.workingSeniority==0}">checked</c:if>  />未知
+                            <input name="workingSeniority" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.workingSeniority==1}">checked</c:if>  />1-2年
+                            <input name="workingSeniority" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.workingSeniority==2}">checked</c:if> />2-5年
+                            <input name="workingSeniority" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.workingSeniority==3}">checked</c:if> />5-10年
+                            <input name="workingSeniority" type="radio" value="4" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.workingSeniority==4}">checked</c:if> />>10年
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">你是否曾经破产或被送达要将你破产的申请</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input name="isBankrupted" type="radio" value="0" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.isBankrupted==0}">checked</c:if>  />否
+                        <input name="isBankrupted" type="radio" value="1" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.isBankrupted==1}">checked</c:if>  />是
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-3 control-label no-padding-right">日结单及月结单发送方式</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="dStatementReceiveMode" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==0}">checked</c:if>  />未知
+                            <input name="dStatementReceiveMode" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==1}">checked</c:if>  />电子邮箱
+                            <input name="dStatementReceiveMode" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==2}">checked</c:if> />邮寄到住宅地址
+                            <input name="dStatementReceiveMode" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==3}">checked</c:if> />邮寄到营业地址
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">单位信托基金/互惠基金</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input name="unitTrustsExperience" type="radio" value="0" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.unitTrustsExperience==0}">checked</c:if>  />未知
+                        <input name="unitTrustsExperience" type="radio" value="1" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.unitTrustsExperience==1}">checked</c:if>  />没有
+                        <input name="unitTrustsExperience" type="radio" value="2" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.unitTrustsExperience==2}">checked</c:if>  /><1年
+                        <input name="unitTrustsExperience" type="radio" value="3" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.unitTrustsExperience==3}">checked</c:if>  />1-2年
+                        <input name="unitTrustsExperience" type="radio" value="4" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.unitTrustsExperience==4}">checked</c:if>  />>2年
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-3 control-label no-padding-right">其它投资产品</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="otherProductsExperience" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.otherProductsExperience==0}">checked</c:if>  />未知
+                            <input name="otherProductsExperience" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.otherProductsExperience==1}">checked</c:if>  /><10年
+                            <input name="otherProductsExperience" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.otherProductsExperience==2}">checked</c:if> />10-40年
+                            <input name="otherProductsExperience" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.otherProductsExperience==3}">checked</c:if> />>40年
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">其它投资产品名称</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input id="otherProductsName" name="applicationId" type="text" class="form-control"
+                               value="${customerAccountOpenInfoEntity.otherProductsName}" readonly/>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-3 control-label no-padding-right">期权投资经验</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="optionsExperience" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.optionsExperience==0}">checked</c:if>  />未知
+                            <input name="optionsExperience" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.optionsExperience==1}">checked</c:if>  />没有
+                            <input name="optionsExperience" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.optionsExperience==2}">checked</c:if> /><1年
+                            <input name="optionsExperience" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.optionsExperience==3}">checked</c:if> />>1-2年
+                            <input name="optionsExperience" type="radio" value="4" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.optionsExperience==4}">checked</c:if> />>2年
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">股票交易频率次/年</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="tradeStockFrequency" type="radio" value="0" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.tradeStockFrequency==0}">checked</c:if>  />未知
+                            <input name="tradeStockFrequency" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeStockFrequency==1}">checked</c:if>  /><10
+                            <input name="tradeStockFrequency" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeStockFrequency==2}">checked</c:if> />10-40
+                            <input name="tradeStockFrequency" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeStockFrequency==3}">checked</c:if> />>40
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-3 control-label no-padding-right">认股证交易频率次/年</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="tradeWarrantsFrequency" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeWarrantsFrequency==0}">checked</c:if>  />未知
+                            <input name="tradeWarrantsFrequency" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeWarrantsFrequency==1}">checked</c:if>  /><10
+                            <input name="tradeWarrantsFrequency" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeWarrantsFrequency==2}">checked</c:if> />10-40
+                            <input name="tradeWarrantsFrequency" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeWarrantsFrequency==3}">checked</c:if> />>40
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">期权交易频率次/年</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="tradeOptionsFrequency" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeOptionsFrequency==0}">checked</c:if>  />未知
+                            <input name="tradeOptionsFrequency" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeOptionsFrequency==1}">checked</c:if>  /><10
+                            <input name="tradeOptionsFrequency" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeOptionsFrequency==2}">checked</c:if> />10-40
+                            <input name="tradeOptionsFrequency" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeOptionsFrequency==3}">checked</c:if> />>40
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-3 control-label no-padding-right">期货交易频率次/年</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="tradeFuturesFrequency" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeFuturesFrequency==0}">checked</c:if>  />未知
+                            <input name="tradeFuturesFrequency" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeFuturesFrequency==1}">checked</c:if>  /><10
+                            <input name="tradeFuturesFrequency" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeFuturesFrequency==2}">checked</c:if> />10-40
+                            <input name="tradeFuturesFrequency" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeFuturesFrequency==3}">checked</c:if> />>40
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">单位信托基金/互惠基金交易频率次/年</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="tradeUnitTrustsFrequency" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeUnitTrustsFrequency==0}">checked</c:if>  />未知
+                            <input name="tradeUnitTrustsFrequency" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeUnitTrustsFrequency==1}">checked</c:if>  /><10
+                            <input name="tradeUnitTrustsFrequency" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeUnitTrustsFrequency==2}">checked</c:if> />10-40
+                            <input name="tradeUnitTrustsFrequency" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeUnitTrustsFrequency==3}">checked</c:if> />>40
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-3 control-label no-padding-right">其它投资产品交易频率次/年</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="tradeOtherProductsFrequency" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeOtherProductsFrequency==0}">checked</c:if>  />未知
+                            <input name="tradeOtherProductsFrequency" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeOtherProductsFrequency==1}">checked</c:if>  /><10
+                            <input name="tradeOtherProductsFrequency" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeOtherProductsFrequency==2}">checked</c:if> />10-40
+                            <input name="tradeOtherProductsFrequency" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.tradeOtherProductsFrequency==3}">checked</c:if> />>40
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">是否同意收集个人资料</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="isAgreeCollectPersonalInfo" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.isAgreeCollectPersonalInfo==0}">checked</c:if>  />不同意
+                            <input name="isAgreeCollectPersonalInfo" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.isAgreeCollectPersonalInfo==1}">checked</c:if>  />同意
+                    </span>
+                </div>
+            </div>
+        </div>
 </div>
 <%-- 预约信息 Start --%>
 <div id="div1" v-cloak>
