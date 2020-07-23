@@ -151,7 +151,9 @@ public class CustomerOpenAccountConverter {
         model.setTradeUnitTrustsFrequency(entity.getTradeUnitTrustsFrequency());
         model.setTradeOtherProductsFrequency(entity.getTradeOtherProductsFrequency());
         model.setIsOpenOptions(entity.getIsOpenOptions());
-        model.setAccUsageScenarios(entity.getAccUsageScenarios());
+        model.setOptionsAccUsageScenarios(entity.getOptionsAccUsageScenarios());
+        model.setIsOpenFutures(entity.getIsOpenFutures());
+        model.setFuturesAccUsageScenarios(entity.getFuturesAccUsageScenarios());
 
         return model;
     }
@@ -281,7 +283,9 @@ public class CustomerOpenAccountConverter {
         entity.setTradeUnitTrustsFrequency(model.getTradeUnitTrustsFrequency());
         entity.setTradeOtherProductsFrequency(model.getTradeOtherProductsFrequency());
         entity.setIsOpenOptions(model.getIsOpenOptions());
-        entity.setAccUsageScenarios(model.getAccUsageScenarios());
+        entity.setOptionsAccUsageScenarios(model.getOptionsAccUsageScenarios());
+        entity.setIsOpenFutures(model.getIsOpenFutures());
+        entity.setFuturesAccUsageScenarios(model.getFuturesAccUsageScenarios());
 
         return entity;
     }
@@ -613,7 +617,9 @@ public class CustomerOpenAccountConverter {
         customerAccountOpenInfoEntity.setTradeUnitTrustsFrequency(accountOpenApplicationprotocol.getTradeUnitTrustsFrequency());
         customerAccountOpenInfoEntity.setTradeOtherProductsFrequency(accountOpenApplicationprotocol.getTradeOtherProductsFrequency());
         customerAccountOpenInfoEntity.setIsOpenOptions(accountOpenApplicationprotocol.getIsOpenOptions());
-        customerAccountOpenInfoEntity.setAccUsageScenarios(accountOpenApplicationprotocol.getAccUsageScenarios());
+        customerAccountOpenInfoEntity.setOptionsAccUsageScenarios(accountOpenApplicationprotocol.getOptionsAccUsageScenarios());
+        customerAccountOpenInfoEntity.setIsOpenFutures(accountOpenApplicationprotocol.getIsOpenFutures());
+        customerAccountOpenInfoEntity.setFuturesAccUsageScenarios(accountOpenApplicationprotocol.getFuturesAccUsageScenarios());
 
         return customerAccountOpenInfoEntity;
     }
@@ -792,7 +798,9 @@ public class CustomerOpenAccountConverter {
         securitiesUserModel.setTradeUnitTrustsFrequency(entity.getTradeUnitTrustsFrequency());
         securitiesUserModel.setTradeOtherProductsFrequency(entity.getTradeOtherProductsFrequency());
         securitiesUserModel.setIsOpenOptions(entity.getIsOpenOptions());
-        securitiesUserModel.setAccUsageScenarios(entity.getAccUsageScenarios());
+        securitiesUserModel.setOptionsAccUsageScenarios(entity.getOptionsAccUsageScenarios());
+        securitiesUserModel.setIsOpenFutures(entity.getIsOpenFutures());
+        securitiesUserModel.setFuturesAccUsageScenarios(entity.getFuturesAccUsageScenarios());
 
         return securitiesUserModel;
     }

@@ -721,10 +721,24 @@ public class CustomerAccountOpenHelper {
             return responseVO;
         }
 
-        if (null == openAccountInfo.getAccUsageScenarios()){
-            logger.error("【开户预约接口数据完整性校验】：请填写账号使用场景");
+        if (null == openAccountInfo.getOptionsAccUsageScenarios()){
+            logger.error("【开户预约接口数据完整性校验】：请填写期权账号使用场景");
             responseVO.setCode(-1);
-            responseVO.setMessage("请填写账号使用场景");
+            responseVO.setMessage("请填写期权账号使用场景");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getIsOpenFutures()){
+            logger.error("【开户预约接口数据完整性校验】：请填写开通期货");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写开通期货");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getFuturesAccUsageScenarios()){
+            logger.error("【开户预约接口数据完整性校验】：请填写期货账号使用场景");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写期货账号使用场景");
             return responseVO;
         }
 

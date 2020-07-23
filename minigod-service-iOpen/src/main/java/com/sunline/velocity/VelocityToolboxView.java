@@ -16,7 +16,6 @@ import java.util.Map;
 /**
  * @author
  * @date 2018-10-10 14:58:29
- * 
  */
 public class VelocityToolboxView extends VelocityView {
     private String toolboxConfigLocation;

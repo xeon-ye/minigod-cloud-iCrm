@@ -277,8 +277,14 @@ public class SecuritiesUserModel {
     //是否开通期权 [0、不同意    1、同意]
     private Integer isOpenOptions;
 
-    //使用场景 [1、互联网交易（默认）   2、全权委托交易]
-    private Integer accUsageScenarios;
+    //期权账号使用场景 [1、互联网交易（默认）   2、全权委托交易]
+    private Integer optionsAccUsageScenarios;
+
+    //是否开通期货 [0、不同意    1、同意]
+    private Integer isOpenFutures;
+
+    //期货账户使用场景 [1、互联网交易（默认）  2、全权委托交易]
+    private Integer futuresAccUsageScenarios;
 
     /**
      * 设置：主键ID
@@ -1497,12 +1503,28 @@ public class SecuritiesUserModel {
         this.isOpenOptions = isOpenOptions;
     }
 
-    public Integer getAccUsageScenarios() {
-        return accUsageScenarios;
+    public Integer getOptionsAccUsageScenarios() {
+        return optionsAccUsageScenarios;
     }
 
-    public void setAccUsageScenarios(Integer accUsageScenarios) {
-        this.accUsageScenarios = accUsageScenarios;
+    public void setOptionsAccUsageScenarios(Integer optionsAccUsageScenarios) {
+        this.optionsAccUsageScenarios = optionsAccUsageScenarios;
+    }
+
+    public Integer getIsOpenFutures() {
+        return isOpenFutures;
+    }
+
+    public void setIsOpenFutures(Integer isOpenFutures) {
+        this.isOpenFutures = isOpenFutures;
+    }
+
+    public Integer getFuturesAccUsageScenarios() {
+        return futuresAccUsageScenarios;
+    }
+
+    public void setFuturesAccUsageScenarios(Integer futuresAccUsageScenarios) {
+        this.futuresAccUsageScenarios = futuresAccUsageScenarios;
     }
 }
 

@@ -331,13 +331,37 @@
                 </div>
             </div>
             <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">使用场景</label>
+                <label class="col-sm-2 control-label no-padding-right">期权账号使用场景</label>
                 <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="accUsageScenarios" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.accUsageScenarios==1}">checked</c:if>  />互联网交易
-                            <input name="accUsageScenarios" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.accUsageScenarios==2}">checked</c:if>  />全权委托交易
+                            <input name="optionsAccUsageScenarios" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.optionsAccUsageScenarios==1}">checked</c:if>  />互联网交易
+                            <input name="optionsAccUsageScenarios" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.optionsAccUsageScenarios==2}">checked</c:if>  />全权委托交易
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">是否开通期货</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="isOpenFutures" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==0}">checked</c:if>  />不同意
+                            <input name="isOpenFutures" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">checked</c:if>  />同意
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">期货账号使用场景</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="futuresAccUsageScenarios" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.futuresAccUsageScenarios==1}">checked</c:if>  />互联网交易
+                            <input name="futuresAccUsageScenarios" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.futuresAccUsageScenarios==2}">checked</c:if>  />全权委托交易
                     </span>
                 </div>
             </div>

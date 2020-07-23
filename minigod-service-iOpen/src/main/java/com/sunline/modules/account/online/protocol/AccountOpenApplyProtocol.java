@@ -448,9 +448,17 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     @JSONField(name = "isOpenOptions")
     private Integer isOpenOptions;
 
-    //使用场景 [1、互联网交易（默认）   2、全权委托交易]
-    @JSONField(name = "accUsageScenarios")
-    private Integer accUsageScenarios;
+    //期权账户使用场景 [1、互联网交易（默认）   2、全权委托交易]
+    @JSONField(name = "optionsAccUsageScenarios")
+    private Integer optionsAccUsageScenarios;
+
+    //是否开通期货 [0、不同意    1、同意]
+    @JSONField(name = "isOpenFutures")
+    private Integer isOpenFutures;
+
+    //期货账户使用场景 [1、互联网交易（默认）  2、全权委托交易]
+    @JSONField(name = "futuresAccUsageScenarios")
+    private Integer futuresAccUsageScenarios;
 
     public String getIsAmlSuspicious() {
         return isAmlSuspicious;
@@ -1324,11 +1332,27 @@ public class AccountOpenApplyProtocol extends BaseParameter {
         this.isOpenOptions = isOpenOptions;
     }
 
-    public Integer getAccUsageScenarios() {
-        return accUsageScenarios;
+    public Integer getOptionsAccUsageScenarios() {
+        return optionsAccUsageScenarios;
     }
 
-    public void setAccUsageScenarios(Integer accUsageScenarios) {
-        this.accUsageScenarios = accUsageScenarios;
+    public void setOptionsAccUsageScenarios(Integer optionsAccUsageScenarios) {
+        this.optionsAccUsageScenarios = optionsAccUsageScenarios;
+    }
+
+    public Integer getIsOpenFutures() {
+        return isOpenFutures;
+    }
+
+    public void setIsOpenFutures(Integer isOpenFutures) {
+        this.isOpenFutures = isOpenFutures;
+    }
+
+    public Integer getFuturesAccUsageScenarios() {
+        return futuresAccUsageScenarios;
+    }
+
+    public void setFuturesAccUsageScenarios(Integer futuresAccUsageScenarios) {
+        this.futuresAccUsageScenarios = futuresAccUsageScenarios;
     }
 }
