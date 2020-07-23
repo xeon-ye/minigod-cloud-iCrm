@@ -73,7 +73,7 @@ public class CrmTestController {
     void donatedStockdTest(HttpServletRequest request, HttpServletResponse response) {
         try {
 //            downLoad("https://sns.zszhizhu.com:8000/openaccount/2018/11/12/b27b5bed8b6a4bfe9b08a79e5dd7f0bf__1080x810.jpg", response, true);
-//            downLoad("http://10.1.5.113:7777/cubp/file/data/bpm/report/openAccount/2019010410000008/%E7%8E%96%E5%AF%8C%E8%AF%81%E5%88%B8%E8%AF%81%E5%88%B8%E8%B4%A6%E6%88%B7%E5%BC%80%E6%88%B7%E5%8D%8F%E8%AE%AE.pdf", response, true);
+//            downLoad("http://10.1.5.113:7777/crm/file/data/bpm/report/openAccount/2019010410000008/%E7%8E%96%E5%AF%8C%E8%AF%81%E5%88%B8%E8%AF%81%E5%88%B8%E8%B4%A6%E6%88%B7%E5%BC%80%E6%88%B7%E5%8D%8F%E8%AE%AE.pdf", response, true);
 //            downLoad("http://121.35.249.12:8000/openaccount/2018/12/22/b4abf4c9f15245f0b7eb4ddbc0e376c4__1250x474.jpg", response, true);
 
             String accountOpenUserReportRootPath = "D:\\data\\bpm\\report\\openAccount\\2019010810000001";

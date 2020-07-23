@@ -6,7 +6,7 @@ minigod:
     userToken.expireSecond: 7200 # 2*60*60
   cubp:
     isRemote: true
-    url: http://10.1.2.99:7777/cubp
+    url: http://10.1.2.99:7777/crm
   openAccount:
     isVerifyFromCubp: true
     isVerifyIdCardFromThird: true

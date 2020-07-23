@@ -10,13 +10,13 @@
 
     <!-- 多环境设置-->
     <springProfile name="dev">
-        <property name="LOG_HOME" value="/data/logs/cubp/dev/logs"/>
+        <property name="LOG_HOME" value="/data/logs/crm/dev/logs"/>
     </springProfile>
     <springProfile name="test">
-        <property name="LOG_HOME" value="/data/logs/cubp/logs"/>
+        <property name="LOG_HOME" value="/data/logs/crm/logs"/>
     </springProfile>
     <springProfile name="pro">
-        <property name="LOG_HOME" value="/data/logs/cubp/logs"/>
+        <property name="LOG_HOME" value="/data/logs/crm/logs"/>
     </springProfile>
 
 
