@@ -8,5 +8,6 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 
 server:
-  context-path: /notify
   port: 8001
+  servlet:
+    context-path: /notify

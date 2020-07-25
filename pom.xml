@@ -15,10 +15,10 @@
     </parent>
 
     <modules>
-        <module>config</module>
-        <module>eureka</module>
+        <!--<module>config</module>
+        <module>eureka</module>-->
         <module>minigod-cloud-common</module>
-        <module>minigod-cloud-feign</module>
+        <!--<module>minigod-cloud-feign</module>-->
         <module>minigod-cloud-protocol</module>
         <module>minigod-cloud-persist</module>
         <module>minigod-cloud-helper</module>
@@ -69,7 +69,7 @@
         <!--</pluginRepository>-->
     <!--</pluginRepositories>-->
     <properties>
-        <docker.repo>192.168.30.109:5000</docker.repo>
+        <docker.repo>10.1.5.110:5000</docker.repo>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <springboot.druid.version>0.0.1-SNAPSHOT</springboot.druid.version>

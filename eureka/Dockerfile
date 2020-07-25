@@ -12,7 +12,7 @@
 
 FROM java:8
 
-MAINTAINER kouyandong
+MAINTAINER ken
 
 RUN mkdir /app
 
