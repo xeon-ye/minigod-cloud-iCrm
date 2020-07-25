@@ -1,10 +1,18 @@
 package com.minigod.notify.helper;
 
+import com.minigod.mail.builder.SendCloudBuilder;
+import com.minigod.mail.core.SendCloud;
+import com.minigod.mail.model.MailAddressReceiver;
+import com.minigod.mail.model.MailBody;
+import com.minigod.mail.model.SendCloudMail;
+import com.minigod.mail.model.TextContent;
+import com.minigod.mail.util.ResponseData;
 import com.minigod.protocol.notify.enums.CaptchaSmsTypeEnum;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +91,6 @@ public class NotifyService {
 
         return smsSender.sendWithTemplate(phoneNumber, templateId, params);
     }
-
     /**
      * 邮件消息通知,
      * 接收者在spring.mail.sendto中指定
@@ -104,6 +111,41 @@ public class NotifyService {
         mailSender.send(message);
     }
 
+    /**
+     * 邮件消息通知
+     * @param subject 主题
+     * @param content 内容
+     * @param paths  附件路径
+     * @throws Throwable
+     */
+    public ResponseData notifySendCloudMail(String subject, String content,List<String> paths) throws Throwable {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(sendFrom);
+        message.setTo(sendTo);
+        message.setSubject(subject);
+        message.setText(content);
+        mailSender.send(message);
+        SendCloudMail mail = new SendCloudMail();
+        MailAddressReceiver receiver = new MailAddressReceiver();
+        receiver.addTo(sendTo);
+        MailBody body = new MailBody();
+        body.setFrom(sendFrom);
+        body.setSubject(subject);
+        //附件
+        for (String path : paths) {
+            body.addAttachments(new File(path));
+        }
+        TextContent textContent = new TextContent();
+        textContent.setContent_type(TextContent.ScContentType.html);
+        textContent.setText(content);
+        mail.setTo(receiver);
+        mail.setBody(body);
+        mail.setContent(textContent);
+
+        SendCloud sc = SendCloudBuilder.build();
+        return sc.sendMail(mail);
+    }
+
     private String getTemplateId(CaptchaSmsTypeEnum notifyType, List<Map<String, String>> values) {
         for (Map<String, String> item : values) {
             String notifyTypeStr = notifyType.getType();
@@ -118,12 +160,24 @@ public class NotifyService {
         return smsExpiresTime;
     }
 
+    public void setSmsExpiresTime(Integer smsExpiresTime) {
+        this.smsExpiresTime = smsExpiresTime;
+    }
+
     public Integer getEmailExpiresTime() {
         return emailExpiresTime;
     }
 
+    public void setEmailExpiresTime(Integer emailExpiresTime) {
+        this.emailExpiresTime = emailExpiresTime;
+    }
+
     public Integer getSmsIntervalTime() {
         return smsIntervalTime;
+    }
+
+    public void setSmsIntervalTime(Integer smsIntervalTime) {
+        this.smsIntervalTime = smsIntervalTime;
     }
 
     public void setMailSender(MailSender mailSender) {
@@ -144,17 +198,5 @@ public class NotifyService {
 
     public void setSmsTemplate(List<Map<String, String>> smsTemplate) {
         this.smsTemplate = smsTemplate;
-    }
-
-    public void setSmsExpiresTime(Integer smsExpiresTime) {
-        this.smsExpiresTime = smsExpiresTime;
-    }
-
-    public void setSmsIntervalTime(Integer smsIntervalTime) {
-        this.smsIntervalTime = smsIntervalTime;
-    }
-
-    public void setEmailExpiresTime(Integer emailExpiresTime) {
-        this.emailExpiresTime = emailExpiresTime;
     }
 }

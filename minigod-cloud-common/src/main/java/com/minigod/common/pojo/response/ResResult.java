@@ -37,4 +37,11 @@ public class ResResult {
         r.setMessage(errorMessage);
         return r;
     }
+
+    public static ResResult parameterErrorMessage(){
+        ResResult r = new ResResult();
+        r.setCode(StaticType.CodeType.BAD_ARGS.getCode());
+        r.setMessage(StaticType.CodeType.BAD_ARGS.getMessage());
+        return r;
+    }
 }
