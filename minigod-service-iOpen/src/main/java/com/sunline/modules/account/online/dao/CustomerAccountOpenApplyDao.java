@@ -37,6 +37,7 @@ public interface CustomerAccountOpenApplyDao extends BaseDao<CustomerAccountOpen
      */
     int updateByApplicationId(CustomerAccountOpenApplyEntity entity);
 
+
     List<AccountOpenApplyDetailInfo> selectAccountOpenApplicationDetailInfoCheck(AccountOpenApplyQuery accountOpenApplicationQuery);
 
     /*
@@ -46,6 +47,11 @@ public interface CustomerAccountOpenApplyDao extends BaseDao<CustomerAccountOpen
 
     //加急处理任务
     int updateBatchByApplicationIds(Map<String, Object> params);
+
+    /**
+     * 待确认中导出Excel后，更新导出状态
+     */
+    int updateBatchExpExcelStatus(Map<String, Object> params);
 
     /**
      * 查询开户退回记录

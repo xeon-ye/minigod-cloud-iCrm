@@ -145,6 +145,46 @@ public class CustomerAccountOpenController {
     }
 
     /**
+     * 待开户列表
+     */
+    @RequestMapping("/waitOpenList")
+    @RequiresPermissions("customer:waitOpenList")
+    public String waitOpenList(Model model, AccountOpenApplyQuery queryCondition, HttpServletRequest request) {
+        String applicationTimeStart = queryCondition.getApplicationTimeStart();
+        String applicationTimeEnd = queryCondition.getApplicationTimeEnd();
+        int pageNum = Utils.parseInt(request.getParameter("pageNum"), 1);
+        if (StringUtils.isNotBlank(applicationTimeStart)) {
+            queryCondition.setApplicationTimeStart(DateUtil.format(DateUtil.beginOfDay(DateUtil.parse(applicationTimeStart)), "yyyy-MM-dd HH:mm:ss"));
+        }
+        if (StringUtils.isNotBlank(applicationTimeEnd)) {
+            queryCondition.setApplicationTimeEnd(DateUtil.format(DateUtil.endOfDay(DateUtil.parse(applicationTimeEnd)), "yyyy-MM-dd HH:mm:ss"));
+        }
+
+        queryCondition.setCurrentNode("开户");
+        queryCondition.setIsExpExcel(0);
+        Page<AccountOpenApplyDetailInfo> page = customerAccountOpenService.findPage(queryCondition, pageNum);
+
+        if (StringUtils.isNotBlank(applicationTimeStart)) {
+            queryCondition.setApplicationTimeStart(applicationTimeStart);
+        }
+        if (queryCondition.getApplicationTimeEnd() != null && StringUtils.isNotBlank(queryCondition.getApplicationTimeEnd())) {
+            queryCondition.setApplicationTimeEnd(applicationTimeEnd);
+        }
+        model.addAttribute("queryCondition", queryCondition);
+        model.addAttribute("page", page);
+        return "account/online/waitOpenList";
+    }
+
+    /**
+     * 待确认列表
+     */
+    @RequestMapping("/waitConfirmList")
+    @RequiresPermissions("customer:waitConfirmList")
+    public String waitConfirmList(Model model, AccountOpenApplyQuery queryCondition, HttpServletRequest request) {
+        return "";
+    }
+
+    /**
      * 开户审核列表
      */
     @RequestMapping("/checkList")
@@ -1145,7 +1185,7 @@ public class CustomerAccountOpenController {
                 }
 
                 // 校验任务是否已被申领
-                if(StringUtils.isNotBlank(applicationInfo.getAssignDrafter())){
+                if (StringUtils.isNotBlank(applicationInfo.getAssignDrafter())) {
                     errorMsg.append(processTaskDtoList.get(i).getBusId()).append(",");
                     continue;
                 }
@@ -1806,6 +1846,99 @@ public class CustomerAccountOpenController {
 
             // 执行excel操作
             EasyExcelUtils.exportXlsxFile(modelList, response, OpenAcctListModel.class);
+
+        } catch (Exception e) {
+            logger.error("导出Excel文件异常", e);
+        }
+    }
+
+    /**
+     * 待开户导出Excel
+     *
+     * @param queryCondition
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/waitOpenAcctListExp")
+    @RequiresPermissions("waitOpenAcc:exp")
+    @SysLog("待开户导出Excel")
+    public void waitOpenAcctListExp(AccountOpenApplyQuery queryCondition, HttpServletRequest request, HttpServletResponse response) {
+        try {
+
+            String applicationTimeStart = queryCondition.getApplicationTimeStart();
+            String applicationTimeEnd = queryCondition.getApplicationTimeEnd();
+            if (StringUtils.isNotBlank(applicationTimeStart)) {
+                queryCondition.setApplicationTimeStart(DateUtil.format(DateUtil.beginOfDay(DateUtil.parse(applicationTimeStart)), "yyyy-MM-dd HH:mm:ss"));
+            }
+            if (StringUtils.isNotBlank(applicationTimeEnd)) {
+                queryCondition.setApplicationTimeEnd(DateUtil.format(DateUtil.endOfDay(DateUtil.parse(applicationTimeEnd)), "yyyy-MM-dd HH:mm:ss"));
+            }
+
+            queryCondition.setCurrentNode("开户");
+            queryCondition.setIsExpExcel(0);
+            List<AccountOpenApplyDetailInfo> openAcctList = customerAccountOpenService.findList(queryCondition);
+
+            List<OpenAcctListModel> modelList = Lists.newArrayList();
+
+            String[] applicationIds = new String[openAcctList.size()];
+
+            for (int i = 0; i < openAcctList.size(); i++) {
+                applicationIds[i] = openAcctList.get(i).getCustomerAccountOpenInfoEntity().getApplicationId();
+
+                OpenAcctListModel model = new OpenAcctListModel();
+                // 填充数据
+                model.setId(String.valueOf(i + 1));
+                model.setApplicationId(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getApplicationId());
+                model.setApplicationTime(DateUtil.formatDateTime(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getApplicationTime()));
+                if (openAcctList.get(i).getCustomerAccountOpenInfoEntity().getOpenAccountType() == 0) {
+                    model.setOpenAccountType("未知");
+                } else if (openAcctList.get(i).getCustomerAccountOpenInfoEntity().getOpenAccountType() == 1 &&
+                        openAcctList.get(i).getCustomerAccountOpenInfoEntity().getBankType() == 0) {
+                    model.setOpenAccountType("香港银行卡");
+                } else if (openAcctList.get(i).getCustomerAccountOpenInfoEntity().getOpenAccountType() == 1 &&
+                        openAcctList.get(i).getCustomerAccountOpenInfoEntity().getBankType() == 1) {
+                    model.setOpenAccountType("大陆银行卡");
+                } else if (openAcctList.get(i).getCustomerAccountOpenInfoEntity().getOpenAccountType() == 6) {
+                    model.setOpenAccountType("SZCA电子证书");
+                } else if (openAcctList.get(i).getCustomerAccountOpenInfoEntity().getOpenAccountType() == 2) {
+                    model.setOpenAccountType("线下开户");
+                }
+
+                model.setUserId(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getUserId() == null ? "" : openAcctList.get(i).getCustomerAccountOpenInfoEntity().getUserId().toString());
+                model.setClientName(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getClientName());
+                model.setIdKind(CodeUtils.getCodeName("AO_ID_KIND", String.valueOf(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getIdKind())));
+//                model.setIdNo(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getIdNo());
+                model.setChannelId(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getSourceChannelId());
+                model.setApplicationStatus(CodeUtils.getCodeName("AO_OPEN_ACCOUNT_STATUS", String.valueOf(openAcctList.get(i).getCustomerAccountOpenApplyEntity().getApplicationStatus())));
+                model.setAccountLevel(CodeUtils.getCodeName("AO_OPEN_ACCOUNT_LEVEL", String.valueOf(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getAccountLevel())));
+                //add phoneNo by lidh on 20190513
+                model.setPhoneNo(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getPhoneNumber());
+                // 通过证件类型，证件号码查询历史流程信息
+                CustomerAccountOpenInfoEntity customerAccountOpenInfo = customerAccountOpenInfoService.queryByApplicationId(openAcctList.get(i).getCustomerAccountOpenApplyEntity().getApplicationId());
+                ExtendActTasklogEntity extendActTasklogEntity = new ExtendActTasklogEntity();
+                extendActTasklogEntity.setBusId(openAcctList.get(i).getCustomerAccountOpenApplyEntity().getApplicationId());
+                List<ExtendActTasklogEntity> tasklogList = tasklogService.queryListProcessLog(extendActTasklogEntity);
+                customerAccountOpenService.joinBackReasonType(tasklogList);
+
+                StringBuffer backReason = new StringBuffer();
+                if (tasklogList != null) {
+                    for (ExtendActTasklogEntity log : tasklogList) {
+                        if (log.getBackReasonType() != null && !"".equals(log.getBackReasonType())) {
+                            backReason.append(log.getBackReasonType()).append(";");
+                        }
+                    }
+                }
+
+                model.setBackReason(backReason.toString());
+
+                modelList.add(model);
+            }
+
+            // 执行excel操作
+            EasyExcelUtils.exportXlsxFile(modelList, response, OpenAcctListModel.class);
+
+            //导出后更新导出状态
+            //customerAccOpenApplyService.updateBatchExpExcelStatus(applicationIds)
 
         } catch (Exception e) {
             logger.error("导出Excel文件异常", e);

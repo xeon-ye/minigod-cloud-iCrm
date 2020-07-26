@@ -40,6 +40,11 @@ public interface CustomerAccOpenApplyService {
      */
     int updateByApplicationId(CustomerAccountOpenApplyEntity entity);
 
+    /**
+     * 待确认中导出Excel后，更新导出状态
+     */
+    int updateBatchExpExcelStatus(String[] applicationIds);
+
     //加急处理任务
     int updateBatchByApplicationIds(String applicationIds);
 

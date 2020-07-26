@@ -112,6 +112,17 @@ public class CustomerAccOpenApplyServiceImpl implements CustomerAccOpenApplyServ
     }
 
     @Override
+    public int updateBatchExpExcelStatus(String[] applicationIds) {
+        DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
+
+        Map<String,Object> params = Maps.newHashMap();
+        params.put("applicationIds",applicationIds);
+
+        return customerAccountOpenApplyDao.updateBatchExpExcelStatus(params);
+    }
+
+
+    @Override
     public int updateBatchByApplicationIds(String applicationIds) {
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
 

@@ -265,6 +265,17 @@
      */
     function clickSubmit() {
         if (${accountOpenApplicationEntity.applicationStatus == 2 }) {
+            var stockTradeAccount = $('input[name="stockTradeAccount"]').val();
+            var futuresTradeAccount = $('input[name="futuresTradeAccount"]').val();
+
+            if (stockTradeAccount == null || stockTradeAccount == ''){
+                alertMsg("请输入证券交易账号");
+            }
+
+            if (futuresTradeAccount == null || futuresTradeAccount == ''){
+                alertMsg("请输入期货交易账号");
+            }
+
             var isAmlSuspicious = $('input[name="isAmlSuspicious"]').filter(':checked').val();
             var acceptRisk = $('input[name="acceptRisk"]').filter(':checked').val();
             if (isAmlSuspicious == null || isAmlSuspicious == '') {

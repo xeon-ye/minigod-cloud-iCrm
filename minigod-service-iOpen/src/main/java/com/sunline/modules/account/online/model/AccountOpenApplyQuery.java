@@ -37,6 +37,9 @@ public class AccountOpenApplyQuery {
     private String clientId;
     private Integer accountLevel;
     private Integer openAccountType;
+    //是否导出EXCEL   0、未导出  1、已导出
+    private Integer isExpExcel;
+
     /**
      * 开户类型[0=未知 1=互联网 2=线下开户 3=BPM]
      */
@@ -277,5 +280,13 @@ public class AccountOpenApplyQuery {
 
     public void setAccountLevel(Integer accountLevel) {
         this.accountLevel = accountLevel;
+    }
+
+    public Integer getIsExpExcel() {
+        return isExpExcel;
+    }
+
+    public void setIsExpExcel(Integer isExpExcel) {
+        this.isExpExcel = isExpExcel;
     }
 }

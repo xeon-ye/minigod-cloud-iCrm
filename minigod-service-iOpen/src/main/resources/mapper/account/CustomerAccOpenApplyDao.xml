@@ -40,7 +40,7 @@
         <result property="licenseNumber" column="license_number"/>
         <result property="submitApprovalUser" column="submit_approval_user"/>
         <result property="otherReasons" column="other_reasons"/>
-
+        <result property="isExpExcel" column="is_exp_excel"/>
 
     </resultMap>
 
@@ -120,6 +120,7 @@
         <result property="nation" column="nation"/>
         <result property="signingOrganization" column="signing_organization"/>
         <result property="acceptRisk" column="accept_risk"/>
+        <result property="isExpExcel" column="is_exp_excel"/>
     </resultMap>
 
     <resultMap id="AccountOpenApplicationDetailInfoMap" type="com.sunline.modules.account.online.model.AccountOpenApplyDetailInfo" >
@@ -163,7 +164,8 @@
 		witnesses_type,
 		license_number,
 		submit_approval_user,
-		other_reasons
+		other_reasons,
+		is_exp_excel
     </sql>
 
 	 <sql id="Base_Column_List1">
@@ -197,6 +199,7 @@
         caoa.update_time                          AS 	caoa_update_time,
         caoa.fire_aid                          AS 	caoa_fire_aid,
         caoa.other_reasons                     as caoa_other_reasons,
+        caoa.is_exp_excel                      as caoa_is_exp_excel,
         caoi.id                                                 as caoi_id,
         caoi.application_id                                     as caoi_application_id,
         caoi.open_account_type                                  as caoi_open_account_type,
@@ -268,10 +271,10 @@
         caoi.update_time                                        as caoi_update_time,
         caoi.record_status                                      as caoi_record_status,
         caoi.bank_type                                          as caoi_bank_type,
-        caoi.account_level                                     as caoi_account_level,
+        caoi.account_level                                      as caoi_account_level,
         caoi.nation                                             as caoi_nation,
         caoi.signing_organization                               as caoi_signing_organization,
-        caoi.accept_risk                               as caoi_accept_risk
+        caoi.accept_risk                                        as caoi_accept_risk
  	</sql>
     <sql id="Base_Where_Conditions">
         <!--<if test ="param != null">-->
@@ -359,7 +362,9 @@
         <if test="flowPath != null">
             <![CDATA[ and flow_path = #{flowPath}]]>
         </if>
-        <!--	</if>-->
+        <if test="isExpExcel != null">
+            <![CDATA[ and is_exp_excel = #{isExpExcel}]]>
+        </if>
     </sql>
 
     <sql id="Base_Where_Conditions2">
@@ -665,6 +670,7 @@
         caoa.create_time               AS caoa_create_time,
         caoa.update_time              AS caoa_update_time,
         caoa.fire_aid              AS caoa_fire_aid,
+        caoa.is_exp_excel                      AS caoa_is_exp_excel,
         caoi.id                                                 as caoi_id,
         caoi.application_id                                     as caoi_application_id,
         caoi.open_account_type                                  as caoi_open_account_type,
@@ -865,7 +871,8 @@
 			`witness_user`,
 			`witnesses_type`,
 			`license_number`,
-			`submit_approval_user`
+			`submit_approval_user`,
+			`is_exp_excel`
 		)
 		values
 		(
@@ -899,7 +906,8 @@
 			#{witnessUser},
 			#{witnessesType},
 			#{licenseNumber},
-			#{submitApprovalUser}
+			#{submitApprovalUser},
+			#{isExpExcel}
 		)
 	</insert>
 
@@ -940,8 +948,9 @@
             <if test="witnessesType != null">`witnesses_type` = #{witnessesType},</if>
             <if test="licenseNumber != null">`license_number` = #{licenseNumber},</if>
             <if test="fireAid != null">`fire_aid` = #{fireAid},</if>
-            <if test="submitApprovalUser != null">`submit_approval_user` = #{submitApprovalUser}</if>
-            <if test="otherReasons != null">`other_reasons` = #{otherReasons}</if>
+            <if test="submitApprovalUser != null">`submit_approval_user` = #{submitApprovalUser},</if>
+            <if test="otherReasons != null">`other_reasons` = #{otherReasons},</if>
+            <if test="isExpExcel != null">`is_exp_excel` = #{isExpExcel}</if>
         </set>
         where id = #{id}
     </update>
@@ -1003,11 +1012,11 @@
             <if test="witnessUser != null">`witness_user` = #{witnessUser},</if>
             <if test="witnessesType != null">`witnesses_type` = #{witnessesType},</if>
             <if test="licenseNumber != null">`license_number` = #{licenseNumber},</if>
-            <if test="submitApprovalUser != null">`submit_approval_user` = #{submitApprovalUser}</if>
+            <if test="submitApprovalUser != null">`submit_approval_user` = #{submitApprovalUser},</if>
+            <if test="isExpExcel != null">`is_exp_excel` = #{isExpExcel}</if>
         </set>
         where application_id = #{applicationId}
     </update>
-
 
     <select id="selectAccountOpenApplicationDetailInfoCheck" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="com.sunline.modules.account.online.model.AccountOpenApplyQuery" >
         select
@@ -1027,6 +1036,14 @@
 
     <update id="updateBatchByApplicationIds" parameterType="java.util.Map" >
         UPDATE customer_account_open_application SET fire_aid = 1
+        WHERE application_id IN
+        <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+    </update>
+
+    <update id="updateBatchExpExcelStatus" parameterType="java.util.Map">
+        UPDATE customer_account_open_application SET is_exp_excel = 1
         WHERE application_id IN
         <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
             #{applicationId}

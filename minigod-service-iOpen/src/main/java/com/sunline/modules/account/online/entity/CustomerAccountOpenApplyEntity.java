@@ -89,6 +89,7 @@ public class CustomerAccountOpenApplyEntity extends ActivitiBaseEntity implement
     private  String submitApprovalUser;
     //其他理由
     private String otherReasons;
+    private Integer isExpExcel;
 
     public String getWitnessUser() {
         return witnessUser;
@@ -389,5 +390,13 @@ public class CustomerAccountOpenApplyEntity extends ActivitiBaseEntity implement
 
     public void setOtherReasons(String otherReasons) {
         this.otherReasons = otherReasons;
+    }
+
+    public Integer getIsExpExcel() {
+        return isExpExcel;
+    }
+
+    public void setIsExpExcel(Integer isExpExcel) {
+        this.isExpExcel = isExpExcel;
     }
 }
