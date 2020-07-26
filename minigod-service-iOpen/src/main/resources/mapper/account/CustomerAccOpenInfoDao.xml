@@ -127,6 +127,8 @@
 		<result property="optionsAccUsageScenarios" column="options_acc_usage_scenarios"/>
 		<result property="isOpenFutures" column="is_open_futures"/>
 		<result property="futuresAccUsageScenarios" column="futures_acc_usage_scenarios"/>
+		<result property="futuresTradeAccount" column="futures_trade_account"/>
+		<result property="stockTradeAccount" column="stock_trade_account"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -248,7 +250,9 @@
         is_open_options,
         options_acc_usage_scenarios,
         is_open_futures,
-        futures_acc_usage_scenarios
+        futures_acc_usage_scenarios,
+        futures_trade_account,
+        stock_trade_account
     </sql>
 
     <sql id="Base_Where_Conditions">
@@ -468,7 +472,9 @@
             `is_open_options`,
             `options_acc_usage_scenarios`,
             `is_open_futures`,
-            `futures_acc_usage_scenarios`
+            `futures_acc_usage_scenarios`,
+            `futures_trade_account`,
+            `stock_trade_account`
 		)
 		values
 		(
@@ -587,7 +593,9 @@
 			#{isOpenOptions},
 			#{optionsAccUsageScenarios},
 			#{isOpenFutures},
-			#{futuresAccUsageScenarios}
+			#{futuresAccUsageScenarios},
+			#{futuresTradeAccount},
+			#{stockTradeAccount}
 		)
 	</insert>
 
@@ -735,7 +743,9 @@
 			<if test="is_open_options != null">`is_open_options` = #{isOpenOptions},</if>
 			<if test="options_acc_usage_scenarios != null">`options_acc_usage_scenarios` = #{optionsAccUsageScenarios},</if>
 			<if test="is_open_futures != null">`is_open_futures` = #{isOpenFutures},</if>
-			<if test="futures_acc_usage_scenarios != null">`futures_acc_usage_scenarios` = #{futuresAccUsageScenarios}</if>
+			<if test="futures_acc_usage_scenarios != null">`futures_acc_usage_scenarios` = #{futuresAccUsageScenarios},</if>
+			<if test="futures_trade_account != null">`futures_trade_account` = #{futuresTradeAccount},</if>
+			<if test="stock_trade_account != null">`stock_trade_account` = #{stockTradeAccount}</if>
         </set>
         where application_id = #{applicationId}
     </update>
@@ -871,7 +881,9 @@
 			<if test="is_open_options != null">`is_open_options` = #{isOpenOptions},</if>
 			<if test="options_acc_usage_scenarios != null">`options_acc_usage_scenarios` = #{optionsAccUsageScenarios},</if>
 			<if test="is_open_futures != null">`is_open_futures` = #{isOpenFutures},</if>
-			<if test="futures_acc_usage_scenarios != null">`futures_acc_usage_scenarios` = #{futuresAccUsageScenarios}</if>
+			<if test="futures_acc_usage_scenarios != null">`futures_acc_usage_scenarios` = #{futuresAccUsageScenarios},</if>
+			<if test="futures_trade_account != null">`futures_trade_account` = #{futuresTradeAccount},</if>
+			<if test="stock_trade_account != null">`stock_trade_account` = #{stockTradeAccount}</if>
 		</set>
         where application_id = #{applicationId}
     </update>

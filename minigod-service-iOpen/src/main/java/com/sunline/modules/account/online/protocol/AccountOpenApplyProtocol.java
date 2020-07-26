@@ -460,6 +460,11 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     @JSONField(name = "futuresAccUsageScenarios")
     private Integer futuresAccUsageScenarios;
 
+    //期货交易账号
+    private String futuresTradeAccount;
+    //证券交易账号
+    private String stockTradeAccount;
+
     public String getIsAmlSuspicious() {
         return isAmlSuspicious;
     }
@@ -1354,5 +1359,21 @@ public class AccountOpenApplyProtocol extends BaseParameter {
 
     public void setFuturesAccUsageScenarios(Integer futuresAccUsageScenarios) {
         this.futuresAccUsageScenarios = futuresAccUsageScenarios;
+    }
+
+    public String getFuturesTradeAccount() {
+        return futuresTradeAccount;
+    }
+
+    public void setFuturesTradeAccount(String futuresTradeAccount) {
+        this.futuresTradeAccount = futuresTradeAccount;
+    }
+
+    public String getStockTradeAccount() {
+        return stockTradeAccount;
+    }
+
+    public void setStockTradeAccount(String stockTradeAccount) {
+        this.stockTradeAccount = stockTradeAccount;
     }
 }

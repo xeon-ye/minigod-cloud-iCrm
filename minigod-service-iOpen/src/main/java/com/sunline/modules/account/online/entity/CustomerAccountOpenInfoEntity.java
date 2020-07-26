@@ -325,6 +325,11 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
     //期货账户使用场景 [1、互联网交易（默认）  2、全权委托交易]
     private Integer futuresAccUsageScenarios;
 
+    //期货交易账号
+    private String futuresTradeAccount;
+    //证券交易账号
+    private String stockTradeAccount;
+
     /**
      * 设置：自增ID
      */
@@ -1797,5 +1802,21 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
 
     public void setFuturesAccUsageScenarios(Integer futuresAccUsageScenarios) {
         this.futuresAccUsageScenarios = futuresAccUsageScenarios;
+    }
+
+    public String getFuturesTradeAccount() {
+        return futuresTradeAccount;
+    }
+
+    public void setFuturesTradeAccount(String futuresTradeAccount) {
+        this.futuresTradeAccount = futuresTradeAccount;
+    }
+
+    public String getStockTradeAccount() {
+        return stockTradeAccount;
+    }
+
+    public void setStockTradeAccount(String stockTradeAccount) {
+        this.stockTradeAccount = stockTradeAccount;
     }
 }

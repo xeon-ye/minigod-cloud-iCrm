@@ -154,6 +154,8 @@ public class CustomerOpenAccountConverter {
         model.setOptionsAccUsageScenarios(entity.getOptionsAccUsageScenarios());
         model.setIsOpenFutures(entity.getIsOpenFutures());
         model.setFuturesAccUsageScenarios(entity.getFuturesAccUsageScenarios());
+        model.setFuturesTradeAccount(entity.getFuturesTradeAccount());
+        model.setStockTradeAccount(entity.getStockTradeAccount());
 
         return model;
     }
@@ -286,6 +288,8 @@ public class CustomerOpenAccountConverter {
         entity.setOptionsAccUsageScenarios(model.getOptionsAccUsageScenarios());
         entity.setIsOpenFutures(model.getIsOpenFutures());
         entity.setFuturesAccUsageScenarios(model.getFuturesAccUsageScenarios());
+        entity.setFuturesTradeAccount(model.getFuturesTradeAccount());
+        entity.setStockTradeAccount(model.getStockTradeAccount());
 
         return entity;
     }
@@ -620,6 +624,8 @@ public class CustomerOpenAccountConverter {
         customerAccountOpenInfoEntity.setOptionsAccUsageScenarios(accountOpenApplicationprotocol.getOptionsAccUsageScenarios());
         customerAccountOpenInfoEntity.setIsOpenFutures(accountOpenApplicationprotocol.getIsOpenFutures());
         customerAccountOpenInfoEntity.setFuturesAccUsageScenarios(accountOpenApplicationprotocol.getFuturesAccUsageScenarios());
+        customerAccountOpenInfoEntity.setFuturesTradeAccount(accountOpenApplicationprotocol.getFuturesTradeAccount());
+        customerAccountOpenInfoEntity.setStockTradeAccount(accountOpenApplicationprotocol.getStockTradeAccount());
 
         return customerAccountOpenInfoEntity;
     }
@@ -801,6 +807,8 @@ public class CustomerOpenAccountConverter {
         securitiesUserModel.setOptionsAccUsageScenarios(entity.getOptionsAccUsageScenarios());
         securitiesUserModel.setIsOpenFutures(entity.getIsOpenFutures());
         securitiesUserModel.setFuturesAccUsageScenarios(entity.getFuturesAccUsageScenarios());
+        securitiesUserModel.setFuturesTradeAccount(entity.getFuturesTradeAccount());
+        securitiesUserModel.setStockTradeAccount(entity.getStockTradeAccount());
 
         return securitiesUserModel;
     }

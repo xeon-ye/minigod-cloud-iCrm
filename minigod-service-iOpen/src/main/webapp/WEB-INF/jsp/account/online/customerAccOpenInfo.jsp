@@ -1971,6 +1971,26 @@
                                 </span>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                            证券交易账号</label>
+                        <span class="col-xs-8 block input-icon input-icon-right">
+                            <input id="stockTradeAccount" name="stockTradeAccount" type="text" class="form-control"
+                                   value="${customerAccountOpenInfoEntity.stockTradeAccount}"/>
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                            期货交易账号</label>
+                        <span class="col-xs-8 block input-icon input-icon-right">
+                            <input id="futuresTradeAccount" name="futuresTradeAccount" type="text" class="form-control"
+                                   value="${customerAccountOpenInfoEntity.futuresTradeAccount}"/>
+                        </span>
+                    </div>
+                </div>
             </div>
         </c:if>
     </div>
@@ -1999,8 +2019,6 @@
         </div>
     </div>
 </c:if>
-
-
 </body>
 
 <script type="text/javascript">
