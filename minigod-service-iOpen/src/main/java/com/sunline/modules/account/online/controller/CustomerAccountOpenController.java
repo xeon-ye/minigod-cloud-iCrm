@@ -1878,43 +1878,18 @@ public class CustomerAccountOpenController {
             queryCondition.setIsExpExcel(0);
             List<AccountOpenApplyDetailInfo> openAcctList = customerAccountOpenService.findList(queryCondition);
 
-            List<OpenAcctListModel> modelList = Lists.newArrayList();
+            List<WaitOpenAccExcelModel> modelList = Lists.newArrayList();
 
             String[] applicationIds = new String[openAcctList.size()];
 
             for (int i = 0; i < openAcctList.size(); i++) {
                 applicationIds[i] = openAcctList.get(i).getCustomerAccountOpenInfoEntity().getApplicationId();
 
-                OpenAcctListModel model = new OpenAcctListModel();
+                WaitOpenAccExcelModel model = new WaitOpenAccExcelModel();
                 // 填充数据
                 model.setId(String.valueOf(i + 1));
-                model.setApplicationId(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getApplicationId());
-                model.setApplicationTime(DateUtil.formatDateTime(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getApplicationTime()));
-                if (openAcctList.get(i).getCustomerAccountOpenInfoEntity().getOpenAccountType() == 0) {
-                    model.setOpenAccountType("未知");
-                } else if (openAcctList.get(i).getCustomerAccountOpenInfoEntity().getOpenAccountType() == 1 &&
-                        openAcctList.get(i).getCustomerAccountOpenInfoEntity().getBankType() == 0) {
-                    model.setOpenAccountType("香港银行卡");
-                } else if (openAcctList.get(i).getCustomerAccountOpenInfoEntity().getOpenAccountType() == 1 &&
-                        openAcctList.get(i).getCustomerAccountOpenInfoEntity().getBankType() == 1) {
-                    model.setOpenAccountType("大陆银行卡");
-                } else if (openAcctList.get(i).getCustomerAccountOpenInfoEntity().getOpenAccountType() == 6) {
-                    model.setOpenAccountType("SZCA电子证书");
-                } else if (openAcctList.get(i).getCustomerAccountOpenInfoEntity().getOpenAccountType() == 2) {
-                    model.setOpenAccountType("线下开户");
-                }
 
-                model.setUserId(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getUserId() == null ? "" : openAcctList.get(i).getCustomerAccountOpenInfoEntity().getUserId().toString());
-                model.setClientName(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getClientName());
-                model.setIdKind(CodeUtils.getCodeName("AO_ID_KIND", String.valueOf(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getIdKind())));
-//                model.setIdNo(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getIdNo());
-                model.setChannelId(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getSourceChannelId());
-                model.setApplicationStatus(CodeUtils.getCodeName("AO_OPEN_ACCOUNT_STATUS", String.valueOf(openAcctList.get(i).getCustomerAccountOpenApplyEntity().getApplicationStatus())));
-                model.setAccountLevel(CodeUtils.getCodeName("AO_OPEN_ACCOUNT_LEVEL", String.valueOf(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getAccountLevel())));
-                //add phoneNo by lidh on 20190513
-                model.setPhoneNo(openAcctList.get(i).getCustomerAccountOpenInfoEntity().getPhoneNumber());
                 // 通过证件类型，证件号码查询历史流程信息
-                CustomerAccountOpenInfoEntity customerAccountOpenInfo = customerAccountOpenInfoService.queryByApplicationId(openAcctList.get(i).getCustomerAccountOpenApplyEntity().getApplicationId());
                 ExtendActTasklogEntity extendActTasklogEntity = new ExtendActTasklogEntity();
                 extendActTasklogEntity.setBusId(openAcctList.get(i).getCustomerAccountOpenApplyEntity().getApplicationId());
                 List<ExtendActTasklogEntity> tasklogList = tasklogService.queryListProcessLog(extendActTasklogEntity);
@@ -1929,16 +1904,14 @@ public class CustomerAccountOpenController {
                     }
                 }
 
-                model.setBackReason(backReason.toString());
-
                 modelList.add(model);
             }
 
             // 执行excel操作
-            EasyExcelUtils.exportXlsxFile(modelList, response, OpenAcctListModel.class);
+            EasyExcelUtils.exportXlsxFile(modelList, response, WaitOpenAccExcelModel.class);
 
             //导出后更新导出状态
-            //customerAccOpenApplyService.updateBatchExpExcelStatus(applicationIds)
+            customerAccOpenApplyService.updateBatchExpExcelStatus(applicationIds);
 
         } catch (Exception e) {
             logger.error("导出Excel文件异常", e);

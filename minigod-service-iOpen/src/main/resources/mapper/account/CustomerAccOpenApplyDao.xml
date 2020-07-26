@@ -387,6 +387,9 @@
         <if test="applicationId != null">
             <![CDATA[ and caoa.application_id = #{applicationId}]]>
         </if>
+        <if test="isExpExcel !=null">
+            <![CDATA[ and caoa.is_exp_excel = #{isExpExcel}]]>
+        </if>
         <if test="userId != null">
             <![CDATA[ and caoi.user_id = #{userId}]]>
         </if>
