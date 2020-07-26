@@ -23,6 +23,7 @@ import com.sunline.modules.activiti.dto.ProcessTaskDto;
 import com.sunline.modules.activiti.entity.ExtendActTasklogEntity;
 import com.sunline.modules.activiti.service.ActModelerService;
 import com.sunline.modules.activiti.service.ExtendActTasklogService;
+import com.sunline.modules.api.entity.SecuritiesUserModel;
 import com.sunline.modules.common.annotation.SysLog;
 import com.sunline.modules.common.common.BpmCommonEnum;
 import com.sunline.modules.common.common.Constant;
@@ -181,7 +182,29 @@ public class CustomerAccountOpenController {
     @RequestMapping("/waitConfirmList")
     @RequiresPermissions("customer:waitConfirmList")
     public String waitConfirmList(Model model, AccountOpenApplyQuery queryCondition, HttpServletRequest request) {
-        return "";
+        String applicationTimeStart = queryCondition.getApplicationTimeStart();
+        String applicationTimeEnd = queryCondition.getApplicationTimeEnd();
+        int pageNum = Utils.parseInt(request.getParameter("pageNum"), 1);
+        if (StringUtils.isNotBlank(applicationTimeStart)) {
+            queryCondition.setApplicationTimeStart(DateUtil.format(DateUtil.beginOfDay(DateUtil.parse(applicationTimeStart)), "yyyy-MM-dd HH:mm:ss"));
+        }
+        if (StringUtils.isNotBlank(applicationTimeEnd)) {
+            queryCondition.setApplicationTimeEnd(DateUtil.format(DateUtil.endOfDay(DateUtil.parse(applicationTimeEnd)), "yyyy-MM-dd HH:mm:ss"));
+        }
+
+        queryCondition.setCurrentNode("开户");
+        queryCondition.setIsExpExcel(1);
+        Page<AccountOpenApplyDetailInfo> page = customerAccountOpenService.findPage(queryCondition, pageNum);
+
+        if (StringUtils.isNotBlank(applicationTimeStart)) {
+            queryCondition.setApplicationTimeStart(applicationTimeStart);
+        }
+        if (queryCondition.getApplicationTimeEnd() != null && StringUtils.isNotBlank(queryCondition.getApplicationTimeEnd())) {
+            queryCondition.setApplicationTimeEnd(applicationTimeEnd);
+        }
+        model.addAttribute("queryCondition", queryCondition);
+        model.addAttribute("page", page);
+        return "account/online/waitConfirmList";
     }
 
     /**
@@ -1888,7 +1911,6 @@ public class CustomerAccountOpenController {
                 WaitOpenAccExcelModel model = new WaitOpenAccExcelModel();
                 // 填充数据
                 model.setId(String.valueOf(i + 1));
-
                 // 通过证件类型，证件号码查询历史流程信息
                 ExtendActTasklogEntity extendActTasklogEntity = new ExtendActTasklogEntity();
                 extendActTasklogEntity.setBusId(openAcctList.get(i).getCustomerAccountOpenApplyEntity().getApplicationId());
@@ -1916,6 +1938,53 @@ public class CustomerAccountOpenController {
         } catch (Exception e) {
             logger.error("导出Excel文件异常", e);
         }
+    }
+
+    /**
+     * 开户确认(批量)
+     *
+     * @param queryCondition
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/batchConfirmOpenAcct")
+    @RequiresPermissions("customer:waitConfirm")
+    @SysLog("开户确认")
+    public void batchConfirmOpenAcct(AccountOpenApplyQuery queryCondition, HttpServletRequest request, HttpServletResponse response) {
+        String applicationTimeStart = queryCondition.getApplicationTimeStart();
+        String applicationTimeEnd = queryCondition.getApplicationTimeEnd();
+        if (StringUtils.isNotBlank(applicationTimeStart)) {
+            queryCondition.setApplicationTimeStart(DateUtil.format(DateUtil.beginOfDay(DateUtil.parse(applicationTimeStart)), "yyyy-MM-dd HH:mm:ss"));
+        }
+        if (StringUtils.isNotBlank(applicationTimeEnd)) {
+            queryCondition.setApplicationTimeEnd(DateUtil.format(DateUtil.endOfDay(DateUtil.parse(applicationTimeEnd)), "yyyy-MM-dd HH:mm:ss"));
+        }
+
+        queryCondition.setCurrentNode("开户");
+        queryCondition.setIsExpExcel(1);
+        List<AccountOpenApplyDetailInfo> openAcctList = customerAccountOpenService.findList(queryCondition);
+        doConfirmOpenAcc(openAcctList);
+    }
+
+    /**
+     * 开户确认
+     *
+     * @param applicationId
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/confirmOpenAcct")
+    @RequiresPermissions("customer:waitConfirm")
+    @SysLog("开户确认")
+    public void confirmOpenAcct(String applicationId, HttpServletRequest request, HttpServletResponse response) {
+        if (applicationId == null || StringUtils.isBlank(applicationId)){
+            return;
+        }
+
+        AccountOpenApplyQuery queryCondition = new AccountOpenApplyQuery();
+        queryCondition.setApplicationId(applicationId);
+        List<AccountOpenApplyDetailInfo> openAcctList = customerAccountOpenService.findList(queryCondition);
+        doConfirmOpenAcc(openAcctList);
     }
 
     /**
@@ -1995,5 +2064,63 @@ public class CustomerAccountOpenController {
             }
         }
         return openImgs;
+    }
+
+    /**
+     * 数据归档
+     *
+     * @param openAcctList
+     */
+    private void doConfirmOpenAcc(List<AccountOpenApplyDetailInfo> openAcctList) {
+        for (AccountOpenApplyDetailInfo openApplyDetailInfo : openAcctList) {
+            CustomerAccountOpenApplyEntity openApplicationEntity = openApplyDetailInfo.getCustomerAccountOpenApplyEntity();
+
+            // 数据归档
+            CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = openApplyDetailInfo.getCustomerAccountOpenInfoEntity();
+
+            // 驱动流程下一步
+            actModelerService.doNextFlow(openApplicationEntity.getApplicationId(), openApplicationEntity.getInstanceId(), "");
+
+            // 互联网开户需要备份影像资料
+            if (1 == customerAccountOpenInfoEntity.getOpenAccountType()) {
+                customerAccountOpenService.backupAccountOpenImage(customerAccountOpenInfoEntity.getClientId(), customerAccountOpenInfoEntity.getApplicationId());
+                customerAccountOpenService.backupAccountOpenReport(customerAccountOpenInfoEntity.getClientId(), customerAccountOpenInfoEntity.getApplicationId());
+            }
+
+            // 备份AML文件
+            customerAccountOpenService.backupAccountOpenAml(customerAccountOpenInfoEntity.getClientId(), customerAccountOpenInfoEntity.getApplicationId());
+
+            // 归档节点程序自动审核
+            CustomerAccountOpenApplyEntity customerAccountOpenApplyEntity = customerAccOpenApplyService.queryObjectByApplicationId(openApplicationEntity.getApplicationId());
+            CustomerAccountOpenInfoEntity customerAccountOpenInfo = customerAccountOpenInfoService.queryByApplicationId(openApplicationEntity.getApplicationId());
+
+            if (CodeUtils.getCodeName("OPEN_ACCOUNT_NODE_NAME", "5").equals(customerAccountOpenApplyEntity.getCurrentNode())) {
+
+                // CA认证更新开户状态为已开户，帐户等级为标准帐户
+                //线下开户等级为标准账户
+                if (1 == customerAccountOpenInfo.getBankType() || 2 == customerAccountOpenInfo.getOpenAccountType()) {
+                    // 更新预约申请表相关信息
+                    CustomerAccountOpenApplyEntity customerAccOpenApply = new CustomerAccountOpenApplyEntity();
+                    customerAccOpenApply.setApplicationId(customerAccountOpenApplyEntity.getApplicationId());
+                    customerAccOpenApply.setApplicationStatus(BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_OPEN_ACCOUNT_VALUE);
+
+                    customerAccOpenApplyService.updateByApplicationId(customerAccOpenApply);
+
+                    // 更新账户等级
+                    CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity1 = new CustomerAccountOpenInfoEntity();
+                    customerAccountOpenInfoEntity1.setApplicationId(customerAccountOpenApplyEntity.getApplicationId());
+                    customerAccountOpenInfoEntity1.setAccountLevel(3);
+                    customerAccountOpenInfoService.update(customerAccountOpenInfoEntity1);
+                } else {
+                    // 更新账户等级为预批帐户
+                    CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity2 = new CustomerAccountOpenInfoEntity();
+                    customerAccountOpenInfoEntity2.setApplicationId(customerAccountOpenApplyEntity.getApplicationId());
+                    customerAccountOpenInfoEntity2.setAccountLevel(1);
+                    customerAccountOpenInfoService.update(customerAccountOpenInfoEntity2);
+                }
+
+                actModelerService.doNextFlow(openApplicationEntity.getApplicationId(), openApplicationEntity.getInstanceId(), "");
+            }
+        }
     }
 }

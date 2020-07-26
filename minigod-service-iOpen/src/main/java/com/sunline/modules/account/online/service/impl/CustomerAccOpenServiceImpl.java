@@ -124,6 +124,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             } else if (3 == customerAccountOpenInfoEntity.getOpenAccountType()) {
                 customerAccountOpenApplicationEntity.setApplicationTitle("BPM开户申请[" + customerAccountOpenInfoEntity.getClientName() + "]");
             }
+            customerAccountOpenApplicationEntity.setIsExpExcel(0);
             customerAccountOpenApplicationEntity.setCurrentNode("提交");
 
             //客户申请表信息

@@ -107,7 +107,7 @@
 		<result property="freelanceOther" column="freelance_other"/>
 		<result property="lan" column="lan"/>
 		<result property="accountType" column="account_type"/>
-		<result property="homePhone" column="home_phone"/>
+		<result property="familyPhone" column="family_phone"/>
 		<result property="educationLevel" column="education_level"/>
 		<result property="workingSeniority" column="working_seniority"/>
 		<result property="officePhone" column="office_phone"/>
@@ -129,6 +129,8 @@
 		<result property="futuresAccUsageScenarios" column="futures_acc_usage_scenarios"/>
 		<result property="futuresTradeAccount" column="futures_trade_account"/>
 		<result property="stockTradeAccount" column="stock_trade_account"/>
+		<result property="contactPhone" column="contact_phone"/>
+		<result property="bankCurrency" column="bank_currency"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -231,7 +233,7 @@
         other_family_republic,
         lan,
         account_type,
-        home_phone,
+        family_phone,
         education_level,
         working_seniority,
         office_phone,
@@ -252,7 +254,9 @@
         is_open_futures,
         futures_acc_usage_scenarios,
         futures_trade_account,
-        stock_trade_account
+        stock_trade_account,
+        contact_phone,
+        bank_currency
     </sql>
 
     <sql id="Base_Where_Conditions">
@@ -453,7 +457,7 @@
             `other_family_republic`,
             `lan`,
             `account_type`,
-            `home_phone`,
+            `family_phone`,
             `education_level`,
             `working_seniority`,
             `office_phone`,
@@ -474,7 +478,9 @@
             `is_open_futures`,
             `futures_acc_usage_scenarios`,
             `futures_trade_account`,
-            `stock_trade_account`
+            `stock_trade_account`,
+            `contact_phone`,
+            `bank_currency`
 		)
 		values
 		(
@@ -574,7 +580,7 @@
 			#{otherFamilyRepublic},
 			#{lan},
 			#{accountType},
-			#{homePhone},
+			#{familyPhone},
 			#{educationLevel},
 			#{workingSeniority},
 			#{officePhone},
@@ -595,7 +601,9 @@
 			#{isOpenFutures},
 			#{futuresAccUsageScenarios},
 			#{futuresTradeAccount},
-			#{stockTradeAccount}
+			#{stockTradeAccount},
+			#{contactPhone},
+			#{bankCurrency}
 		)
 	</insert>
 
@@ -722,30 +730,31 @@
 			<if test="otherCompanyRepublic != null">`other_company_republic` = #{otherCompanyRepublic},</if>
 			<if test="otherFamilyRepublic != null">`other_family_republic` = #{otherFamilyRepublic},</if>
 			<if test="lan != null">`lan` = #{lan},</if>
-			<if test="account_type != null">`account_type` = #{accountType},</if>
-			<if test="home_phone != null">`home_phone` = #{homePhone},</if>
-			<if test="education_level != null">`education_level` = #{educationLevel},</if>
-			<if test="working_seniority != null">`working_seniority` = #{workingSeniority},</if>
-			<if test="office_phone != null">`office_phone` = #{officePhone},</if>
-			<if test="is_bankrupted != null">`is_bankrupted` = #{isBankrupted},</if>
-			<if test="d_statement_receive_mode != null">`d_statement_receive_mode` = #{dStatementReceiveMode},</if>
-			<if test="unit_trusts_experience != null">`unit_trusts_experience` = #{unitTrustsExperience},</if>
-			<if test="otherProductsExperience != null">`otherProductsExperience` = #{other_products_experience},</if>
-			<if test="otherProductsName != null">`otherProductsName` = #{otherProductsName},</if>
-			<if test="other_products_name != null">`other_products_name` = #{otherProductsName},</if>
-			<if test="options_experience != null">`options_experience` = #{optionsExperience},</if>
-			<if test="trade_stock_frequency != null">`trade_stock_frequency` = #{tradeStockFrequency},</if>
-			<if test="trade_warrants_frequency != null">`trade_warrants_frequency` = #{tradeWarrantsFrequency},</if>
-			<if test="trade_options_frequency != null">`trade_options_frequency` = #{tradeOptionsFrequency},</if>
-			<if test="trade_futures_frequency != null">`trade_futures_frequency` = #{tradeFuturesFrequency},</if>
-			<if test="trade_unit_trusts_frequency != null">`trade_unit_trusts_frequency` = #{tradeUnitTrustsFrequency},</if>
-			<if test="trade_other_products_frequency != null">`trade_other_products_frequency` = #{tradeOtherProductsFrequency},</if>
-			<if test="is_open_options != null">`is_open_options` = #{isOpenOptions},</if>
-			<if test="options_acc_usage_scenarios != null">`options_acc_usage_scenarios` = #{optionsAccUsageScenarios},</if>
-			<if test="is_open_futures != null">`is_open_futures` = #{isOpenFutures},</if>
-			<if test="futures_acc_usage_scenarios != null">`futures_acc_usage_scenarios` = #{futuresAccUsageScenarios},</if>
-			<if test="futures_trade_account != null">`futures_trade_account` = #{futuresTradeAccount},</if>
-			<if test="stock_trade_account != null">`stock_trade_account` = #{stockTradeAccount}</if>
+			<if test="accountType != null">`account_type` = #{accountType},</if>
+			<if test="familyPhone != null">`family_phone` = #{familyPhone},</if>
+			<if test="educationLevel != null">`education_level` = #{educationLevel},</if>
+			<if test="workingSeniority != null">`working_seniority` = #{workingSeniority},</if>
+			<if test="officePhone != null">`office_phone` = #{officePhone},</if>
+			<if test="isBankrupted != null">`is_bankrupted` = #{isBankrupted},</if>
+			<if test="dStatementReceiveMode != null">`d_statement_receive_mode` = #{dStatementReceiveMode},</if>
+			<if test="unitTrustsExperience != null">`unit_trusts_experience` = #{unitTrustsExperience},</if>
+			<if test="otherProductsExperience != null">`other_products_experience` = #{otherProductsExperience},</if>
+			<if test="otherProductsName != null">`other_products_name` = #{otherProductsName},</if>
+			<if test="optionsExperience != null">`options_experience` = #{optionsExperience},</if>
+			<if test="tradeStockFrequency != null">`trade_stock_frequency` = #{tradeStockFrequency},</if>
+			<if test="tradeWarrantsFrequency != null">`trade_warrants_frequency` = #{tradeWarrantsFrequency},</if>
+			<if test="tradeOptionsFrequency != null">`trade_options_frequency` = #{tradeOptionsFrequency},</if>
+			<if test="tradeFuturesFrequency != null">`trade_futures_frequency` = #{tradeFuturesFrequency},</if>
+			<if test="tradeUnitTrustsFrequency != null">`trade_unit_trusts_frequency` = #{tradeUnitTrustsFrequency},</if>
+			<if test="tradeOtherProductsFrequency != null">`trade_other_products_frequency` = #{tradeOtherProductsFrequency},</if>
+			<if test="isOpenOptions != null">`is_open_options` = #{isOpenOptions},</if>
+			<if test="optionsAccUsageScenarios != null">`options_acc_usage_scenarios` = #{optionsAccUsageScenarios},</if>
+			<if test="isOpenFutures != null">`is_open_futures` = #{isOpenFutures},</if>
+			<if test="futuresAccUsageScenarios != null">`futures_acc_usage_scenarios` = #{futuresAccUsageScenarios},</if>
+			<if test="futuresTradeAccount != null">`futures_trade_account` = #{futuresTradeAccount},</if>
+			<if test="stockTradeAccount != null">`stock_trade_account` = #{stockTradeAccount},</if>
+			<if test="contactPhone != null">`contact_phone` = #{contactPhone},</if>
+			<if test="bankCurrency != null">`bank_currency` = #{bankCurrency}</if>
         </set>
         where application_id = #{applicationId}
     </update>
@@ -860,30 +869,32 @@
 			<if test="otherCompanyRepublic != null">`other_company_republic` = #{otherCompanyRepublic},</if>
 			<if test="otherFamilyRepublic != null">`other_family_republic` = #{otherFamilyRepublic},</if>
 			<if test="lan != null">`lan` = #{lan},</if>
-			<if test="account_type != null">`account_type` = #{accountType},</if>
-			<if test="home_phone != null">`home_phone` = #{homePhone},</if>
-			<if test="education_level != null">`education_level` = #{educationLevel},</if>
-			<if test="working_seniority != null">`working_seniority` = #{workingSeniority},</if>
-			<if test="office_phone != null">`office_phone` = #{officePhone},</if>
-			<if test="is_bankrupted != null">`is_bankrupted` = #{isBankrupted},</if>
-			<if test="d_statement_receive_mode != null">`d_statement_receive_mode` = #{dStatementReceiveMode},</if>
-			<if test="unit_trusts_experience != null">`unit_trusts_experience` = #{unitTrustsExperience},</if>
-			<if test="otherProductsExperience != null">`otherProductsExperience` = #{other_products_experience},</if>
+			<if test="accountType != null">`account_type` = #{accountType},</if>
+			<if test="familyPhone != null">`family_phone` = #{familyPhone},</if>
+			<if test="educationLevel != null">`education_level` = #{educationLevel},</if>
+			<if test="workingSeniority != null">`working_seniority` = #{workingSeniority},</if>
+			<if test="officePhone != null">`office_phone` = #{officePhone},</if>
+			<if test="isBankrupted != null">`is_bankrupted` = #{isBankrupted},</if>
+			<if test="dStatementReceiveMode != null">`d_statement_receive_mode` = #{dStatementReceiveMode},</if>
+			<if test="unitTrustsExperience != null">`unit_trusts_experience` = #{unitTrustsExperience},</if>
+			<if test="other_products_experience != null">`otherProductsExperience` = #{other_products_experience},</if>
 			<if test="otherProductsName != null">`otherProductsName` = #{otherProductsName},</if>
-			<if test="other_products_name != null">`other_products_name` = #{otherProductsName},</if>
-			<if test="options_experience != null">`options_experience` = #{optionsExperience},</if>
-			<if test="trade_stock_frequency != null">`trade_stock_frequency` = #{tradeStockFrequency},</if>
-			<if test="trade_warrants_frequency != null">`trade_warrants_frequency` = #{tradeWarrantsFrequency},</if>
-			<if test="trade_options_frequency != null">`trade_options_frequency` = #{tradeOptionsFrequency},</if>
-			<if test="trade_futures_frequency != null">`trade_futures_frequency` = #{tradeFuturesFrequency},</if>
-			<if test="trade_unit_trusts_frequency != null">`trade_unit_trusts_frequency` = #{tradeUnitTrustsFrequency},</if>
-			<if test="trade_other_products_frequency != null">`trade_other_products_frequency` = #{tradeOtherProductsFrequency},</if>
-			<if test="is_open_options != null">`is_open_options` = #{isOpenOptions},</if>
-			<if test="options_acc_usage_scenarios != null">`options_acc_usage_scenarios` = #{optionsAccUsageScenarios},</if>
-			<if test="is_open_futures != null">`is_open_futures` = #{isOpenFutures},</if>
-			<if test="futures_acc_usage_scenarios != null">`futures_acc_usage_scenarios` = #{futuresAccUsageScenarios},</if>
-			<if test="futures_trade_account != null">`futures_trade_account` = #{futuresTradeAccount},</if>
-			<if test="stock_trade_account != null">`stock_trade_account` = #{stockTradeAccount}</if>
+			<if test="otherProductsName != null">`other_products_name` = #{otherProductsName},</if>
+			<if test="optionsExperience != null">`options_experience` = #{optionsExperience},</if>
+			<if test="tradeStockFrequency != null">`trade_stock_frequency` = #{tradeStockFrequency},</if>
+			<if test="tradeWarrantsFrequency != null">`trade_warrants_frequency` = #{tradeWarrantsFrequency},</if>
+			<if test="tradeOptionsFrequency != null">`trade_options_frequency` = #{tradeOptionsFrequency},</if>
+			<if test="tradeFuturesFrequency != null">`trade_futures_frequency` = #{tradeFuturesFrequency},</if>
+			<if test="tradeUnitTrustsFrequency != null">`trade_unit_trusts_frequency` = #{tradeUnitTrustsFrequency},</if>
+			<if test="tradeOtherProductsFrequency != null">`trade_other_products_frequency` = #{tradeOtherProductsFrequency},</if>
+			<if test="isOpenOptions != null">`is_open_options` = #{isOpenOptions},</if>
+			<if test="optionsAccUsageScenarios != null">`options_acc_usage_scenarios` = #{optionsAccUsageScenarios},</if>
+			<if test="isOpenFutures != null">`is_open_futures` = #{isOpenFutures},</if>
+			<if test="futuresAccUsageScenarios != null">`futures_acc_usage_scenarios` = #{futuresAccUsageScenarios},</if>
+			<if test="futuresTradeAccount != null">`futures_trade_account` = #{futuresTradeAccount},</if>
+			<if test="stockTradeAccount != null">`stock_trade_account` = #{stockTradeAccount},</if>
+			<if test="contactPhone != null">`contact_phone` = #{contactPhone},</if>
+			<if test="bankCurrency != null">`bank_currency` = #{bankCurrency}</if>
 		</set>
         where application_id = #{applicationId}
     </update>

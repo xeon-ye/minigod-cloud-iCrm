@@ -266,7 +266,7 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
     private Integer accountType;
 
     //住所电话
-    private String homePhone;
+    private String familyPhone;
 
     //教育程度[0、未知  1、小学   2、中学   3、专上学院   4、大学或以上]
     private Integer educationLevel;
@@ -329,6 +329,12 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
     private String futuresTradeAccount;
     //证券交易账号
     private String stockTradeAccount;
+
+    //通讯电话
+    private String contactPhone;
+
+    //银行卡币种 [0-綜合賬戶 1-港幣賬戶 2-美元賬戶 3-人民币账户]
+    private Integer bankCurrency;
 
     /**
      * 设置：自增ID
@@ -1644,12 +1650,12 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
         this.accountType = accountType;
     }
 
-    public String getHomePhone() {
-        return homePhone;
+    public String getFamilyPhone() {
+        return familyPhone;
     }
 
-    public void setHomePhone(String homePhone) {
-        this.homePhone = homePhone;
+    public void setFamilyPhone(String familyPhone) {
+        this.familyPhone = familyPhone;
     }
 
     public Integer getEducationLevel() {
@@ -1818,5 +1824,21 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
 
     public void setStockTradeAccount(String stockTradeAccount) {
         this.stockTradeAccount = stockTradeAccount;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
+    public Integer getBankCurrency() {
+        return bankCurrency;
+    }
+
+    public void setBankCurrency(Integer bankCurrency) {
+        this.bankCurrency = bankCurrency;
     }
 }

@@ -12,7 +12,7 @@
         <result property="approveResult" column="approve_result"/>
         <result property="currentAccountOpenStep" column="current_account_open_step"/>
         <result property="currentAccountOpenStepStatus" column="current_account_open_step_status"/>
-        <result property="accountOpenResultStatus" column="account_open_result_status"/>
+        <result property="accountOpenResultStatus" column="account_open_resulselectAccountOpenApplicationDetailInfot_status"/>
         <result property="lastApprovalUser" column="last_approval_user"/>
         <result property="assignDrafter" column="assign_drafter"/>
         <result property="approvalOpinion" column="approval_opinion"/>
@@ -120,7 +120,32 @@
         <result property="nation" column="nation"/>
         <result property="signingOrganization" column="signing_organization"/>
         <result property="acceptRisk" column="accept_risk"/>
-        <result property="isExpExcel" column="is_exp_excel"/>
+        <result property="lan" column="lan"/>
+        <result property="accountType" column="account_type"/>
+        <result property="familyPhone" column="family_phone"/>
+        <result property="educationLevel" column="education_level"/>
+        <result property="workingSeniority" column="working_seniority"/>
+        <result property="officePhone" column="office_phone"/>
+        <result property="isBankrupted" column="is_bankrupted"/>
+        <result property="dStatementReceiveMode" column="d_statement_receive_mode"/>
+        <result property="unitTrustsExperience" column="unit_trusts_experience"/>
+        <result property="otherProductsExperience" column="other_products_experience"/>
+        <result property="otherProductsName" column="other_products_name"/>
+        <result property="optionsExperience" column="options_experience"/>
+        <result property="tradeStockFrequency" column="trade_stock_frequency"/>
+        <result property="tradeWarrantsFrequency" column="trade_warrants_frequency"/>
+        <result property="tradeOptionsFrequency" column="trade_options_frequency"/>
+        <result property="tradeFuturesFrequency" column="trade_futures_frequency"/>
+        <result property="tradeUnitTrustsFrequency" column="trade_unit_trusts_frequency"/>
+        <result property="tradeOtherProductsFrequency" column="trade_other_products_frequency"/>
+        <result property="isOpenOptions" column="is_open_options"/>
+        <result property="optionsAccUsageScenarios" column="options_acc_usage_scenarios"/>
+        <result property="isOpenFutures" column="is_open_futures"/>
+        <result property="futuresAccUsageScenarios" column="futures_acc_usage_scenarios"/>
+        <result property="futuresTradeAccount" column="futures_trade_account"/>
+        <result property="stockTradeAccount" column="stock_trade_account"/>
+        <result property="contactPhone" column="contact_phone"/>
+        <result property="bankCurrency" column="bank_currency"/>
     </resultMap>
 
     <resultMap id="AccountOpenApplicationDetailInfoMap" type="com.sunline.modules.account.online.model.AccountOpenApplyDetailInfo" >
@@ -274,7 +299,33 @@
         caoi.account_level                                      as caoi_account_level,
         caoi.nation                                             as caoi_nation,
         caoi.signing_organization                               as caoi_signing_organization,
-        caoi.accept_risk                                        as caoi_accept_risk
+        caoi.accept_risk                                        as caoi_accept_risk,
+        caoi.lan                                                as caoi_lan,
+        caoi.account_type                                       as caoi_account_type,
+        caoi.family_phone                                       as caoi_family_phone,
+        caoi.education_level                                    as caoi_education_level,
+        caoi.working_seniority                                  as caoi_working_seniority,
+        caoi.office_phone                                       as caoi_office_phone,
+        caoi.is_bankrupted                                      as caoi_is_bankrupted,
+        caoi.d_statement_receive_mode                           as caoi_d_statement_receive_mode,
+        caoi.unit_trusts_experience                             as caoi_unit_trusts_experience,
+        caoi.other_products_experience                          as caoi_other_products_experience,
+        caoi.other_products_name                                as caoi_other_products_name,
+        caoi.options_experience                                 as caoi_options_experience,
+        caoi.trade_stock_frequency                              as caoi_trade_stock_frequency,
+        caoi.trade_warrants_frequency                           as caoi_trade_warrants_frequency,
+        caoi.trade_options_frequency                            as caoi_trade_options_frequency,
+        caoi.trade_futures_frequency                            as caoi_trade_futures_frequency,
+        caoi.trade_unit_trusts_frequency                        as caoi_trade_unit_trusts_frequency,
+        caoi.trade_other_products_frequency                     as caoi_trade_other_products_frequency,
+        caoi.is_open_options                                    as caoi_is_open_options,
+        caoi.options_acc_usage_scenarios                        as caoi_options_acc_usage_scenarios,
+        caoi.is_open_futures                                    as caoi_is_open_futures,
+        caoi.futures_acc_usage_scenarios                        as caoi_futures_acc_usage_scenarios,
+        caoi.futures_trade_account                              as caoi_futures_trade_account,
+        caoi.stock_trade_account                                as caoi_stock_trade_account,
+        caoi.contact_phone                                      as caoi_contact_phone,
+        caoi.bank_currency                                      as caoi_bank_currency
  	</sql>
     <sql id="Base_Where_Conditions">
         <!--<if test ="param != null">-->

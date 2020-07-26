@@ -133,7 +133,7 @@ public class CustomerOpenAccountConverter {
         model.setOtherFamilyRepublic(entity.getOtherFamilyRepublic());
 
         model.setLanguage(entity.getLan());
-        model.setHomePhone(entity.getHomePhone());
+        model.setFamilyPhone(entity.getFamilyPhone());
         model.setAccountType(entity.getAccountType());
         model.setEducationLevel(entity.getEducationLevel());
         model.setWorkingSeniority(entity.getWorkingSeniority());
@@ -156,6 +156,8 @@ public class CustomerOpenAccountConverter {
         model.setFuturesAccUsageScenarios(entity.getFuturesAccUsageScenarios());
         model.setFuturesTradeAccount(entity.getFuturesTradeAccount());
         model.setStockTradeAccount(entity.getStockTradeAccount());
+        model.setContactPhone(entity.getContactPhone());
+        model.setBankCurrency(entity.getBankCurrency());
 
         return model;
     }
@@ -267,7 +269,7 @@ public class CustomerOpenAccountConverter {
         entity.setOtherFamilyRepublic(model.getOtherFamilyRepublic());
 
         entity.setLan(model.getLanguage());
-        entity.setHomePhone(model.getHomePhone());
+        entity.setFamilyPhone(model.getFamilyPhone());
         entity.setAccountType(model.getAccountType());
         entity.setEducationLevel(model.getEducationLevel());
         entity.setWorkingSeniority(model.getWorkingSeniority());
@@ -290,6 +292,8 @@ public class CustomerOpenAccountConverter {
         entity.setFuturesAccUsageScenarios(model.getFuturesAccUsageScenarios());
         entity.setFuturesTradeAccount(model.getFuturesTradeAccount());
         entity.setStockTradeAccount(model.getStockTradeAccount());
+        entity.setContactPhone(model.getContactPhone());
+        entity.setBankCurrency(model.getBankCurrency());
 
         return entity;
     }
@@ -603,7 +607,7 @@ public class CustomerOpenAccountConverter {
         customerAccountOpenInfoEntity.setOtherFamilyRepublic(accountOpenApplicationprotocol.getOtherFamilyRepublic());
 
         customerAccountOpenInfoEntity.setLanguage(accountOpenApplicationprotocol.getLanguage());
-        customerAccountOpenInfoEntity.setHomePhone(accountOpenApplicationprotocol.getHomePhone());
+        customerAccountOpenInfoEntity.setFamilyPhone(accountOpenApplicationprotocol.getFamilyPhone());
         customerAccountOpenInfoEntity.setAccountType(accountOpenApplicationprotocol.getAccountType());
         customerAccountOpenInfoEntity.setEducationLevel(accountOpenApplicationprotocol.getEducationLevel());
         customerAccountOpenInfoEntity.setWorkingSeniority(accountOpenApplicationprotocol.getWorkingSeniority());
@@ -626,6 +630,8 @@ public class CustomerOpenAccountConverter {
         customerAccountOpenInfoEntity.setFuturesAccUsageScenarios(accountOpenApplicationprotocol.getFuturesAccUsageScenarios());
         customerAccountOpenInfoEntity.setFuturesTradeAccount(accountOpenApplicationprotocol.getFuturesTradeAccount());
         customerAccountOpenInfoEntity.setStockTradeAccount(accountOpenApplicationprotocol.getStockTradeAccount());
+        customerAccountOpenInfoEntity.setContactPhone(accountOpenApplicationprotocol.getContactPhone());
+        customerAccountOpenInfoEntity.setBankCurrency(accountOpenApplicationprotocol.getBankCurrency());
 
         return customerAccountOpenInfoEntity;
     }
@@ -787,7 +793,7 @@ public class CustomerOpenAccountConverter {
 
         securitiesUserModel.setLanguage(entity.getLan());
         securitiesUserModel.setAccountType(entity.getAccountType());
-        securitiesUserModel.setHomePhone(entity.getHomePhone());
+        securitiesUserModel.setFamilyPhone(entity.getFamilyPhone());
         securitiesUserModel.setEducationLevel(entity.getEducationLevel());
         securitiesUserModel.setWorkingSeniority(entity.getWorkingSeniority());
         securitiesUserModel.setOfficePhone(entity.getOfficePhone());
@@ -809,6 +815,8 @@ public class CustomerOpenAccountConverter {
         securitiesUserModel.setFuturesAccUsageScenarios(entity.getFuturesAccUsageScenarios());
         securitiesUserModel.setFuturesTradeAccount(entity.getFuturesTradeAccount());
         securitiesUserModel.setStockTradeAccount(entity.getStockTradeAccount());
+        securitiesUserModel.setContactPhone(entity.getContactPhone());
+        securitiesUserModel.setBankCurrency(entity.getBankCurrency());
 
         return securitiesUserModel;
     }

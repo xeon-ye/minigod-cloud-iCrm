@@ -65,8 +65,8 @@
                 <label class="col-sm-2 control-label no-padding-right">住所电话</label>
                 <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="homePhone" name="homePhone" type="text" class="form-control"
-                               value="${customerAccountOpenInfoEntity.homePhone}" readonly/>
+                        <input id="familyPhone" name="familyPhone" type="text" class="form-control"
+                               value="${customerAccountOpenInfoEntity.familyPhone}" readonly/>
                     </span>
                 </div>
             </div>
@@ -95,7 +95,7 @@
                 <label class="col-sm-2 control-label no-padding-right">办公室电话</label>
                 <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="officePhone" name="homePhone" type="text" class="form-control"
+                        <input id="officePhone" name="officePhone" type="text" class="form-control"
                                value="${customerAccountOpenInfoEntity.officePhone}" readonly/>
                     </span>
                 </div>
@@ -191,7 +191,7 @@
                 <label class="col-sm-2 control-label no-padding-right">其它投资产品名称</label>
                 <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="otherProductsName" name="applicationId" type="text" class="form-control"
+                        <input id="otherProductsName" name="otherProductsName" type="text" class="form-control"
                                value="${customerAccountOpenInfoEntity.otherProductsName}" readonly/>
                     </span>
                 </div>
@@ -362,6 +362,34 @@
                                    <c:if test="${customerAccountOpenInfoEntity.futuresAccUsageScenarios==1}">checked</c:if>  />互联网交易
                             <input name="futuresAccUsageScenarios" type="radio" value="1" disabled="disabled"
                                    <c:if test="${customerAccountOpenInfoEntity.futuresAccUsageScenarios==2}">checked</c:if>  />全权委托交易
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">通讯电话</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input id="contactPhone" name="contactPhone" type="text" class="form-control"
+                               value="${customerAccountOpenInfoEntity.contactPhone}" readonly/>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">银行卡币种</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="bankCurrency" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.bankCurrency==0}">checked</c:if>  />综合账户
+                            <input name="bankCurrency" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.bankCurrency==1}">checked</c:if>  />港币账户
+                            <input name="bankCurrency" type="radio" value="2" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.bankCurrency==2}">checked</c:if> />美元账户
+                            <input name="bankCurrency" type="radio" value="3" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.bankCurrency==3}">checked</c:if> />人民账户
+                        </span>
                     </span>
                 </div>
             </div>

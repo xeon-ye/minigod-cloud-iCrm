@@ -350,12 +350,13 @@ public class CustomerAccountOpenHelper {
 //        }
 
         if (1 == openAccountInfo.getBankType()) {
-//            if (null == openAccountInfo.getBankId()) {
-//                logger.error("【开户预约接口数据完整性校验】：请填写银行编号");
-//                responseVO.setCode(-1);
-//                responseVO.setMessage("请填写银行编号");
-//                return responseVO;
-//            }
+            if (null == openAccountInfo.getBankCurrency()) {
+                logger.error("【开户预约接口数据完整性校验】：请填写银行币种");
+                responseVO.setCode(-1);
+                responseVO.setMessage("请填写银行编号");
+                return responseVO;
+            }
+
             if (null == openAccountInfo.getBankNo() || StringUtils.isBlank(openAccountInfo.getBankNo())) {
                 logger.error("【开户预约接口数据完整性校验】：请填写银行卡号");
                 responseVO.setCode(-1);
@@ -588,7 +589,7 @@ public class CustomerAccountOpenHelper {
             return responseVO;
         }
 
-        if (null == openAccountInfo.getHomePhone() || StringUtils.isBlank(openAccountInfo.getHomePhone())) {
+        if (null == openAccountInfo.getFamilyPhone() || StringUtils.isBlank(openAccountInfo.getFamilyPhone())) {
             logger.error("【开户预约接口数据完整性校验】：请填写住所电话");
             responseVO.setCode(-1);
             responseVO.setMessage("请填写住所电话");
@@ -599,20 +600,6 @@ public class CustomerAccountOpenHelper {
             logger.error("【开户预约接口数据完整性校验】：请填写教育程度");
             responseVO.setCode(-1);
             responseVO.setMessage("请填写教育程度");
-            return responseVO;
-        }
-
-        if (null == openAccountInfo.getWorkingSeniority()) {
-            logger.error("【开户预约接口数据完整性校验】：请填写从业年限");
-            responseVO.setCode(-1);
-            responseVO.setMessage("请填写从业年限");
-            return responseVO;
-        }
-
-        if (null == openAccountInfo.getOfficePhone() || StringUtils.isBlank(openAccountInfo.getOfficePhone())) {
-            logger.error("【开户预约接口数据完整性校验】：请填写办公室电话");
-            responseVO.setCode(-1);
-            responseVO.setMessage("请填写办公室电话");
             return responseVO;
         }
 
@@ -1235,6 +1222,13 @@ public class CustomerAccountOpenHelper {
                 return responseVO;
             }
 
+            if (null == openAccountInfo.getWorkingSeniority()) {
+                logger.error("【开户预约接口数据完整性校验】：请填写从业年限");
+                responseVO.setCode(-1);
+                responseVO.setMessage("请填写从业年限");
+                return responseVO;
+            }
+
 //            if (1 == openAccountInfo.getProfessionCode()) {
 //                if (null == openAccountInfo.getJobPosition() || StringUtils.isBlank(openAccountInfo.getJobPosition())) {
 //                    logger.error("【开户编辑资料数据完整性校验】：请填写职位");
@@ -1243,6 +1237,14 @@ public class CustomerAccountOpenHelper {
 //                    return responseVO;
 //                }
 //            }
+
+
+            /*if (null == openAccountInfo.getOfficePhone() || StringUtils.isBlank(openAccountInfo.getOfficePhone())) {
+                logger.error("【开户预约接口数据完整性校验】：请填写办公室电话");
+                responseVO.setCode(-1);
+                responseVO.setMessage("请填写办公室电话");
+                return responseVO;
+            }*/
         }
 
         if (4 == openAccountInfo.getProfessionCode() && null == openAccountInfo.getFreelanceCode()) {

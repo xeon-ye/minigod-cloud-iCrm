@@ -8,7 +8,7 @@
 
 <html lang="en">
 <head>
-    <title>待开户列表</title>
+    <title>待确认列表</title>
     <style>
         .layui-form-label {
             width: 120px;
@@ -34,7 +34,7 @@
 <body>
 <div class="main-container" id="main-container">
     <div class="" style="margin-top: 10px;">
-        <form class="layui-form" id="search-from" method="post" action="${webRoot}/customer/waitOpenList/">
+        <form class="layui-form" id="search-from" method="post" action="${webRoot}/customer/waitConfirmList/">
             <div class="layui-inline" style="margin-bottom: 2px;">
                 <label class="layui-form-label">预约号:</label>
                 <div class="layui-input-block">
@@ -135,9 +135,9 @@
                 <button class="layui-btn layui-btn-warm" type="button" id="refresh"><i
                         class="layui-icon">&#x1002;</i>重置
                 </button>
-                <shiro:hasPermission name="waitOpenAcc:exp">
-                    <button class="layui-btn layui-btn-danger" type="button" id="export" onclick="exportExcel()"><i
-                            class="layui-icon">&#xe601;</i>导出
+                <shiro:hasPermission name="customer:waitConfirm">
+                    <button class="layui-btn layui-btn-danger" type="button" id="export" onclick="batchConfirmOpenAcct()"><i
+                            class="layui-icon">&#xe601;</i>确认
                     </button>
                 </shiro:hasPermission>
             </div>
@@ -162,6 +162,7 @@
                 <th>开户状态</th>
                 <th>账户等级</th>
                 <th>是否加急</th>
+                <th>操作</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -201,19 +202,27 @@
                         <c:choose>
                             <c:when test="${info.customerAccountOpenInfoEntity.openAccountType == 2}">
                                 <button class="layui-btn layui-btn-mini" type="button"
-                                        onclick="doTaskTab('customerAccountOpenApplicationOffline','${info.customerAccountOpenInfoEntity.applicationId}',
-                                                '${info.customerAccountOpenApplyEntity.instanceId}','','${info.customerAccountOpenApplyEntity.defid}','','${info.customerAccountOpenApplyEntity.assignDrafter}','${info.customerAccountOpenApplyEntity.currentNode}');">
-                                    <i class="layui-icon">&#xe60a;</i>查看
+                                                onclick="doTaskTab('customerAccountOpenApplicationOffline','${info.customerAccountOpenInfoEntity.applicationId}',
+                                                        '${info.customerAccountOpenApplyEntity.instanceId}','','${info.customerAccountOpenApplyEntity.defid}','','${info.customerAccountOpenApplyEntity.assignDrafter}','${info.customerAccountOpenApplyEntity.currentNode}');">
+                                            <i class="layui-icon">&#xe60a;</i>查看
                                 </button>
                             </c:when>
                             <c:otherwise>
                                 <button class="layui-btn layui-btn-mini" type="button"
-                                        onclick="doTaskTab('customerAccountOpenApplication','${info.customerAccountOpenInfoEntity.applicationId}',
-                                                '${info.customerAccountOpenApplyEntity.instanceId}','','${info.customerAccountOpenApplyEntity.defid}','','${info.customerAccountOpenApplyEntity.assignDrafter}','${info.customerAccountOpenApplyEntity.currentNode}');">
-                                    <i class="layui-icon">&#xe60a;</i>查看
+                                                onclick="doTaskTab('customerAccountOpenApplication','${info.customerAccountOpenInfoEntity.applicationId}',
+                                                        '${info.customerAccountOpenApplyEntity.instanceId}','','${info.customerAccountOpenApplyEntity.defid}','','${info.customerAccountOpenApplyEntity.assignDrafter}','${info.customerAccountOpenApplyEntity.currentNode}');">
+                                            <i class="layui-icon">&#xe60a;</i>查看
                                 </button>
                             </c:otherwise>
                         </c:choose>
+                    </td>
+                    <td>
+                        <shiro:hasPermission name="customer:waitConfirm">
+                            <button class="layui-btn layui-btn-mini" type="button"
+                                    onclick="confirmOpenAcct('${info.customerAccountOpenInfoEntity.applicationId}');">
+                                <i class="layui-icon">&#xe60a;</i>确认
+                            </button>
+                        </shiro:hasPermission>
                     </td>
                 </tr>
             </c:forEach>
@@ -251,15 +260,21 @@
         elem: '#applicationTimeEnd' //指定元素
     });
 
-    // 导出excel
-    function exportExcel() {
+    // 确认开户（批量）
+    function batchConfirmOpenAcct() {
         var loading = layer.msg('loading...', {icon: 16, shade: 0.01});
         $('#export').attr("disabled", "true").addClass('layui-btn-disabled');
         setTimeout(function () {
             $("#export").attr("disabled", false).removeClass("layui-btn-disabled");
         }, 6000);
         var obj = $('#search-from').serialize();
-        window.location.href = '${webRoot}/customer/waitOpenAcctListExp?AccountOpenApplyQuery=&' + obj;
+        window.location.href = '${webRoot}/customer/batchConfirmOpenAcct?AccountOpenApplyQuery=&' + obj;
+    }
+
+    // 确认开户
+    function confirmOpenAcct(applicationId) {
+        var loading = layer.msg('loading...', {icon: 16, shade: 0.01});
+        window.location.href = '${webRoot}/customer/confirmOpenAcct?String=&' + applicationId;
     }
 
     $("#refresh").click(function () {
