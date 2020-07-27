@@ -1878,42 +1878,33 @@ public class CustomerAccountOpenController {
     /**
      * 待开户导出Excel
      *
-     * @param queryCondition
+     * @param applicationIds
      * @param request
      * @return
      */
     @RequestMapping(value = "/waitOpenAcctListExp")
     @RequiresPermissions("waitOpenAcc:exp")
     @SysLog("待开户导出Excel")
-    public void waitOpenAcctListExp(AccountOpenApplyQuery queryCondition, HttpServletRequest request, HttpServletResponse response) {
+    public void waitOpenAcctListExp(String applicationIds, HttpServletRequest request, HttpServletResponse response) {
         try {
 
-            String applicationTimeStart = queryCondition.getApplicationTimeStart();
-            String applicationTimeEnd = queryCondition.getApplicationTimeEnd();
-            if (StringUtils.isNotBlank(applicationTimeStart)) {
-                queryCondition.setApplicationTimeStart(DateUtil.format(DateUtil.beginOfDay(DateUtil.parse(applicationTimeStart)), "yyyy-MM-dd HH:mm:ss"));
-            }
-            if (StringUtils.isNotBlank(applicationTimeEnd)) {
-                queryCondition.setApplicationTimeEnd(DateUtil.format(DateUtil.endOfDay(DateUtil.parse(applicationTimeEnd)), "yyyy-MM-dd HH:mm:ss"));
+            if (applicationIds == null || StringUtils.isBlank(applicationIds)) {
+                return ;
             }
 
-            queryCondition.setCurrentNode("开户");
-            queryCondition.setIsExpExcel(0);
-            List<AccountOpenApplyDetailInfo> openAcctList = customerAccountOpenService.findList(queryCondition);
+            String[] applicationIdArray = applicationIds.split(",");
+
+            List<CustomerAccountOpenInfoEntity> openAcctList = customerAccountOpenInfoService.queryListByApplicationId(applicationIdArray);
 
             List<WaitOpenAccExcelModel> modelList = Lists.newArrayList();
 
-            String[] applicationIds = new String[openAcctList.size()];
-
             for (int i = 0; i < openAcctList.size(); i++) {
-                applicationIds[i] = openAcctList.get(i).getCustomerAccountOpenInfoEntity().getApplicationId();
-
                 WaitOpenAccExcelModel model = new WaitOpenAccExcelModel();
                 // 填充数据
                 model.setId(String.valueOf(i + 1));
                 // 通过证件类型，证件号码查询历史流程信息
                 ExtendActTasklogEntity extendActTasklogEntity = new ExtendActTasklogEntity();
-                extendActTasklogEntity.setBusId(openAcctList.get(i).getCustomerAccountOpenApplyEntity().getApplicationId());
+                extendActTasklogEntity.setBusId(openAcctList.get(i).getApplicationId());
                 List<ExtendActTasklogEntity> tasklogList = tasklogService.queryListProcessLog(extendActTasklogEntity);
                 customerAccountOpenService.joinBackReasonType(tasklogList);
 
@@ -1933,7 +1924,7 @@ public class CustomerAccountOpenController {
             EasyExcelUtils.exportXlsxFile(modelList, response, WaitOpenAccExcelModel.class);
 
             //导出后更新导出状态
-            customerAccOpenApplyService.updateBatchExpExcelStatus(applicationIds);
+            customerAccOpenApplyService.updateBatchExpExcelStatus(applicationIdArray);
 
         } catch (Exception e) {
             logger.error("导出Excel文件异常", e);
@@ -1967,7 +1958,7 @@ public class CustomerAccountOpenController {
     }
 
     /**
-     * 开户确认
+     * 开户确认(单个用户)
      *
      * @param applicationId
      * @param request
@@ -1986,7 +1977,7 @@ public class CustomerAccountOpenController {
             AccountOpenApplyQuery queryCondition = new AccountOpenApplyQuery();
             queryCondition.setApplicationId(applicationId);
             List<AccountOpenApplyDetailInfo> openAcctList = customerAccountOpenService.findList(queryCondition);
-            if (openAcctList == null || openAcctList.size() == 0){
+            if (openAcctList == null || openAcctList.size() == 0) {
                 return Result.error("查询用户数据出错!");
             }
             doConfirmOpenAcc(openAcctList);

@@ -56,4 +56,6 @@ public interface CustomerAccOpenInfoService {
     List<CustomerAccountOpenInfoEntity> isExistedOpenAccByIdCard(CustomerAccountOpenInfoEntity entity);
 
     CustomerAccountOpenInfoEntity findByClientId(String clientId);
+
+    List<CustomerAccountOpenInfoEntity> queryListByApplicationId(String[] applicationIds);
 }

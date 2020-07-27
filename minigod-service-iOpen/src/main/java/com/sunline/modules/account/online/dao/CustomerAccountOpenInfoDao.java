@@ -5,6 +5,7 @@ import com.sunline.modules.common.dao.BaseDao;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 客户开户详细资料表
@@ -39,4 +40,6 @@ public interface CustomerAccountOpenInfoDao extends BaseDao<CustomerAccountOpenI
     List<CustomerAccountOpenInfoEntity> isExistedOpenAccByIdCard(CustomerAccountOpenInfoEntity entity);
 
     CustomerAccountOpenInfoEntity findByClientId(String clientId);
+
+    List<CustomerAccountOpenInfoEntity> queryListByApplicationId(Map<String, Object> map);
 }

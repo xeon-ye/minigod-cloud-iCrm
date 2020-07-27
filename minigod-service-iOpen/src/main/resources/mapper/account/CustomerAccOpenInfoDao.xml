@@ -942,4 +942,12 @@
         </if>
     </select>
 
+    <select id="queryListByApplicationId" parameterType="java.util.Map" resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity">
+        select <include refid="Base_Column_List"/> from customer_account_open_info
+        WHERE application_id IN
+        <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+    </select>
+
 </mapper>

@@ -1,5 +1,6 @@
 package com.sunline.modules.account.online.service.impl;
 
+import com.google.common.collect.Maps;
 import com.sunline.modules.account.online.dao.CustomerAccountOpenInfoDao;
 import com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity;
 import com.sunline.modules.account.online.service.CustomerAccOpenInfoService;
@@ -104,6 +105,16 @@ public class CustomerAccOpenInfoServiceImpl implements CustomerAccOpenInfoServic
     public CustomerAccountOpenInfoEntity findByClientId(String clientId) {
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
         return customerAccountOpenInfoDao.findByClientId(clientId);
+    }
+
+    @Override
+    public List<CustomerAccountOpenInfoEntity> queryListByApplicationId(String[] applicationIds) {
+        DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
+
+        Map<String,Object> params = Maps.newHashMap();
+        params.put("applicationIds",applicationIds);
+
+        return customerAccountOpenInfoDao.queryListByApplicationId(params);
     }
 
 }
