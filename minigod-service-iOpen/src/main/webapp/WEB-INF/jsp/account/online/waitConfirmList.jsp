@@ -219,7 +219,7 @@
                     <td>
                         <shiro:hasPermission name="customer:waitConfirm">
                             <button class="layui-btn layui-btn-mini" type="button"
-                                    onclick="confirmOpenAcct('${info.customerAccountOpenInfoEntity.applicationId}');">
+                                    onclick="confirmOpenAcct('${info.customerAccountOpenInfoEntity.applicationId}')">
                                 <i class="layui-icon">&#xe60a;</i>确认
                             </button>
                         </shiro:hasPermission>
@@ -273,8 +273,24 @@
 
     // 确认开户
     function confirmOpenAcct(applicationId) {
-        var loading = layer.msg('loading...', {icon: 16, shade: 0.01});
-        window.location.href = '${webRoot}/customer/confirmOpenAcct?String=&' + applicationId;
+        confirm("确定要给此用户办理开户吗?", function () {
+            var params = {
+                'applicationId': applicationId
+            };
+            var url = "${webRoot}/customer/confirmOpenAcct";
+            $.post(url, params, function callback(result) {
+                if (result.code == '0') {
+                    alert(result, function () {
+                        // 刷新列表
+                        window.location.reload();
+                    })
+                } else {
+                    alertMsg(result.msg);
+                    // 刷新列表
+                    window.location.reload();
+                }
+            }, "json");
+        });
     }
 
     $("#refresh").click(function () {

@@ -1973,18 +1973,28 @@ public class CustomerAccountOpenController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/confirmOpenAcct")
+    @RequestMapping(value = "confirmOpenAcct", method = RequestMethod.POST)
     @RequiresPermissions("customer:waitConfirm")
+    @ResponseBody
     @SysLog("开户确认")
-    public void confirmOpenAcct(String applicationId, HttpServletRequest request, HttpServletResponse response) {
-        if (applicationId == null || StringUtils.isBlank(applicationId)){
-            return;
+    public Result confirmOpenAcct(String applicationId, HttpServletRequest request, HttpServletResponse response) {
+        if (applicationId == null || StringUtils.isBlank(applicationId)) {
+            return Result.error("数据处理异常!");
         }
 
-        AccountOpenApplyQuery queryCondition = new AccountOpenApplyQuery();
-        queryCondition.setApplicationId(applicationId);
-        List<AccountOpenApplyDetailInfo> openAcctList = customerAccountOpenService.findList(queryCondition);
-        doConfirmOpenAcc(openAcctList);
+        try {
+            AccountOpenApplyQuery queryCondition = new AccountOpenApplyQuery();
+            queryCondition.setApplicationId(applicationId);
+            List<AccountOpenApplyDetailInfo> openAcctList = customerAccountOpenService.findList(queryCondition);
+            if (openAcctList == null || openAcctList.size() == 0){
+                return Result.error("查询用户数据出错!");
+            }
+            doConfirmOpenAcc(openAcctList);
+        } catch (Exception e) {
+            return Result.error("数据处理失败!");
+        }
+
+        return Result.ok();
     }
 
     /**
