@@ -273,7 +273,7 @@
             alert("请选择用户！");
             return;
         } else {
-            confirm("确定要导出用户数据吗?"+applicationIds, function () {
+            confirm("确定要导出用户数据吗?", function () {
                 window.location.href = '${webRoot}/customer/waitOpenAcctListExp?applicationIds=' + applicationIds;
             });
         }

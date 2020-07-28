@@ -1934,26 +1934,22 @@ public class CustomerAccountOpenController {
     /**
      * 开户确认(批量)
      *
-     * @param queryCondition
+     * @param applicationIds
      * @param request
      * @return
      */
     @RequestMapping(value = "/batchConfirmOpenAcct")
     @RequiresPermissions("customer:waitConfirm")
     @SysLog("开户确认")
-    public void batchConfirmOpenAcct(AccountOpenApplyQuery queryCondition, HttpServletRequest request, HttpServletResponse response) {
-        String applicationTimeStart = queryCondition.getApplicationTimeStart();
-        String applicationTimeEnd = queryCondition.getApplicationTimeEnd();
-        if (StringUtils.isNotBlank(applicationTimeStart)) {
-            queryCondition.setApplicationTimeStart(DateUtil.format(DateUtil.beginOfDay(DateUtil.parse(applicationTimeStart)), "yyyy-MM-dd HH:mm:ss"));
-        }
-        if (StringUtils.isNotBlank(applicationTimeEnd)) {
-            queryCondition.setApplicationTimeEnd(DateUtil.format(DateUtil.endOfDay(DateUtil.parse(applicationTimeEnd)), "yyyy-MM-dd HH:mm:ss"));
+    public void batchConfirmOpenAcct(String applicationIds, HttpServletRequest request, HttpServletResponse response) {
+        if (applicationIds == null || StringUtils.isBlank(applicationIds)) {
+            return ;
         }
 
-        queryCondition.setCurrentNode("开户");
-        queryCondition.setIsExpExcel(1);
-        List<AccountOpenApplyDetailInfo> openAcctList = customerAccountOpenService.findList(queryCondition);
+        String[] applicationIdArray = applicationIds.split(",");
+
+        List<AccountOpenApplyDetailInfo> openAcctList = customerAccountOpenService.selectAccOpenDetailInfoByApplicationIds(applicationIdArray);
+
         doConfirmOpenAcc(openAcctList);
     }
 

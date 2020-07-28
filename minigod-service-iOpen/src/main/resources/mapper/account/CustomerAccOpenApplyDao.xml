@@ -327,6 +327,141 @@
         caoi.contact_phone                                      as caoi_contact_phone,
         caoi.bank_currency                                      as caoi_bank_currency
  	</sql>
+
+    <sql id="Base_Column_List2">
+	 	caoa.id                                   AS    caoa_id,
+        caoa.application_id                       AS 	caoa_application_id,
+        caoa.application_title                    AS	caoa_application_title,
+        caoa.current_node                         AS 	caoa_current_node,
+        caoa.approve_result                       AS 	caoa_approve_result,
+        caoa.current_account_open_step            AS 	caoa_current_account_open_step,
+        caoa.current_account_open_step_status     AS 	caoa_current_account_open_step_status,
+        caoa.account_open_result_status           AS 	caoa_account_open_result_status,
+        caoa.last_approval_user                   AS 	caoa_last_approval_user,
+        caoa.approval_opinion                     AS 	caoa_approval_opinion,
+        caoa.error_images                         AS 	caoa_error_images,
+        caoa.error_content_types                  AS 	caoa_error_content_types,
+        caoa.callback_status                      AS 	caoa_callback_status,
+        caoa.status                               AS 	caoa_status,
+        caoa.instance_id                          AS 	caoa_instance_id,
+        caoa.defid                                AS 	caoa_defid,
+        caoa.start_user_id                        AS 	caoa_start_user_id,
+        caoa.create_user                          AS 	caoa_create_user,
+        caoa.update_user                          AS 	caoa_update_user,
+        caoa.start_time                           AS 	caoa_start_time,
+        caoa.remark                               AS 	caoa_remark,
+        caoa.act_result                           AS 	caoa_act_result,
+        caoa.application_status                           AS 	caoa_application_status,
+        caoa.is_back                           AS 	caoa_is_back,
+        caoa.flow_path                           AS 	caoa_flow_path,
+        caoa.assign_drafter                       AS 	caoa_assign_drafter,
+        caoa.create_time                          AS 	caoa_create_time,
+        caoa.update_time                          AS 	caoa_update_time,
+        caoa.fire_aid                          AS 	caoa_fire_aid,
+        caoa.other_reasons                     as caoa_other_reasons,
+        caoa.is_exp_excel                      as caoa_is_exp_excel,
+        caoi.id                                                 as caoi_id,
+        caoi.application_id                                     as caoi_application_id,
+        caoi.open_account_type                                  as caoi_open_account_type,
+        caoi.open_account_access_way                            as caoi_open_account_access_way,
+        caoi.fund_account_type                                  as caoi_fund_account_type,
+        caoi.source_channel_id                                  as caoi_source_channel_id,
+        caoi.user_id                                            as caoi_user_id,
+        caoi.inviter_id                                         as caoi_inviter_id,
+        caoi.client_id                                          as caoi_client_id,
+        caoi.fund_account                                       as caoi_fund_account,
+        caoi.client_name                                        as caoi_client_name,
+        caoi.family_name                                        as caoi_family_name,
+        caoi.given_name                                         as caoi_given_name,
+        caoi.client_name_spell                                  as caoi_client_name_spell,
+        caoi.given_name_spell                                   as caoi_given_name_spell,
+        caoi.family_name_spell                                  as caoi_family_name_spell,
+        caoi.id_kind                                            as caoi_id_kind,
+        caoi.id_no                                              as caoi_id_no,
+        caoi.sex                                                as caoi_sex,
+        caoi.birthday                                           as caoi_birthday,
+        caoi.id_card_address                                    as caoi_id_card_address,
+        caoi.id_card_valid_date_start                           as caoi_id_card_valid_date_start,
+        caoi.id_card_valid_date_end                             as caoi_id_card_valid_date_end,
+        caoi.identity_similarity_percent                        as caoi_identity_similarity_percent,
+        caoi.is_pass_identity_authentication                    as caoi_is_pass_identity_authentication,
+        caoi.bank_id                                            as caoi_bank_id,
+        caoi.bank_no                                            as caoi_bank_no,
+        caoi.bank_account_name                                  as caoi_bank_account_name,
+        caoi.nationality                                        as caoi_nationality,
+        caoi.is_american_green_card_holder                      as caoi_is_american_green_card_holder,
+        caoi.contact_province_name                              as caoi_contact_province_name,
+        caoi.contact_city_name                                  as caoi_contact_city_name,
+        caoi.contact_county_name                                as caoi_contact_county_name,
+        caoi.contact_detail_address                             as caoi_contact_detail_address,
+        caoi.family_address                                     as caoi_family_address,
+        caoi.contact_address                                    as caoi_contact_address,
+        caoi.email                                              as caoi_email,
+        caoi.phone_number                                       as caoi_phone_number,
+        caoi.profession_code                                    as caoi_profession_code,
+        caoi.profession_type                                    as caoi_profession_type,
+        caoi.company_name                                       as caoi_company_name,
+        caoi.company_address                                    as caoi_company_address,
+        caoi.company_phone_number                               as caoi_company_phone_number,
+        caoi.job_position                                       as caoi_job_position,
+        caoi.industry_range                                     as caoi_industry_range,
+        caoi.capital_source                                     as caoi_capital_source,
+        caoi.annual_income                                      as caoi_annual_income,
+        caoi.invest_target                                      as caoi_invest_target,
+        caoi.invest_target_other                                as caoi_invest_target_other,
+        caoi.stocks_investment_experience_type                  as caoi_stocks_investment_experience_type,
+        caoi.warrants_investment_experience_type                as caoi_warrants_investment_experience_type,
+        caoi.futures_investment_experience_type                 as caoi_futures_investment_experience_type,
+        caoi.is_know_derivative_products                        as caoi_is_know_derivative_products,
+        caoi.derivative_products_study_type                     as caoi_derivative_products_study_type,
+        caoi.derivative_products_study_type_other               as caoi_derivative_products_study_type_other,
+        caoi.financing_institution_work_experience_type         as caoi_financing_institution_work_experience_type,
+        caoi.financing_institution_work_experience_type_other   as caoi_financing_institution_work_experience_type_other,
+        caoi.is_traded_derivative_products                      as caoi_is_traded_derivative_products,
+        caoi.is_open_usa_stock_market                           as caoi_is_open_usa_stock_market,
+        caoi.is_open_hk_stock_market                            as caoi_is_open_hk_stock_market,
+        caoi.is_allow_provide_privacy                           as caoi_is_allow_provide_privacy,
+        caoi.is_aml_suspicious                                  as caoi_is_aml_suspicious,
+        caoi.is_allow_derivatives_transaction                   as caoi_is_allow_derivatives_transaction,
+        caoi.initial_account_password                           as caoi_initial_account_password,
+        caoi.open_account_time                                  as caoi_open_account_time,
+        caoi.application_time                                   as caoi_application_time,
+        caoi.create_time                                        as caoi_create_time,
+        caoi.update_time                                        as caoi_update_time,
+        caoi.record_status                                      as caoi_record_status,
+        caoi.bank_type                                          as caoi_bank_type,
+        caoi.account_level                                      as caoi_account_level,
+        caoi.nation                                             as caoi_nation,
+        caoi.signing_organization                               as caoi_signing_organization,
+        caoi.accept_risk                                        as caoi_accept_risk,
+        caoi.lan                                                as caoi_lan,
+        caoi.account_type                                       as caoi_account_type,
+        caoi.family_phone                                       as caoi_family_phone,
+        caoi.education_level                                    as caoi_education_level,
+        caoi.working_seniority                                  as caoi_working_seniority,
+        caoi.office_phone                                       as caoi_office_phone,
+        caoi.is_bankrupted                                      as caoi_is_bankrupted,
+        caoi.d_statement_receive_mode                           as caoi_d_statement_receive_mode,
+        caoi.unit_trusts_experience                             as caoi_unit_trusts_experience,
+        caoi.other_products_experience                          as caoi_other_products_experience,
+        caoi.other_products_name                                as caoi_other_products_name,
+        caoi.options_experience                                 as caoi_options_experience,
+        caoi.trade_stock_frequency                              as caoi_trade_stock_frequency,
+        caoi.trade_warrants_frequency                           as caoi_trade_warrants_frequency,
+        caoi.trade_options_frequency                            as caoi_trade_options_frequency,
+        caoi.trade_futures_frequency                            as caoi_trade_futures_frequency,
+        caoi.trade_unit_trusts_frequency                        as caoi_trade_unit_trusts_frequency,
+        caoi.trade_other_products_frequency                     as caoi_trade_other_products_frequency,
+        caoi.is_open_options                                    as caoi_is_open_options,
+        caoi.options_acc_usage_scenarios                        as caoi_options_acc_usage_scenarios,
+        caoi.is_open_futures                                    as caoi_is_open_futures,
+        caoi.futures_acc_usage_scenarios                        as caoi_futures_acc_usage_scenarios,
+        caoi.futures_trade_account                              as caoi_futures_trade_account,
+        caoi.stock_trade_account                                as caoi_stock_trade_account,
+        caoi.contact_phone                                      as caoi_contact_phone,
+        caoi.bank_currency                                      as caoi_bank_currency
+ 	</sql>
+
     <sql id="Base_Where_Conditions">
         <!--<if test ="param != null">-->
         <if test="id != null">
@@ -1120,10 +1255,34 @@
         ORDER  BY caoi.application_time DESC
     </select>
 
+    <select id="selectAccOpenDetailInfoByApplicationIds" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="java.util.Map" >
+        SELECT
+        <include refid="Base_Column_List2"/>
+        FROM customer_account_open_application caoa
+        LEFT JOIN customer_account_open_info caoi ON caoa.application_id=caoi.application_id
+        WHERE caoa.application_id IN
+        <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+    </select>
+
     <select id="qryAbnormalData" resultMap="customerAccountOpenApplicationMap" parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenApplyEntity" >
         SELECT
         <include refid="Base_Column_List"/>
         FROM customer_account_open_application
         WHERE current_node='完成' AND flow_path LIKE '%初审-完成%'
     </select>
+
+
+    <!--<select id="selectAccOpenDetailInfoByApplicationIds" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="java.util.Map" >
+        SELECT
+        <include refid="Base_Column_List1"/>
+        FROM order_list o
+        LEFT JOIN user_info u ON o.user_id=u.user_id
+        AND o.user_id IN
+        <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
+            #{Id}
+        </foreach>
+    </select>-->
+
 </mapper>
