@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: db,statistic
+  messages:
+    encoding: UTF-8
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+server:
+  port: 8002
+  servlet:
+    context-path: /statistic

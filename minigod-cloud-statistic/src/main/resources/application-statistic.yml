@@ -1,0 +1,17 @@
+spring:
+  # activemq
+  activemq:
+    broker-url: tcp://10.1.2.99:61616
+    user: admin
+    password: admin
+    pool:
+      enabled: true
+      max-connections: 100
+    packages:
+      trust-all: true #注意 对象传输需开启包白名单 否则会报错- -
+    in-memory: true
+    queue-name: gourd-queue
+    topic-name: gourd-topic
+    group-name: gourd-group
+  jms:
+    pub-sub-domain: true
