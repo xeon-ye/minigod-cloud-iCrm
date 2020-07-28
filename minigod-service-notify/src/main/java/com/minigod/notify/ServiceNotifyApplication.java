@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ImportResource;
 @Configuration
 @SpringBootApplication(scanBasePackages = "com.minigod")
 @MapperScan(basePackages = "com.minigod.persist.*.mapper")
-@ImportResource(locations = {"classpath:config.properties"})
 @EnableDiscoveryClient
 public class ServiceNotifyApplication {
 
