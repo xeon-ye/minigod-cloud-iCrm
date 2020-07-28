@@ -102,4 +102,6 @@ public interface CustomerAccOpenService {
      * @return
      */
     List<AccountOpenApplyDetailInfo> selectAccountOpenBackDetailInfo(AccountOpenApplyQuery accountOpenApplicationQuery);
+
+    List<AccountOpenApplyDetailInfo> selectAccOpenDetailInfoByApplicationIds(String[] applicationIds);
 }

@@ -262,13 +262,29 @@
 
     // 确认开户（批量）
     function batchConfirmOpenAcct() {
-        var loading = layer.msg('loading...', {icon: 16, shade: 0.01});
-        $('#export').attr("disabled", "true").addClass('layui-btn-disabled');
-        setTimeout(function () {
-            $("#export").attr("disabled", false).removeClass("layui-btn-disabled");
-        }, 6000);
-        var obj = $('#search-from').serialize();
-        window.location.href = '${webRoot}/customer/batchConfirmOpenAcct?AccountOpenApplyQuery=&' + obj;
+        var ids = document.getElementsByName("selectFlag");
+        var applicationIds = '';
+        var count = 0;
+        for (var i = 0; i < ids.length; i++) {
+            if (ids[i].checked) {
+                ++count;
+                if (ids[i].value.split("-")[1] != "") {
+                    applicationIds += ids[i].value.split("-")[0] + ",";
+                }
+
+            }
+        }
+        if (applicationIds.length > 1) {
+            applicationIds = applicationIds.substring(0, applicationIds.length - 1);
+        }
+        if (count < 1) {
+            alert("请选择用户！");
+            return;
+        } else {
+            confirm("确定要导出用户数据吗?", function () {
+                window.location.href = '${webRoot}/customer/batchConfirmOpenAcct?applicationIds=' + applicationIds;
+            });
+        }
     }
 
     // 确认开户
