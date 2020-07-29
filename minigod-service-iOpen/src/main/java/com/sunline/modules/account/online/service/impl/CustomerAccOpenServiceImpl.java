@@ -666,7 +666,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
         MessageSendInfoEntity messageSendInfoEntity = new MessageSendInfoEntity();
         messageSendInfoEntity.setMessageType(BpmCommonEnum.MessageNoticeType.MESSAGE_NOTICE_TYPE_EMAIL_VALUE);
         messageSendInfoEntity.setRecipients(customerAccountOpenInfoEntity.getEmail());
-        messageSendInfoEntity.setMessageTitle("智珠证券账户开户欢迎函");
+        messageSendInfoEntity.setMessageTitle("寶新證券帳戶開戶歡迎函");
         messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
         Map<String, String> emailModel = Maps.newHashMap();
         emailModel.put("clientName", customerAccountOpenInfoEntity.getClientName() != null && !"".equals(customerAccountOpenInfoEntity.getClientName()) ? customerAccountOpenInfoEntity.getClientName() : customerAccountOpenInfoEntity.getClientNameSpell());
@@ -687,10 +687,10 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
 
         // 发送一世免佣通知邮件
         if ("275".equals(customerAccountOpenInfoEntity.getSourceChannelId())) {
-            messageSendInfoEntity = new MessageSendInfoEntity();
+            /*messageSendInfoEntity = new MessageSendInfoEntity();
             messageSendInfoEntity.setMessageType(BpmCommonEnum.MessageNoticeType.MESSAGE_NOTICE_TYPE_EMAIL_VALUE);
             messageSendInfoEntity.setRecipients(customerAccountOpenInfoEntity.getEmail());
-            messageSendInfoEntity.setMessageTitle("智珠證券免傭確認函");
+            messageSendInfoEntity.setMessageTitle("寶新證券免傭確認函");
             messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
 
             emailModel.clear();
@@ -698,7 +698,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             messageSendInfoEntity.setMessageContent(VelocityUtil.fillTemplate(VelocityUtil.ACCOUNT_OPEN_SUCCEED_HK_EMAIL_TEMPLATE, emailModel));
             messageSendInfoEntity.setContentType(2);
 
-            messageSendInfoService.save(messageSendInfoEntity);
+            messageSendInfoService.save(messageSendInfoEntity);*/
         }
     }
 

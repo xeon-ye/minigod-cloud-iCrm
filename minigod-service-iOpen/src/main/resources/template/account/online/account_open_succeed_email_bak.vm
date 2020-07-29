@@ -1,7 +1,6 @@
 ##<div style="background-color:#d73f3c; height:73px; padding:0px;"><a href="http://www.zszhizhu.com" target="_blank" style="border:0px;"><img src="https://sns.zszhizhu.com:8000/static/openaccount/email/logo.jpg" width="720" height="73" border="0"></a></div>
 <div style="padding:30px 55px 50px 55px; font-size:14px; color:#333; line-height:26px;">
-    <div style="padding:0px; margin:0px; line-height:26px;"><b>您已成功開立賬戶！</b></div>
-    <div style="padding:0px; margin:0px; line-height:26px;"><b>Your account is successfully opened!</b></div>
+    <div style="padding:0px; margin:0px; line-height:26px;"><b>尊敬的<font>${clientName}</font>，您好！</b></div>
     <div style="padding:0px; margin:0px; line-height:26px; margin-top:15px;">
         感谢您选择智珠证券。您的证券户口已经开立完成。<br>
         <table width="100%" border="1px" cellspacing="0" cellpadding="0">

@@ -203,13 +203,13 @@ public class CustomerAccOpenRetCallback {
 
                     if (null != accountOpenApplicationDetailInfo.getCustomerAccountOpenApplyEntity().getErrorContentTypes() && accountOpenApplicationDetailInfo.getCustomerAccountOpenApplyEntity().getErrorContentTypes().contains("17")) {
                         if (null == accountOpenApplicationDetailInfo.getCustomerAccountOpenApplyEntity().getOtherReasons() || "".equals(accountOpenApplicationDetailInfo.getCustomerAccountOpenApplyEntity().getOtherReasons())) {
-                            paramList.add("具体原因请拨打客服电话咨询：香港（852）2523-8221或国内400-688-3187");
+                            paramList.add("具体原因请拨打客服电话咨询：香港(852) 2379 8888或国内400-636-0620");
                         } else {
-                            paramList.add("需要修改的资料是" + accountOpenApplicationDetailInfo.getCustomerAccountOpenApplyEntity().getOtherReasons() + "，请打开小神有财APP进行修改。如有疑问，请拨打客服电话咨询：香港（852）2523-8221或国内400-688-3187");
+                            paramList.add("需要修改的资料是" + accountOpenApplicationDetailInfo.getCustomerAccountOpenApplyEntity().getOtherReasons() + "。如有疑问，请拨打客服电话咨询：香港(852) 2379 8888或国内400-636-0620");
                         }
 
                     } else {
-                        paramList.add("待修改的信息是：" + reason + "，请打开小神有财APP进行修改。如有疑问，请拨打客服电话咨询：香港（852）2523-8221或国内400-688-3187");
+                        paramList.add("待修改的信息是：" + reason + "。如有疑问，请拨打客服电话咨询：香港(852) 2379 8888或国内400-688-3187");
                     }
 
                     generateOpenAccRetSendSms(1003, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList);
@@ -272,7 +272,7 @@ public class CustomerAccOpenRetCallback {
             MessageSendInfoEntity messageSendInfoEntity = new MessageSendInfoEntity();
             messageSendInfoEntity.setMessageType(BpmCommonEnum.MessageNoticeType.MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS_VALUE);
             messageSendInfoEntity.setRecipients(ConfigUtils.get("message.center.sms.url"));
-            messageSendInfoEntity.setMessageTitle("智珠证券账户开户申请");
+            messageSendInfoEntity.setMessageTitle("寶新證券帳戶開戶申請");
             messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
             messageSendInfoEntity.setMessageContent(JSON.toJSONString(paraMap, SerializerFeature.WriteMapNullValue));
             messageSendInfoEntity.setContentType(1);

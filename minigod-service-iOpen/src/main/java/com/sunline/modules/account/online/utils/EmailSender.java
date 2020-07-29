@@ -38,7 +38,7 @@ public class EmailSender {
 
         MailBody body = new MailBody();
         body.setFrom("service@zszhizhu.com");
-        body.setFromName("智珠证券");
+        body.setFromName("寶新證券");
         body.setReplyTo("service@zszhizhu.com");
         body.setSubject(title);
 
@@ -88,7 +88,7 @@ public class EmailSender {
 
         MailBody body = new MailBody();
         body.setFrom("service@zszhizhu.com");
-        body.setFromName("智珠证券");
+        body.setFromName("寶新證券");
         body.setReplyTo("service@zszhizhu.com");
         body.setSubject(title);
 
@@ -137,7 +137,7 @@ public class EmailSender {
         // 设置 From
         body.setFrom("service@zszhizhu.com");
         // 设置 FromName
-        body.setFromName("智珠证券");
+        body.setFromName("寶新證券");
         // 设置 ReplyTo
         body.setReplyTo("service@zszhizhu.com");
         // 设置标题

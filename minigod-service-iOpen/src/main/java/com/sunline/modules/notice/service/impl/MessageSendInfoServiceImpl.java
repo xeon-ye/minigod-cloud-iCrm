@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.collect.Lists;
+import com.minigod.common.pojo.response.ResResult;
+import com.minigod.notify.service.CaptchaEmailService;
 import com.sunline.common.ConfigUtils;
 import com.sunline.modules.account.online.utils.EmailSender;
 import com.sunline.modules.common.common.BpmCommonEnum;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +41,9 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
 
     @Autowired
     private MessageSendInfoDao messageSendInfoDao;
+
+    @Autowired
+    private CaptchaEmailService captchaEmailService;
 
     @Override
     public MessageSendInfoEntity queryObject(Integer id) {
@@ -128,22 +134,39 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
                 case MESSAGE_NOTICE_TYPE_SMS:
                     break;
                 case MESSAGE_NOTICE_TYPE_EMAIL:
-                    List<File> attachments = Lists.newArrayList();
+                    //old
+                    /*List<File> attachments = Lists.newArrayList();
                     if (!StringUtils.isBlank(messageSendInfo.getAttachmentUris())) {
                         List<String> attachmentUris = JSON.parseArray(messageSendInfo.getAttachmentUris(), String.class);
                         for (String uri : attachmentUris) {
                             File attachment = new File(uri);
                             attachments.add(attachment);
                         }
+                    }*/
+                    //new
+                    List<String> attachmentUris = new ArrayList<>();
+                    if (!StringUtils.isBlank(messageSendInfo.getAttachmentUris())) {
+                        attachmentUris = JSON.parseArray(messageSendInfo.getAttachmentUris(), String.class);
                     }
 
-                    if (0 == messageSendInfo.getContentType()) {
+
+                    //old
+                    /*if (0 == messageSendInfo.getContentType()) {
                         isSucceed = EmailSender.sendEmailText(messageSendInfo.getRecipients(), messageSendInfo.getMessageTitle(), messageSendInfo.getMessageContent(), attachments);
                     } else if (1 == messageSendInfo.getContentType()) {
                         isSucceed = EmailSender.sendEmailHtml(messageSendInfo.getRecipients(), messageSendInfo.getMessageTitle(), messageSendInfo.getMessageContent(), attachments);
                     } else if (2 == messageSendInfo.getContentType()) {
                         isSucceed = EmailSender.sendEmailTemplate(messageSendInfo.getRecipients(), messageSendInfo.getMessageTitle(), messageSendInfo.getMessageContent(), attachments);
-                    }
+                    }*/
+
+                    //new
+                    ResResult resResult = captchaEmailService.sendMail(messageSendInfo.getRecipients(),
+                            "service@zszhizhu.com",
+                            messageSendInfo.getMessageTitle(),
+                            messageSendInfo.getMessageContent(),
+                            attachmentUris);
+
+                    isSucceed = (resResult.getCode() == 0);
 
                     break;
                 case MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS:
