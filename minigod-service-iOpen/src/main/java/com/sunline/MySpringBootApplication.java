@@ -16,6 +16,7 @@ import org.springframework.jms.annotation.EnableJms;
  */
 
 @SpringBootApplication(scanBasePackages = "com.sunline")
+//@SpringBootApplication(scanBasePackages = {"com.sunline","com.minigod"})
 @ServletComponentScan
 @ImportResource(locations = {"classpath:captcher-config.xml"})
 @EnableJms

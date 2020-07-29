@@ -476,6 +476,10 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     @JSONField(name = "bankCurrency")
     private Integer bankCurrency;
 
+    //投资年期 [0-未知 1、<1年  2、1-3年  3、3年以上]
+    @JSONField(name = "investmentHorizon")
+    private Integer investmentHorizon;
+
     public String getIsAmlSuspicious() {
         return isAmlSuspicious;
     }
@@ -1402,5 +1406,13 @@ public class AccountOpenApplyProtocol extends BaseParameter {
 
     public void setBankCurrency(Integer bankCurrency) {
         this.bankCurrency = bankCurrency;
+    }
+
+    public Integer getInvestmentHorizon() {
+        return investmentHorizon;
+    }
+
+    public void setInvestmentHorizon(Integer investmentHorizon) {
+        this.investmentHorizon = investmentHorizon;
     }
 }

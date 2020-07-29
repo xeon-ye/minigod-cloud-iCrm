@@ -394,6 +394,23 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">投资年期</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input name="investmentHorizon" type="radio" value="0" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==0}">checked</c:if>  />未知 
+                        <input name="investmentHorizon" type="radio" value="1" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==1}">checked</c:if>  /><1年
+                        <input name="investmentHorizon" type="radio" value="2" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==2}">checked</c:if>  />1-3年
+                        <input name="investmentHorizon" type="radio" value="3" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==3}">checked</c:if>  />3年以上
+                    </span>
+                </div>
+            </div>
+        </div>
 </div>
 <%-- 预约信息 Start --%>
 <div id="div1" v-cloak>

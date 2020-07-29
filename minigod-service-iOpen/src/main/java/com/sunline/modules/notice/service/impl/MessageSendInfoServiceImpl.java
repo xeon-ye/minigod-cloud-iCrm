@@ -4,11 +4,7 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.google.common.collect.Lists;
-import com.minigod.common.pojo.response.ResResult;
-import com.minigod.notify.service.CaptchaEmailService;
 import com.sunline.common.ConfigUtils;
-import com.sunline.modules.account.online.utils.EmailSender;
 import com.sunline.modules.common.common.BpmCommonEnum;
 import com.sunline.modules.notice.dao.MessageSendInfoDao;
 import com.sunline.modules.notice.entity.MessageSendInfoEntity;
@@ -21,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,8 +37,8 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
     @Autowired
     private MessageSendInfoDao messageSendInfoDao;
 
-    @Autowired
-    private CaptchaEmailService captchaEmailService;
+    /*@Autowired
+    private CaptchaEmailService captchaEmailService;*/
 
     @Override
     public MessageSendInfoEntity queryObject(Integer id) {
@@ -160,13 +155,13 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
                     }*/
 
                     //new
-                    ResResult resResult = captchaEmailService.sendMail(messageSendInfo.getRecipients(),
+                    /*ResResult resResult = captchaEmailService.sendMail(messageSendInfo.getRecipients(),
                             "service@zszhizhu.com",
                             messageSendInfo.getMessageTitle(),
                             messageSendInfo.getMessageContent(),
                             attachmentUris);
 
-                    isSucceed = (resResult.getCode() == 0);
+                    isSucceed = (resResult.getCode() == 0);*/
 
                     break;
                 case MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS:

@@ -336,6 +336,9 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
     //银行卡币种 [0-綜合賬戶 1-港幣賬戶 2-美元賬戶 3-人民币账户]
     private Integer bankCurrency;
 
+    //投资年期 [0-未知 1、<1年  2、1-3年  3、3年以上]
+    private Integer investmentHorizon;
+
     /**
      * 设置：自增ID
      */
@@ -1840,5 +1843,13 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
 
     public void setBankCurrency(Integer bankCurrency) {
         this.bankCurrency = bankCurrency;
+    }
+
+    public Integer getInvestmentHorizon() {
+        return investmentHorizon;
+    }
+
+    public void setInvestmentHorizon(Integer investmentHorizon) {
+        this.investmentHorizon = investmentHorizon;
     }
 }
