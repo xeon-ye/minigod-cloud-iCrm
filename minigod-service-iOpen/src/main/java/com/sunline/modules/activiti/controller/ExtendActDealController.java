@@ -1,9 +1,9 @@
 package com.sunline.modules.activiti.controller;
 
 import com.google.common.collect.Maps;
-import com.sunline.modules.account.online.entity.CustomerAccountOpenApplyEntity;
-import com.sunline.modules.account.online.model.CustomerAccOpenApproveInfo;
+import com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity;
 import com.sunline.modules.account.online.service.CustomerAccOpenApplyService;
+import com.sunline.modules.account.online.service.CustomerAccOpenInfoService;
 import com.sunline.modules.activiti.dto.ProcessNodeDto;
 import com.sunline.modules.activiti.dto.ProcessTaskDto;
 import com.sunline.modules.activiti.entity.ExtendActFlowbusEntity;
@@ -16,7 +16,6 @@ import com.sunline.modules.common.exception.MyException;
 import com.sunline.modules.common.page.Page;
 import com.sunline.modules.common.utils.Result;
 import com.sunline.modules.common.utils.StringUtils;
-import com.sunline.modules.common.utils.UserUtils;
 import com.sunline.modules.common.utils.Utils;
 import com.sunline.modules.sys.entity.UserEntity;
 import org.activiti.engine.TaskService;
@@ -36,7 +35,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,6 +70,9 @@ public class ExtendActDealController {
 
     @Autowired
     CustomerAccOpenApplyService customerAccOpenApplyService;
+
+    @Autowired
+    CustomerAccOpenInfoService customerAccOpenInfoService;
 
     /**
      * 列表
@@ -389,10 +390,25 @@ public class ExtendActDealController {
         try {
             Map<String, String[]> parameterMap = request.getParameterMap();
             Map<String, Object> params = new LinkedCaseInsensitiveMap<>();
-            for (String key : parameterMap.keySet()) {
+                for (String key : parameterMap.keySet()) {
                 params.put(key, parameterMap.get(key)[0]);
             }
+
             actModelerService.doActTask(processTaskDto, params);
+
+            if ("2".equals(params.get("applicationStatus"))){
+                CustomerAccountOpenInfoEntity customerAccountOpenInfo = new CustomerAccountOpenInfoEntity();
+                customerAccountOpenInfo.setApplicationId((String) params.get("applicationId"));
+                String stockTradeAccount = (String) params.get("stockTradeAccount");
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(stockTradeAccount)){
+                    customerAccountOpenInfo.setStockTradeAccount(stockTradeAccount);
+                }
+                String futuresTradeAccount = (String) params.get("futuresTradeAccount");
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(futuresTradeAccount)){
+                    customerAccountOpenInfo.setFuturesTradeAccount((String) params.get("futuresTradeAccount"));
+                }
+                customerAccOpenInfoService.setTradeAccount(customerAccountOpenInfo);
+            }
             result = Result.ok("操作成功");
         } catch (Exception e) {
             logger.error("操作失败", e);

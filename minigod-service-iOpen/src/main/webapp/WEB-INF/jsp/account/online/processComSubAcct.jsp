@@ -265,14 +265,14 @@
      */
     function clickSubmit() {
         if (${accountOpenApplicationEntity.applicationStatus == 2 }) {
-            var stockTradeAccount = $('input[name="stockTradeAccount"]').val();
-            var futuresTradeAccount = $('input[name="futuresTradeAccount"]').val();
 
-            if (stockTradeAccount == null || stockTradeAccount == ''){
+            var stockTradeAccount = $("#stockTradeAccount").val();
+            var futuresTradeAccount = $("#futuresTradeAccount").val();
+            if (!stockTradeAccount || stockTradeAccount == ''){
                 alertMsg("请输入证券交易账号");
             }
 
-            if (futuresTradeAccount == null || futuresTradeAccount == ''){
+            if (!futuresTradeAccount || futuresTradeAccount == ''){
                 alertMsg("请输入期货交易账号");
             }
 
@@ -302,6 +302,10 @@
                         'varValue': processInfo.varValue,
                         'varName': processInfo.varName,
                         'nodeType': processInfo.nodeType,
+                        'applicationId': '${accountOpenApplicationEntity.applicationId}',
+                        'applicationStatus': '${accountOpenApplicationEntity.applicationStatus}',
+                        'stockTradeAccount': stockTradeAccount,
+                        'futuresTradeAccount': futuresTradeAccount,
                         'nextUserIds': userIds.join(",")
                     };
                     var remark = $("#remark").val();
@@ -335,17 +339,6 @@
                 });
             }
         } else if (${accountOpenApplicationEntity.applicationStatus == 1 }) {
-            var stockTradeAccount = $('input[name="stockTradeAccount"]').val();
-            var futuresTradeAccount = $('input[name="futuresTradeAccount"]').val();
-
-            if (stockTradeAccount == null || stockTradeAccount == ''){
-                alertMsg("请输入证券交易账号");
-            }
-
-            if (futuresTradeAccount == null || futuresTradeAccount == ''){
-                alertMsg("请输入期货交易账号");
-            }
-
             var isAmlSuspicious = $('input[name="isAmlSuspicious"]').filter(':checked').val();
 
             if (isAmlSuspicious != null && $("#amlFlag").val() == "true") {

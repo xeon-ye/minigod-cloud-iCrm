@@ -58,4 +58,11 @@ public interface CustomerAccOpenInfoService {
     CustomerAccountOpenInfoEntity findByClientId(String clientId);
 
     List<CustomerAccountOpenInfoEntity> queryListByApplicationId(String[] applicationIds);
+
+    /**
+     * 设置交易账号（证券交易账号、期货交易账号，。。。。。）
+     * @param customerAccountOpenInfo
+     * @return
+     */
+    int setTradeAccount(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
 }

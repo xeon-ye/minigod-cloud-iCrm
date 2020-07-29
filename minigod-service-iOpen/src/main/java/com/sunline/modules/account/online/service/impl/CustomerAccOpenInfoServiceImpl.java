@@ -117,4 +117,10 @@ public class CustomerAccOpenInfoServiceImpl implements CustomerAccOpenInfoServic
         return customerAccountOpenInfoDao.queryListByApplicationId(params);
     }
 
+    @Override
+    public int setTradeAccount(CustomerAccountOpenInfoEntity customerAccountOpenInfo) {
+        DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
+        return customerAccountOpenInfoDao.setTradeAccount(customerAccountOpenInfo);
+    }
+
 }
