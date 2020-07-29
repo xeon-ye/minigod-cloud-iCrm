@@ -326,7 +326,7 @@
         caoi.stock_trade_account                                as caoi_stock_trade_account,
         caoi.contact_phone                                      as caoi_contact_phone,
         caoi.bank_currency                                      as caoi_bank_currency,
-        caoi.investmentHorizon                                  as caoi_investment_horizon
+        caoi.investment_horizon                                  as caoi_investment_horizon
  	</sql>
 
     <sql id="Base_Column_List2">
@@ -461,7 +461,7 @@
         caoi.stock_trade_account                                as caoi_stock_trade_account,
         caoi.contact_phone                                      as caoi_contact_phone,
         caoi.bank_currency                                      as caoi_bank_currency,
-        caoi.investmentHorizon                                  as caoi_investment_horizon
+        caoi.investment_horizon                                  as caoi_investment_horizon
  	</sql>
 
     <sql id="Base_Where_Conditions">
@@ -931,7 +931,7 @@
         caoi.update_time                                        as caoi_update_time,
         caoi.record_status                                      as caoi_record_status,
         caoi.bank_type                                          as caoi_bank_type,
-        caoi.investmentHorizon                                  as caoi_investment_horizon
+        caoi.investment_horizon                                  as caoi_investment_horizon
         FROM customer_account_open_application caoa,customer_account_open_info caoi
         LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
         WHERE caoa.application_id = caoi.application_id AND caoi.source_channel_id=uci.channel_id
