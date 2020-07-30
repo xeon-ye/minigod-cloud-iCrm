@@ -30,6 +30,7 @@ public class NotifyService {
     private Integer smsExpiresTime = 0;
     private Integer smsIntervalTime = 0;
     private Integer emailExpiresTime = 0;
+    private String defaultNationCode = "86";
 
     public boolean isMailEnable() {
         return mailSender != null;
@@ -50,7 +51,13 @@ public class NotifyService {
         if (smsSender == null)
             return;
 
-        smsSender.send(phoneNumber, message);
+        if (phoneNumber.indexOf("-") != -1) {
+            String nationCode = phoneNumber.substring(0, phoneNumber.lastIndexOf("-"));
+            String phone = phoneNumber.substring(phoneNumber.lastIndexOf("-") + 1);
+            smsSender.send(nationCode, phone, message);
+        } else {
+            smsSender.send(defaultNationCode, phoneNumber, message);
+        }
     }
 
     /**
@@ -72,7 +79,13 @@ public class NotifyService {
         }
 
         int templateId = Integer.parseInt(templateIdStr);
-        smsSender.sendWithTemplate(phoneNumber, templateId, params);
+        if (phoneNumber.indexOf("-") != -1) {
+            String nationCode = phoneNumber.substring(0, phoneNumber.lastIndexOf("-"));
+            String phone = phoneNumber.substring(phoneNumber.lastIndexOf("-") + 1);
+            smsSender.sendWithTemplate(nationCode, phone, templateId, params);
+        } else {
+            smsSender.sendWithTemplate(defaultNationCode, phoneNumber, templateId, params);
+        }
     }
 
     /**
@@ -88,9 +101,15 @@ public class NotifyService {
             return null;
 
         int templateId = Integer.parseInt(getTemplateId(notifyType, smsTemplate));
-
-        return smsSender.sendWithTemplate(phoneNumber, templateId, params);
+        if (phoneNumber.indexOf("-") != -1) {
+            String nationCode = phoneNumber.substring(0, phoneNumber.lastIndexOf("-"));
+            String phone = phoneNumber.substring(phoneNumber.lastIndexOf("-") + 1);
+            return smsSender.sendWithTemplate(nationCode, phone, templateId, params);
+        } else {
+            return smsSender.sendWithTemplate(defaultNationCode, phoneNumber, templateId, params);
+        }
     }
+
     /**
      * 邮件消息通知,
      * 接收者在spring.mail.sendto中指定
@@ -113,12 +132,13 @@ public class NotifyService {
 
     /**
      * 邮件消息通知
+     *
      * @param subject 主题
      * @param content 内容
-     * @param paths  附件路径
+     * @param paths   附件路径
      * @throws Throwable
      */
-    public ResponseData notifySendCloudMail(String subject, String content,List<String> paths) throws Throwable {
+    public ResponseData notifySendCloudMail(String subject, String content, List<String> paths) throws Throwable {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sendFrom);
         message.setTo(sendTo);

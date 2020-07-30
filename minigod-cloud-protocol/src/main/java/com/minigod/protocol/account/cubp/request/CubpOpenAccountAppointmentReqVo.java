@@ -15,7 +15,8 @@ import java.util.List;
 @Data
 @ToString
 public class CubpOpenAccountAppointmentReqVo implements Serializable {
-    private static final long serialVersionUID = -159860842266411840L;
+    private static final long serialVersionUID = 5643282110965780507L;
+
     //开户类型[0=未知 1=互联网 2=见证宝 3=BPM]
     private Integer openAccountType;
 
@@ -62,6 +63,10 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     //国籍
     @JSONField(name = "nationality")
     private String nationality;
+
+    //其它国籍/地区名称
+    @JSONField(name = "otherNationality")
+    private String otherNationality;
 
     // 证件类型
     @JSONField(name = "idKind")
@@ -113,13 +118,25 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "bankAccountName")
     private String bankAccountName;
 
-    // 职业类型 [1=受雇 2=自营/个体户 3=退休 4=学生 5=其他 6 =农林牧副渔 7=待业 8=自由职业者 9=投资者 10=家庭主妇]
+    // 就业情况类型 [1=受雇 2=自营/个体户 3=退休 4=学生 5=其他 6 =农林牧副渔 7=待业 8=自由职业者 9=投资者 10=家庭主妇]
     @JSONField(name = "professionCode")
     private Integer professionCode;
 
-    //所属行业类型[待定]
+    //自由职业细化选项 [字典=AO_FREELANCE_CODE]
+    @JSONField(name = "freelanceCode")
+    private Integer freelanceCode;
+
+    //自由职业细化其他说明
+    @JSONField(name = "freelanceOther")
+    private String freelanceOther;
+
+    //所属行业[待定]
     @JSONField(name = "professionType")
     private Integer professionType;
+
+    //公司业务性质或行业类型
+//    @JSONField(name = "industryRange")
+//    private String industryRange;
 
     // 公司名称
     @JSONField(name = "companyName")
@@ -129,7 +146,7 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "companyAddress")
     private String companyAddress;
 
-    // 职位级别
+    // 职位
     @JSONField(name = "jobPosition")
     private String jobPosition;
 
@@ -137,7 +154,7 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "annualIncome")
     private Integer annualIncome;
 
-    // 资金来源
+    // 收入来源
     @JSONField(name = "capitalSource")
     private List<Integer> capitalSource;
 
@@ -145,7 +162,7 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "propertyType")
     private List<CubpOpenAccountPropertyTypeReqVo> propertyType;
 
-    // 投资目标类型 [NEW 1=股息收入 2=短期投资 3=长期投资 4=其他]
+    // 投资目标类型 [NEW 1=股息收入 2=短期投资 3=长期投资 4=其他 5=保本 6-资本增值 7-投机 8-对冲]
     @JSONField(name = "investTarget")
     private List<Integer> investTarget;
 
@@ -156,6 +173,10 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     // 股票投资经验类型 [0=未知 1=没有经验 2=少于一年 3=一至三年 4=三至五年 5=五年以上]
     @JSONField(name = "stocksInvestmentExperienceType")
     private Integer stocksInvestmentExperienceType;
+
+    //风险承受程度（必须三选一=：[1=低风险 2=中风险 3=高风险]
+    @JSONField(name = "acceptRisk")
+    private Integer acceptRisk;
 
     // 认证股权投资经验类型 [0=未知 1=没有经验 2=少于一年 3=一至三年 4=三至五年 5=五年以上]
     @JSONField(name = "warrantsInvestmentExperienceType")
@@ -188,9 +209,17 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "isTradedDerivativeProducts")
     private Integer isTradedDerivativeProducts;
 
-    //您是否确认个人资料（私隐）条例通知并同意xx证券及其控股集团使用及向其他人士提供本人的个人资料作直接促销用途[0=否 1=是]
+    //您是否确认个人资料（私隐=条例通知并同意智珠证券及其控股集团使用及向其他人士提供本人的个人资料作直接促销用途[0=否 1=是]
     @JSONField(name = "isAllowProvidePrivacy")
     private Integer isAllowProvidePrivacy;
+
+    //北向交易的资料收集声明（[0=否 1=是]=必须二选一，此选项会影响到后续的中华通交易权限，选择“否”的客户，无法进行中华通交易
+    @JSONField(name = "northTrade")
+    private Integer northTrade;
+
+    //FATCA声明（[0=否 1=是]=必须二选一；编辑资料改成“是”时出现弹窗，保留继续“否”的选择
+    @JSONField(name = "fatca")
+    private Integer fatca;
 
     // 税务信息
     @JSONField(name = "taxationInfo")
@@ -220,9 +249,9 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "inviterId")
     private String inviterId;
 
-    // 客户用户号
+    // 客户小神号
     @JSONField(name = "userId")
-    private String userId;
+    private Integer userId;
 
     // 是否通过身份验证[0=否 1=是]
     @JSONField(name = "isPassIdentityAuthentication")
@@ -240,7 +269,7 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "companyPhoneNumber")
     private String companyPhoneNumber;
 
-    // 银行账户类型 0：香港账户  1：非香港账户
+    // 银行账户类型
     @JSONField(name = "bankType")
     private String bankType;
 
@@ -252,9 +281,17 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "applicationTime")
     private Date applicationTime;
 
-    // 其他银行名称
+    //其他银行名称
     @JSONField(name = "otherBankName")
     private String otherBankName;
+
+    // 联系地址的国家
+    @JSONField(name = "contactRepublicName")
+    private String contactRepublicName;
+
+    // 联系地址的国家(其它填写内容)
+    @JSONField(name = "otherContactRepublic")
+    private String otherContactRepublic;
 
     // 联系地址的省份
     @JSONField(name = "contactProvinceName")
@@ -272,33 +309,13 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "contactDetailAddress")
     private String contactDetailAddress;
 
-    // 地址类型
-    @JSONField(name = "addressType")
-    private Integer addressType;
+    // 公司地址的国家
+    @JSONField(name = "companyRepublicName")
+    private String companyRepublicName;
 
-    // 签发机关
-    @JSONField(name = "signingOrganization")
-    private String signingOrganization;
-
-    // 名族
-    @JSONField(name = "nation")
-    private String nation;
-
-    // 北向交易的资料收集声明（[0=否 1=是]）必须二选一，此选项会影响到后续的中华通交易权限，选择“否”的客户，无法进行中华通交易
-    @JSONField(name = "northTrade")
-    private Integer northTrade;
-
-    // FATCA声明（[0=否 1=是]）必须二选一；编辑资料改成“是”时出现弹窗，保留继续“否”的选择
-    @JSONField(name = "fatca")
-    private Integer fatca;
-
-    // 风险承受程度（必须三选一）：[1=低风险 2=中风险 3=高风险]
-    @JSONField(name = "acceptRisk")
-    private Integer acceptRisk;
-
-    //其它国家/地区名称
-    @JSONField(name = "otherNationality")
-    private String otherNationality;
+    // 公司地址的国家(其它填写内容)
+    @JSONField(name = "otherCompanyRepublic")
+    private String otherCompanyRepublic;
 
     // 公司地址的省份
     @JSONField(name = "companyProvinceName")
@@ -316,6 +333,14 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "companyDetailAddress")
     private String companyDetailAddress;
 
+    // 住宅地址的国家
+    @JSONField(name = "familyRepublicName")
+    private String familyRepublicName;
+
+    // 住宅地址的国家(其它填写内容)
+    @JSONField(name = "otherFamilyRepublic")
+    private String otherFamilyRepublic;
+
     // 住宅地址的省份
     @JSONField(name = "familyProvinceName")
     private String familyProvinceName;
@@ -332,14 +357,124 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "familyDetailAddress")
     private String familyDetailAddress;
 
-    // 联系地址的国家
-    @JSONField(name = "contactRepublicName")
-    private String contactRepublicName;
-    // 公司地址的国家
-    @JSONField(name = "companyRepublicName")
-    private String companyRepublicName;
-    // 住宅地址的国家
-    @JSONField(name = "familyRepublicName")
-    private String familyRepublicName;
+    // 地址类型
+    @JSONField(name = "addressType")
+    private Integer addressType;
+
+    // 签发机关
+    @JSONField(name = "signingOrganization")
+    private String signingOrganization;
+
+    // 名族
+    @JSONField(name = "nation")
+    private String nation;
+
+    //语言[0=未知 1=英文 2=繁体中文 3=简体中文]
+    @JSONField(name = "language")
+    private Integer language;
+
+    //账户类型[0、未知  1、个人账户  2、联名账户   3、公司账户]
+    @JSONField(name = "accountType")
+    private Integer accountType;
+
+    //住所电话
+    @JSONField(name = "familyPhone")
+    private String familyPhone;
+
+    //教育程度[0、未知  1、小学   2、中学   3、专上学院   4、大学或以上]
+    @JSONField(name = "educationLevel")
+    private Integer educationLevel;
+
+    //从业年限[0、未知  1、1-2年   2、2-5年   3、5-10年   4、>10年]
+    @JSONField(name = "workingSeniority")
+    private Integer workingSeniority;
+
+    //办公室电话
+    @JSONField(name = "officePhone")
+    private String officePhone;
+
+    //你是否曾经破产或被送达要将你破产的申请[0、否   1是]
+    @JSONField(name = "isBankrupted")
+    private Integer isBankrupted;
+
+    //日结单及月结单发送方式[0、未知  1、电子邮箱  2、邮寄到住宅地址  3、邮寄到营业地址]
+    @JSONField(name = "dStatementReceiveMode")
+    private Integer dStatementReceiveMode;
+
+    //单位信托基金/互惠基金[0、未知 1、没有  2、<1年   3、 1-2年   4、>2年]
+    @JSONField(name = "unitTrustsExperience")
+    private Integer unitTrustsExperience;
+
+    //其它投资产品 [0、未知  1、<10年  2、10-40年   3、 >40年]
+    @JSONField(name = "otherProductsExperience")
+    private Integer otherProductsExperience;
+
+    //其它投资产品名称
+    @JSONField(name = "otherProductsName")
+    private String otherProductsName;
+
+    //期权投资经验 [0、未知 1、没有  2、<1年   3、 1-2年   4、>2年]
+    @JSONField(name = "optionsExperience")
+    private Integer optionsExperience;
+
+    //股票交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    @JSONField(name = "tradeStockFrequency")
+    private Integer tradeStockFrequency;
+
+    //认股证交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    @JSONField(name = "tradeWarrantsFrequency")
+    private Integer tradeWarrantsFrequency;
+
+    //期权交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    @JSONField(name = "tradeOptionsFrequency")
+    private Integer tradeOptionsFrequency;
+
+    //期货交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    @JSONField(name = "tradeFuturesFrequency")
+    private Integer tradeFuturesFrequency;
+
+    //单位信托基金/互惠基金交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    @JSONField(name = "tradeUnitTrustsFrequency")
+    private Integer tradeUnitTrustsFrequency;
+
+    //其它投资产品交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    @JSONField(name = "tradeOtherProductsFrequency")
+    private Integer tradeOtherProductsFrequency;
+
+    //是否开通期权 [0、不同意    1、同意]
+    @JSONField(name = "isOpenOptions")
+    private Integer isOpenOptions;
+
+    //期权账户使用场景 [1、互联网交易（默认）   2、全权委托交易]
+    @JSONField(name = "optionsAccUsageScenarios")
+    private Integer optionsAccUsageScenarios;
+
+    //是否开通期货 [0、不同意    1、同意]
+    @JSONField(name = "isOpenFutures")
+    private Integer isOpenFutures;
+
+    //期货账户使用场景 [1、互联网交易（默认）  2、全权委托交易]
+    @JSONField(name = "futuresAccUsageScenarios")
+    private Integer futuresAccUsageScenarios;
+
+    //通讯电话
+    @JSONField(name = "contactPhone")
+    private String contactPhone;
+
+    //期货交易账号
+    @JSONField(name = "futuresTradeAccount")
+    private String futuresTradeAccount;
+
+    //证券交易账号
+    @JSONField(name = "stockTradeAccount")
+    private String stockTradeAccount;
+
+    //银行卡币种 [0-綜合賬戶 1-港幣賬戶 2-美元賬戶 3-人民币账户]
+    @JSONField(name = "bankCurrency")
+    private Integer bankCurrency;
+
+    //投资年期 [0-未知 1、<1年 2、1-3年 3、3年以上]
+    @JSONField(name = "investmentHorizon")
+    private Integer investmentHorizon;
 }
 

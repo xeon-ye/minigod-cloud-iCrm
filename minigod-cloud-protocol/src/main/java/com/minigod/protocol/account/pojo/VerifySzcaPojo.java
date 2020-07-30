@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class VerifySzcaPojo {
     private Integer id;
+    private String utoken;
     private String token;
     private String certDn;
     private String certSn;

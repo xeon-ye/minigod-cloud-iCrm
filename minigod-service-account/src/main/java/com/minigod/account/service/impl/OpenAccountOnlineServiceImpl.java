@@ -3,6 +3,7 @@ package com.minigod.account.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.minigod.account.helper.CubpOpenInfoHelper;
+import com.minigod.account.service.*;
 import com.minigod.account.utils.SzcaHttpClient;
 import com.minigod.common.exception.WebApiException;
 import com.minigod.helper.bean.BaseBeanFactory;
@@ -23,16 +24,13 @@ import com.minigod.protocol.account.cubp.response.CubpOpenAccountUserInfoResVo;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum.*;
 import com.minigod.protocol.account.enums.OcrEnum;
+import com.minigod.protocol.account.enums.VerifyAuthCaStatusEnum;
 import com.minigod.protocol.account.model.*;
 import com.minigod.protocol.account.pojo.OpenStatusPojo;
 import com.minigod.protocol.account.pojo.VerifySzcaPojo;
 import com.minigod.protocol.account.request.params.*;
-import com.minigod.account.service.OpenAccountOnlineCnService;
-import com.minigod.account.service.OpenAccountOnlineHkService;
-import com.minigod.account.service.OpenAccountOnlineService;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.pojo.StaticType;
-import com.minigod.account.service.VerifyService;
 import com.minigod.protocol.account.response.OpenUserInfoResVo;
 import com.minigod.protocol.account.szca.request.*;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +59,8 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
     OpenAccountOnlineHkService openAccountOnlineHkService;
     @Autowired
     VerifyService verifyService;
+    @Autowired
+    VerifySzcaService verifySzcaService;
     @Autowired
     RestCubpHelper restCubpHelper;
     @Autowired
@@ -107,8 +107,6 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
 
     @Value("${minigod.szca.getPDFInfoForSign}")
     private String API_GET_PDF_INFO_FOR_SIGN;
-
-    private final KeyPair kp = PKCSUtil.generageKeyPair();
 
     private CustomInfo getLocalRealCustom(Integer userId) {
         // 参数校验
@@ -584,8 +582,20 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
                 }
 
                 String openAccountFilrUrl = cubpOpenInfoCallbackVo.getOpenAccountFileUrl();
-                if (StringUtils.isNotEmpty(openAccountFilrUrl)) {
-                    localOpenInfo.setOpenAccountPdfUrl(openAccountFilrUrl);
+                if(StringUtils.isNotEmpty(openAccountFilrUrl)) {
+                    URL url = new URL(openAccountFilrUrl);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    int httpResult = conn.getResponseCode();
+                    if (httpResult != HttpURLConnection.HTTP_OK) {
+                        log.error("开户文件异常, url = {}", openAccountFilrUrl);
+                        throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
+                    }
+                    InputStream inputStream = conn.getInputStream();
+                    // 上传文件
+                    String fileName = backUserId + "_" + System.currentTimeMillis() + ".pdf";
+                    String fileUrl = fileStorageHelper.uploadPdf(fileName, inputStream);
+
+                    localOpenInfo.setOpenAccountPdfUrl(fileUrl);
                 }
             }
             // 开户失败
@@ -614,10 +624,10 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
                                 isClearImg = true;
                             }
                             if (localOpenInfo.getOpenType().equals(OpenType.ONLINE_CN.getCode())) {
-                                openAccountOnlineCnService.saveErrorImg(localOpenInfo.getId(), openAccountImageInfo);
+                                openAccountOnlineCnService.saveErrorImg(localOpenInfo.getUserId(), openAccountImageInfo);
 
                             } else if (localOpenInfo.getOpenType().equals(OpenType.ONLINE_HK.getCode())) {
-                                openAccountOnlineHkService.saveErrorImg(localOpenInfo.getId(), openAccountImageInfo);
+                                openAccountOnlineHkService.saveErrorImg(localOpenInfo.getUserId(), openAccountImageInfo);
                             }
                         }
                     }
@@ -995,255 +1005,4 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
 
         return ocrResponse;
     }
-
-    @Override
-    public void getCertDnBySzca(VerifySzcaPojo szcaPojo, CustomOpenInfo customOpenInfo) {
-        // 参数校验
-        if (szcaPojo == null || customOpenInfo == null) {
-            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-        }
-        String token = szcaPojo.getToken();
-
-        // 参数校验
-        if (StringUtils.isEmpty(token)) {
-            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-        }
-
-        SzcaCertDnReqVo szcaCertDnReqVo = new SzcaCertDnReqVo();
-
-        CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
-
-        szcaCertDnReqVo.setToken(token);
-        szcaCertDnReqVo.setIdNo(openInfo.getIdNo());
-        szcaCertDnReqVo.setUserName(openInfo.getClientName());
-        szcaCertDnReqVo.setType("query");
-        szcaCertDnReqVo.setCarrier("0");
-
-        VerifyAuthCa verifyAuthCa = verifyService.getCertDnBySzca(szcaCertDnReqVo);
-        if (verifyAuthCa != null) {
-            szcaPojo.setStatus(verifyAuthCa.getStatus());
-            szcaPojo.setCertDn(verifyAuthCa.getCertDn());
-            szcaPojo.setCertSn(verifyAuthCa.getCertSn());
-        }
-    }
-
-    @Override
-    public void getCertApplyP10BySzca(VerifySzcaPojo szcaPojo, CustomOpenInfo customOpenInfo) {
-        // 参数校验
-        if (szcaPojo == null || customOpenInfo == null) {
-            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-        }
-
-        String certDn = szcaPojo.getCertDn();
-        String token = szcaPojo.getToken();
-
-        // 参数校验
-        if (StringUtils.isEmpty(token) || StringUtils.isEmpty(certDn)) {
-            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-        }
-
-
-        try {
-            SzcaCertApplyP10ReqVo reqVo = new SzcaCertApplyP10ReqVo();
-            CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
-
-            // 获取开户图片
-            List<CustomOpenCnImg> customOpenImgs = customOpenCnImgMapper.selectByUserId(customOpenInfo.getId());
-
-            reqVo.setCarrier("0");
-            reqVo.setAppType("loseCert");
-            reqVo.setToken(token);
-            reqVo.setCertDn(certDn);
-            reqVo.setIdNo(openInfo.getIdNo());
-            reqVo.setUserName(openInfo.getClientName());
-            // 性别[0=男 1=女 2=其它]
-            reqVo.setSex(openInfo.getSex() == 0 ? "男" : "女");
-            reqVo.setMobileNo(openInfo.getPhoneNumber());
-            reqVo.setCard(openInfo.getBankNo());
-            reqVo.setProvince(SzcaHttpClient.parseCertDN(certDn, "ST"));
-            reqVo.setCity(SzcaHttpClient.parseCertDN(certDn, "L"));
-            reqVo.setContactAddr(openInfo.getIdCardAddress());
-            reqVo.setCardedPlace(openInfo.getSigningOrganization());
-            reqVo.setCardedExpiryDate(openInfo.getIdCardValidDateStart().replace("-", ".") + "-" + openInfo.getIdCardValidDateEnd().replace("-", "."));
-            // TODO：图片数量校验？
-            if (CollectionUtils.isNotEmpty(customOpenImgs)) {
-                for (CustomOpenCnImg customOpenImg : customOpenImgs) {
-                    int locationKey = Integer.parseInt(customOpenImg.getLocationKey());
-                    int locationType = Integer.parseInt(customOpenImg.getLocationType());
-                    String imgUrl = customOpenImg.getUrl();
-
-                    if (StringUtils.isEmpty(imgUrl)) {
-                        // 图片不存在
-                        return;
-                    }
-                    String imgBase = ImageUtils.loadImgBase64ByUrl(imgUrl);
-
-                    if (StringUtils.isEmpty(imgBase)) {
-                        // 图片解析错误
-                        return;
-                    }
-
-                    if (locationType == 101) {
-                        reqVo.setIdentityImgTwo(imgBase);
-                    }
-                    if (locationType == 102) {
-                        reqVo.setIdentityImgOne(imgBase);
-                    }
-                    if (locationKey == 5) {
-                        reqVo.setHumanBodyImg(imgBase);
-                    }
-                    if (locationType == 301) {
-                        reqVo.setSignImg(imgBase);
-                    }
-                }
-            }
-
-            // P10签名
-            log.info(kp.getPublic().toString());
-            String p10Code = PKCSUtil.genereatePkcs10(kp, certDn);
-
-            reqVo.setCertP10(p10Code);
-
-
-            VerifyAuthCa verifyAuthCa = verifyService.getCertApplyP10BySzca(reqVo);
-            if (verifyAuthCa != null) {
-                szcaPojo.setStatus(verifyAuthCa.getStatus());
-                szcaPojo.setCertSn(verifyAuthCa.getCertSn());
-                szcaPojo.setCertDn(verifyAuthCa.getCertDn());
-            }
-
-        } catch (Exception e) {
-
-        }
-    }
-
-    @Override
-    public void getSignP7ForPdfBySzca(VerifySzcaPojo szcaPojo, CustomOpenInfo customOpenInfo) {
-        // 参数校验
-        if (szcaPojo == null || customOpenInfo == null) {
-            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-        }
-
-        String fileId = szcaPojo.getFileId();
-        String fileHash = szcaPojo.getFileHash();
-        String certSn = szcaPojo.getCertSn();
-        String certDn = szcaPojo.getCertDn();
-
-        // 参数校验
-        if (StringUtils.isEmpty(fileId) || StringUtils.isEmpty(fileHash) || StringUtils.isEmpty(certSn) || StringUtils.isEmpty(certDn)) {
-            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-        }
-
-        SzcaSignP7ForPdfReqVo reqVo = new SzcaSignP7ForPdfReqVo();
-
-        reqVo.setCertDn(certDn);
-        reqVo.setCertSn(certSn);
-        reqVo.setFileID(fileId);
-        reqVo.setApplyType("pdf");
-        reqVo.setIfTsa("0");
-
-        // P1签名
-//        KeyPair kp = PKCSUtil.generageKeyPair();
-        log.info(kp.getPublic().toString());
-        String p1Code = PKCSUtil.genereatePkcs1(kp, fileHash);
-
-        reqVo.setP1SignData(p1Code);
-
-        VerifyAuthCa verifyAuthCa = verifyService.getSignP7ForPdfBySzca(reqVo);
-
-        if (verifyAuthCa != null) {
-
-            szcaPojo.setFileUrl(verifyAuthCa.getFilePdfUrl());
-        }
-    }
-
-    @Override
-    public void getPdfInfoForSignBySzca(VerifySzcaPojo szcaPojo, CustomOpenInfo customOpenInfo) {
-        // 参数校验
-        if (szcaPojo == null || customOpenInfo == null) {
-            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-        }
-
-        String certSn = szcaPojo.getCertSn();
-        String certDn = szcaPojo.getCertDn();
-
-        // 参数校验
-        if (StringUtils.isEmpty(certDn) || StringUtils.isEmpty(certSn)) {
-            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-        }
-
-        try {
-            SzcaPdfInfoForSignReqVo szcaPdfInfoForSignReqVo = new SzcaPdfInfoForSignReqVo();
-            CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
-
-            szcaPdfInfoForSignReqVo.setUserName(openInfo.getClientName());
-            szcaPdfInfoForSignReqVo.setIdCode(openInfo.getIdNo());
-            szcaPdfInfoForSignReqVo.setCertDn(certDn);
-            szcaPdfInfoForSignReqVo.setCertSn(certSn);
-            szcaPdfInfoForSignReqVo.setSignImg("");
-
-
-            // 设置签名位置
-            String signCoordinates = "3,60,206|4,60,206|6,60,206|7,60,206|9,60,206";
-            String xDpi = "0";
-            String yDpi = "0";
-
-            String[] signCoordinateArray = signCoordinates.split("\\|");
-            List<SzcaPdfInfoForSignLocationsVo> getPDFInfoForSignLocationList = Lists.newArrayList();
-            for (String signCoordinate : signCoordinateArray) {
-                String[] coordinateArray = signCoordinate.split(",");
-                SzcaPdfInfoForSignLocationsVo szcaPdfInfoForSignLocationsVo = new SzcaPdfInfoForSignLocationsVo();
-                szcaPdfInfoForSignLocationsVo.setPageNo(Integer.valueOf(coordinateArray[0]));
-                szcaPdfInfoForSignLocationsVo.setX(Integer.valueOf(coordinateArray[1]));
-                szcaPdfInfoForSignLocationsVo.setY(Integer.valueOf(coordinateArray[2]));
-                getPDFInfoForSignLocationList.add(szcaPdfInfoForSignLocationsVo);
-            }
-
-            szcaPdfInfoForSignReqVo.setLocations(getPDFInfoForSignLocationList);
-
-
-            szcaPdfInfoForSignReqVo.setXDpi(Integer.valueOf(xDpi));
-            szcaPdfInfoForSignReqVo.setYDpi(Integer.valueOf(yDpi));
-
-            URL url = new URL(customOpenInfo.getOpenAccountPdfUrl());
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            int httpResult = conn.getResponseCode();
-            if (httpResult != HttpURLConnection.HTTP_OK) {
-                log.error("开户文件异常, url = {}", customOpenInfo.getOpenAccountPdfUrl());
-                throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-            }
-            InputStream inputStream = conn.getInputStream();
-
-            VerifyAuthCa verifyAuthCa = verifyService.getPdfInfoForSignBySzca(szcaPdfInfoForSignReqVo, inputStream);
-
-            if (verifyAuthCa != null) {
-                szcaPojo.setStatus(verifyAuthCa.getStatus());
-                szcaPojo.setCertSn(verifyAuthCa.getCertSn());
-                szcaPojo.setCertDn(verifyAuthCa.getCertDn());
-                szcaPojo.setFileId(verifyAuthCa.getFileId());
-                szcaPojo.setFileHash(verifyAuthCa.getFileHash());
-            }
-        } catch (Exception e) {
-
-        }
-    }
-
-    //
-//    /**
-//     * 拉取服务器签署文件（SZCA）
-//     */
-//    public SzcaSealPdfResVo getSealPdfBySzca(Integer userId) {
-//        SzcaSealPdfReqVo reqVo = new SzcaSealPdfReqVo();
-//
-//        SzcaSealPdfResVo resVo = szcaApiHelper.getSealPdf(reqVo);
-//
-//        if (resVo == null) {
-//            log.error("拉取服务器签署文件异常");
-//            // 优化提示语
-//            throw new InternalApiException(StaticType.CodeType.BAD_REQUEST, StaticType.MessageResource.BAD_REQUEST);
-//        }
-//        return resVo;
-//    }
-
-
 }

@@ -8,7 +8,7 @@ minigod:
     isRemote: true
     url: http://192.168.0.115:6888/bpm
   openAccount:
-    isVerifyFromCubp: true
+    isVerifyFromCubp: false
     isVerifyIdCardFromThird: false
     isVerifyBankCardFromThird: false
     isVerifyLiveFaceFromThird: true

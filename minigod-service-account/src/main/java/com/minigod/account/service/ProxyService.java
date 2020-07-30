@@ -6,10 +6,10 @@ import com.minigod.protocol.account.request.params.OpenProgressProxyReqParams;
 import com.minigod.protocol.account.request.params.AuthProxyReqParams;
 import com.minigod.protocol.account.request.params.LoginProxyReqParams;
 import com.minigod.protocol.account.response.AuthProxyResVo;
-import org.springframework.cloud.openfeign.FeignClient;
+//import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(value = "minigod-account-service")
+//@FeignClient(value = "minigod-account-service")
 public interface ProxyService {
 
     @PostMapping("/proxy_get_auth_code")

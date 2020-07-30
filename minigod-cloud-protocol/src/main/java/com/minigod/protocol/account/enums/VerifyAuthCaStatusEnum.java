@@ -20,7 +20,8 @@ public enum VerifyAuthCaStatusEnum {
     }
 
     public static boolean isFlag(int reqCode, VerifyAuthCaStatusEnum enums) {
-        return reqCode >= enums.getCode();
+//        return reqCode >= enums.getCode();
+        return false;
     }
 
 }

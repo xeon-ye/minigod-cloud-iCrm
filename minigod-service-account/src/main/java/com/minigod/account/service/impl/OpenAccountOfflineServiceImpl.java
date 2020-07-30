@@ -51,7 +51,7 @@ public class OpenAccountOfflineServiceImpl extends BaseBeanFactory implements Op
             }
             // 已注册
             else {
-                userId = localOpenInfo.getId();
+                userId = localOpenInfo.getUserId();
             }
 
             if (userId != null) {

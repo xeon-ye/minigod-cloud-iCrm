@@ -21,5 +21,4 @@ public class ServiceTaskApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServiceTaskApplication.class, args);
     }
-
 }

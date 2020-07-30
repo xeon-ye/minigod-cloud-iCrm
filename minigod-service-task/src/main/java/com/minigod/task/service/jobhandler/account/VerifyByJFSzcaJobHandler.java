@@ -2,19 +2,26 @@ package com.minigod.task.service.jobhandler.account;
 
 import com.alibaba.fastjson.JSONObject;
 import com.minigod.account.service.OpenAccountOnlineService;
-import com.minigod.account.service.VerifySzcaService;
+import com.minigod.account.service.VerifyJFSzcaService;
 import com.minigod.account.utils.SzcaHttpClient;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.common.security.PKCSUtil;
 import com.minigod.common.utils.ImageUtils;
-import com.minigod.persist.account.mapper.*;
+import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
+import com.minigod.persist.account.mapper.CustomOpenHkImgMapper;
+import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
+import com.minigod.persist.account.mapper.VerifyBankCardMapper;
 import com.minigod.protocol.account.cubp.request.CubpOpenAccountAppointmentReqVo;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.enums.VerifyAuthCaStatusEnum;
-import com.minigod.protocol.account.model.*;
+import com.minigod.protocol.account.model.CustomOpenCnImg;
+import com.minigod.protocol.account.model.CustomOpenInfo;
+import com.minigod.protocol.account.model.VerifyAuthCa;
+import com.minigod.protocol.account.model.VerifyBankCard;
 import com.minigod.protocol.account.pojo.VerifySzcaPojo;
 import com.minigod.protocol.account.szca.request.*;
+import com.minigod.protocol.account.szca.jfrequest.*;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.IJobHandler;
 import com.xxl.job.core.handler.annotation.JobHandler;
@@ -38,10 +45,10 @@ import java.util.List;
 /**
  * 开户CA认证
  */
-@JobHandler(value = "verifyBySZCAJobHandler")
+@JobHandler(value = "verifyByJFSZCAJobHandler")
 @Component
 @Slf4j
-public class VerifyBySzcaJobHandler extends IJobHandler {
+public class VerifyByJFSzcaJobHandler extends IJobHandler {
     @Autowired
     CustomOpenInfoMapper customOpenInfoMapper;
     @Autowired
@@ -49,7 +56,9 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
     @Autowired
     CustomOpenHkImgMapper customOpenHkImgMapper;
     @Autowired
-    VerifySzcaService verifySzcaService;
+    VerifyBankCardMapper verifyBankCardMapper;
+    @Autowired
+    VerifyJFSzcaService verifySzcaService;
     @Autowired
     OpenAccountOnlineService openAccountOnlineService;
 
@@ -60,23 +69,24 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
     @Value("${minigod.openAccount.isVerifyWithCa}")
     private Boolean IS_VERIFY_WITH_CA;
 
-
     private void getCertDnBySzca(VerifySzcaPojo szcaPojo, CustomOpenInfo customOpenInfo) {
         // 参数校验
         if (szcaPojo == null || customOpenInfo == null) {
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
+        String utoken = szcaPojo.getUtoken();
         String token = szcaPojo.getToken();
 
         // 参数校验
-        if (StringUtils.isEmpty(token)) {
+        if (StringUtils.isEmpty(utoken) || StringUtils.isEmpty(token)) {
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
 
-        SzcaCertDnReqVo szcaCertDnReqVo = new SzcaCertDnReqVo();
+        JFSzcaCertDnReqVo szcaCertDnReqVo = new JFSzcaCertDnReqVo();
 
         CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
 
+        szcaCertDnReqVo.setUtoken(utoken);
         szcaCertDnReqVo.setToken(token);
         szcaCertDnReqVo.setIdNo(openInfo.getIdNo());
         szcaCertDnReqVo.setUserName(openInfo.getClientName());
@@ -98,31 +108,38 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
         }
 
         String certDn = szcaPojo.getCertDn();
+        String utoken = szcaPojo.getUtoken();
         String token = szcaPojo.getToken();
 
         // 参数校验
-        if (StringUtils.isEmpty(token) || StringUtils.isEmpty(certDn)) {
+        if (StringUtils.isEmpty(utoken) || StringUtils.isEmpty(token) || StringUtils.isEmpty(certDn)) {
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
 
 
         try {
-            SzcaCertApplyP10ReqVo reqVo = new SzcaCertApplyP10ReqVo();
+            JFSzcaCertApplyP10ReqVo reqVo = new JFSzcaCertApplyP10ReqVo();
             CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
 
             // 获取开户图片
             List<CustomOpenCnImg> customOpenImgs = customOpenCnImgMapper.selectByUserId(customOpenInfo.getUserId());
+            List<VerifyBankCard> verifyBankCards = verifyBankCardMapper.selectByBankCardAndStatus(openInfo.getBankNo(), 1);
 
+            if(verifyBankCards.size() == 1){
+                reqVo.setCard(verifyBankCards.get(0).getBankCard());
+                reqVo.setMobileNo(verifyBankCards.get(0).getPhone());
+            }
+
+            reqVo.setUtoken(utoken);
             reqVo.setCarrier("0");
-            reqVo.setAppType("loseCert");
+            reqVo.setAppType("apply");
             reqVo.setToken(token);
             reqVo.setCertDn(certDn);
             reqVo.setIdNo(openInfo.getIdNo());
             reqVo.setUserName(openInfo.getClientName());
             // 性别[0=男 1=女 2=其它]
             reqVo.setSex(openInfo.getSex() == 0 ? "男" : "女");
-            reqVo.setMobileNo(openInfo.getPhoneNumber());
-            reqVo.setCard(openInfo.getBankNo());
+//            reqVo.setMobileNo(openInfo.getPhoneNumber());
             reqVo.setProvince(SzcaHttpClient.parseCertDN(certDn, "ST"));
             reqVo.setCity(SzcaHttpClient.parseCertDN(certDn, "L"));
             reqVo.setContactAddr(openInfo.getIdCardAddress());
@@ -185,6 +202,12 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
         if (szcaPojo == null || customOpenInfo == null) {
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
+        String utoken = szcaPojo.getUtoken();
+
+        // 参数校验
+        if (StringUtils.isEmpty(utoken)) {
+            throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
+        }
 
         String fileId = szcaPojo.getFileId();
         String fileHash = szcaPojo.getFileHash();
@@ -196,8 +219,9 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
 
-        SzcaSignP7ForPdfReqVo reqVo = new SzcaSignP7ForPdfReqVo();
+        JFSzcaSignP7ForPdfReqVo reqVo = new JFSzcaSignP7ForPdfReqVo();
 
+        reqVo.setUtoken(utoken);
         reqVo.setCertDn(certDn);
         reqVo.setCertSn(certSn);
         reqVo.setFileID(fileId);
@@ -214,7 +238,6 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
         VerifyAuthCa verifyAuthCa = verifySzcaService.getSignP7ForPdfBySzca(reqVo);
 
         if (verifyAuthCa != null) {
-
             szcaPojo.setFileUrl(verifyAuthCa.getFilePdfUrl());
         }
     }
@@ -227,21 +250,24 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
 
         String certSn = szcaPojo.getCertSn();
         String certDn = szcaPojo.getCertDn();
+        String utoken = szcaPojo.getUtoken();
 
         // 参数校验
-        if (StringUtils.isEmpty(certDn) || StringUtils.isEmpty(certSn)) {
+        if (StringUtils.isEmpty(utoken) || StringUtils.isEmpty(certDn) || StringUtils.isEmpty(certSn)) {
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
 
         try {
-            SzcaPdfInfoForSignReqVo szcaPdfInfoForSignReqVo = new SzcaPdfInfoForSignReqVo();
+            JFSzcaPdfInfoForSignReqVo szcaPdfInfoForSignReqVo = new JFSzcaPdfInfoForSignReqVo();
             CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
 
+            szcaPdfInfoForSignReqVo.setUtoken(utoken);
             szcaPdfInfoForSignReqVo.setUserName(openInfo.getClientName());
-            szcaPdfInfoForSignReqVo.setIdCode(openInfo.getIdNo());
+            szcaPdfInfoForSignReqVo.setIdNo(openInfo.getIdNo());
             szcaPdfInfoForSignReqVo.setCertDn(certDn);
             szcaPdfInfoForSignReqVo.setCertSn(certSn);
             szcaPdfInfoForSignReqVo.setSignImg("");
+            szcaPdfInfoForSignReqVo.setOpenAccountPdfUrl(customOpenInfo.getOpenAccountPdfUrl());
 
 
             // 设置签名位置
@@ -266,16 +292,7 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
             szcaPdfInfoForSignReqVo.setXDpi(Integer.valueOf(xDpi));
             szcaPdfInfoForSignReqVo.setYDpi(Integer.valueOf(yDpi));
 
-            URL url = new URL(customOpenInfo.getOpenAccountPdfUrl());
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            int httpResult = conn.getResponseCode();
-            if (httpResult != HttpURLConnection.HTTP_OK) {
-                log.error("开户文件异常, url = {}", customOpenInfo.getOpenAccountPdfUrl());
-                throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-            }
-            InputStream inputStream = conn.getInputStream();
-
-            VerifyAuthCa verifyAuthCa = verifySzcaService.getPdfInfoForSignBySzca(szcaPdfInfoForSignReqVo, inputStream);
+            VerifyAuthCa verifyAuthCa = verifySzcaService.getPdfInfoForSignBySzca(szcaPdfInfoForSignReqVo);
 
             if (verifyAuthCa != null) {
                 szcaPojo.setStatus(verifyAuthCa.getStatus());
@@ -322,9 +339,10 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
         VerifySzcaPojo verifySzcaPojo = null;
 
         if (IS_VERIFY_WITH_CA) {
-            // step1 获取token
+            // step1 授权登录、获取token
             try {
-                verifySzcaPojo = verifySzcaService.getTokenBySzca();
+                verifySzcaPojo = verifySzcaService.login();
+                verifySzcaPojo = verifySzcaService.getTokenBySzca(verifySzcaPojo);
             } catch (Exception e) {
                 log.error("*********************【开户CA认证】获取token异常**************************", e);
                 return FAIL;
@@ -338,15 +356,12 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
 
 
         // TODO: CA认证多次失败逻辑处理
-
         for (CustomOpenInfo customOpenInfo : openInfoList) {
             Integer userId = customOpenInfo.getUserId();
             try {
                 if (IS_VERIFY_WITH_CA) {
 
                     // step2 获取主题
-
-
                     getCertDnBySzca(verifySzcaPojo, customOpenInfo);
                     if (StringUtils.isEmpty(verifySzcaPojo.getCertDn())) {
                         log.error("*********************【开户CA认证】获取主题失败**************************, userId = {}", userId);
@@ -354,9 +369,9 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
                     }
 
                     // step3 申请证书(先判断否已申请证书)
-                    if (!VerifyAuthCaStatusEnum.isFlag(verifySzcaPojo.getStatus(), VerifyAuthCaStatusEnum.CA_P10) || StringUtils.isEmpty(verifySzcaPojo.getCertSn())) {
+//                    if (!VerifyAuthCaStatusEnum.isFlag(verifySzcaPojo.getStatus(), VerifyAuthCaStatusEnum.CA_P10) || StringUtils.isEmpty(verifySzcaPojo.getCertSn())) {
                         getCertApplyP10BySzca(verifySzcaPojo, customOpenInfo);
-                    }
+//                    }
 
                     if (StringUtils.isEmpty(verifySzcaPojo.getCertSn())) {
                         log.error("*********************【开户CA认证】申请证书失败**************************, userId = {}", userId);

@@ -41,4 +41,14 @@ public class FileStorageHelper {
         return null;
     }
 
+    public String uploadPdf(String fileName, InputStream inputStream) {
+        try {
+            SysStorage loanStorage = storageService.store(inputStream,inputStream.available() , "file/pdf", fileName);
+            return loanStorage.getUrl();
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
 }

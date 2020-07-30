@@ -28,7 +28,7 @@
         <module>minigod-service-account</module>
         <module>minigod-service-task</module>
         <module>minigod-web-securities</module>
-        <module>minigod-service-iOpen</module>
+<!--        <module>minigod-service-iOpen</module>-->
         <module>minigod-cloud-mq</module>
         <module>minigod-cloud-statistic</module>
     </modules>

@@ -6,13 +6,14 @@ minigod:
     userToken.expireSecond: 7200 # 2*60*60
   cubp:
     isRemote: true
-    url: http://10.1.2.99:7777/crm
+    url: http://10.1.2.99:6888/crm
+#    url: http://10.8.0.54:8080/crm
   openAccount:
     isVerifyFromCubp: true
     isVerifyIdCardFromThird: true
     isVerifyBankCardFromThird: true
     isVerifyLiveFaceFromThird: true
-    isVerifyWithCa: false
+    isVerifyWithCa: true
     isVerifyOpenData: true
     validLiveScore: 85
     validConfidence: 70
@@ -41,6 +42,16 @@ minigod:
     getPDFInfoForSign: /SecuritiesAccount/service/reqGetPDFInfoForSign
     getCertApplyP10: /SecuritiesAccount/service/reqNACertApplyP10Service
     getSignP7ForPdf: /SecuritiesAccount/service/reqSignP7ForPdf
+  jfszca:
+    userName: admin01
+    userPwd: AF_88888888
+    url: http://121.35.249.14:9008
+    login: /platform_api/org_login
+    getToken: /platform_api/get_ca_token
+    getCert: /platform_api/get_ca_cert_dn
+    getPDFInfoForSign: /platform_api/get_pdf_for_sign
+    getCertApplyP10: /platform_api/get_ca_cert_apply
+    getSignP7ForPdf: /platform_api/sign_p7_for_pdf
   proxy:
     isSyncOpen: true
     host: http://uat2.zszhizhu.com:7000

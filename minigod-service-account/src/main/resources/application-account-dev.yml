@@ -8,7 +8,7 @@ minigod:
     isRemote: true
     url: http://192.168.0.141:6888/bpm
   openAccount:
-    isVerifyFromCubp: true
+    isVerifyFromCubp: false
     isVerifyIdCardFromThird: true
     isVerifyBankCardFromThird: true
     isVerifyLiveFaceFromThird: true
@@ -41,6 +41,16 @@ minigod:
     getPDFInfoForSign: /SecuritiesAccount/service/reqGetPDFInfoForSign
     getCertApplyP10: /SecuritiesAccount/service/reqNACertApplyP10Service
     getSignP7ForPdf: /SecuritiesAccount/service/reqSignP7ForPdf
+  jfszca:
+    userName: admin01
+    userPwd: AF_88888888
+    url: http://121.35.249.14:9008
+    login: /platform_api/org_login
+    getToken: /platform_api/get_ca_token
+    getCert: /platform_api/get_ca_cert_dn
+    getPDFInfoForSign: /platform_api/get_pdf_for_sign
+    getCertApplyP10: /platform_api/get_ca_cert_apply
+    getSignP7ForPdf: /platform_api/sign_p7_for_pdf
   proxy:
     isSyncOpen: false
     host: http://uat.zszhizhu.com:17000
