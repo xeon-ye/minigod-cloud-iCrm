@@ -125,7 +125,6 @@ public class CustomerAccOpenReportGenerate {
                 reportData.put("signImageFatca", userSignImage);
             }
 
-
             contentSpecialHandling(reportData, reportType);
         } catch (Exception e) {
             LOGGER.error("报表生成错误:" + reportType, e);
@@ -632,6 +631,51 @@ public class CustomerAccOpenReportGenerate {
         }
 
         reportData.put("freelanceOther", freelance);
+
+        //ADD 2020-07-30
+        reportData.put("lan", customerAccountOpenInfoEntity.getLan());
+        reportData.put("accountType", customerAccountOpenInfoEntity.getAccountType());
+        reportData.put("familyPhone", customerAccountOpenInfoEntity.getFamilyPhone());
+        reportData.put("educationLevel", customerAccountOpenInfoEntity.getEducationLevel());
+        reportData.put("workingSeniority", customerAccountOpenInfoEntity.getWorkingSeniority());
+        reportData.put("officePhone", customerAccountOpenInfoEntity.getOfficePhone());
+        reportData.put("isBankrupted", customerAccountOpenInfoEntity.getIsBankrupted());
+        reportData.put("dStatementReceiveMode", customerAccountOpenInfoEntity.getdStatementReceiveMode());
+        reportData.put("unitTrustsExperience", customerAccountOpenInfoEntity.getUnitTrustsExperience());
+        reportData.put("otherProductsExperience", customerAccountOpenInfoEntity.getOtherProductsExperience());
+        reportData.put("otherProductsName", customerAccountOpenInfoEntity.getOtherProductsName());
+        reportData.put("optionsExperience", customerAccountOpenInfoEntity.getOptionsExperience());
+        reportData.put("tradeStockFrequency", customerAccountOpenInfoEntity.getTradeStockFrequency());
+        reportData.put("tradeWarrantsFrequency", customerAccountOpenInfoEntity.getTradeWarrantsFrequency());
+        reportData.put("tradeOptionsFrequency", customerAccountOpenInfoEntity.getTradeOptionsFrequency());
+        reportData.put("tradeFuturesFrequency", customerAccountOpenInfoEntity.getTradeFuturesFrequency());
+        reportData.put("tradeUnitTrustsFrequency", customerAccountOpenInfoEntity.getTradeUnitTrustsFrequency());
+        reportData.put("tradeOtherProductsFrequency", customerAccountOpenInfoEntity.getTradeOtherProductsFrequency());
+        reportData.put("isOpenOptions", customerAccountOpenInfoEntity.getIsOpenOptions());
+        reportData.put("optionsAccUsageScenarios", customerAccountOpenInfoEntity.getOptionsAccUsageScenarios());
+        reportData.put("isOpenFutures", customerAccountOpenInfoEntity.getIsOpenFutures());
+        reportData.put("futuresAccUsageScenarios", customerAccountOpenInfoEntity.getFuturesAccUsageScenarios());
+        reportData.put("futuresTradeAccount", customerAccountOpenInfoEntity.getFuturesTradeAccount());
+        reportData.put("stockTradeAccount", customerAccountOpenInfoEntity.getStockTradeAccount());
+        reportData.put("contactPhone", customerAccountOpenInfoEntity.getContactPhone());
+        reportData.put("bankCurrency", customerAccountOpenInfoEntity.getBankCurrency());
+        reportData.put("investmentHorizon", customerAccountOpenInfoEntity.getInvestmentHorizon());
+
+        //从业年限[0、未知  1、1-2年   2、2-5年   3、5-10年   4、>10年]
+        String workingSeniority;
+        if (customerAccountOpenInfoEntity.getWorkingSeniority() == 1){
+            workingSeniority = "1-2年";
+        }else if (customerAccountOpenInfoEntity.getWorkingSeniority() == 1){
+            workingSeniority = "2-5年";
+        }else if (customerAccountOpenInfoEntity.getWorkingSeniority() == 1){
+            workingSeniority = "5-10年";
+        }else if (customerAccountOpenInfoEntity.getWorkingSeniority() == 1){
+            workingSeniority = ">10年";
+        }else {
+            workingSeniority = "";
+        }
+        reportData.put("workingSeniority",workingSeniority);
+        //ADD 2020-07-30
 
         return reportData;
     }
