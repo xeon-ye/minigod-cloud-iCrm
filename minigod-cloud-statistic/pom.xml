@@ -22,5 +22,10 @@
             <artifactId>minigod-cloud-mq</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.minigod</groupId>
+            <artifactId>minigod-cloud-persist</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
     </dependencies>
 </project>
