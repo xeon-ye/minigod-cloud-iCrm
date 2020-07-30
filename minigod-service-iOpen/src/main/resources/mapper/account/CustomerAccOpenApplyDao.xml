@@ -461,7 +461,7 @@
         caoi.stock_trade_account                                as caoi_stock_trade_account,
         caoi.contact_phone                                      as caoi_contact_phone,
         caoi.bank_currency                                      as caoi_bank_currency,
-        caoi.investment_horizon                                  as caoi_investment_horizon
+        caoi.investment_horizon                                 as caoi_investment_horizon
  	</sql>
 
     <sql id="Base_Where_Conditions">

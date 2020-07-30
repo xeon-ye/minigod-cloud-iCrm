@@ -258,7 +258,7 @@
         stock_trade_account,
         contact_phone,
         bank_currency,
-        investmentHorizon
+        investment_horizon
     </sql>
 
     <sql id="Base_Where_Conditions">

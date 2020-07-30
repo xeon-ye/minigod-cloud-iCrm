@@ -353,7 +353,7 @@ public class CustomerAccountOpenHelper {
             if (null == openAccountInfo.getBankCurrency()) {
                 logger.error("【开户预约接口数据完整性校验】：请填写银行币种");
                 responseVO.setCode(-1);
-                responseVO.setMessage("请填写银行编号");
+                responseVO.setMessage("请填写银行币种");
                 return responseVO;
             }
 
@@ -726,6 +726,13 @@ public class CustomerAccountOpenHelper {
             logger.error("【开户预约接口数据完整性校验】：请填写期货账号使用场景");
             responseVO.setCode(-1);
             responseVO.setMessage("请填写期货账号使用场景");
+            return responseVO;
+        }
+
+        if (null == openAccountInfo.getInvestmentHorizon()){
+            logger.error("【开户预约接口数据完整性校验】：请填写投资年期");
+            responseVO.setCode(-1);
+            responseVO.setMessage("请填写投资年期");
             return responseVO;
         }
 
