@@ -5,7 +5,7 @@ import com.minigod.common.pojo.response.ResResult;
 import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.mail.util.ResponseData;
 import com.minigod.notify.helper.NotifyService;
-import com.minigod.notify.service.CaptchaEmailService;
+import com.minigod.notify.service.EmailService;
 import com.minigod.persist.notify.mapper.SysFileReferMapper;
 import com.minigod.persist.notify.mapper.SysMailRecordMapper;
 import com.minigod.protocol.notify.model.SysFileRefer;
@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @FeignClient(value = "minigod-service-notify")
-public class CaptchaEmailServiceImpl extends BaseBeanFactory implements CaptchaEmailService {
+public class EmailServiceImpl extends BaseBeanFactory implements EmailService {
     @Autowired
     private NotifyService notifyService;
 

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public interface CaptchaEmailService {
+public interface EmailService {
     public ResResult sendMail(String sendTo, String sendFrom, String subject, String content, List<String> paths);
 
 }
