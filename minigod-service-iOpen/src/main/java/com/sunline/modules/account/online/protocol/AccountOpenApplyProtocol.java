@@ -393,8 +393,8 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     private Integer workingSeniority;
 
     //办公室电话
-    @JSONField(name = "officePhone")
-    private String officePhone;
+    @JSONField(name = "otherProfession")
+    private String otherProfession;
 
     //你是否曾经破产或被送达要将你破产的申请[0、否   1是]
     @JSONField(name = "isBankrupted")
@@ -1240,12 +1240,12 @@ public class AccountOpenApplyProtocol extends BaseParameter {
         this.workingSeniority = workingSeniority;
     }
 
-    public String getOfficePhone() {
-        return officePhone;
+    public String getOtherProfession() {
+        return otherProfession;
     }
 
-    public void setOfficePhone(String officePhone) {
-        this.officePhone = officePhone;
+    public void setOtherProfession(String otherProfession) {
+        this.otherProfession = otherProfession;
     }
 
     public Integer getIsBankrupted() {

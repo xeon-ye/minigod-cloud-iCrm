@@ -137,7 +137,7 @@ public class CustomerOpenAccountConverter {
         model.setAccountType(entity.getAccountType());
         model.setEducationLevel(entity.getEducationLevel());
         model.setWorkingSeniority(entity.getWorkingSeniority());
-        model.setOfficePhone(entity.getOfficePhone());
+        model.setOtherProfession(entity.getOtherProfession());
         model.setIsBankrupted(entity.getIsBankrupted());
         model.setdStatementReceiveMode(entity.getdStatementReceiveMode());
         model.setUnitTrustsExperience(entity.getUnitTrustsExperience());
@@ -274,7 +274,7 @@ public class CustomerOpenAccountConverter {
         entity.setAccountType(model.getAccountType());
         entity.setEducationLevel(model.getEducationLevel());
         entity.setWorkingSeniority(model.getWorkingSeniority());
-        entity.setOfficePhone(model.getOfficePhone());
+        entity.setOtherProfession(model.getOtherProfession());
         entity.setIsBankrupted(model.getIsBankrupted());
         entity.setdStatementReceiveMode(model.getdStatementReceiveMode());
         entity.setUnitTrustsExperience(model.getUnitTrustsExperience());
@@ -613,7 +613,7 @@ public class CustomerOpenAccountConverter {
         customerAccountOpenInfoEntity.setAccountType(accountOpenApplicationprotocol.getAccountType());
         customerAccountOpenInfoEntity.setEducationLevel(accountOpenApplicationprotocol.getEducationLevel());
         customerAccountOpenInfoEntity.setWorkingSeniority(accountOpenApplicationprotocol.getWorkingSeniority());
-        customerAccountOpenInfoEntity.setOfficePhone(accountOpenApplicationprotocol.getOfficePhone());
+        customerAccountOpenInfoEntity.setOtherProfession(accountOpenApplicationprotocol.getOtherProfession());
         customerAccountOpenInfoEntity.setIsBankrupted(accountOpenApplicationprotocol.getIsBankrupted());
         customerAccountOpenInfoEntity.setdStatementReceiveMode(accountOpenApplicationprotocol.getdStatementReceiveMode());
         customerAccountOpenInfoEntity.setUnitTrustsExperience(accountOpenApplicationprotocol.getUnitTrustsExperience());
@@ -799,7 +799,6 @@ public class CustomerOpenAccountConverter {
         securitiesUserModel.setFamilyPhone(entity.getFamilyPhone());
         securitiesUserModel.setEducationLevel(entity.getEducationLevel());
         securitiesUserModel.setWorkingSeniority(entity.getWorkingSeniority());
-        securitiesUserModel.setOfficePhone(entity.getOfficePhone());
         securitiesUserModel.setIsBankrupted(entity.getIsBankrupted());
         securitiesUserModel.setdStatementReceiveMode(entity.getdStatementReceiveMode());
         securitiesUserModel.setUnitTrustsExperience(entity.getUnitTrustsExperience());
@@ -821,6 +820,7 @@ public class CustomerOpenAccountConverter {
         securitiesUserModel.setContactPhone(entity.getContactPhone());
         securitiesUserModel.setBankCurrency(entity.getBankCurrency());
         securitiesUserModel.setInvestmentHorizon(entity.getInvestmentHorizon());
+        securitiesUserModel.setOtherProfession(entity.getOtherProfession());
 
         return securitiesUserModel;
     }

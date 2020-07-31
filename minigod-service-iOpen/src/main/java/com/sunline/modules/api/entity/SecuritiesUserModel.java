@@ -235,9 +235,6 @@ public class SecuritiesUserModel {
     //从业年限[0、未知  1、1-2年   2、2-5年   3、5-10年   4、>10年]
     private Integer workingSeniority;
 
-    //办公室电话
-    private String officePhone;
-
     //你是否曾经破产或被送达要将你破产的申请[0、否   1是]
     private Integer isBankrupted;
 
@@ -1404,14 +1401,6 @@ public class SecuritiesUserModel {
 
     public void setWorkingSeniority(Integer workingSeniority) {
         this.workingSeniority = workingSeniority;
-    }
-
-    public String getOfficePhone() {
-        return officePhone;
-    }
-
-    public void setOfficePhone(String officePhone) {
-        this.officePhone = officePhone;
     }
 
     public Integer getIsBankrupted() {

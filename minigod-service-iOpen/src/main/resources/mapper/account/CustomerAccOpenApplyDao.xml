@@ -125,7 +125,7 @@
         <result property="familyPhone" column="family_phone"/>
         <result property="educationLevel" column="education_level"/>
         <result property="workingSeniority" column="working_seniority"/>
-        <result property="officePhone" column="office_phone"/>
+        <result property="otherProfession" column="other_profession"/>
         <result property="isBankrupted" column="is_bankrupted"/>
         <result property="dStatementReceiveMode" column="d_statement_receive_mode"/>
         <result property="unitTrustsExperience" column="unit_trusts_experience"/>
@@ -305,7 +305,7 @@
         caoi.family_phone                                       as caoi_family_phone,
         caoi.education_level                                    as caoi_education_level,
         caoi.working_seniority                                  as caoi_working_seniority,
-        caoi.office_phone                                       as caoi_office_phone,
+        caoi.other_profession                                   as caoi_other_profession,
         caoi.is_bankrupted                                      as caoi_is_bankrupted,
         caoi.d_statement_receive_mode                           as caoi_d_statement_receive_mode,
         caoi.unit_trusts_experience                             as caoi_unit_trusts_experience,
@@ -440,7 +440,7 @@
         caoi.family_phone                                       as caoi_family_phone,
         caoi.education_level                                    as caoi_education_level,
         caoi.working_seniority                                  as caoi_working_seniority,
-        caoi.office_phone                                       as caoi_office_phone,
+        caoi.other_profession                                   as caoi_other_profession,
         caoi.is_bankrupted                                      as caoi_is_bankrupted,
         caoi.d_statement_receive_mode                           as caoi_d_statement_receive_mode,
         caoi.unit_trusts_experience                             as caoi_unit_trusts_experience,

@@ -95,8 +95,8 @@
                 <label class="col-sm-2 control-label no-padding-right">办公室电话</label>
                 <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="officePhone" name="officePhone" type="text" class="form-control"
-                               value="${customerAccountOpenInfoEntity.officePhone}" readonly/>
+                        <input id="companyPhoneNumber" name="companyPhoneNumber" type="text" class="form-control"
+                               value="${customerAccountOpenInfoEntity.companyPhoneNumber}" readonly/>
                     </span>
                 </div>
             </div>
@@ -407,6 +407,15 @@
                                <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==2}">checked</c:if>  />1-3年
                         <input name="investmentHorizon" type="radio" value="3" disabled="disabled"
                                <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==3}">checked</c:if>  />3年以上
+                    </span>
+                </div>
+            </div>
+            <div class="form-group col-sm-6 col-md-6">
+                <label class="col-sm-2 control-label no-padding-right">其它职业</label>
+                <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input id="otherProfession" name="otherProfession" type="text" class="form-control"
+                               value="${customerAccountOpenInfoEntity.otherProfession}" readonly/> 
                     </span>
                 </div>
             </div>

@@ -110,7 +110,7 @@
 		<result property="familyPhone" column="family_phone"/>
 		<result property="educationLevel" column="education_level"/>
 		<result property="workingSeniority" column="working_seniority"/>
-		<result property="officePhone" column="office_phone"/>
+		<result property="otherProfession" column="other_profession"/>
 		<result property="isBankrupted" column="is_bankrupted"/>
 		<result property="dStatementReceiveMode" column="d_statement_receive_mode"/>
 		<result property="unitTrustsExperience" column="unit_trusts_experience"/>
@@ -237,7 +237,7 @@
         family_phone,
         education_level,
         working_seniority,
-        office_phone,
+        other_profession,
         is_bankrupted,
         d_statement_receive_mode,
         unit_trusts_experience,
@@ -462,7 +462,7 @@
             `family_phone`,
             `education_level`,
             `working_seniority`,
-            `office_phone`,
+            `other_profession`,
             `is_bankrupted`,
             `d_statement_receive_mode`,
             `unit_trusts_experience`,
@@ -586,7 +586,7 @@
 			#{familyPhone},
 			#{educationLevel},
 			#{workingSeniority},
-			#{officePhone},
+			#{otherProfession},
 			#{isBankrupted},
 			#{dStatementReceiveMode},
 			#{unitTrustsExperience},
@@ -738,7 +738,7 @@
 			<if test="familyPhone != null">`family_phone` = #{familyPhone},</if>
 			<if test="educationLevel != null">`education_level` = #{educationLevel},</if>
 			<if test="workingSeniority != null">`working_seniority` = #{workingSeniority},</if>
-			<if test="officePhone != null">`office_phone` = #{officePhone},</if>
+			<if test="otherProfession != null">`other_profession` = #{otherProfession},</if>
 			<if test="isBankrupted != null">`is_bankrupted` = #{isBankrupted},</if>
 			<if test="dStatementReceiveMode != null">`d_statement_receive_mode` = #{dStatementReceiveMode},</if>
 			<if test="unitTrustsExperience != null">`unit_trusts_experience` = #{unitTrustsExperience},</if>
@@ -878,7 +878,7 @@
 			<if test="familyPhone != null">`family_phone` = #{familyPhone},</if>
 			<if test="educationLevel != null">`education_level` = #{educationLevel},</if>
 			<if test="workingSeniority != null">`working_seniority` = #{workingSeniority},</if>
-			<if test="officePhone != null">`office_phone` = #{officePhone},</if>
+			<if test="otherProfession != null">`other_profession` = #{otherProfession},</if>
 			<if test="isBankrupted != null">`is_bankrupted` = #{isBankrupted},</if>
 			<if test="dStatementReceiveMode != null">`d_statement_receive_mode` = #{dStatementReceiveMode},</if>
 			<if test="unitTrustsExperience != null">`unit_trusts_experience` = #{unitTrustsExperience},</if>
