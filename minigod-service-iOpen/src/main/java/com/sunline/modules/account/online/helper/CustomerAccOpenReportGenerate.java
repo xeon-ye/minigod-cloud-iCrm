@@ -88,7 +88,7 @@ public class CustomerAccOpenReportGenerate {
      */
     public Map<String, Object> loadAllReportData(String customerAccountOpenInfoId, BpmCommonEnum.AccountOpenReport reportType) {
         Map<String, Object> reportData = getUserOpenAccountInfo(customerAccountOpenInfoId);
-        CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryObject(customerAccountOpenInfoId);
+        //CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryObject(customerAccountOpenInfoId);
         try {
             if (reportData.isEmpty()) {
                 return reportData;
@@ -638,7 +638,7 @@ public class CustomerAccOpenReportGenerate {
         reportData.put("familyPhone", customerAccountOpenInfoEntity.getFamilyPhone());
         reportData.put("educationLevel", customerAccountOpenInfoEntity.getEducationLevel());
         reportData.put("workingSeniority", customerAccountOpenInfoEntity.getWorkingSeniority());
-        reportData.put("officePhone", customerAccountOpenInfoEntity.getOfficePhone());
+        reportData.put("otherProfession", customerAccountOpenInfoEntity.getOtherProfession());
         reportData.put("isBankrupted", customerAccountOpenInfoEntity.getIsBankrupted());
         reportData.put("dStatementReceiveMode", customerAccountOpenInfoEntity.getdStatementReceiveMode());
         reportData.put("unitTrustsExperience", customerAccountOpenInfoEntity.getUnitTrustsExperience());

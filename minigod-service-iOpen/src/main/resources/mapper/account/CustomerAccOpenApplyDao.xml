@@ -12,7 +12,7 @@
         <result property="approveResult" column="approve_result"/>
         <result property="currentAccountOpenStep" column="current_account_open_step"/>
         <result property="currentAccountOpenStepStatus" column="current_account_open_step_status"/>
-        <result property="accountOpenResultStatus" column="account_open_resulselectAccountOpenApplicationDetailInfot_status"/>
+        <result property="accountOpenResultStatus" column="account_open_result_status"/>
         <result property="lastApprovalUser" column="last_approval_user"/>
         <result property="assignDrafter" column="assign_drafter"/>
         <result property="approvalOpinion" column="approval_opinion"/>
@@ -1273,17 +1273,5 @@
         FROM customer_account_open_application
         WHERE current_node='完成' AND flow_path LIKE '%初审-完成%'
     </select>
-
-
-    <!--<select id="selectAccOpenDetailInfoByApplicationIds" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="java.util.Map" >
-        SELECT
-        <include refid="Base_Column_List1"/>
-        FROM order_list o
-        LEFT JOIN user_info u ON o.user_id=u.user_id
-        AND o.user_id IN
-        <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
-            #{Id}
-        </foreach>
-    </select>-->
 
 </mapper>

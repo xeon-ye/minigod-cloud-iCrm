@@ -407,7 +407,11 @@ public class ExtendActDealController {
                 if (org.apache.commons.lang3.StringUtils.isNotBlank(futuresTradeAccount)){
                     customerAccountOpenInfo.setFuturesTradeAccount((String) params.get("futuresTradeAccount"));
                 }
-                customerAccOpenInfoService.setTradeAccount(customerAccountOpenInfo);
+
+                boolean setTradeAccount = (stockTradeAccount == null && futuresTradeAccount == null);
+                if (setTradeAccount){
+                    customerAccOpenInfoService.setTradeAccount(customerAccountOpenInfo);
+                }
             }
             result = Result.ok("操作成功");
         } catch (Exception e) {
