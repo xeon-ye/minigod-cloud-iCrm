@@ -38,7 +38,8 @@ public class NotifyController {
         //对html内容解码
         String content = notifyEmailReqParams.getContent();
         try {
-            content = URLDecoder.decode(content,"UTF-8");
+            content = content.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
+            content = content.replaceAll("\\+", "%2B");
             content = URLDecoder.decode(content,"UTF-8");
         } catch (UnsupportedEncodingException e) {
             content =notifyEmailReqParams.getContent();
