@@ -45,7 +45,7 @@ public class NotifyController {
             log.info("解码失败：",e.getMessage());
         }
         return emailService.sendMail(notifyEmailReqParams.getSendTo(), notifyEmailReqParams.getSendFrom()
-                , notifyEmailReqParams.getSubject(), notifyEmailReqParams.getContent(), notifyEmailReqParams.getPaths());
+                , notifyEmailReqParams.getSubject(), content, notifyEmailReqParams.getPaths());
     }
 
     @PostMapping("/send_sms")
