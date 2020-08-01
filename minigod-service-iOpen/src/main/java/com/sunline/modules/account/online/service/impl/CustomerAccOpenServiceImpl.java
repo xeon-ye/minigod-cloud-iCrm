@@ -655,7 +655,8 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
 
 
     /**
-     * 邮件通知
+     * 生成邮件通知数据
+     * (保存数据到message_send_info表，定时任务扫描发磅)
      *
      * @param accountOpenApplicationDetailInfo
      */
@@ -670,8 +671,9 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
         messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
         Map<String, String> emailModel = Maps.newHashMap();
         emailModel.put("clientName", customerAccountOpenInfoEntity.getClientName() != null && !"".equals(customerAccountOpenInfoEntity.getClientName()) ? customerAccountOpenInfoEntity.getClientName() : customerAccountOpenInfoEntity.getClientNameSpell());
-        emailModel.put("tradeAccount", customerAccountOpenInfoEntity.getClientId());
-        emailModel.put("tradeAccountPassword", ProtocolUtils.getDecryptPhone(customerAccountOpenInfoEntity.getInitialAccountPassword()));
+        emailModel.put("tradeAccount", customerAccountOpenInfoEntity.getStockTradeAccount());
+        emailModel.put("futuresTradeAccount", customerAccountOpenInfoEntity.getFuturesTradeAccount());
+        //emailModel.put("tradeAccountPassword", ProtocolUtils.getDecryptPhone(customerAccountOpenInfoEntity.getInitialAccountPassword()));
         messageSendInfoEntity.setMessageContent(VelocityUtil.fillTemplate(VelocityUtil.ACCOUNT_OPEN_SUCCEED_EMAIL_TEMPLATE, emailModel));
         messageSendInfoEntity.setContentType(2);
 
@@ -723,7 +725,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             paraMap.put("userName", customerAccountOpenInfoEntity.getClientName());
             paraMap.put("cellPhone", customerAccountOpenInfoEntity.getPhoneNumber());
             paraMap.put("trdAccount", customerAccountOpenInfoEntity.getClientId());
-            paraMap.put("trdAccountPwd", customerAccountOpenInfoEntity.getInitialAccountPassword());
+            //paraMap.put("trdAccountPwd", customerAccountOpenInfoEntity.getInitialAccountPassword());
             messageBody.put("paramMap", paraMap);
         } else {
             JSONObject paraMap = new JSONObject();
@@ -738,7 +740,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
         MessageSendInfoEntity messageSendInfoEntity = new MessageSendInfoEntity();
         messageSendInfoEntity.setMessageType(BpmCommonEnum.MessageNoticeType.MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS_VALUE);
         messageSendInfoEntity.setRecipients(msgUrl);
-        messageSendInfoEntity.setMessageTitle("智珠证券账户开户申请");
+        messageSendInfoEntity.setMessageTitle("寶新證券帳戶開戶申請");
         messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
         messageSendInfoEntity.setMessageContent(messageBody.toJSONString());
         // 开户文件

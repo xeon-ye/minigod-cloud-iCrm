@@ -1,11 +1,18 @@
 package com.sunline.modules.notice.service.impl;
 
-import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.minigod.common.pojo.StaticType;
+import com.minigod.common.pojo.request.BaseRequest;
 import com.sunline.common.ConfigUtils;
+import com.sunline.modules.account.online.model.SendEmailModel;
+import com.sunline.modules.account.online.model.SendSMSModel;
 import com.sunline.modules.common.common.BpmCommonEnum;
+import com.sunline.modules.common.utils.HttpClientUtils;
+import com.sunline.modules.common.utils.IOpenConfigUtils;
+import com.sunline.modules.common.utils.JsonUtil;
+import com.sunline.modules.common.vo.ResponseVO;
 import com.sunline.modules.notice.dao.MessageSendInfoDao;
 import com.sunline.modules.notice.entity.MessageSendInfoEntity;
 import com.sunline.modules.notice.service.MessageSendInfoService;
@@ -36,9 +43,6 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
 
     @Autowired
     private MessageSendInfoDao messageSendInfoDao;
-
-    /*@Autowired
-    private CaptchaEmailService captchaEmailService;*/
 
     @Override
     public MessageSendInfoEntity queryObject(Integer id) {
@@ -141,9 +145,13 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
                     //new
                     List<String> attachmentUris = new ArrayList<>();
                     if (!StringUtils.isBlank(messageSendInfo.getAttachmentUris())) {
-                        attachmentUris = JSON.parseArray(messageSendInfo.getAttachmentUris(), String.class);
+                        String rulPrefix = ConfigUtils.get("cubp.extranet.file.url");
+                        List<String> temp = new ArrayList<>();
+                        temp = JSON.parseArray(messageSendInfo.getAttachmentUris(), String.class);
+                        for (String url : temp) {
+                            attachmentUris.add(rulPrefix + url);
+                        }
                     }
-
 
                     //old
                     /*if (0 == messageSendInfo.getContentType()) {
@@ -155,20 +163,28 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
                     }*/
 
                     //new
-                    /*ResResult resResult = captchaEmailService.sendMail(messageSendInfo.getRecipients(),
-                            "service@zszhizhu.com",
-                            messageSendInfo.getMessageTitle(),
-                            messageSendInfo.getMessageContent(),
-                            attachmentUris);
-
-                    isSucceed = (resResult.getCode() == 0);*/
-
+                    String eurl = IOpenConfigUtils.email_url;
+                    BaseRequest<SendEmailModel> sendEmailParams = new BaseRequest<>();
+                    SendEmailModel sendEmailModel = new SendEmailModel();
+                    sendEmailModel.setContent(messageSendInfo.getMessageContent());
+                    sendEmailModel.setPaths(attachmentUris);
+                    sendEmailModel.setSubject(messageSendInfo.getMessageTitle());
+                    sendEmailModel.setSendTo(messageSendInfo.getRecipients());
+                    sendEmailModel.setSendFrom("service@zszhizhu.com");
+                    sendEmailParams.setParams(sendEmailModel);
+                    String eResResult = HttpClientUtils.postJson(eurl, JsonUtil.getJsonByObj(sendEmailParams), true);
+                    ResponseVO responseVO =JSON.parseObject(eResResult, ResponseVO.class);
+                    isSucceed = (responseVO.getCode() == StaticType.CodeType.OK.getCode());
                     break;
                 case MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS:
-                    String response = HttpUtil.post(messageSendInfo.getRecipients(), messageSendInfo.getMessageContent());
-                    JSONObject resultJson = JSON.parseObject(response);
-                    String resultCode = resultJson.get("code").toString();
-                    isSucceed = "0".equals(resultCode);
+                    String surl = IOpenConfigUtils.sms_url;
+                    BaseRequest<SendSMSModel> sendSMSParams = new BaseRequest<>();
+                    SendSMSModel sendSMSModel = new SendSMSModel();
+                    sendSMSModel.setCertCode(messageSendInfo.getRecipients());
+                    sendSMSParams.setParams(sendSMSModel);
+                    String sResResult = HttpClientUtils.postJson(surl, JsonUtil.getJsonByObj(sendSMSParams), true);
+                    ResponseVO _responseVO =JSON.parseObject(sResResult, ResponseVO.class);
+                    isSucceed = (_responseVO.getCode() == StaticType.CodeType.OK.getCode());
                     break;
                 default:
                     logger.error("未知消息发送类型");
@@ -207,7 +223,7 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
 
             MessageSendInfoEntity messageSendInfoEntity = new MessageSendInfoEntity();
             messageSendInfoEntity.setMessageType(BpmCommonEnum.MessageNoticeType.MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS_VALUE);
-            messageSendInfoEntity.setRecipients(ConfigUtils.get("message.center.sms.url"));
+            messageSendInfoEntity.setRecipients(com.sunline.common.ConfigUtils.get("message.center.sms.url"));
             messageSendInfoEntity.setMessageTitle(title);
             messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
             messageSendInfoEntity.setMessageContent(JSON.toJSONString(paraMap, SerializerFeature.WriteMapNullValue));

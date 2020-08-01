@@ -29,12 +29,12 @@
     delete from sys_mail_record
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.minigod.protocol.notify.model.SysMailRecord">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.minigod.protocol.notify.model.SysMailRecord">
     <!--@mbg.generated-->
-    insert into sys_mail_record (id, send_from, send_to, 
+    insert into sys_mail_record (send_from, send_to,
       subject, content, `status`, 
       create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{sendFrom,jdbcType=VARCHAR}, #{sendTo,jdbcType=VARCHAR}, 
+    values (#{sendFrom,jdbcType=VARCHAR}, #{sendTo,jdbcType=VARCHAR},
       #{subject,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{status,jdbcType=BOOLEAN}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>

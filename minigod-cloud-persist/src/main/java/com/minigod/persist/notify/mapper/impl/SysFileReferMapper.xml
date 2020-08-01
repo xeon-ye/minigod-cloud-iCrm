@@ -29,10 +29,10 @@
   </delete>
   <insert id="insert" parameterType="com.minigod.protocol.notify.model.SysFileRefer">
     <!--@mbg.generated-->
-    insert into sys_file_refer (id, refer_id, storage_id, 
+    insert into sys_file_refer (refer_id, storage_id,
       file_path, create_time, update_time
       )
-    values (#{id,jdbcType=INTEGER}, #{referId,jdbcType=INTEGER}, #{storageId,jdbcType=INTEGER}, 
+    values (#{referId,jdbcType=INTEGER}, #{storageId,jdbcType=INTEGER},
       #{filePath,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>

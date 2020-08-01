@@ -23,7 +23,6 @@ import com.sunline.modules.common.common.BpmCommonEnum;
 import com.sunline.modules.common.pojo.rest.GenericSunlineRequest;
 import com.sunline.modules.common.utils.CodeUtils;
 import com.sunline.modules.common.utils.HttpClientUtils;
-import com.sunline.modules.common.utils.ProtocolUtils;
 import com.sunline.modules.notice.entity.MessageSendInfoEntity;
 import com.sunline.modules.notice.service.MessageSendInfoService;
 import org.slf4j.Logger;
@@ -133,13 +132,15 @@ public class CustomerAccOpenRetCallback {
                 // 生成开户成功短信/邮件通知
                 if (BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_APPROVAL_SUCCESS_VALUE == customerAccOpenApplyEntity.getApplicationStatus()
                         || BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_OPEN_ACCOUNT_VALUE == customerAccOpenApplyEntity.getApplicationStatus()) {
-                    // 发送邮件通知
+                    // 发送邮件通知(保存数据到message_send_info表，定时任务扫描发邮件)
                     customerAccOpenService.sendAccountOpenEmail(accountOpenApplicationDetailInfo);
 
                     paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() != null && !"".equals(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName()) ?
                             accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() : accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientNameSpell());
-                    paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientId());
-                    paramList.add(ProtocolUtils.getDecryptPhone(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getInitialAccountPassword()));
+                    //paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientId());
+                    paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getStockTradeAccount());
+                    //宝新无交易密码
+                    //paramList.add(ProtocolUtils.getDecryptPhone(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getInitialAccountPassword()));
 
                     generateOpenAccRetSendSms(1105, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList);
 
@@ -251,6 +252,7 @@ public class CustomerAccOpenRetCallback {
 
     /**
      * 生成短信发送数据
+     * (保存数据到message_send_info表，定时任务扫描发磅)
      *
      * @param phoneNumber
      * @param paramList

@@ -5,6 +5,7 @@ import com.minigod.common.pojo.response.ResResult;
 import com.minigod.notify.service.EmailService;
 import com.minigod.notify.service.CaptchaSmsService;
 import com.minigod.protocol.account.request.params.OpenImgReqParams;
+import com.minigod.protocol.notify.enums.CaptchaSmsTypeEnum;
 import com.minigod.protocol.notify.request.params.CaptchaReqParams;
 import com.minigod.protocol.notify.request.params.NotifyEmailReqParams;
 import com.minigod.protocol.notify.response.CaptchaResVo;
@@ -38,6 +39,8 @@ public class NotifyController {
     @PostMapping("/send_sms")
     public CaptchaResVo sendSms(@RequestBody BaseRequest<CaptchaReqParams> requestVo) {
         CaptchaReqParams captchaReqParams = requestVo.getParams();
+        captchaReqParams.setCaptcha("");
+        captchaReqParams.setType(CaptchaSmsTypeEnum.commonly.getType());
         return captchaSmsService.saveCaptcha(captchaReqParams);
     }
 

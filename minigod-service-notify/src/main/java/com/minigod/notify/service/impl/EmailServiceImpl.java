@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -24,8 +25,9 @@ import java.util.List;
 public class EmailServiceImpl extends BaseBeanFactory implements EmailService {
     @Autowired
     private NotifyService notifyService;
-
+    @Autowired
     private SysMailRecordMapper sysMailRecordMapper;
+    @Autowired
     private SysFileReferMapper sysFileReferMapper;
 
     /**
@@ -51,6 +53,9 @@ public class EmailServiceImpl extends BaseBeanFactory implements EmailService {
             sysMailRecord.setSendTo(sendTo);
             sysMailRecord.setSubject(subject);
             sysMailRecord.setContent(content);
+            sysMailRecord.setStatus(true);
+            sysMailRecord.setCreateTime(new Date());
+            sysMailRecord.setUpdateTime(new Date());
             int mailId = sysMailRecordMapper.insert(sysMailRecord);
             //保存附件
             if (paths != null && paths.size() > 0) {
@@ -58,6 +63,8 @@ public class EmailServiceImpl extends BaseBeanFactory implements EmailService {
                     SysFileRefer sysFileRefer = new SysFileRefer();
                     sysFileRefer.setReferId(mailId);
                     sysFileRefer.setFilePath(path);
+                    sysFileRefer.setCreateTime(new Date());
+                    sysFileRefer.setUpdateTime(new Date());
                     sysFileReferMapper.insert(sysFileRefer);
                 }
             }

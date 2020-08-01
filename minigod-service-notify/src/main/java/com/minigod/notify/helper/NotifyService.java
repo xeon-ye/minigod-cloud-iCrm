@@ -144,7 +144,7 @@ public class NotifyService {
         message.setTo(sendTo);
         message.setSubject(subject);
         message.setText(content);
-        mailSender.send(message);
+
         SendCloudMail mail = new SendCloudMail();
         MailAddressReceiver receiver = new MailAddressReceiver();
         receiver.addTo(sendTo);
