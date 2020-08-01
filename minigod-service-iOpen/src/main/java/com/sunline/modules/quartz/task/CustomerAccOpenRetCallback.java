@@ -273,7 +273,9 @@ public class CustomerAccOpenRetCallback {
 
             MessageSendInfoEntity messageSendInfoEntity = new MessageSendInfoEntity();
             messageSendInfoEntity.setMessageType(BpmCommonEnum.MessageNoticeType.MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS_VALUE);
-            messageSendInfoEntity.setRecipients(ConfigUtils.get("message.center.sms.url"));
+            //改用接口调用发短信弃用
+            //messageSendInfoEntity.setRecipients(ConfigUtils.get("message.center.sms.url"));
+            messageSendInfoEntity.setRecipients(phoneNumber);
             messageSendInfoEntity.setMessageTitle("寶新證券帳戶開戶申請");
             messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
             messageSendInfoEntity.setMessageContent(JSON.toJSONString(paraMap, SerializerFeature.WriteMapNullValue));

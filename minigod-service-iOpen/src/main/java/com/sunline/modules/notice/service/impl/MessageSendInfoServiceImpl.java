@@ -24,6 +24,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -166,7 +168,11 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
                     String eurl = IOpenConfigUtils.email_url;
                     BaseRequest<SendEmailModel> sendEmailParams = new BaseRequest<>();
                     SendEmailModel sendEmailModel = new SendEmailModel();
-                    sendEmailModel.setContent(messageSendInfo.getMessageContent());
+                    try {
+                        sendEmailModel.setContent(URLEncoder.encode(messageSendInfo.getMessageContent(),"UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                     sendEmailModel.setPaths(attachmentUris);
                     sendEmailModel.setSubject(messageSendInfo.getMessageTitle());
                     sendEmailModel.setSendTo(messageSendInfo.getRecipients());
@@ -174,17 +180,26 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
                     sendEmailParams.setParams(sendEmailModel);
                     String eResResult = HttpClientUtils.postJson(eurl, JsonUtil.getJsonByObj(sendEmailParams), true);
                     ResponseVO responseVO =JSON.parseObject(eResResult, ResponseVO.class);
-                    isSucceed = (responseVO.getCode() == StaticType.CodeType.OK.getCode());
+                    if (responseVO.getCode() == null){
+                        isSucceed = false;
+                    }else {
+                        isSucceed = (responseVO.getCode() == StaticType.CodeType.OK.getCode());
+                    }
                     break;
                 case MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS:
                     String surl = IOpenConfigUtils.sms_url;
                     BaseRequest<SendSMSModel> sendSMSParams = new BaseRequest<>();
                     SendSMSModel sendSMSModel = new SendSMSModel();
+                    sendSMSModel.setCertType(1);
                     sendSMSModel.setCertCode(messageSendInfo.getRecipients());
                     sendSMSParams.setParams(sendSMSModel);
                     String sResResult = HttpClientUtils.postJson(surl, JsonUtil.getJsonByObj(sendSMSParams), true);
                     ResponseVO _responseVO =JSON.parseObject(sResResult, ResponseVO.class);
-                    isSucceed = (_responseVO.getCode() == StaticType.CodeType.OK.getCode());
+                    if (_responseVO.getCode() == null){
+                        isSucceed = false;
+                    }else {
+                        isSucceed = (_responseVO.getCode() == StaticType.CodeType.OK.getCode());
+                    }
                     break;
                 default:
                     logger.error("未知消息发送类型");

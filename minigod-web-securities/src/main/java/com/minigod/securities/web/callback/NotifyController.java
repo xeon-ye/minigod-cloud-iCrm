@@ -50,11 +50,13 @@ public class NotifyController {
     }
 
     @PostMapping("/send_sms")
-    public CaptchaResVo sendSms(@RequestBody BaseRequest<CaptchaReqParams> requestVo) {
+    public ResResult sendSms(@RequestBody BaseRequest<CaptchaReqParams> requestVo) {
         CaptchaReqParams captchaReqParams = requestVo.getParams();
         captchaReqParams.setCaptcha("");
-        captchaReqParams.setType(CaptchaSmsTypeEnum.commonly.getType());
-        return captchaSmsService.saveCaptcha(captchaReqParams);
+        captchaReqParams.setType(CaptchaSmsTypeEnum.commonly.getKey());
+
+        CaptchaResVo rt = captchaSmsService.saveCaptcha(captchaReqParams);
+        return ResResult.success(rt);
     }
 
 }
