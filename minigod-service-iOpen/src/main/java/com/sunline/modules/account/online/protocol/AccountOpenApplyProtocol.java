@@ -121,7 +121,7 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     @JSONField(name = "bankAccountName")
     private String bankAccountName;
 
-    // 就业情况类型 [1=受雇 2=自营/个体户 3=退休 4=学生 5=其他 6 =农林牧副渔 7=待业 8=自由职业者 9=投资者 10=家庭主妇]
+    // 就业情况类型 [1=受雇 2=自营/个体户 3=退休 4=其他]
     @JSONField(name = "professionCode")
     private Integer professionCode;
 
@@ -153,7 +153,7 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     @JSONField(name = "jobPosition")
     private String jobPosition;
 
-    //年收入范围类型[1=<20万 2=20万-50万 3=50万-100万 4=100万-500万 5=>500万]
+    //年收入范围类型[1、<10万 2、10万-30万 3、30万-50万 4、50万-100万 5、>100万]
     @JSONField(name = "annualIncome")
     private Integer annualIncome;
 
@@ -161,7 +161,7 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     @JSONField(name = "capitalSource")
     private List<Integer> capitalSource;
 
-    //财产种类
+    //财产种类（财产种类，净资产）
     @JSONField(name = "propertyType")
     private List<OpenAccountPropertyTypeProtocol> propertyType;
 
