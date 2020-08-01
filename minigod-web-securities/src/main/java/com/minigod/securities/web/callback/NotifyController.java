@@ -1,4 +1,4 @@
-package com.minigod.securities.web.controller;
+package com.minigod.securities.web.callback;
 
 import com.minigod.common.pojo.request.BaseRequest;
 import com.minigod.common.pojo.response.ResResult;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/notify_api")
+@RequestMapping("/callback/notify_api")
 @Validated
 @Slf4j
 public class NotifyController {
@@ -28,7 +28,7 @@ public class NotifyController {
     private CaptchaSmsService captchaSmsService;
 
     @PostMapping("/send_mail")
-    public ResResult sendMail(@LoginUser Integer userId, @RequestBody BaseRequest<NotifyEmailReqParams> requestVo) {
+    public ResResult sendMail( @RequestBody BaseRequest<NotifyEmailReqParams> requestVo) {
         //
         NotifyEmailReqParams notifyEmailReqParams = requestVo.getParams();
         return emailService.sendMail(notifyEmailReqParams.getSendTo(), notifyEmailReqParams.getSendFrom()
@@ -36,7 +36,7 @@ public class NotifyController {
     }
 
     @PostMapping("/send_sms")
-    public CaptchaResVo sendSms(@LoginUser Integer userId, @RequestBody BaseRequest<CaptchaReqParams> requestVo) {
+    public CaptchaResVo sendSms(@RequestBody BaseRequest<CaptchaReqParams> requestVo) {
         CaptchaReqParams captchaReqParams = requestVo.getParams();
         return captchaSmsService.saveCaptcha(captchaReqParams);
     }

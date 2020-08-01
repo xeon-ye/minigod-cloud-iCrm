@@ -168,7 +168,7 @@ public class WebFilter implements Filter {
                     // 外部系统接口签名key
                     if (isProxy) {
                         // 授权认证
-                        if (url.indexOf("/proxy/auth") > -1) {
+                        if (url.contains("/proxy/auth")) {
                             Object secret = params.get("secret");
                             if (secret == null) {
                                 log.error("外部系统授权错误.");
