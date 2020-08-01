@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 @RestController
 @RequestMapping("/callback/notify_api")
 @Validated
@@ -32,6 +35,15 @@ public class NotifyController {
     public ResResult sendMail( @RequestBody BaseRequest<NotifyEmailReqParams> requestVo) {
         //
         NotifyEmailReqParams notifyEmailReqParams = requestVo.getParams();
+        //对html内容解码
+        String content = notifyEmailReqParams.getContent();
+        try {
+            content = URLDecoder.decode(content,"UTF-8");
+            content = URLDecoder.decode(content,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            content =notifyEmailReqParams.getContent();
+            log.info("解码失败：",e.getMessage());
+        }
         return emailService.sendMail(notifyEmailReqParams.getSendTo(), notifyEmailReqParams.getSendFrom()
                 , notifyEmailReqParams.getSubject(), notifyEmailReqParams.getContent(), notifyEmailReqParams.getPaths());
     }
