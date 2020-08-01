@@ -1,5 +1,6 @@
 package com.minigod.notify.helper;
 
+import com.minigod.common.utils.URIUtil;
 import com.minigod.mail.builder.SendCloudBuilder;
 import com.minigod.mail.core.SendCloud;
 import com.minigod.mail.model.MailAddressReceiver;
@@ -13,6 +14,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -153,7 +156,8 @@ public class NotifyService {
         body.setSubject(subject);
         //附件
         for (String path : paths) {
-            body.addAttachments(new File(path));
+            URL pathUrl = new URL(path);
+            body.addAttachments(URIUtil.toFile(URIUtil.toURI(pathUrl)));
         }
         TextContent textContent = new TextContent();
         textContent.setContent_type(TextContent.ScContentType.html);
@@ -165,6 +169,7 @@ public class NotifyService {
         SendCloud sc = SendCloudBuilder.build();
         return sc.sendMail(mail);
     }
+
 
     private String getTemplateId(CaptchaSmsTypeEnum notifyType, List<Map<String, String>> values) {
         for (Map<String, String> item : values) {
