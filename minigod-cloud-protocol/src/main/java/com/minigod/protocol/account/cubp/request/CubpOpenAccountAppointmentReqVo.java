@@ -390,8 +390,8 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     private Integer workingSeniority;
 
     //办公室电话
-    @JSONField(name = "officePhone")
-    private String officePhone;
+    @JSONField(name = "otherProfession")
+    private String otherProfession;
 
     //你是否曾经破产或被送达要将你破产的申请[0、否   1是]
     @JSONField(name = "isBankrupted")

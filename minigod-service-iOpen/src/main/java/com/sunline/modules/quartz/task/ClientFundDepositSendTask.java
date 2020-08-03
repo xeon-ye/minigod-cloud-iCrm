@@ -620,6 +620,8 @@ public class ClientFundDepositSendTask {
 
             List<ClientFundDepositEntity> clientTotalIncAmountAbnormalList = clientFundDepositService.queryTotalIncAmountAbnormal(clientFundDepositDepParam);
 
+            // TODO: 暂时注释掉~By Jim 20200802
+/*
             for (ClientFundDepositEntity clientTotalIncAmountAbnormal : clientTotalIncAmountAbnormalList) {
 
 //                StringBuilder errMsg = new StringBuilder();
@@ -691,6 +693,7 @@ public class ClientFundDepositSendTask {
                 }
 
             }
+*/
 
         } catch (Exception e) {
             logger.error(params + "任务执行异常：" + e);

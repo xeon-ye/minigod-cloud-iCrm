@@ -22,1220 +22,822 @@
     }
 </style>
 <body>
-<div id="div01" v-cloak>
-    <div v-show="!showList" class="panel panel-default">
-        </br>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">语言</label>
-                <div class="col-xs-9">
-                           <span class="col-sm-12 block input-icon input-icon-right">
-                               <input name="language" type="radio" value="0" disabled="disabled"
-                                      <c:if test="${customerAccountOpenInfoEntity.language==0}">checked</c:if>  />未知
-                               <input name="language" type="radio" value="1" disabled="disabled"
-                                      <c:if test="${customerAccountOpenInfoEntity.language==1}">checked</c:if> />英文
-                               <input name="language" type="radio" value="2" disabled="disabled"
-                                      <c:if test="${customerAccountOpenInfoEntity.language==2}">checked</c:if> />繁体中文
-                               <input name="language" type="radio" value="3" disabled="disabled"
-                                      <c:if test="${customerAccountOpenInfoEntity.language==3}">checked</c:if> />简体中文
-                            </span>
-                </div>
-            </div>
-
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">账户类型</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="accountType" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.accountType==0}">checked</c:if>  />未知
-                            <input name="accountType" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.accountType==1}">checked</c:if> />个人账户
-                            <input name="accountType" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.accountType==2}">checked</c:if> />联名账户
-                            <input name="accountType" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.accountType==3}">checked</c:if> />公司账户
-                        </span>
-                    </span>
-                </div>
+<div v-cloak>
+    <%--<div v-show="!showList" class="panel panel-default">--%>
+    <%--</br>--%>
+    <%--<div class="row">
+        <div class="form-group col-sm-6 col-md-6">
+            <label class="col-sm-2 control-label no-padding-right">住所电话</label>
+            <div class="col-xs-9">
+                <span class="col-sm-12 block input-icon input-icon-right">
+                <input id="familyPhone" name="familyPhone" type="text" class="form-control"
+                       value="${customerAccountOpenInfoEntity.familyPhone}" readonly/>
+                </span>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">住所电话</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="familyPhone" name="familyPhone" type="text" class="form-control"
-                               value="${customerAccountOpenInfoEntity.familyPhone}" readonly/>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">教育程度</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="educationLevel" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.educationLevel==0}">checked</c:if>  />未知
-                            <input name="educationLevel" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.educationLevel==1}">checked</c:if>  />小学
-                            <input name="educationLevel" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.educationLevel==2}">checked</c:if> />中学
-                            <input name="educationLevel" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.educationLevel==3}">checked</c:if> />专上学院
-                            <input name="educationLevel" type="radio" value="4" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.educationLevel==4}">checked</c:if> />大学或以上
-                        </span>
-                    </span>
-                </div>
-            </div>
     </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">办公室电话</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="companyPhoneNumber" name="companyPhoneNumber" type="text" class="form-control"
-                               value="${customerAccountOpenInfoEntity.companyPhoneNumber}" readonly/>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">从业年限</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="workingSeniority" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.workingSeniority==0}">checked</c:if>  />未知
-                            <input name="workingSeniority" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.workingSeniority==1}">checked</c:if>  />1-2年
-                            <input name="workingSeniority" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.workingSeniority==2}">checked</c:if> />2-5年
-                            <input name="workingSeniority" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.workingSeniority==3}">checked</c:if> />5-10年
-                            <input name="workingSeniority" type="radio" value="4" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.workingSeniority==4}">checked</c:if> />>10年
-                        </span>
-                    </span>
-                </div>
+    <div class="row">
+        <div class="form-group col-sm-6 col-md-6">
+            <label class="col-sm-2 control-label no-padding-right">办公室电话</label>
+            <div class="col-xs-9">
+                <span class="col-sm-12 block input-icon input-icon-right">
+                <input id="companyPhoneNumber" name="companyPhoneNumber" type="text" class="form-control"
+                       value="${customerAccountOpenInfoEntity.companyPhoneNumber}" readonly/>
+                </span>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">你是否曾经破产或被送达要将你破产的申请</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <input name="isBankrupted" type="radio" value="0" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.isBankrupted==0}">checked</c:if>  />否
-                        <input name="isBankrupted" type="radio" value="1" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.isBankrupted==1}">checked</c:if>  />是
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">日结单及月结单发送方式</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="dStatementReceiveMode" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==0}">checked</c:if>  />未知
-                            <input name="dStatementReceiveMode" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==1}">checked</c:if>  />电子邮箱
-                            <input name="dStatementReceiveMode" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==2}">checked</c:if> />邮寄到住宅地址
-                            <input name="dStatementReceiveMode" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==3}">checked</c:if> />邮寄到营业地址
-                        </span>
-                    </span>
-                </div>
+
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6 col-md-6">
+            <label class="col-sm-2 control-label no-padding-right">你是否曾经破产或被送达要将你破产的申请</label>
+            <div class="col-xs-9">
+                <span class="col-sm-12 block input-icon input-icon-right">
+                <input name="isBankrupted" type="radio" value="0" disabled="disabled"
+                       <c:if test="${customerAccountOpenInfoEntity.isBankrupted==0}">checked</c:if>  />否
+                <input name="isBankrupted" type="radio" value="1" disabled="disabled"
+                       <c:if test="${customerAccountOpenInfoEntity.isBankrupted==1}">checked</c:if>  />是
+                </span>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">单位信托基金/互惠基金</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <input name="unitTrustsExperience" type="radio" value="0" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.unitTrustsExperience==0}">checked</c:if>  />未知
-                        <input name="unitTrustsExperience" type="radio" value="1" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.unitTrustsExperience==1}">checked</c:if>  />没有
-                        <input name="unitTrustsExperience" type="radio" value="2" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.unitTrustsExperience==2}">checked</c:if>  /><1年
-                        <input name="unitTrustsExperience" type="radio" value="3" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.unitTrustsExperience==3}">checked</c:if>  />1-2年
-                        <input name="unitTrustsExperience" type="radio" value="4" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.unitTrustsExperience==4}">checked</c:if>  />>2年
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">其它投资产品</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="otherProductsExperience" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.otherProductsExperience==0}">checked</c:if>  />未知
-                            <input name="otherProductsExperience" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.otherProductsExperience==1}">checked</c:if>  /><10年
-                            <input name="otherProductsExperience" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.otherProductsExperience==2}">checked</c:if> />10-40年
-                            <input name="otherProductsExperience" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.otherProductsExperience==3}">checked</c:if> />>40年
-                        </span>
-                    </span>
-                </div>
+        <div class="form-group col-sm-6 col-md-6">
+            <label class="col-sm-2 control-label no-padding-right">日结单及月结单发送方式</label>
+            <div class="col-xs-9">
+                <span class="col-sm-12 block input-icon input-icon-right">
+                <span class="col-sm-12 block input-icon input-icon-right">
+                <input name="dStatementReceiveMode" type="radio" value="0" disabled="disabled"
+                       <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==0}">checked</c:if>  />未知
+                <input name="dStatementReceiveMode" type="radio" value="1" disabled="disabled"
+                       <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==1}">checked</c:if>  />电子邮箱
+                <input name="dStatementReceiveMode" type="radio" value="2" disabled="disabled"
+                       <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==2}">checked</c:if> />邮寄到住宅地址
+                <input name="dStatementReceiveMode" type="radio" value="3" disabled="disabled"
+                       <c:if test="${customerAccountOpenInfoEntity.dStatementReceiveMode==3}">checked</c:if> />邮寄到营业地址
+                </span>
+                </span>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">其它投资产品名称</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="otherProductsName" name="otherProductsName" type="text" class="form-control"
-                               value="${customerAccountOpenInfoEntity.otherProductsName}" readonly/>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">期权投资经验</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="optionsExperience" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.optionsExperience==0}">checked</c:if>  />未知
-                            <input name="optionsExperience" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.optionsExperience==1}">checked</c:if>  />没有
-                            <input name="optionsExperience" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.optionsExperience==2}">checked</c:if> /><1年
-                            <input name="optionsExperience" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.optionsExperience==3}">checked</c:if> />>1-2年
-                            <input name="optionsExperience" type="radio" value="4" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.optionsExperience==4}">checked</c:if> />>2年
-                        </span>
-                    </span>
-                </div>
+    </div>
+
+
+    <div class="row">
+        <div class="form-group col-sm-6 col-md-6">
+            <label class="col-sm-2 control-label no-padding-right">投资年期</label>
+            <div class="col-xs-9">
+                <span class="col-sm-12 block input-icon input-icon-right">
+                <input name="investmentHorizon" type="radio" value="0" disabled="disabled"
+                       <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==0}">checked</c:if>  />未知 
+                <input name="investmentHorizon" type="radio" value="1" disabled="disabled"
+                       <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==1}">checked</c:if>  /><1年
+                <input name="investmentHorizon" type="radio" value="2" disabled="disabled"
+                       <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==2}">checked</c:if>  />1-3年
+                <input name="investmentHorizon" type="radio" value="3" disabled="disabled"
+                       <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==3}">checked</c:if>  />3年以上
+                </span>
             </div>
         </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">股票交易频率次/年</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="tradeStockFrequency" type="radio" value="0" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.tradeStockFrequency==0}">checked</c:if>  />未知
-                            <input name="tradeStockFrequency" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeStockFrequency==1}">checked</c:if>  /><10
-                            <input name="tradeStockFrequency" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeStockFrequency==2}">checked</c:if> />10-40
-                            <input name="tradeStockFrequency" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeStockFrequency==3}">checked</c:if> />>40
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">认股证交易频率次/年</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="tradeWarrantsFrequency" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeWarrantsFrequency==0}">checked</c:if>  />未知
-                            <input name="tradeWarrantsFrequency" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeWarrantsFrequency==1}">checked</c:if>  /><10
-                            <input name="tradeWarrantsFrequency" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeWarrantsFrequency==2}">checked</c:if> />10-40
-                            <input name="tradeWarrantsFrequency" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeWarrantsFrequency==3}">checked</c:if> />>40
-                        </span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">期权交易频率次/年</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="tradeOptionsFrequency" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeOptionsFrequency==0}">checked</c:if>  />未知
-                            <input name="tradeOptionsFrequency" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeOptionsFrequency==1}">checked</c:if>  /><10
-                            <input name="tradeOptionsFrequency" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeOptionsFrequency==2}">checked</c:if> />10-40
-                            <input name="tradeOptionsFrequency" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeOptionsFrequency==3}">checked</c:if> />>40
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">期货交易频率次/年</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="tradeFuturesFrequency" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeFuturesFrequency==0}">checked</c:if>  />未知
-                            <input name="tradeFuturesFrequency" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeFuturesFrequency==1}">checked</c:if>  /><10
-                            <input name="tradeFuturesFrequency" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeFuturesFrequency==2}">checked</c:if> />10-40
-                            <input name="tradeFuturesFrequency" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeFuturesFrequency==3}">checked</c:if> />>40
-                        </span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">单位信托基金/互惠基金交易频率次/年</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="tradeUnitTrustsFrequency" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeUnitTrustsFrequency==0}">checked</c:if>  />未知
-                            <input name="tradeUnitTrustsFrequency" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeUnitTrustsFrequency==1}">checked</c:if>  /><10
-                            <input name="tradeUnitTrustsFrequency" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeUnitTrustsFrequency==2}">checked</c:if> />10-40
-                            <input name="tradeUnitTrustsFrequency" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeUnitTrustsFrequency==3}">checked</c:if> />>40
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">其它投资产品交易频率次/年</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="tradeOtherProductsFrequency" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeOtherProductsFrequency==0}">checked</c:if>  />未知
-                            <input name="tradeOtherProductsFrequency" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeOtherProductsFrequency==1}">checked</c:if>  /><10
-                            <input name="tradeOtherProductsFrequency" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeOtherProductsFrequency==2}">checked</c:if> />10-40
-                            <input name="tradeOtherProductsFrequency" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.tradeOtherProductsFrequency==3}">checked</c:if> />>40
-                        </span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">是否开通期权</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="isOpenOptions" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.isOpenOptions==0}">checked</c:if>  />不同意
-                            <input name="isOpenOptions" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.isOpenOptions==1}">checked</c:if>  />同意
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">期权账号使用场景</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="optionsAccUsageScenarios" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.optionsAccUsageScenarios==1}">checked</c:if>  />互联网交易
-                            <input name="optionsAccUsageScenarios" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.optionsAccUsageScenarios==2}">checked</c:if>  />全权委托交易
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">是否开通期货</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="isOpenFutures" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==0}">checked</c:if>  />不同意
-                            <input name="isOpenFutures" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">checked</c:if>  />同意
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">期货账号使用场景</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="futuresAccUsageScenarios" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.futuresAccUsageScenarios==1}">checked</c:if>  />互联网交易
-                            <input name="futuresAccUsageScenarios" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.futuresAccUsageScenarios==2}">checked</c:if>  />全权委托交易
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">通讯电话</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="contactPhone" name="contactPhone" type="text" class="form-control"
-                               value="${customerAccountOpenInfoEntity.contactPhone}" readonly/>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">银行卡币种</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="bankCurrency" type="radio" value="0" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.bankCurrency==0}">checked</c:if>  />综合账户
-                            <input name="bankCurrency" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.bankCurrency==1}">checked</c:if>  />港币账户
-                            <input name="bankCurrency" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.bankCurrency==2}">checked</c:if> />美元账户
-                            <input name="bankCurrency" type="radio" value="3" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.bankCurrency==3}">checked</c:if> />人民账户
-                        </span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">投资年期</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <input name="investmentHorizon" type="radio" value="0" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==0}">checked</c:if>  />未知 
-                        <input name="investmentHorizon" type="radio" value="1" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==1}">checked</c:if>  /><1年
-                        <input name="investmentHorizon" type="radio" value="2" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==2}">checked</c:if>  />1-3年
-                        <input name="investmentHorizon" type="radio" value="3" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.investmentHorizon==3}">checked</c:if>  />3年以上
-                    </span>
-                </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">其它职业</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="otherProfession" name="otherProfession" type="text" class="form-control"
-                               value="${customerAccountOpenInfoEntity.otherProfession}" readonly/> 
-                    </span>
-                </div>
-            </div>
-        </div>
-</div>
-<%-- 预约信息 Start --%>
-<div id="div1" v-cloak>
-    <div v-show="!showList" class="panel panel-default">
-        <div class="panel-heading"><b style="color: #368763">预约信息</b></div>
-        </br>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">预约号</label>
-                <div class="col-xs-9">
+    </div>
+</div>--%>
+
+
+    <%-- 预约信息 Start --%>
+    <div id="div1" v-cloak>
+        <div v-show="!showList" class="panel panel-default">
+            <div class="panel-heading"><b style="color: #368763">预约信息</b></div>
+            </br>
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">预约号</label>
+                    <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
                         <input id="applicationId" name="applicationId" type="text" class="form-control"
                                value="${customerAccountOpenInfoEntity.applicationId}" readonly/>
                     </span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">申请时间</label>
-                <div class="col-xs-9">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">申请时间</label>
+                    <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
                         <input id="applicationTime" name="applicationTime" type="text" class="form-control"
                                value="<fmt:formatDate value="${customerAccountOpenInfoEntity.applicationTime}" pattern="yyyy-MM-dd HH:mm"/>"
                                readonly/>
                     </span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <%--        <div class="row">--%>
-        <%--            <div class="form-group col-sm-6 col-md-6">--%>
-        <%--                <label class="col-sm-2 control-label no-padding-right">开户途径</label>--%>
-        <%--                <div class="col-xs-9">--%>
-        <%--                    <span class="col-sm-12 block input-icon input-icon-right">--%>
-        <%--                        <tag:select nameKey="AO_OPEN_ACCOUNT_ACCESS_WAY"--%>
-        <%--                                    id="openAccountAccessWay" isAddDefaltOption="true"--%>
-        <%--                                    initSelectedKey="${customerAccountOpenInfoEntity.openAccountAccessWay}"--%>
-        <%--                                    clazz="form-control" disabled="false"/>--%>
-        <%--                    </span>--%>
-        <%--                </div>--%>
-        <%--            </div>--%>
-        <%--            <div class="form-group col-sm-6 col-md-6">--%>
-        <%--                <label class="col-sm-3 control-label no-padding-right">渠道</label>--%>
-        <%--                <div class="col-xs-9">--%>
-        <%--                           <span class="col-sm-12 block input-icon input-icon-right">--%>
-        <%--                           <input id="sourceChannelName" name="sourceChannelName" type="text" class="form-control"--%>
-        <%--                                  value="${customerAccountOpenInfoEntity.sourceChannelId}" readonly/>--%>
-        <%--                            </span>--%>
-        <%--                </div>--%>
-        <%--            </div>--%>
-        <%--        </div>--%>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">HashNo</label>
-                <div class="col-xs-9">
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">开户途径</label>
+                    <div class="col-xs-9">
+                                <span class="col-sm-12 block input-icon input-icon-right">
+                                    <tag:select nameKey="AO_OPEN_ACCOUNT_ACCESS_WAY"
+                                                id="openAccountAccessWay" isAddDefaltOption="true"
+                                                initSelectedKey="${customerAccountOpenInfoEntity.openAccountAccessWay}"
+                                                clazz="form-control" disabled="false"/>
+                                </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">渠道</label>
+                    <div class="col-xs-9">
+                                       <span class="col-sm-12 block input-icon input-icon-right">
+                                       <input id="sourceChannelName" name="sourceChannelName" type="text"
+                                              class="form-control"
+                                              value="${customerAccountOpenInfoEntity.sourceChannelId}" readonly/>
+                                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">HashNo</label>
+                    <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
                         <input id="caSignHashCode" name="caSignHashCode" type="text" class="form-control"
                                value="${customerAccountOpenInfoEntity.caSignHashCode}" readonly/>
                     </span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">客户帐号</label>
-                <div class="col-xs-9">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">客户帐号</label>
+                    <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
                         <input id="clientId" name="clientId" type="text" class="form-control"
                                value="${customerAccountOpenInfoEntity.clientId}" readonly/>
                     </span>
+                    </div>
                 </div>
-            </div>
-            <c:if test="${accountOpenApplicationEntity.applicationStatus == 6 || accountOpenApplicationEntity.applicationStatus == 4}">
-                <div class="row">
-                    <div class="form-group col-sm-6 col-md-6">
-                        <label class="col-sm-2 control-label no-padding-right">电子证书序列号</label>
-                        <div class="col-xs-9">
+                <c:if test="${accountOpenApplicationEntity.applicationStatus == 6 || accountOpenApplicationEntity.applicationStatus == 4}">
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-md-6">
+                            <label class="col-sm-2 control-label no-padding-right">电子证书序列号</label>
+                            <div class="col-xs-9">
                                 <span class="col-sm-12 block input-icon input-icon-right">
                                     <input id="caCertSn" name="caCertSn" type="text" class="form-control"
                                            value="${caCertSn}" readonly/>
                                 </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </c:if>
+                </c:if>
+            </div>
         </div>
     </div>
-</div>
-<%--预约信息End--%>
+    <%--预约信息End--%>
 
-<%--基本信息(CA认证开户 + 大陆身份证)-Start--%>
-<c:if test="${customerAccountOpenInfoEntity.idKind == 1 && customerAccountOpenInfoEntity.bankType == 1}">
-    <div id="div0" v-cloak>
+    <%-- 账户信息 Start --%>
+    <div id="datas1" v-cloak>
         <div v-show="!showList" class="panel panel-default">
-            <div class="panel-heading"><b style="color: #368763">基本信息</b></div>
+            <div class="panel-heading"><b style="color: #368763">账户信息</b></div>
             </br>
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">账户类型</label>
+                    <label class="col-sm-2 control-label no-padding-right">账户性质</label>
                     <div class="col-xs-9">
-                       <span class="col-sm-12 block input-icon input-icon-right">
-                             <input name="fundAccountType" type="radio" value="1" disabled="disabled"
-                                    <c:if test="${customerAccountOpenInfoEntity.fundAccountType==1}">checked</c:if> /> 现金账户
-                             <input name="fundAccountType" type="radio" value="2" disabled="disabled"
-                                    <c:if test="${customerAccountOpenInfoEntity.fundAccountType==2}">checked</c:if> /> 融资账户
-                        </span>
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                 <tag:select nameKey="AO_ACCOUNT_TYPE_CODE"
+                                             id="accountType" isAddDefaltOption="true"
+                                             initSelectedKey="${customerAccountOpenInfoEntity.accountType}"
+                                             clazz="form-control" disabled="true"/>
+                            </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">语言选择</label>
+                    <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                <tag:select nameKey="AO_LANGUAGE_CODE"
+                                            id="language" isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.language}"
+                                            clazz="form-control" disabled="true"/>
+                            </span>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">证件类型</label>
+                    <label class="col-sm-2 control-label no-padding-right">证券交易</label>
                     <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                <input name="isOpenFutures" type="radio" value="1" disabled="disabled" checked/>开通
+                                <input name="isOpenFutures" type="radio" value="0" disabled="disabled"/>不开通
+                            </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">证券交易使用场景</label>
+                    <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                <input name="futuresAccUsageScenarios" type="radio" value="0" disabled="disabled"
+                                       <c:if test="${customerAccountOpenInfoEntity.optionsAccUsageScenarios==1}">checked</c:if>  />互联网交易
+                                <input name="futuresAccUsageScenarios" type="radio" value="1" disabled="disabled"
+                                       <c:if test="${customerAccountOpenInfoEntity.optionsAccUsageScenarios==2}">checked</c:if>  />全权委托交易
+                            </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">证券账户类型</label>
+                    <div class="col-xs-9">
+                           <span class="col-sm-12 block input-icon input-icon-right">
+                               <input name="fundAccountType" type="radio" value="1" disabled="disabled"
+                                      <c:if test="${customerAccountOpenInfoEntity.fundAccountType==1}">checked</c:if> /> 现金账户
+                               <input name="fundAccountType" type="radio" value="2" disabled="disabled"
+                                      <c:if test="${customerAccountOpenInfoEntity.fundAccountType==2}">checked</c:if> /> 融资账户
+                            </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">证券市场</label>
+                    <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                               <input name="isOpenOptions" type="radio" value="1" disabled="disabled"
+                                      <c:if test="${customerAccountOpenInfoEntity.isOpenOptions==1}">checked</c:if>  />股票期权
+                            </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">期货交易</label>
+                    <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                <input name="isOpenFutures" type="radio" value="1" disabled="disabled"
+                                       <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">checked</c:if>  />开通
+                                <input name="isOpenFutures" type="radio" value="0" disabled="disabled"
+                                       <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==0}">checked</c:if>  />不开通
+                            </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">期货交易使用场景</label>
+                    <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                            <input name="futuresAccUsageScenarios" type="radio" value="0" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.futuresAccUsageScenarios==1}">checked</c:if>  />互联网交易
+                            <input name="futuresAccUsageScenarios" type="radio" value="1" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.futuresAccUsageScenarios==2}">checked</c:if>  />全权委托交易
+                            </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <%--賬戶信息 End--%>
+
+    <%--身份资料(CA认证开户 + 大陆身份证)-Start--%>
+    <c:if test="${customerAccountOpenInfoEntity.idKind == 1 && customerAccountOpenInfoEntity.bankType == 1}">
+        <div id="div0" v-cloak>
+            <div v-show="!showList" class="panel panel-default">
+                <div class="panel-heading"><b style="color: #368763">身份资料</b></div>
+                </br>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件类型</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <tag:select nameKey="AO_ID_KIND" id="idKind" isAddDefaltOption="true"
                                        initSelectedKey="${customerAccountOpenInfoEntity.idKind}"
                                        clazz="form-control" disabled="false"/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">国家/地区</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">国家/地区</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="nationality" type="text" class="form-control"
                                    value="${fns:getCodeName("AO_NATIONALITY",customerAccountOpenInfoEntity.nationality)}"
                                    readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">中文姓名</label>
-                    <div class="col-xs-9">
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">中文姓名</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="clientName" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.clientName}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">性别</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">性别</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <tag:select nameKey="COMMON_SEX" id="sex" isAddDefaltOption="true"
                                        initSelectedKey="${customerAccountOpenInfoEntity.sex}"
                                        clazz="form-control" disabled="false"/>
                         </span>
+                        </div>
                     </div>
+
                 </div>
 
-            </div>
-
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">英文名/姓名拼音</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">英文名/姓名拼音</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <input name="clientNameSpell" type="text" class="form-control"
                                   value="${customerAccountOpenInfoEntity.clientNameSpell}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">民族</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">民族</label>
+                        <div class="col-xs-9">
                         <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="nation" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.nation}" readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">证件号</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件号</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="idNo" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.idNo}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">出生日期</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">出生日期</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="birthday" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.birthday}" readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">签发机关</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">签发机关</label>
+                        <div class="col-xs-9">
                         <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="signingOrganization" type="text"
                                    class="form-control"
                                    value="${customerAccountOpenInfoEntity.signingOrganization}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">证件有效期至</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件有效期至</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="idCardValidDateEnd" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.idCardValidDateEnd}" readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">证件地址</label>
-                    <div class="col-sm-11">
-                       <span class="col-xs-12 block input-icon input-icon-right">
-                            <input name="idCardAddress" type="text" class="form-control"
-                                   value="${customerAccountOpenInfoEntity.idCardAddress}" readonly/>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">手机号</label>
-                    <div class="col-xs-9">
-                       <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="phoneNumber" type="text" class="form-control"
-                                   value="${customerAccountOpenInfoEntity.phoneNumber}" readonly/>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">电子邮箱</label>
-                    <div class="col-xs-9">
-                       <span class="col-sm-12 block input-icon input-icon-right">
-                         <input name="email" type="text" class="form-control"
-                                value="${customerAccountOpenInfoEntity.email}" readonly/>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">住宅地址</label>
-                    <div class="col-xs-11">
-                       <span class="col-xs-12 block input-icon input-icon-right">
-                           <input name="homeAddress" type="text" class="form-control"
-                                  value="${customerAccountOpenInfoEntity.familyAddress}" readonly/>
+                <div class="row">
+                    <div class="form-group col-sm-12 col-md-12">
+                        <label class="col-sm-1 control-label no-padding-right">证件地址</label>
+                        <div class="col-sm-11">
+                           <span class="col-xs-12 block input-icon input-icon-right">
+                                <input name="idCardAddress" type="text" class="form-control"
+                                       value="${customerAccountOpenInfoEntity.idCardAddress}" readonly/>
                             </span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">通讯地址</label>
-                    <div class="col-sm-11">
-                       <span class="col-xs-12 block input-icon input-icon-right">
-                            <input name="contactDetailAddress" type="text" class="form-control"
-                                   value="${customerAccountOpenInfoEntity.contactAddress}" readonly/>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">通讯地址拆分</label>
-                    <div class="col-xs-11">
-                             <span class="col-sm-12 block input-icon input-icon-right">
-                                <input name="contactDetailAddress" type="text"
-                                       class="form-control" style="width: 15%;display: inline"
-                                       value="${customerAccountOpenInfoEntity.contactProvinceName}" readonly/>
-                                <input name="contactDetailAddress" type="text"
-                                       class="form-control" style="width: 15%;display: inline"
-                                       value="${customerAccountOpenInfoEntity.contactCityName}" readonly/>
-                                <input name="contactDetailAddress" type="text"
-                                       class="form-control" style="width: 15%;display: inline"
-                                       value="${customerAccountOpenInfoEntity.contactCountyName}" readonly/>
-                                <input name="contactDetailAddress" type="text"
-                                       class="form-control" style="width: 54%;display: inline;"
-                                       value="${customerAccountOpenInfoEntity.contactDetailAddress}" readonly/>
-                                </span>
-                    </div>
-                </div>
             </div>
         </div>
-    </div>
-</c:if>
-<%--基本信息(CA认证开户 + 大陆身份证)-End--%>
+    </c:if>
+    <%--身份资料(CA认证开户 + 大陆身份证)-End--%>
+    <%--身份资料(香港银行卡认证开户 + 大陆身份证)-Start--%>
+    <c:if test="${customerAccountOpenInfoEntity.idKind == 1 && customerAccountOpenInfoEntity.bankType == 0}">
+        <div id="div0" v-cloak>
+            <div v-show="!showList" class="panel panel-default">
+                <div class="panel-heading"><b style="color: #368763">身份资料</b></div>
+                </br>
 
-<%--基本信息(香港银行卡认证开户 + 大陆身份证)-Start--%>
-<c:if test="${customerAccountOpenInfoEntity.idKind == 1 && customerAccountOpenInfoEntity.bankType == 0}">
-    <div id="div0" v-cloak>
-        <div v-show="!showList" class="panel panel-default">
-            <div class="panel-heading"><b style="color: #368763">基本信息</b></div>
-            </br>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">账户类型</label>
-                    <div class="col-xs-9">
-                       <span class="col-sm-12 block input-icon input-icon-right">
-                             <input name="fundAccountType" type="radio" value="1" disabled="disabled"
-                                    <c:if test="${customerAccountOpenInfoEntity.fundAccountType==1}">checked</c:if> /> 现金账户
-                             <input name="fundAccountType" type="radio" value="2" disabled="disabled"
-                                    <c:if test="${customerAccountOpenInfoEntity.fundAccountType==2}">checked</c:if> /> 融资账户
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">证件类型</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件类型</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <tag:select nameKey="AO_ID_KIND" id="idKind" isAddDefaltOption="true"
                                         initSelectedKey="${customerAccountOpenInfoEntity.idKind}"
                                         clazz="form-control" disabled="false"/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">国家/地区</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">国家/地区</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="nationality" type="text" class="form-control"
                                    value="${fns:getCodeName("AO_NATIONALITY",customerAccountOpenInfoEntity.nationality)}"
                                    readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">中文姓名</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">中文姓名</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="clientName" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.clientName}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">性别</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">性别</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <tag:select nameKey="COMMON_SEX" id="sex" isAddDefaltOption="true"
                                         initSelectedKey="${customerAccountOpenInfoEntity.sex}"
                                         clazz="form-control" disabled="false"/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">英文/拼音姓名</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">英文/拼音姓名</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="clientNameSpell" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.clientNameSpell}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">出生日期</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">出生日期</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="birthday" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.birthday}" readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">证件号</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件号</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="idNo" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.idNo}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">证件有效期至</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件有效期至</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="idCardValidDateEnd" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.idCardValidDateEnd}" readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">证件地址</label>
-                    <div class="col-sm-11">
+                <div class="row">
+                    <div class="form-group col-sm-12 col-md-12">
+                        <label class="col-sm-1 control-label no-padding-right">证件地址</label>
+                        <div class="col-sm-11">
                        <span class="col-xs-12 block input-icon input-icon-right">
                             <input name="idCardAddress" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.idCardAddress}" readonly/>
                         </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">手机号</label>
-                    <div class="col-xs-9">
-                       <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="phoneNumber" type="text" class="form-control"
-                                   value="${customerAccountOpenInfoEntity.phoneNumber}" readonly/>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">电子邮箱</label>
-                    <div class="col-xs-9">
-                       <span class="col-sm-12 block input-icon input-icon-right">
-                         <input name="email" type="text" class="form-control"
-                                value="${customerAccountOpenInfoEntity.email}" readonly/>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">住宅地址</label>
-                    <div class="col-xs-11">
-                       <span class="col-xs-12 block input-icon input-icon-right">
-                           <input name="homeAddress" type="text" class="form-control"
-                                  value="${customerAccountOpenInfoEntity.familyAddress}" readonly/>
-                       </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">通讯地址</label>
-                    <div class="col-sm-11">
-                       <span class="col-xs-12 block input-icon input-icon-right">
-                            <input name="contactDetailAddress" type="text" class="form-control"
-                                   value="${customerAccountOpenInfoEntity.contactAddress}" readonly/>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">通讯地址拆分</label>
-                    <div class="col-xs-11">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="contactDetailAddress" type="text"
-                                   class="form-control" style="width: 15%;display: inline"
-                                   value="${customerAccountOpenInfoEntity.contactProvinceName}" readonly/>
-                            <input name="contactDetailAddress" type="text"
-                                   class="form-control" style="width: 15%;display: inline"
-                                   value="${customerAccountOpenInfoEntity.contactCityName}" readonly/>
-                            <input name="contactDetailAddress" type="text"
-                                   class="form-control" style="width: 15%;display: inline"
-                                   value="${customerAccountOpenInfoEntity.contactCountyName}" readonly/>
-                            <input name="contactDetailAddress" type="text"
-                                   class="form-control" style="width: 54%;display: inline;"
-                                   value="${customerAccountOpenInfoEntity.contactDetailAddress}" readonly/>
-                        </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</c:if>
-<%--基本信息(香港银行卡认证开户 + 大陆身份证)-End--%>
-
-<%--基本信息(香港银行卡认证开户 + 香港身份证)-Start--%>
-<c:if test="${customerAccountOpenInfoEntity.idKind == 2 && customerAccountOpenInfoEntity.bankType == 0}">
-    <div id="div0" v-cloak>
-        <div v-show="!showList" class="panel panel-default">
-            <div class="panel-heading"><b style="color: #368763">基本信息</b></div>
-            </br>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">账户类型</label>
-                    <div class="col-xs-9">
-                       <span class="col-sm-12 block input-icon input-icon-right">
-                             <input name="fundAccountType" type="radio" value="1" disabled="disabled"
-                                    <c:if test="${customerAccountOpenInfoEntity.fundAccountType==1}">checked</c:if> /> 现金账户
-                             <input name="fundAccountType" type="radio" value="2" disabled="disabled"
-                                    <c:if test="${customerAccountOpenInfoEntity.fundAccountType==2}">checked</c:if> /> 融资账户
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">证件类型</label>
-                    <div class="col-xs-9">
+    </c:if>
+    <%--身份资料(香港银行卡认证开户 + 大陆身份证)-End--%>
+    <%--身份资料(香港银行卡认证开户 + 香港身份证)-Start--%>
+    <c:if test="${customerAccountOpenInfoEntity.idKind == 2 && customerAccountOpenInfoEntity.bankType == 0}">
+        <div id="div0" v-cloak>
+            <div v-show="!showList" class="panel panel-default">
+                <div class="panel-heading"><b style="color: #368763">身份资料</b></div>
+                </br>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件类型</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <tag:select nameKey="AO_ID_KIND" id="idKind" isAddDefaltOption="true"
                                        initSelectedKey="${customerAccountOpenInfoEntity.idKind}"
                                        clazz="form-control" disabled="false"/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">国家/地区</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">国家/地区</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <input name="nationality" type="text" class="form-control"
                                   value="${fns:getCodeName("AO_NATIONALITY",customerAccountOpenInfoEntity.nationality)}"
                                   readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">中文名</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">中文名</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <input name="clientName" type="text" class="form-control"
                                   value="${customerAccountOpenInfoEntity.clientName}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">性别</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">性别</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <tag:select nameKey="COMMON_SEX" id="sex" isAddDefaltOption="true"
                                        initSelectedKey="${customerAccountOpenInfoEntity.sex}"
                                        clazz="form-control" disabled="false"/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">英文/拼音姓名</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">英文/拼音姓名</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="clientNameSpell" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.clientNameSpell}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">出生日期</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">出生日期</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <input name="birthday" type="text" class="form-control"
                                   value="${customerAccountOpenInfoEntity.birthday}" readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">证件号</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件号</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="idNo" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.idNo}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">证件有效期至</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件有效期至</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="idCardValidDateEnd" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.idCardValidDateEnd}" readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">证件地址</label>
-                    <div class="col-sm-11">
+                <div class="row">
+                    <div class="form-group col-sm-12 col-md-12">
+                        <label class="col-sm-1 control-label no-padding-right">证件地址</label>
+                        <div class="col-sm-11">
                        <span class="col-xs-12 block input-icon input-icon-right">
                            <input name="idCardAddress" type="text" class="form-control"
                                   value="${customerAccountOpenInfoEntity.idCardAddress}" readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">手机号</label>
-                    <div class="col-xs-9">
-                       <span class="col-sm-12 block input-icon input-icon-right">
-                           <input name="phoneNumber" type="text" class="form-control"
-                                  value="${customerAccountOpenInfoEntity.phoneNumber}" readonly/>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">电子邮箱</label>
-                    <div class="col-xs-9">
-                       <span class="col-sm-12 block input-icon input-icon-right">
-                           <input name="email" type="text" class="form-control"
-                                  value="${customerAccountOpenInfoEntity.email}" readonly/>
-                       </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">住宅地址</label>
-                    <div class="col-xs-11">
-                       <span class="col-xs-12 block input-icon input-icon-right">
-                           <input name="homeAddress" type="text" class="form-control"
-                                  value="${customerAccountOpenInfoEntity.familyAddress}" readonly/>
-                            </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">通讯地址</label>
-                    <div class="col-sm-11">
-                       <span class="col-xs-12 block input-icon input-icon-right">
-                           <input name="contactDetailAddress" type="text" class="form-control"
-                                  value="${customerAccountOpenInfoEntity.contactAddress}" readonly/>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">通讯地址拆分</label>
-                    <div class="col-xs-11">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="contactDetailAddress" type="text"
-                                   class="form-control" style="width: 15%;display: inline"
-                                   value="${customerAccountOpenInfoEntity.contactProvinceName}" readonly/>
-                            <input name="contactDetailAddress" type="text"
-                                   class="form-control" style="width: 15%;display: inline"
-                                   value="${customerAccountOpenInfoEntity.contactCityName}" readonly/>
-                            <input name="contactDetailAddress" type="text"
-                                   class="form-control" style="width: 15%;display: inline"
-                                   value="${customerAccountOpenInfoEntity.contactCountyName}" readonly/>
-                            <input name="contactDetailAddress" type="text"
-                                   class="form-control" style="width: 54%;display: inline;"
-                                   value="${customerAccountOpenInfoEntity.contactDetailAddress}" readonly/>
-                        </span>
-                    </div>
-                </div>
-            </div>
-
         </div>
-    </div>
-</c:if>
-<%--基本信息(香港银行卡认证开户 + 香港身份证)-End--%>
-
-<%--基本信息(香港银行卡认证开户 + 护照)-Start--%>
-<c:if test="${customerAccountOpenInfoEntity.idKind == 3 && customerAccountOpenInfoEntity.bankType == 0}">
-    <div id="div0" v-cloak>
-        <div v-show="!showList" class="panel panel-default">
-            <div class="panel-heading"><b style="color: #368763">基本信息</b></div>
-            </br>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">账户类型</label>
-                    <div class="col-xs-9">
-                        <span class="col-sm-12 block input-icon input-icon-right">
-                            <input name="fundAccountType" type="radio" value="1" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.fundAccountType==1}">checked</c:if> /> 现金账户
-                            <input name="fundAccountType" type="radio" value="2" disabled="disabled"
-                                   <c:if test="${customerAccountOpenInfoEntity.fundAccountType==2}">checked</c:if> /> 融资账户
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">证件类型</label>
-                    <div class="col-xs-9">
+    </c:if>
+    <%--身份资料(香港银行卡认证开户 + 香港身份证)-End--%>
+    <%--身份资料(香港银行卡认证开户 + 护照)-Start--%>
+    <c:if test="${customerAccountOpenInfoEntity.idKind == 3 && customerAccountOpenInfoEntity.bankType == 0}">
+        <div id="div0" v-cloak>
+            <div v-show="!showList" class="panel panel-default">
+                <div class="panel-heading"><b style="color: #368763">身份资料</b></div>
+                </br>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件类型</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <tag:select nameKey="AO_ID_KIND" id="idKind" isAddDefaltOption="true"
                                        initSelectedKey="${customerAccountOpenInfoEntity.idKind}"
                                        clazz="form-control" disabled="false"/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">国家/地区</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">国家/地区</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <input name="nationality" type="text" class="form-control"
                                   value="${fns:getCodeName("AO_NATIONALITY",customerAccountOpenInfoEntity.nationality)}"
                                   readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">中文姓名</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">中文姓名</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <input name="clientName" type="text" class="form-control"
                                   value="${customerAccountOpenInfoEntity.clientName}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">性别</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">性别</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <tag:select nameKey="COMMON_SEX" id="sex" isAddDefaltOption="true"
                                        initSelectedKey="${customerAccountOpenInfoEntity.sex}"
                                        clazz="form-control" disabled="false"/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">英文/拼音姓名</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">英文/拼音姓名</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="clientNameSpell" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.clientNameSpell}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">出生日期</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">出生日期</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="birthday" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.birthday}" readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">证件号</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件号</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="idNo" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.idNo}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">证件有效期至</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">证件有效期至</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <input name="idCardValidDateEnd" type="text" class="form-control"
                                   value="${customerAccountOpenInfoEntity.idCardValidDateEnd}" readonly/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">证件地址</label>
-                    <div class="col-sm-11">
+                <div class="row">
+                    <div class="form-group col-sm-12 col-md-12">
+                        <label class="col-sm-1 control-label no-padding-right">证件地址</label>
+                        <div class="col-sm-11">
                        <span class="col-xs-12 block input-icon input-icon-right">
                            <input name="idCardAddress" type="text" class="form-control"
                                   value="${customerAccountOpenInfoEntity.idCardAddress}" readonly/>
                        </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">手机号</label>
-                    <div class="col-xs-9">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">手机号</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <input name="phoneNumber" type="text" class="form-control"
                                   value="${customerAccountOpenInfoEntity.phoneNumber}" readonly/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">电子邮箱</label>
-                    <div class="col-xs-9">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">电子邮箱</label>
+                        <div class="col-xs-9">
                        <span class="col-sm-12 block input-icon input-icon-right">
                            <input name="email" type="text" class="form-control"
                                   value="${customerAccountOpenInfoEntity.email}" readonly/>
                        </span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">住宅地址</label>
-                    <div class="col-xs-11">
-                       <span class="col-xs-12 block input-icon input-icon-right">
-                           <input name="homeAddress" type="text" class="form-control"
-                                  value="${customerAccountOpenInfoEntity.familyAddress}" readonly/>
-                       </span>
+        </div>
+    </c:if>
+    <%--身份资料(香港银行卡认证开户 + 护照)-End--%>
+
+    <%--基本信息--%>
+    <div>
+        <div id="div-user" v-cloak>
+            <div v-show="!showList" class="panel panel-default">
+                <div class="panel-heading"><b style="color: #368763">基本信息</b></div>
+                </br>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">教育程度</label>
+                        <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                <tag:select nameKey="AO_EDUCATION_LEVEL"
+                                            id="language" isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.educationLevel}"
+                                            clazz="form-control" disabled="true"/>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">电子邮箱</label>
+                        <div class="col-xs-9">
+                               <span class="col-sm-12 block input-icon input-icon-right">
+                                   <input name="email" type="text" class="form-control"
+                                          value="${customerAccountOpenInfoEntity.email}" readonly/>
+                               </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">通讯地址</label>
-                    <div class="col-sm-11">
-                       <span class="col-xs-12 block input-icon input-icon-right">
-                           <input name="contactDetailAddress" type="text" class="form-control"
-                                  value="${customerAccountOpenInfoEntity.contactAddress}" readonly/>
-                       </span>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">手机号</label>
+                        <div class="col-xs-9">
+                               <span class="col-sm-12 block input-icon input-icon-right">
+                                    <input name="phoneNumber" type="text" class="form-control"
+                                           value="${customerAccountOpenInfoEntity.phoneNumber}" readonly/>
+                                </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">住宅电话</label>
+                        <div class="col-xs-9">
+                               <span class="col-sm-12 block input-icon input-icon-right">
+                                    <input name="familyPhone" type="text" class="form-control"
+                                           value="${customerAccountOpenInfoEntity.familyPhone}" readonly/>
+                                </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
-                    <label class="col-sm-1 control-label no-padding-right">通讯地址拆分</label>
-                    <div class="col-xs-11">
-                        <span class="col-sm-12 block input-icon input-icon-right">
+                <div class="row">
+                    <div class="form-group col-sm-12 col-md-12">
+                        <label class="col-sm-1 control-label no-padding-right">住宅地址</label>
+                        <div class="col-xs-11">
+                                <span class="col-xs-12 block input-icon input-icon-right">
+                                    <input name="homeAddress" type="text" class="form-control"
+                                           value="${customerAccountOpenInfoEntity.familyAddress}" readonly/>
+                                </span>
+                        </div>
+                    </div>
+                </div>
+
+                <%--<div class="row">
+                    <div class="form-group col-sm-12 col-md-12">
+                        <label class="col-sm-1 control-label no-padding-right">通讯地址</label>
+                        <div class="col-sm-11">
+                   <span class="col-xs-12 block input-icon input-icon-right">
+                        <input name="contactDetailAddress" type="text" class="form-control"
+                               value="${customerAccountOpenInfoEntity.contactAddress}" readonly/>
+                    </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">通讯电话</label>
+                        <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                            <input id="contactPhone" name="contactPhone" type="text" class="form-control"
+                                   value="${customerAccountOpenInfoEntity.contactPhone}" readonly/>
+                            </span>
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="form-group col-sm-12 col-md-12">
+                        <label class="col-sm-1 control-label no-padding-right">通讯地址拆分</label>
+                        <div class="col-xs-11">
+                         <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="contactDetailAddress" type="text"
                                    class="form-control" style="width: 15%;display: inline"
                                    value="${customerAccountOpenInfoEntity.contactProvinceName}" readonly/>
@@ -1248,173 +850,229 @@
                             <input name="contactDetailAddress" type="text"
                                    class="form-control" style="width: 54%;display: inline;"
                                    value="${customerAccountOpenInfoEntity.contactDetailAddress}" readonly/>
-                        </span>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </div>--%>
             </div>
         </div>
     </div>
-</c:if>
-<%--基本信息(香港银行卡认证开户 + 护照)-End--%>
+    <%--基本信息--%>
 
-<!--隐藏图片-->
-<div hidden id="imageList">
-    <ul class="docs-pictures">
-    </ul>
-</div>
-<div id="div1" v-cloak>
-    <div v-show="!showList" class="panel panel-default">
-        <div class="panel-heading"><b style="color: #368763">影像资料</b></div>
-        </br>
-        <div style="margin-left: 5%;width: 90%; font-size: 0; height: 140px; vertical-align: middle;">
+    <!--隐藏图片-->
+    <div hidden id="imageList">
+        <ul class="docs-pictures">
+        </ul>
+    </div>
+    <!--影像资料 Start-->
+    <div id="div1" v-cloak>
+        <div v-show="!showList" class="panel panel-default">
+            <div class="panel-heading"><b style="color: #368763">影像资料</b></div>
             </br>
-            <div style="margin-left: 50px;width: 90%">
-                <c:forEach var="imageInfo" items="${customerAccountOpenImages}" varStatus="i">
+            <div style="margin-left: 5%;width: 90%; font-size: 0; height: 140px; vertical-align: middle;">
+                </br>
+                <div style="margin-left: 50px;width: 90%">
+                    <c:forEach var="imageInfo" items="${customerAccountOpenImages}" varStatus="i">
                         <span class="col-xs-2 block input-icon input-icon-right" style="margin-top: 15px">
                             <button class="layui-btn layui-btn-small layui-btn-warm" type="button"
                                     onclick="showAccountOpenImg(${i.index})"
                                     class="layui-icon"><i
                                     class="layui-icon">&#xe60d;</i>[${imageInfo.fileName}]</button>
                          </span>
-                    <!--循环调用方法-->
-                    <script type="text/javascript">pictureList("${imageInfo.storagePath}${imageInfo.fileStorageName}.${imageInfo.extName}", ${i.index});</script>
-                </c:forEach>
-            </div>
-            </br>
-        </div>
-    </div>
-</div>
-<c:if test="${customerAccountOpenInfoEntity.bankType !=null and customerAccountOpenInfoEntity.bankType == 0}">
-    <div id="div1" v-cloak>
-        <div v-show="!showList" class="panel panel-default">
-            <div class="panel-heading"><b style="color: #368763">香港银行账户资料</b></div>
-            </br>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">银行名称</label>
-                    <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <tag:select name="bankId" nameKey="AO_BANK_HK" isAddDefaltOption="true"
-                                    initSelectedKey="${customerAccountOpenInfoEntity.bankId}" clazz="form-control"
-                                    disabled="disabled"></tag:select>
-                    </span>
-                    </div>
+                        <!--循环调用方法-->
+                        <script type="text/javascript">pictureList("${imageInfo.storagePath}${imageInfo.fileStorageName}.${imageInfo.extName}", ${i.index});</script>
+                    </c:forEach>
                 </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-3 control-label no-padding-right">银行卡号</label>
-                    <div class="col-xs-9">
-                    <span class="col-xs-12 block input-icon input-icon-right">
-                        <input class="form-control" name="bankNo" type="text"
-                               value="${customerAccountOpenInfoEntity.bankNo}"
-                               style="height:34px; margin-right: 0px;"
-                               readonly/>
-                    </span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">银行账户名</label>
-                    <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                         <input name="clientNameSpell" type="text" class="form-control"
-                                value="${customerAccountOpenInfoEntity.bankAccountName}" readonly/>
-                    </span>
-                    </div>
-                </div>
-                    <%--                <div class="form-group col-sm-6 col-md-6">--%>
-                    <%--                    <label class="col-sm-3 control-label no-padding-right">账户类型</label>--%>
-                    <%--                    <div class="col-xs-9">--%>
-                    <%--                    <span class="col-xs-12 block input-icon input-icon-right">--%>
-                    <%--                        <tag:select name="bankId" nameKey="AO_BANK_HK" isAddDefaltOption="true"--%>
-                    <%--                                    initSelectedKey="${customerAccountOpenInfoEntity.bankId}" clazz="form-control"--%>
-                    <%--                                    disabled="disabled"></tag:select>--%>
-                    <%--                    </span>--%>
-                    <%--                    </div>--%>
-                    <%--                </div>--%>
+                </br>
             </div>
         </div>
     </div>
-</c:if>
-<c:if test="${customerAccountOpenInfoEntity.bankType !=null and customerAccountOpenInfoEntity.bankType == 1}">
-    <div id="div2" v-cloak>
-        <div v-show="!showList" class="panel panel-default">
-            <div class="panel-heading"><b style="color: #368763">大陸银行账户四要素校验信息</b></div>
-            </br>
-            <div class="row">
-                <c:forEach items="${bankVerityInfoList}" var="bankVerityInfo">
-                    <div class="form-group col-sm-12 col-md-12">
-                        <div class="layui-inline">
-                            <label class="col-sm-1 control-label" style="width: 120px;text-align:left;">用户姓名: </label>
-                            <span class="col-sm-1 control-label layui-inline"
-                                  style="width: 200px;text-align:left; ">${bankVerityInfo.clientName}</span>
+    <!--影像资料 End-->
+    <!--香港银行卡信息 Start-->
+    <c:if test="${customerAccountOpenInfoEntity.bankType !=null and customerAccountOpenInfoEntity.bankType == 0}">
+        <div id="div1" v-cloak>
+            <div v-show="!showList" class="panel panel-default">
+                <div class="panel-heading"><b style="color: #368763">香港银行账户资料</b></div>
+                </br>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">银行名称</label>
+                        <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                <tag:select name="bankId" nameKey="AO_BANK_HK" isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.bankId}"
+                                            clazz="form-control"
+                                            disabled="disabled"></tag:select>
+                            </span>
                         </div>
-                        <div class="layui-inline">
-                            <label class="col-sm-1 control-label " style="width: 120px;text-align:left; ">证件号: </label>
-                            <span class="col-sm-1 control-label layui-inline"
-                                  style="width: 200px;text-align:left;">${bankVerityInfo.idNo}</span>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">银行卡号</label>
+                        <div class="col-xs-9">
+                            <span class="col-xs-12 block input-icon input-icon-right">
+                                <input class="form-control" name="bankNo" type="text"
+                                       value="${customerAccountOpenInfoEntity.bankNo}"
+                                       style="height:34px; margin-right: 0px;"
+                                       readonly/>
+                            </span>
                         </div>
-                        <div class="layui-inline">
-                            <label class="col-sm-1 control-label " style="width: 120px;text-align:left;">银行卡号:</label>
-                            <span class="col-sm-1 control-label layui-inline"
-                                  style="width: 200px;text-align:left;">${bankVerityInfo.bankCard}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">银行账户名</label>
+                        <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                 <input name="clientNameSpell" type="text" class="form-control"
+                                        value="${customerAccountOpenInfoEntity.bankAccountName}" readonly/>
+                            </span>
                         </div>
-                        <div class="layui-inline">
-                            <label class="col-sm-1 control-label "
-                                   style="width: 120px;text-align:left;">预留手机号:</label>
-                            <span class="col-sm-1 control-label layui-inline"
-                                  style="width: 200px;text-align:left;">${bankVerityInfo.phoneNumber}</span>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">银行卡币种</label>
+                        <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                <tag:select name="bankCurrency" nameKey="AO_BANK_CURRENCY" isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.bankCurrency}"
+                                            clazz="form-control"
+                                            disabled="disabled"></tag:select>
+                            </span>
                         </div>
-                        <div class="layui-inline">
-                            <label class="col-sm-1 control-label " style="width: 120px;text-align:left;">校验时间:</label>
-                            <span class="col-sm-1 control-label layui-inline"
-                                  style="width: 200px;text-align:left;"><fmt:formatDate
-                                    value="${bankVerityInfo.verityTime}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="col-sm-1 control-label" style="width: 120px;text-align:left;">校验方:</label>
-                            <span class="col-sm-1 control-label layui-inline"
-                                  style="width: 200px;text-align:left;">CFCA</span>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="col-sm-1 control-label" style="width: 120px;text-align:left;">校验次数:</label>
-                            <span class="col-sm-1 control-label layui-inline"
-                                  style="width: 200px;text-align:left;">${bankVerityInfo.verifyCount}</span>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="col-sm-1 control-label" style="width: 120px;text-align:left;">校验结果: </label>
-                            <span class="col-sm-1 control-label layui-inline"
-                                  style="width: 200px;text-align:left;">
+                    </div>
+                        <%--  <div class="form-group col-sm-6 col-md-6">
+                              <label class="col-sm-2 control-label no-padding-right">账户类型</label>
+                              <div class="col-xs-9">
+                                  <span class="col-xs-12 block input-icon input-icon-right">
+                                      <tag:select name="bankId" nameKey="AO_BANK_HK" isAddDefaltOption="true"
+                                                  initSelectedKey="${customerAccountOpenInfoEntity.bankId}"
+                                                  clazz="form-control"
+                                                  disabled="disabled"></tag:select>
+                                  </span>
+                              </div>--%>
+                </div>
+            </div>
+        </div>
+    </c:if>
+    <!--香港银行卡信息 End-->
+    <!--大陆银行卡信息 Start-->
+    <c:if test="${customerAccountOpenInfoEntity.bankType !=null and customerAccountOpenInfoEntity.bankType == 1}">
+        <div id="div2" v-cloak>
+            <div v-show="!showList" class="panel panel-default">
+                <div class="panel-heading"><b style="color: #368763">大陸银行账户四要素校验信息</b></div>
+                </br>
+                <div class="row">
+                    <c:forEach items="${bankVerityInfoList}" var="bankVerityInfo">
+                        <div class="form-group col-sm-12 col-md-12">
+                            <div class="layui-inline">
+                                <label class="col-sm-1 control-label"
+                                       style="width: 120px;text-align:left;">用户姓名: </label>
+                                <span class="col-sm-1 control-label layui-inline"
+                                      style="width: 200px;text-align:left; ">${bankVerityInfo.clientName}</span>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="col-sm-1 control-label "
+                                       style="width: 120px;text-align:left; ">证件号: </label>
+                                <span class="col-sm-1 control-label layui-inline"
+                                      style="width: 200px;text-align:left;">${bankVerityInfo.idNo}</span>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="col-sm-1 control-label "
+                                       style="width: 120px;text-align:left;">银行卡号:</label>
+                                <span class="col-sm-1 control-label layui-inline"
+                                      style="width: 200px;text-align:left;">${bankVerityInfo.bankCard}</span>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="col-sm-1 control-label "
+                                       style="width: 120px;text-align:left;">预留手机号:</label>
+                                <span class="col-sm-1 control-label layui-inline"
+                                      style="width: 200px;text-align:left;">${bankVerityInfo.phoneNumber}</span>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="col-sm-1 control-label "
+                                       style="width: 120px;text-align:left;">校验时间:</label>
+                                <span class="col-sm-1 control-label layui-inline"
+                                      style="width: 200px;text-align:left;"><fmt:formatDate
+                                        value="${bankVerityInfo.verityTime}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+                            </div>
+                                <%--<div class="layui-inline">
+                                    <label class="col-sm-1 control-label" style="width: 120px;text-align:left;">校验方:</label>
+                                    <span class="col-sm-1 control-label layui-inline"
+                                          style="width: 200px;text-align:left;">CFCA</span>
+                                </div>--%>
+                                <%--<div class="layui-inline">
+                                    <label class="col-sm-1 control-label"
+                                           style="width: 120px;text-align:left;">校验次数:</label>
+                                    <span class="col-sm-1 control-label layui-inline"
+                                          style="width: 200px;text-align:left;">${bankVerityInfo.verifyCount}</span>
+                                </div>--%>
+                            <div class="layui-inline">
+                                <label class="col-sm-1 control-label"
+                                       style="width: 120px;text-align:left;">校验结果: </label>
+                                <span class="col-sm-1 control-label layui-inline"
+                                      style="width: 200px;text-align:left;">
                             <c:if test="${bankVerityInfo.verifyStatus==0}">不通过</c:if>
                             <c:if test="${bankVerityInfo.verifyStatus==1}">通过</c:if>
                         </span>
+                            </div>
+                            <hr class="layui-bg-gray">
                         </div>
-                        <hr class="layui-bg-gray">
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-    </div>
-</c:if>
-<div id="div3" v-cloak>
-    <div v-show="!showList" class="panel panel-default">
-        <div class="panel-heading"><b style="color: #368763">职业信息</b></div>
-        </br>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">职业状态</label>
-                <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <tag:select nameKey="AO_PROFESSION_CODE" id="professionCode" isAddDefaltOption="true"
-                                    initSelectedKey="${customerAccountOpenInfoEntity.professionCode}"
-                                    clazz="form-control"
-                                    disabled="false"/>
-                    </span>
+                    </c:forEach>
                 </div>
             </div>
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">所属行业</label>
-                <div class="col-xs-9">
+        </div>
+    </c:if>
+    <!--大陆银行卡信息 End-->
+
+    <%--职业信息-Start--%>
+    <div id="div3" v-cloak>
+        <div v-show="!showList" class="panel panel-default">
+            <div class="panel-heading"><b style="color: #368763">职业信息</b></div>
+            </br>
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-12">
+                    <label class="col-sm-1 control-label no-padding-right">职业状态</label>
+                    <div class="col-xs-11">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <c:forEach var="professionEntity"
+                                       items="${fns:getCodeInfoByParentMark('AO_PROFESSION_CODE')}"
+                                       varStatus="i">
+                                <span class="layui-inline" style="padding-right: 15px">
+                                    <c:if test="${customerAccountOpenInfoEntity.professionCode== professionEntity.value}">
+                                        <input type="radio" name="professionCode" disabled="disabled"
+                                               value="${professionEntity.value}" checked="checked"
+                                        />${professionEntity.name}
+                                    </c:if>
+                                    <c:if test="${customerAccountOpenInfoEntity.professionCode != professionEntity.value}">
+                                            <input type="radio" name="professionCode" disabled="disabled"
+                                                   value="${professionEntity.value}"
+                                            />${professionEntity.name}
+                                    </c:if>
+                                    <c:if test="${i.last}">
+                                    <input class="form-control " style="width: 200px;display: inline"
+                                           id="otherProfession"
+                                           name="otherProfession" type="text"
+                                           value="${customerAccountOpenInfoEntity.otherProfession}" readonly/>
+                                    </c:if>
+                                </span>
+                            </c:forEach>
+
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">公司名称</label>
+                    <div class="col-xs-9">
+                   <span class="col-sm-12 block input-icon input-icon-right">
+                        <input id="companyName" name="companyName" type="text" class="form-control aaa"
+                               value="${customerAccountOpenInfoEntity.companyName}" readonly/>
+                    </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">所属行业</label>
+                    <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
                         <tag:select initSelectedKey="${customerAccountOpenInfoEntity.professionType}"
                                     nameKey="AO_OCCUPATION_TYPE"
@@ -1422,87 +1080,90 @@
                                     disabled="disabled"
                         ></tag:select>
                     </span>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">公司名称</label>
-                <div class="col-xs-9">
-                   <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="companyName" name="companyName" type="text" class="form-control aaa"
-                               value="${customerAccountOpenInfoEntity.companyName}" readonly/>
-                    </span>
-                </div>
-            </div>
 
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-3 control-label no-padding-right">职位级别</label>
-                <div class="col-xs-9">
+
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">职位级别</label>
+                    <div class="col-xs-9">
                    <span class="col-sm-12 block input-icon input-icon-right">
                     <tag:select nameKey="AO_JOB_POSITION" id="jobPosition"
                                 initSelectedKey="${customerAccountOpenInfoEntity.jobPosition}"
                                 clazz="form-control" isAddDefaltOption="true"
                                 disabled="false"/>
                     </span>
+                    </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">公司电话</label>
+                    <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input id="companyPhoneNumber" name="companyPhoneNumber" type="text" class="form-control"
+                               value="${customerAccountOpenInfoEntity.companyPhoneNumber}" readonly/>
+                    </span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-12 col-md-12">
-                <label class="col-sm-1 control-label no-padding-right">公司地址</label>
-                <div class="col-xs-11">
-                   <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="companyAddress" name="companyAddress" type="text" class="form-control"
-                               value="${customerAccountOpenInfoEntity.companyAddress}" readonly/>
-                    </span>
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-12">
+                    <label class="col-sm-1 control-label no-padding-right">公司地址</label>
+                    <div class="col-xs-11">
+                        <span class="col-sm-12 block input-icon input-icon-right">
+                            <input id="companyAddress" name="companyAddress" type="text" class="form-control"
+                                   value="${customerAccountOpenInfoEntity.companyAddress}" readonly/>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div id="div4" v-cloak>
-    <div v-show="!showList" class="panel panel-default">
-        <div class="panel-heading"><b style="color: #368763">投资概况</b></div>
-        </br>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">年收入</label>
-                <div class="col-xs-9">
+    <%--投资概况-Start--%>
+    <div id="div4" v-cloak>
+        <div v-show="!showList" class="panel panel-default">
+            <div class="panel-heading"><b style="color: #368763">投资概况</b></div>
+            </br>
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">年收入</label>
+                    <div class="col-xs-9">
                    <span class="col-sm-12 block input-icon input-icon-right">
                        <tag:select nameKey="AO_INCOME" id="income" isAddDefaltOption="true"
                                    initSelectedKey="${customerAccountOpenInfoEntity.annualIncome}"
                                    clazz="form-control" disabled="false"/>
                     </span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">资金来源</label>
-                <div class="col-xs-9">
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">资金来源</label>
+                    <div class="col-xs-9">
                     <span class="col-xs-12 block input-icon input-icon-right" style="width:1000px">
                         <tag:checkbox name="capitalSource" nameKey="AO_CAPITAL_SOURCE"
                                       initCheckKey="${customerAccountOpenInfoEntity.capitalSource}"
                                       disabled="disabled"></tag:checkbox>
                     </span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">财产种类</label>
-                <div class="col-xs-9">
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">财产种类</label>
+                    <div class="col-xs-9">
                     <span class="col-xs-12 block input-icon input-icon-right" style="width:1000px">
                         <c:if test="${openAccountPropertyList!=null}">
                             <c:forEach items="${openAccountPropertyList}" var="openAccountPropertyType">
-                                <span>
-                                    <input style="display: inline;" name="propertyType" type="checkbox"
-                                           value="${openAccountPropertyType.propertyType}"
-                                           disabled="disabled"
-                                           checked="true"/> ${fns:getCodeName("AO_PROPERTY_TYPE",openAccountPropertyType.propertyType)}
-                                    <span style="width:10px;">&nbsp;&nbsp;&nbsp;</span>
+                                <div style="padding-bottom: 10px">
+                                    <span class="col-sm-2">
+                                        <input style="display: inline;" name="propertyType" type="checkbox"
+                                               value="${openAccountPropertyType.propertyType}"
+                                               disabled="disabled"
+                                               checked="true"/> ${fns:getCodeName("AO_PROPERTY_TYPE",openAccountPropertyType.propertyType)}
+                                    </span>
                                     <tag:select nameKey="AO_PROPERTY_TYPE_${openAccountPropertyType.propertyType}"
                                                 clazz="form-control" style="width:150px;display:inline"
                                                 isAddDefaltOption="true"
@@ -1510,18 +1171,18 @@
                                                 disabled="disabled"></tag:select>
                                     <span style="width:10px;">&nbsp;&nbsp;&nbsp;</span>
                                     港币
-                                </span>
+                                </div>
                             </c:forEach>
                         </c:if>
                     </span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">投资目标</label>
-                <div class="col-xs-9">
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">投资目标</label>
+                    <div class="col-xs-9">
                     <span class="col-xs-12 block input-icon input-icon-right" style="width:1000px">
                          <tag:checkbox name="investTarget" nameKey="AO_INVEST_TARGET"
                                        initCheckKey="${customerAccountOpenInfoEntity.investTarget}"
@@ -1531,49 +1192,177 @@
                                    name="investTargetOther" type="text"
                                    value="${customerAccountOpenInfoEntity.investTargetOther}" readonly/>
                     </span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-2 control-label no-padding-right">投资经验</label>
-                <div class="col-xs-9">
-                    <span class="col-xs-12 block input-icon input-icon-right" style="width:700px">
-                        <span>股票</span>
-                        <tag:select nameKey="AO_STOCKS_INVESTMENT_EXPERIENCE_TYPE"
-                                    id="stocksInvestmentExperienceType" isAddDefaltOption="true"
-                                    initSelectedKey="${customerAccountOpenInfoEntity.stocksInvestmentExperienceType}"
-                                    clazz="form-control " style="width:120px;display:inline"
-                                    disabled="true"/>
-                        <span style="margin-left:20px;">认股证/股票期权</span>
-                        <tag:select nameKey="AO_WARRANTS_INVESTMENT_EXPERIENCE_TYPE"
-                                    id="warrantsInvestmentExperienceType" isAddDefaltOption="true"
-                                    initSelectedKey="${customerAccountOpenInfoEntity.warrantsInvestmentExperienceType}"
-                                    clazz="form-control" style="width:120px;display:inline"
-                                    disabled="true"/>
-
-                        <span style="margin-left:20px;">期货/期权</span>
-                        <tag:select nameKey="AO_FUTURES_INVESTMENT_EXPERIENCE_TYPE"
-                                    id="futuresInvestmentExperienceType" isAddDefaltOption="true"
-                                    initSelectedKey="${customerAccountOpenInfoEntity.futuresInvestmentExperienceType}"
-                                    clazz="form-control" style="width:120px;display:inline"
-                                    disabled="true"/>
-                    </span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div id="div5" v-cloak>
-    <div v-show="!showList" class="panel panel-default">
-        <div class="panel-heading"><b style="color: #368763">衍生产品认知评估</b></div>
-        </br>
-
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-12 control-label no-padding-right">您是否具有衍生品交易经验</label>
+    <%--投资概况-End--%>
+    <%-- 投资经验 Start --%>
+    <div id="datas2" v-cloak>
+        <div v-show="!showList" class="panel panel-default">
+            <div class="panel-heading"><b style="color: #368763">投资经验</b></div>
+            </br>
+            <div class="row">
+                <div class="form-group col-xs-6 col-xs-6">
+                    <table class="form-group col-xs-12 col-xs-12">
+                        <tr align="left" style="font-weight: bold;">
+                            <td class="col-sm-4" style="padding:8px 20px; font-weight: bold;">种类</td>
+                            <td class="col-sm-2" style="padding:8px 20px">投资年限</td>
+                            <td class="col-sm-2" style="padding:8px 20px">交易频率次/年</td>
+                        </tr>
+                        <!-- 股票 -->
+                        <tr align="left">
+                            <td class="col-sm-4" style="padding:8px 20px; font-weight: bold;">股票</td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_STOCKS_INVESTMENT_EXPERIENCE_TYPE"
+                                            id="stocksInvestmentExperienceType"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.stocksInvestmentExperienceType}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_TRADE_STOCK_FREQUENCY"
+                                            id="stocksInvestmentExperienceType"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.tradeStockFrequency}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                        </tr>
+                        <!-- 认股证 -->
+                        <tr align="left">
+                            <td class="col-sm-4" style="padding:8px 20px; font-weight: bold;">认股证</td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_WARRANTS_INVESTMENT_EXPERIENCE_TYPE"
+                                            id="warrantsInvestmentExperienceType"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.warrantsInvestmentExperienceType}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_TRADE_WARRANTS_FREQUENCY"
+                                            id="tradeWarrantsFrequency"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.tradeWarrantsFrequency}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                        </tr>
+                        <!-- 期权 -->
+                        <tr align="left">
+                            <td class="col-sm-4" style="padding:8px 20px; font-weight: bold;">期权</td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_OPTIONS_EXPERIENCE"
+                                            id="optionsExperience"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.optionsExperience}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_TRADE_OPTIONS_FREQUENCY"
+                                            id="tradeOptionsFrequency"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.tradeOptionsFrequency}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                        </tr>
+                        <!-- 期货 -->
+                        <tr align="left">
+                            <td class="col-sm-4" style="padding:8px 20px; font-weight: bold;">期货</td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_FUTURES_INVESTMENT_EXPERIENCE_TYPE"
+                                            id="futuresInvestmentExperienceType"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.futuresInvestmentExperienceType}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_TRADE_FUTURES_FREQUENCY"
+                                            id="tradeFuturesFrequency"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.tradeFuturesFrequency}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                        </tr>
+                        <!-- 基金 -->
+                        <tr align="left">
+                            <td class="col-sm-4" style="padding:8px 20px; font-weight: bold;">单位信托基金/互惠基金</td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_UNIT_TRUSTS_EXPERIENCE"
+                                            id="unitTrustsExperience"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.unitTrustsExperience}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_TRADE_UNIT_TRUSTS_FREQUENCY"
+                                            id="tradeUnitTrustsFrequency"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.tradeUnitTrustsFrequency}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                        </tr>
+                        <!-- 其他 -->
+                        <tr align="left">
+                            <td class="col-sm-4" style="padding:8px 20px; font-weight: bold;">
+                                其他:${customerAccountOpenInfoEntity.otherProductsName}</td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_OTHER_PRODUCTS_EXPERIENCE"
+                                            id="otherProductsExperience"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.otherProductsExperience}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                            <td class="col-sm-2" style="padding:8px 20px">
+                                <tag:select nameKey="AO_TRADE_OTHER_PRODUCTS_FREQUENCY"
+                                            id="tradeOtherProductsFrequency"
+                                            isAddDefaltOption="true"
+                                            initSelectedKey="${customerAccountOpenInfoEntity.tradeOtherProductsFrequency}"
+                                            clazz="form-control "
+                                            style="width:120px;display:inline"
+                                            disabled="true"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <div class="form-group col-sm-6 col-md-6">
+
+        </div>
+    </div>
+    <%--投资经验 End--%>
+
+    <%--衍生产品认知评估-Start--%>
+    <div id="div5" v-cloak>
+        <div v-show="!showList" class="panel panel-default">
+            <div class="panel-heading"><b style="color: #368763">衍生产品认知评估</b></div>
+            </br>
+
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-12 control-label no-padding-right">您是否具有衍生品交易经验</label>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
                 <span class="col-sm-12 block input-icon input-icon-right">
                     <input type="radio" name="isKnowDerivativeProducts" disabled="disabled"
                            value="1" <c:if
@@ -1582,14 +1371,14 @@
                            value="0" <c:if
                             test="${customerAccountOpenInfoEntity.isKnowDerivativeProducts==0}"> checked="checked"</c:if> />否
                 </span>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-12 control-label no-padding-right">请选择您接收衍生产品相关的培训或课程的方式</label>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-12 control-label no-padding-right">请选择您接收衍生产品相关的培训或课程的方式</label>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
                 <span class="col-sm-12 block input-icon input-icon-right">
                     <c:forEach var="investTargetCodeEntity"
                                items="${fns:getCodeInfoByParentMark('AO_DERIVATIVE_PRODUCTS_STUDY_TYPE')}"
@@ -1613,19 +1402,19 @@
                         />
                     </c:if>
                 </span>
-                <c:if test="${proofImage_601!=null && customerAccountOpenInfoEntity.derivativeProductsStudyType!=null && customerAccountOpenInfoEntity.derivativeProductsStudyType!=''}">
+                    <c:if test="${proofImage_601!=null && customerAccountOpenInfoEntity.derivativeProductsStudyType!=null && customerAccountOpenInfoEntity.derivativeProductsStudyType!=''}">
                     <span class="col-xs-2 block input-icon input-icon-right">
                         <button class="layui-btn layui-btn-mini layui-btn-warm" type="button"
                                 onclick="openPhoto('${proofImage_601.storagePath}${proofImage_601.fileStorageName}.${proofImage_601.extName}');">凭证</button>
                     </span>
-                </c:if>
+                    </c:if>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-12 control-label no-padding-right">您在经纪公司或银行，基金或资产管理公司，监管机构或交易所等金融机构拥有以下工作经验</label>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-12 control-label no-padding-right">您在经纪公司或银行，基金或资产管理公司，监管机构或交易所等金融机构拥有以下工作经验</label>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
                 <span class="col-sm-12 block input-icon input-icon-right">
                     <c:forEach var="investTargetCodeEntity"
                                items="${fns:getCodeInfoByParentMark('AO_FINANCING_INSTITUTION_WORK_EXPERIENCE_TYPE')}"
@@ -1649,20 +1438,20 @@
                                style="width:200px; margin-left:25px; height:34px;"/>
                     </c:if>
                 </span>
-                <c:if test="${proofImage_602!=null&& customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType!=null && customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType!=''}">
+                    <c:if test="${proofImage_602!=null&& customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType!=null && customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType!=''}">
                     <span class="col-xs-2 block input-icon input-icon-right">
                         <button class="layui-btn layui-btn-mini layui-btn-warm" type="button"
                                 onclick="openPhoto('${proofImage_602.storagePath}${proofImage_602.fileStorageName}.${proofImage_602.extName}');">凭证</button>
                     </span>
-                </c:if>
+                    </c:if>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-12 control-label no-padding-right">您在过去三年是否曾进行过至少五次任何衍生产品的交易（不论是否在交易所买卖）</label>
-            </div>
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-12 control-label no-padding-right">您在过去三年是否曾进行过至少五次任何衍生产品的交易（不论是否在交易所买卖）</label>
+                </div>
 
-            <div class="form-group col-sm-6 col-md-6">
+                <div class="form-group col-sm-6 col-md-6">
                 <span class="col-sm-12 block input-icon input-icon-right">
                     <input type="radio" name="isTradedDerivativeProducts"
                            value="1" disabled="disabled"
@@ -1673,25 +1462,26 @@
                            <c:if test="${customerAccountOpenInfoEntity.isTradedDerivativeProducts == 0}">checked="true"</c:if>
                     />否
                 </span>
-                <c:if test="${proofImage_603!=null && customerAccountOpenInfoEntity.isTradedDerivativeProducts == 1}">
+                    <c:if test="${proofImage_603!=null && customerAccountOpenInfoEntity.isTradedDerivativeProducts == 1}">
                     <span class="col-xs-2 block input-icon input-icon-right">
                         <button class="layui-btn layui-btn-mini layui-btn-warm" type="button"
                                 onclick="openPhoto('${proofImage_603.storagePath}${proofImage_603.fileStorageName}.${proofImage_603.extName}');">凭证</button>
                     </span>
-                </c:if>
+                    </c:if>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="div6" v-cloak>
-    <div v-show="!showList" class="panel panel-default">
-        <div class="panel-heading"><b style="color: #368763">隐私和税务</b></div>
-        </br>
-        <div class="row">
-            <div class="form-group col-sm-6 col-md-6">
-                <label class="col-sm-12 control-label no-padding-right">您是否确认个人资料（私隐）条例通知并同意xx证券公司及其控股集团使用及向其他人士提供本人的个人资料作直接促销用途。</label>
-            </div>
-            <div class="form-group col-sm-6 col-md-6">
+    <%--隐私和税务-Start--%>
+    <div id="div6" v-cloak>
+        <div v-show="!showList" class="panel panel-default">
+            <div class="panel-heading"><b style="color: #368763">隐私和税务</b></div>
+            </br>
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-12 control-label no-padding-right">您是否确认个人资料（私隐）条例通知并同意xx证券公司及其控股集团使用及向其他人士提供本人的个人资料作直接促销用途。</label>
+                </div>
+                <div class="form-group col-sm-6 col-md-6">
                 <span class="col-xs-12 block input-icon input-icon-right">
                     <input type="radio" name="isAllowProvidePrivacy"
                            value="1" disabled="disabled"
@@ -1702,46 +1492,46 @@
                            value="0"
                     />否
                 </span>
-            </div>
-        </div>
-        <div>
-            <form id="taxInfoForm">
-                <div class="row">
-                    <div class="form-group col-xs-12 col-xs-12">
-                        <table class="form-group col-xs-12 col-xs-12">
-                            <tr align="center">
-                                <td class="col-sm-2">司法管辖区</td>
-                                <td class="col-sm-2">税务编号</td>
-                                <td class="col-sm-2">如没有提供税务编号，请选择理由</td>
-                                <td class="col-sm-2"> 如选择理由B，请解释原因</td>
-                            </tr>
-                        </table>
-                    </div>
                 </div>
-                <c:if test="${taxInformationList!=null}">
-                    <c:forEach begin="0" end="4" step="1" var="i">
-                        <c:if test="${taxInformationList[i]!=null}">
-                            <div class="row">
-                                <div class="form-group col-sm-2 col-md-3">
-                                    <div class="col-xs-12">
+            </div>
+            <div>
+                <form id="taxInfoForm">
+                    <div class="row">
+                        <div class="form-group col-xs-12 col-xs-12">
+                            <table class="form-group col-xs-12 col-xs-12">
+                                <tr align="center">
+                                    <td class="col-sm-2">司法管辖区</td>
+                                    <td class="col-sm-2">税务编号</td>
+                                    <td class="col-sm-2">如没有提供税务编号，请选择理由</td>
+                                    <td class="col-sm-2"> 如选择理由B，请解释原因</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <c:if test="${taxInformationList!=null}">
+                        <c:forEach begin="0" end="4" step="1" var="i">
+                            <c:if test="${taxInformationList[i]!=null}">
+                                <div class="row">
+                                    <div class="form-group col-sm-2 col-md-3">
+                                        <div class="col-xs-12">
                                     <span class="col-xs-12 block input-icon input-icon-right">
                                         <input type="text" name="taxCountry[]"
                                                value="${taxInformationList[i].taxCountry}" readonly
                                                class="form-control">
                                     </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group col-sm-2 col-md-3">
-                                    <div class="col-xs-12">
+                                    <div class="form-group col-sm-2 col-md-3">
+                                        <div class="col-xs-12">
                                     <span class="col-xs-12 block input-icon input-icon-right">
                                         <input type="text" name="taxNumber[]"
                                                value="${taxInformationList[i].taxNumber}" readonly
                                                class="form-control">
                                     </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group col-sm-2 col-md-3">
-                                    <div class="col-xs-12">
+                                    <div class="form-group col-sm-2 col-md-3">
+                                        <div class="col-xs-12">
                                     <span class="col-xs-12 block input-icon input-icon-right">
                                         <select name="reasonType[]" class="form-control" disabled="disabled">
                                             <option value="">--- 请下拉选择 ---</option>
@@ -1753,37 +1543,37 @@
                                                     <c:if test="${taxInformationList[i].reasonType=='C'}">selected</c:if> >理由 C – 帐户持有人毋须提供税务编号。居留司法管辖区的主管机关不需要帐户持有人披露税务编号。</option>
                                         </select>
                                     </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group col-sm-2 col-md-3">
-                                    <div class="col-xs-12">
+                                    <div class="form-group col-sm-2 col-md-3">
+                                        <div class="col-xs-12">
                                     <span class="col-xs-12 block input-icon input-icon-right">
                                         <input type="text" name="reasonDesc[]"
                                                value="${taxInformationList[i].reasonDesc}" readonly
                                                class="form-control">
                                     </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </c:if>
-                    </c:forEach>
-                </c:if>
-            </form>
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
-<div id="div7" v-cloak>
-    <div v-show="!showList" class="panel panel-default">
-        <div class="panel-heading"><b style="color: #368763">身份资料披露</b></div>
-        </br>
-        <c:forEach items="${openAccountOtherDisclosureList}" var="openAccountOther" varStatus="i">
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-12 control-label no-padding-right">${fns:getCodeName("AO_DISCLOSURE_CODE",openAccountOther.disclosureCode)}</label>
-                </div>
-                <div class="form-group col-sm-6 col-md-6">
+    <div id="div7" v-cloak>
+        <div v-show="!showList" class="panel panel-default">
+            <div class="panel-heading"><b style="color: #368763">身份资料披露</b></div>
+            </br>
+            <c:forEach items="${openAccountOtherDisclosureList}" var="openAccountOther" varStatus="i">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-12 control-label no-padding-right">${fns:getCodeName("AO_DISCLOSURE_CODE",openAccountOther.disclosureCode)}</label>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6">
                     <span class="col-sm-12 block input-icon input-icon-right">
                         <c:if test="${openAccountOther.disclosureIsTrue== 1}">
                             <input type="radio"
@@ -1806,8 +1596,8 @@
                                    disabled="disabled"/>否
                         </c:if>
                     </span>
-                </div>
-                <div class="form-group col-sm-12 col-md-12">
+                    </div>
+                    <div class="form-group col-sm-12 col-md-12">
                     <span class="col-sm-12 block input-icon input-icon-right">
                          <%-- 受益人，亲属关系，注册人否的值 --%>
                          <c:if test="${(openAccountOther.disclosureCode == 1 || openAccountOther.disclosureCode == 2 ||openAccountOther.disclosureCode == 3)}">
@@ -1820,29 +1610,29 @@
                              </c:if>
                          </c:if>
                     </span>
-                </div>
-            </div>
-        </c:forEach>
-    </div>
-</div>
-
-<c:if test="${proofFileList!=null or addFileList!=null}">
-    <div id="updateFileProof" v-cloak>
-        <div v-show="!showList" class="panel panel-default">
-            <div class="panel-heading"><b style="color: #368763">资料修改凭证</b></div>
-            </br>
-            <c:if test="${(proofFileList == null || proofFileList.size()== 0) && (addFileList == null || addFileList.size() == 0)}">
-                <div class="row">
-                    <div class="form-group col-sm-12 col-md-12" style="height: 80px">
-                        <label class="col-sm-2 control-label no-padding-right">暂无修改</label>
                     </div>
                 </div>
-            </c:if>
-            <c:if test="${proofFileList!=null}">
-                <div class="row">
-                    <div class="form-group col-sm-12 col-md-12" style="height: 80px">
-                        <label class="col-sm-2 control-label no-padding-right">资料修改凭证</label>
-                        <div class="col-sm-12">
+            </c:forEach>
+        </div>
+    </div>
+
+    <c:if test="${proofFileList!=null or addFileList!=null}">
+        <div id="updateFileProof" v-cloak>
+            <div v-show="!showList" class="panel panel-default">
+                <div class="panel-heading"><b style="color: #368763">资料修改凭证</b></div>
+                </br>
+                <c:if test="${(proofFileList == null || proofFileList.size()== 0) && (addFileList == null || addFileList.size() == 0)}">
+                    <div class="row">
+                        <div class="form-group col-sm-12 col-md-12" style="height: 80px">
+                            <label class="col-sm-2 control-label no-padding-right">暂无修改</label>
+                        </div>
+                    </div>
+                </c:if>
+                <c:if test="${proofFileList!=null}">
+                    <div class="row">
+                        <div class="form-group col-sm-12 col-md-12" style="height: 80px">
+                            <label class="col-sm-2 control-label no-padding-right">资料修改凭证</label>
+                            <div class="col-sm-12">
                             <span class="col-sm-12 block">
 
                                 <c:forEach items="${proofFileList}" var="proofFile" varStatus="i">
@@ -1851,36 +1641,36 @@
                                        href='${webRoot}/common/downloadFile?fullFilePath=${proofFile.filePath}${proofFile.fileStorageName}.${proofFile.fileExtName}'>【资料修改凭证(${i.index+1})】</a>
                                 </c:forEach>
                             </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </c:if>
-            <c:forEach items="${addFileList}" var="addFile" varStatus="i">
-                <div class="row">
-                    <div class="form-group col-sm-12 col-md-12">
-                        <label class="col-sm-2 control-label no-padding-right">资料修改意见(${i.index+1})</label>
-                        <div class="col-xs-9">
+                </c:if>
+                <c:forEach items="${addFileList}" var="addFile" varStatus="i">
+                    <div class="row">
+                        <div class="form-group col-sm-12 col-md-12">
+                            <label class="col-sm-2 control-label no-padding-right">资料修改意见(${i.index+1})</label>
+                            <div class="col-xs-9">
                             <span class="col-sm-10 block">
                                 <input type="text" class="form-control" value="${addFile.remark}" readonly>
                             </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </c:forEach>
+                </c:forEach>
+            </div>
         </div>
-    </div>
-</c:if>
+    </c:if>
 
-<input id="amlFlag" style="display: none" type="text" value="${amlFileList[0]==null}">
-<div id="div8" v-cloak>
-    <div v-show="!showList" class="panel panel-default">
-        <div class="panel-heading"><b style="color: #368763">补充资料</b></div>
-        </br>
-        <input hidden id="supFlag" value="0">
-        <div class="row">
-            <div class="form-group col-sm-12 col-md-12">
-                <label class="col-sm-2 control-label no-padding-right">视频/音频/图片</label>
-                <div class="col-sm-12">
+    <input id="amlFlag" style="display: none" type="text" value="${amlFileList[0]==null}">
+    <div id="div8" v-cloak>
+        <div v-show="!showList" class="panel panel-default">
+            <div class="panel-heading"><b style="color: #368763">补充资料</b></div>
+            </br>
+            <input hidden id="supFlag" value="0">
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-12">
+                    <label class="col-sm-2 control-label no-padding-right">视频/音频/图片</label>
+                    <div class="col-sm-12">
                         <span class="col-sm-12 block input-icon input-icon-right">
                             <c:if test="${openAccountAdditionalFileList!=null}">
                                 <c:forEach items="${openAccountAdditionalFileList}" var="additionFile">
@@ -1890,35 +1680,35 @@
                                 </c:forEach>
                             </c:if>
                         </span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-sm-12 col-md-12">
-                <label class="col-sm-2 control-label no-padding-right">证明原因</label>
-                <div class="col-xs-9">
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-12">
+                    <label class="col-sm-2 control-label no-padding-right">证明原因</label>
+                    <div class="col-xs-9">
                         <span class="col-sm-12 block input-icon input-icon-right">
                             <input name="remark" type="text" class="form-control" readonly
                                     <c:if test="${openAccountAdditionalFileList[0]!=null}">
                                         value="${openAccountAdditionalFileList[0].remark}"
                                     </c:if> />
                         </span>
-                    <%--<div>--%>
-                    <%--<button id="supButton${i}"--%>
-                    <%--onclick="addSupInformation('${customerAccountOpenInfoEntity.applicationId}','${openAccountAdditionalFileList[i][0]==null?null:openAccountAdditionalFileList[i][0].additionalId}');"--%>
-                    <%--class="layui-btn layui-btn-normal layui-btn-small" style="display: none;"--%>
-                    <%--type="button">编辑--%>
-                    <%--</button>--%>
-                    <%--</div>--%>
+                        <%--<div>--%>
+                        <%--<button id="supButton${i}"--%>
+                        <%--onclick="addSupInformation('${customerAccountOpenInfoEntity.applicationId}','${openAccountAdditionalFileList[i][0]==null?null:openAccountAdditionalFileList[i][0].additionalId}');"--%>
+                        <%--class="layui-btn layui-btn-normal layui-btn-small" style="display: none;"--%>
+                        <%--type="button">编辑--%>
+                        <%--</button>--%>
+                        <%--</div>--%>
+                    </div>
                 </div>
             </div>
-        </div>
-        <c:if test="${flag==1}">
-            <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-4 control-label no-padding-right">
-                        该申请人有无AML可疑信息？</label>
-                    <span class="col-sm-4 control-label no-padding-right">
+            <c:if test="${flag==1}">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-4 control-label no-padding-right">
+                            该申请人有无AML可疑信息？</label>
+                        <span class="col-sm-4 control-label no-padding-right">
 
                         <input type="radio" value="${investTargetCodeEntity.value}" disabled="disabled"
                                <c:if test="${customerAccountOpenInfoEntity.isAmlSuspicious == 1}">checked="true"</c:if>
@@ -1931,11 +1721,11 @@
 
 
                 </span>
-                </div>
-                <c:if test="${isCustomer==0}">
-                    <div class="form-group col-sm-6 col-md-6" align="left">
-                        <label class="col-sm-4 control-label no-padding-right"> AML检查结果文件</label>
-                        <span class="col-sm-8 block">
+                    </div>
+                    <c:if test="${isCustomer==0}">
+                        <div class="form-group col-sm-6 col-md-6" align="left">
+                            <label class="col-sm-4 control-label no-padding-right"> AML检查结果文件</label>
+                            <span class="col-sm-8 block">
                             <c:if test="${amlFileList!=null}">
                                 <c:forEach begin="0" end="2" step="1" var="i">
                                     <c:if test="${amlFileList[i]!=null}">
@@ -1945,10 +1735,10 @@
                                 </c:forEach>
                             </c:if>
                         </span>
-                    </div>
-                </c:if>
-            </div>
-            <div class="row">
+                        </div>
+                    </c:if>
+                </div>
+                <div class="row">
                     <div class="form-group col-sm-6 col-md-6">
                         <label class="col-sm-4 control-label no-padding-right">
                             客户风险等级</label>
@@ -1962,32 +1752,32 @@
                                            <c:if test="${customerAccountOpenInfoEntity.acceptRisk == 3}">checked="checked"</c:if> />低风险
                                 </span>
                     </div>
-            </div>
-        </c:if>
+                </div>
+            </c:if>
+        </div>
     </div>
-</div>
 
-<c:if test="${flag==2}">
-    <div v-cloak>
-        <c:if test="${accountOpenApplicationEntity.applicationStatus==1 || accountOpenApplicationEntity.applicationStatus==2 || accountOpenApplicationEntity.applicationStatus==3}">
-            <div v-show="!showList" class="panel panel-default">
-                <div class="panel-heading"><b style="color: #368763">审批操作</b></div>
-                </br>
-                <div class="row">
-                    <div class="form-group col-sm-6 col-md-6">
-                        <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                            该申请人有无AML可疑信息？</label>
-                        <span class="col-sm-4 control-label no-padding-right">
+    <c:if test="${flag==2}">
+        <div v-cloak>
+            <c:if test="${accountOpenApplicationEntity.applicationStatus==1 || accountOpenApplicationEntity.applicationStatus==2 || accountOpenApplicationEntity.applicationStatus==3}">
+                <div v-show="!showList" class="panel panel-default">
+                    <div class="panel-heading"><b style="color: #368763">审批操作</b></div>
+                    </br>
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-md-6">
+                            <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                                该申请人有无AML可疑信息？</label>
+                            <span class="col-sm-4 control-label no-padding-right">
                             <input type="radio" name="isAmlSuspicious" value="1" onclick="editAmlInfo();"
                                    <c:if test="${customerAccountOpenInfoEntity.isAmlSuspicious == 1}">checked="checked"</c:if>
                             />有可疑
                                 <input type="radio" name="isAmlSuspicious" value="0" onclick="editAmlInfo();"
                                        <c:if test="${customerAccountOpenInfoEntity.isAmlSuspicious == 0}">checked="checked"</c:if> />无可疑
                         </span>
-                    </div>
-                    <div id="amlDiv" class="form-group col-sm-6 col-md-6">
-                        <label class="col-sm-4 control-label no-padding-right"> AML检查结果文件</label>
-                        <span class="col-xs-8 block control-label no-padding-right">
+                        </div>
+                        <div id="amlDiv" class="form-group col-sm-6 col-md-6">
+                            <label class="col-sm-4 control-label no-padding-right"> AML检查结果文件</label>
+                            <span class="col-xs-8 block control-label no-padding-right">
                                     <c:if test="${amlFileList!=null}">
                                         <c:forEach begin="0" end="2" step="1" var="i">
                                             <c:if test="${amlFileList[i]!=null}">
@@ -1999,7 +1789,8 @@
                                                         class="layui-btn layui-btn-primary layui-btn-mini"
                                                         onclick="delAmlInfo(${amlFileList[i].id});">
                                                     <i class="layui-icon">&#xe640;</i>
-                                                </button></c:if>
+                                                </button>
+                                                </c:if>
                                                 </div>
                                             </c:if>
                                             <c:if test="${amlFileList[i]==null && accountOpenApplicationEntity.applicationStatus!=3}">
@@ -2009,70 +1800,71 @@
                                         </c:forEach>
                                     </c:if>
                                 </span>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-6 col-md-6">
-                        <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                            客户风险等级</label>
-                                <span class="col-xs-8 block input-icon input-icon-right">
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-md-6">
+                            <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                                客户风险等级</label>
+                            <span class="col-xs-8 block input-icon input-icon-right">
                                     <input type="radio" name="acceptRisk" value="1" onclick="editAmlRisk();"
                                            <c:if test="${customerAccountOpenInfoEntity.acceptRisk == 1}">checked="checked"</c:if>/>高风险
                                     <input type="radio" name="acceptRisk" value="2" onclick="editAmlRisk();"
-                                       <c:if test="${customerAccountOpenInfoEntity.acceptRisk == 2}">checked="checked"</c:if> />中风险
+                                           <c:if test="${customerAccountOpenInfoEntity.acceptRisk == 2}">checked="checked"</c:if> />中风险
                                     <input type="radio" name="acceptRisk" value="3" onclick="editAmlRisk();"
                                            <c:if test="${customerAccountOpenInfoEntity.acceptRisk == 3 || customerAccountOpenInfoEntity.acceptRisk ==null}">checked="checked"</c:if> />低风险
                                 </span>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-6 col-md-6">
-                        <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                            证券交易账号</label>
-                        <span class="col-xs-8 block input-icon input-icon-right">
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-md-6">
+                            <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                                证券交易账号</label>
+                            <span class="col-xs-8 block input-icon input-icon-right">
                             <input id="stockTradeAccount" name="stockTradeAccount" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.stockTradeAccount}"/>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-6 col-md-6">
-                        <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                            期货交易账号</label>
-                        <span class="col-xs-8 block input-icon input-icon-right">
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-md-6">
+                            <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                                期货交易账号</label>
+                            <span class="col-xs-8 block input-icon input-icon-right">
                             <input id="futuresTradeAccount" name="futuresTradeAccount" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.futuresTradeAccount}"/>
                         </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </c:if>
-    </div>
-</c:if>
+            </c:if>
+        </div>
+    </c:if>
 
-<c:if test="${accountOpenApplicationEntity.applicationStatus==6 or accountOpenApplicationEntity.applicationStatus==4}">
-    <div id="div9" v-cloak>
-        <div v-show="!showList" class="panel panel-default">
-            <div class="panel-heading"><b style="color: #368763">开户资料下载</b></div>
-            </br>
-            <div class="row">
-                <div class="form-group col-sm-2 col-md-2">
-
-                </div>
-                <c:forEach items="${reportFiles}" var="files">
+    <c:if test="${accountOpenApplicationEntity.applicationStatus==6 or accountOpenApplicationEntity.applicationStatus==4}">
+        <div id="div9" v-cloak>
+            <div v-show="!showList" class="panel panel-default">
+                <div class="panel-heading"><b style="color: #368763">开户资料下载</b></div>
+                </br>
+                <div class="row">
                     <div class="form-group col-sm-2 col-md-2">
-                        <button onclick="downloadAccountOpenReport('${files.fileUri}')"
-                                class="layui-btn layui-btn-mini layui-btn-normal"
-                                type="button">${files.displayName}</button>
-                    </div>
-                </c:forEach>
-                <div class="form-group col-sm-2 col-md-2">
 
+                    </div>
+                    <c:forEach items="${reportFiles}" var="files">
+                        <div class="form-group col-sm-2 col-md-2">
+                            <button onclick="downloadAccountOpenReport('${files.fileUri}')"
+                                    class="layui-btn layui-btn-mini layui-btn-normal"
+                                    type="button">${files.displayName}</button>
+                        </div>
+                    </c:forEach>
+                    <div class="form-group col-sm-2 col-md-2">
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</c:if>
+    </c:if>
+</div>
 </body>
 
 <script type="text/javascript">
@@ -2176,9 +1968,9 @@
     /**
      * 自由职业其他说明项
      * */
-    function initFreelanceOther(freelanceOther){
+    function initFreelanceOther(freelanceOther) {
         $("#freelanceCode").append('<input class="form-control " style="width: 500px;display: inline" ' +
-            'id="freelanceOther" name="freelanceOther" type="text" value="'+freelanceOther+'" readonly/>');
+            'id="freelanceOther" name="freelanceOther" type="text" value="' + freelanceOther + '" readonly/>');
     }
 
     function onChangeProfessionCode(professionCode, capitalSource) {
@@ -2188,7 +1980,7 @@
             });
         }
 
-        if(professionCode == "4"){
+        if (professionCode == "4") {
             $("#freelanceDiv").css("display", "inline");
         }
 

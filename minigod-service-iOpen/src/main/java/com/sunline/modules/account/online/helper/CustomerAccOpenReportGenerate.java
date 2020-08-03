@@ -662,19 +662,21 @@ public class CustomerAccOpenReportGenerate {
         reportData.put("investmentHorizon", customerAccountOpenInfoEntity.getInvestmentHorizon());
 
         //从业年限[0、未知  1、1-2年   2、2-5年   3、5-10年   4、>10年]
-        String workingSeniority;
-        if (customerAccountOpenInfoEntity.getWorkingSeniority() == 1){
-            workingSeniority = "1-2年";
-        }else if (customerAccountOpenInfoEntity.getWorkingSeniority() == 1){
-            workingSeniority = "2-5年";
-        }else if (customerAccountOpenInfoEntity.getWorkingSeniority() == 1){
-            workingSeniority = "5-10年";
-        }else if (customerAccountOpenInfoEntity.getWorkingSeniority() == 1){
-            workingSeniority = ">10年";
-        }else {
-            workingSeniority = "";
+        String workingSeniority = "";
+        Integer workingSeniorityInt = customerAccountOpenInfoEntity.getWorkingSeniority();
+        if (workingSeniorityInt != null) {
+            if (workingSeniorityInt == 1) {
+                workingSeniority = "1-2年";
+            } else if (workingSeniorityInt == 2) {
+                workingSeniority = "2-5年";
+            } else if (workingSeniorityInt == 3) {
+                workingSeniority = "5-10年";
+            } else if (workingSeniorityInt == 4) {
+                workingSeniority = ">10年";
+            }
         }
-        reportData.put("workingSeniority",workingSeniority);
+
+        reportData.put("workingSeniority", workingSeniority);
         //ADD 2020-07-30
 
         return reportData;
