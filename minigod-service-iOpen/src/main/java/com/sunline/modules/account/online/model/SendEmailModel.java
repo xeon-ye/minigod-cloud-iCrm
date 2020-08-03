@@ -9,7 +9,7 @@ public class SendEmailModel implements Serializable {
     private String sendFrom;
     private String subject;
     private String content;
-    private List<String> paths;
+    private List<PathVO> paths;
 
     public String getSendTo() {
         return sendTo;
@@ -43,11 +43,17 @@ public class SendEmailModel implements Serializable {
         this.content = content;
     }
 
-    public List<String> getPaths() {
+    public List<PathVO> getPaths() {
         return paths;
     }
 
-    public void setPaths(List<String> paths) {
+    public void setPaths(List<PathVO> paths) {
         this.paths = paths;
+    }
+
+    public static class PathVO {
+        public String fileName;
+        public String suffix;
+        public String path;
     }
 }

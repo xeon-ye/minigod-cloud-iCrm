@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
@@ -140,13 +141,18 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
                         }
                     }*/
                     //new
-                    List<String> attachmentUris = new ArrayList<>();
+                    List<SendEmailModel.PathVO> attachmentUris = new ArrayList<>();
                     if (!StringUtils.isBlank(messageSendInfo.getAttachmentUris())) {
                         String rulPrefix = ConfigUtils.get("cubp.extranet.file.url");
                         List<String> temp = new ArrayList<>();
                         temp = JSON.parseArray(messageSendInfo.getAttachmentUris(), String.class);
                         for (String url : temp) {
-                            attachmentUris.add(rulPrefix + url);
+                            SendEmailModel.PathVO pathVO = new SendEmailModel.PathVO();
+                            File attachment = new File(url);
+                            pathVO.fileName = attachment.getName().substring(0,attachment.getName().lastIndexOf("."));
+                            pathVO.path = rulPrefix + url;
+                            pathVO.suffix = attachment.getName().substring(attachment.getName().lastIndexOf(".")+1);
+                            attachmentUris.add(pathVO);
                         }
                     }
 

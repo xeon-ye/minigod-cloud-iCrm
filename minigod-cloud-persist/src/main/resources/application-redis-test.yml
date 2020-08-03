@@ -3,7 +3,10 @@ spring:
     database: 3
 #    hostName: 127.0.0.1
     hostName: 10.1.2.82
-#    port: 6379
+
+    #hostName: 47.107.237.106
+    #port: 6379
+
     #password:       # 密码（默认为空）
     #cluster.max-redirects: 6
     timeout: 20000
