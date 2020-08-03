@@ -30,6 +30,4 @@ public class MySpringBootApplication extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(MySpringBootApplication.class);
     }
-
-
 }

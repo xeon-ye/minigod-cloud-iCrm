@@ -349,7 +349,7 @@ public class CustomerAccountOpenHelper {
 //            }
 //        }
 
-        if (1 == openAccountInfo.getBankType()) {
+        if (0 == openAccountInfo.getBankType()) {
             if (null == openAccountInfo.getBankCurrency()) {
                 logger.error("【开户预约接口数据完整性校验】：请填写银行币种");
                 responseVO.setCode(-1);
