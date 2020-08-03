@@ -903,6 +903,10 @@
                                             initSelectedKey="${customerAccountOpenInfoEntity.bankId}"
                                             clazz="form-control"
                                             disabled="disabled"></tag:select>
+                                <c:if test="${customerAccountOpenInfoEntity.bankId == 'OTHERS'}">
+                                    : <input id="otherBankName" name="otherBankName" type="text" class="form-control"
+                                    value="${customerAccountOpenInfoEntity.otherBankName}"/>
+                                </c:if>
                             </span>
                         </div>
                     </div>
@@ -1071,6 +1075,15 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">营业范围</label>
+                    <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input id="industryRange" name="companyName" type="text" class="form-control aaa"
+                               value="${customerAccountOpenInfoEntity.industryRange}" readonly/>
+                    </span>
+                    </div>
+                </div>
+                <%--<div class="form-group col-sm-6 col-md-6">
                     <label class="col-sm-2 control-label no-padding-right">所属行业</label>
                     <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
@@ -1081,7 +1094,7 @@
                         ></tag:select>
                     </span>
                     </div>
-                </div>
+                </div>--%>
 
 
             </div>
@@ -1184,9 +1197,11 @@
                     <label class="col-sm-2 control-label no-padding-right">投资目标</label>
                     <div class="col-xs-9">
                     <span class="col-xs-12 block input-icon input-icon-right" style="width:1000px">
-                         <tag:checkbox name="investTarget" nameKey="AO_INVEST_TARGET"
-                                       initCheckKey="${customerAccountOpenInfoEntity.investTarget}"
-                                       disabled="disabled" style="display: inline"></tag:checkbox>
+                         <span class="layui-inline">
+                             <tag:checkbox name="investTarget" nameKey="AO_INVEST_TARGET"
+                                           initCheckKey="${customerAccountOpenInfoEntity.investTarget}"
+                                           disabled="disabled" style="display: inline"></tag:checkbox>
+                         </span>
                             <input class="form-control " style="width: 200px;display: inline"
                                    id="investTargetOther"
                                    name="investTargetOther" type="text"
@@ -1360,48 +1375,56 @@
 
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-12 control-label no-padding-right">您是否具有衍生品交易经验</label>
+                    <label class="col-sm-12 control-label no-padding-right">对结构性及衍生产品之认识</label>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                 <span class="col-sm-12 block input-icon input-icon-right">
                     <input type="radio" name="isKnowDerivativeProducts" disabled="disabled"
                            value="1" <c:if
-                            test="${customerAccountOpenInfoEntity.isKnowDerivativeProducts==1}"> checked="checked"</c:if> />是
+                            test="${customerAccountOpenInfoEntity.isKnowDerivativeProducts==1}"> checked="checked"</c:if> />没有了解
                     <input type="radio" name="isKnowDerivativeProducts" disabled="disabled"
                            value="0" <c:if
-                            test="${customerAccountOpenInfoEntity.isKnowDerivativeProducts==0}"> checked="checked"</c:if> />否
+                            test="${customerAccountOpenInfoEntity.isKnowDerivativeProducts==0}"> checked="checked"</c:if> />有了解
                 </span>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-12 control-label no-padding-right">请选择您接收衍生产品相关的培训或课程的方式</label>
+                    <label class="col-sm-12 control-label no-padding-right">曾接受有关结构性及/或衍生产品的培训或修读有关课程</label>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
-                <span class="col-sm-12 block input-icon input-icon-right">
-                    <c:forEach var="investTargetCodeEntity"
-                               items="${fns:getCodeInfoByParentMark('AO_DERIVATIVE_PRODUCTS_STUDY_TYPE')}"
-                               varStatus="i">
-                        <c:if test="${customerAccountOpenInfoEntity.derivativeProductsStudyType== investTargetCodeEntity.value}">
-                            <input type="radio" name="derivativeProductsStudyType" disabled="disabled"
-                                   value="${investTargetCodeEntity.value}" checked="checked"
-                            />${investTargetCodeEntity.name}
-                        </c:if>
-                        <c:if test="${customerAccountOpenInfoEntity.derivativeProductsStudyType != investTargetCodeEntity.value}">
-                            <input type="radio" name="derivativeProductsStudyType" disabled="disabled"
-                                   value="${investTargetCodeEntity.value}"
-                            />${investTargetCodeEntity.name}
-                        </c:if>
-                    </c:forEach>
-                    <c:if test="${customerAccountOpenInfoEntity.derivativeProductsStudyType == 7}"> <%--其他的值 --%>
-                        <input class="form-control" style="width:200px;display: inline"
-                               id="derivativeProductsStudyTypeOther" name="derivativeProductsStudyTypeOther"
-                               type="text" readonly
-                               value="${customerAccountOpenInfoEntity.derivativeProductsStudyTypeOther}"
-                        />
-                    </c:if>
-                </span>
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input type="radio" name="derivativeProductsStudyType"
+                               value="1" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.derivativeProductsStudyType ==1}">checked="true"</c:if>
+                        />是
+                        <input type="radio" name="derivativeProductsStudyType"
+                               value="0" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.derivativeProductsStudyType == 0}">checked="true"</c:if>
+                        />否
+                        <%--<c:forEach var="investTargetCodeEntity"
+                                   items="${fns:getCodeInfoByParentMark('AO_DERIVATIVE_PRODUCTS_STUDY_TYPE')}"
+                                   varStatus="i">
+                            <c:if test="${customerAccountOpenInfoEntity.derivativeProductsStudyType== investTargetCodeEntity.value}">
+                                <input type="radio" name="derivativeProductsStudyType" disabled="disabled"
+                                       value="${investTargetCodeEntity.value}" checked="checked"
+                                />${investTargetCodeEntity.name}
+                            </c:if>
+                            <c:if test="${customerAccountOpenInfoEntity.derivativeProductsStudyType != investTargetCodeEntity.value}">
+                                <input type="radio" name="derivativeProductsStudyType" disabled="disabled"
+                                       value="${investTargetCodeEntity.value}"
+                                />${investTargetCodeEntity.name}
+                            </c:if>
+                        </c:forEach>
+                        <c:if test="${customerAccountOpenInfoEntity.derivativeProductsStudyType == 7}"> &lt;%&ndash;其他的值 &ndash;%&gt;
+                            <input class="form-control" style="width:200px;display: inline"
+                                   id="derivativeProductsStudyTypeOther" name="derivativeProductsStudyTypeOther"
+                                   type="text" readonly
+                                   value="${customerAccountOpenInfoEntity.derivativeProductsStudyTypeOther}"
+                            />
+                        </c:if>--%>
+                    </span>
                     <c:if test="${proofImage_601!=null && customerAccountOpenInfoEntity.derivativeProductsStudyType!=null && customerAccountOpenInfoEntity.derivativeProductsStudyType!=''}">
                     <span class="col-xs-2 block input-icon input-icon-right">
                         <button class="layui-btn layui-btn-mini layui-btn-warm" type="button"
@@ -1412,32 +1435,40 @@
             </div>
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-12 control-label no-padding-right">您在经纪公司或银行，基金或资产管理公司，监管机构或交易所等金融机构拥有以下工作经验</label>
+                    <label class="col-sm-12 control-label no-padding-right">现时或过去拥有与结构性及/或衍生产品有关的工作经验</label>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
-                <span class="col-sm-12 block input-icon input-icon-right">
-                    <c:forEach var="investTargetCodeEntity"
-                               items="${fns:getCodeInfoByParentMark('AO_FINANCING_INSTITUTION_WORK_EXPERIENCE_TYPE')}"
-                               varStatus="i">
-                        <c:if test="${customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType== investTargetCodeEntity.value}">
-                            <input type="radio" name="financingInstitutionWorkExperienceType"
-                                   value="${investTargetCodeEntity.value}" checked="true" disabled="disabled"
-                            />${investTargetCodeEntity.name}
-                        </c:if>
-                        <c:if test="${customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType != investTargetCodeEntity.value}">
-                            <input type="radio" name="financingInstitutionWorkExperienceType"
-                                   value="${investTargetCodeEntity.value}" disabled="disabled"
-                            />${investTargetCodeEntity.name}
-                        </c:if>
-                    </c:forEach>
-                    <c:if test="${customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType == 4}"> <%--其他的值 --%>
-                        <input class="form-control" style="width:100px;display: inline"
-                               id="financingInstitutionWorkExperienceTypeOther" readonly
-                               name="financingInstitutionWorkExperienceTypeOther" type="text"
-                               value="${customerAccountOpenInfoEntity.financingInstitutionWorkExperienceTypeOther}"
-                               style="width:200px; margin-left:25px; height:34px;"/>
-                    </c:if>
-                </span>
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input type="radio" name="financingInstitutionWorkExperienceType"
+                               value="1" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType ==1}">checked="true"</c:if>
+                        />是
+                        <input type="radio" name="financingInstitutionWorkExperienceType"
+                               value="0" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType == 0}">checked="true"</c:if>
+                        />否
+                        <%--<c:forEach var="investTargetCodeEntity"
+                                   items="${fns:getCodeInfoByParentMark('AO_FINANCING_INSTITUTION_WORK_EXPERIENCE_TYPE')}"
+                                   varStatus="i">
+                            <c:if test="${customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType== investTargetCodeEntity.value}">
+                                <input type="radio" name="financingInstitutionWorkExperienceType"
+                                       value="${investTargetCodeEntity.value}" checked="true" disabled="disabled"
+                                />${investTargetCodeEntity.name}
+                            </c:if>
+                            <c:if test="${customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType != investTargetCodeEntity.value}">
+                                <input type="radio" name="financingInstitutionWorkExperienceType"
+                                       value="${investTargetCodeEntity.value}" disabled="disabled"
+                                />${investTargetCodeEntity.name}
+                            </c:if>
+                        </c:forEach>
+                        <c:if test="${customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType == 4}"> &lt;%&ndash;其他的值 &ndash;%&gt;
+                            <input class="form-control" style="width:100px;display: inline"
+                                   id="financingInstitutionWorkExperienceTypeOther" readonly
+                                   name="financingInstitutionWorkExperienceTypeOther" type="text"
+                                   value="${customerAccountOpenInfoEntity.financingInstitutionWorkExperienceTypeOther}"
+                                   style="width:200px; margin-left:25px; height:34px;"/>
+                        </c:if>--%>
+                    </span>
                     <c:if test="${proofImage_602!=null&& customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType!=null && customerAccountOpenInfoEntity.financingInstitutionWorkExperienceType!=''}">
                     <span class="col-xs-2 block input-icon input-icon-right">
                         <button class="layui-btn layui-btn-mini layui-btn-warm" type="button"
@@ -1448,20 +1479,21 @@
             </div>
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-12 control-label no-padding-right">您在过去三年是否曾进行过至少五次任何衍生产品的交易（不论是否在交易所买卖）</label>
+                    <label class="col-sm-12 control-label no-padding-right">于过去3年曾执行5次或以上有关结构性及/或衍生产品的交易
+                        (不论是否在交易所买卖) </label>
                 </div>
 
                 <div class="form-group col-sm-6 col-md-6">
-                <span class="col-sm-12 block input-icon input-icon-right">
-                    <input type="radio" name="isTradedDerivativeProducts"
-                           value="1" disabled="disabled"
-                           <c:if test="${customerAccountOpenInfoEntity.isTradedDerivativeProducts == 1}">checked="true"</c:if>
-                    />是
-                    <input type="radio" name="isTradedDerivativeProducts"
-                           value="${investTargetCodeEntity.isTradedDerivativeProducts}" disabled="disabled"
-                           <c:if test="${customerAccountOpenInfoEntity.isTradedDerivativeProducts == 0}">checked="true"</c:if>
-                    />否
-                </span>
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input type="radio" name="isTradedDerivativeProducts"
+                               value="1" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.isTradedDerivativeProducts ==1}">checked="true"</c:if>
+                        />是
+                        <input type="radio" name="isTradedDerivativeProducts"
+                               value="0" disabled="disabled"
+                               <c:if test="${customerAccountOpenInfoEntity.isTradedDerivativeProducts == 0}">checked="true"</c:if>
+                        />否
+                    </span>
                     <c:if test="${proofImage_603!=null && customerAccountOpenInfoEntity.isTradedDerivativeProducts == 1}">
                     <span class="col-xs-2 block input-icon input-icon-right">
                         <button class="layui-btn layui-btn-mini layui-btn-warm" type="button"
