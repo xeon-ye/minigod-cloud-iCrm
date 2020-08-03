@@ -43,21 +43,24 @@ public class SecuritiesUserInfoServiceImpl implements SecuritiesUserInfoService 
             vo.setMessage("证件类型不可为空！");
             return vo;
         }
+
         if (request.getIdNo() == null || "".equals(request.getIdNo())) {
             vo.setCode(BpmCommonEnum.CodeType.PARAMETER_DISMATCH.getCode());
             vo.setMessage("证件号码不可为空！");
             return vo;
         }
-        if (request.getTradeAccount() == null || "".equals(request.getTradeAccount())) {
+
+        if (request.getStockTradeAccount() == null || "".equals(request.getStockTradeAccount())) {
             vo.setCode(BpmCommonEnum.CodeType.PARAMETER_DISMATCH.getCode());
             vo.setMessage("交易帐号不可为空！");
             return vo;
         }
-        if (request.getFundAccount() == null || "".equals(request.getFundAccount())) {
+
+        /*if (request.getFundAccount() == null || "".equals(request.getFundAccount())) {
             vo.setCode(BpmCommonEnum.CodeType.PARAMETER_DISMATCH.getCode());
             vo.setMessage("资金帐号不可为空！");
             return vo;
-        }
+        }*/
 
         List<SecuritiesUserModel> queryUserIdResult = securitiesUserInfoDao.queryClient(request);
 

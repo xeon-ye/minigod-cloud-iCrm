@@ -24,6 +24,7 @@ import com.sunline.modules.activiti.entity.ExtendActTasklogEntity;
 import com.sunline.modules.activiti.service.ActModelerService;
 import com.sunline.modules.activiti.service.ExtendActTasklogService;
 import com.sunline.modules.api.entity.SecuritiesUserModel;
+import com.sunline.modules.api.service.SecuritiesUserInfoService;
 import com.sunline.modules.common.annotation.SysLog;
 import com.sunline.modules.common.common.BpmCommonEnum;
 import com.sunline.modules.common.common.Constant;
@@ -112,6 +113,8 @@ public class CustomerAccountOpenController {
     private OpenAccountOperatorLogService openAccountOperatorLogService;
     @Autowired
     private OpenAccountCaVerityInfoService caVerityInfoService;
+    @Autowired
+    SecuritiesUserInfoService securitiesUserInfoService;
 
     private final String CUSTOMER_ACCOUNT_OPEN_OFFLINE_FLOW_MODEL_KEY = "customerAccountOpenApplicationOffline";
 
@@ -2074,6 +2077,9 @@ public class CustomerAccountOpenController {
 
             // 数据归档
             CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = openApplyDetailInfo.getCustomerAccountOpenInfoEntity();
+            SecuritiesUserModel securitiesUserModel = CustomerOpenAccountConverter.converterToSecuritiesUserInfo(customerAccountOpenInfoEntity);
+            ResponseVO responseVO = securitiesUserInfoService.addSecuritiesUserInfo(securitiesUserModel);
+            logger.info("同步开户数据至统一用户中心结果：" + JSON.toJSONString(responseVO));
 
             // 驱动流程下一步
             actModelerService.doNextFlow(openApplicationEntity.getApplicationId(), openApplicationEntity.getInstanceId(), "");

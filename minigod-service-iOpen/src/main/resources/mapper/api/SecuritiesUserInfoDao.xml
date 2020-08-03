@@ -100,10 +100,36 @@
         <result property="roomCode" column="room_code"/>
         <result property="freelanceCode" column="freelance_code"/>
         <result property="freelanceOther" column="freelance_other"/>
+		<result property="lan" column="lan"/>
+		<result property="accountType" column="account_type"/>
+		<result property="familyPhone" column="family_phone"/>
+		<result property="educationLevel" column="education_level"/>
+		<result property="workingSeniority" column="working_seniority"/>
+		<result property="isBankrupted" column="is_bankrupted"/>
+		<result property="dStatementReceiveMode" column="d_statement_receive_mode"/>
+		<result property="unitTrustsExperience" column="unit_trusts_experience"/>
+		<result property="otherProductsExperience" column="other_products_experience"/>
+		<result property="otherProductsName" column="other_products_name"/>
+		<result property="optionsExperience" column="options_experience"/>
+		<result property="tradeStockFrequency" column="trade_stock_frequency"/>
+		<result property="tradeWarrantsFrequency" column="trade_warrants_frequency"/>
+		<result property="tradeOptionsFrequency" column="trade_options_frequency"/>
+		<result property="tradeFuturesFrequency" column="trade_futures_frequency"/>
+		<result property="tradeUnitTrustsFrequency" column="trade_unit_trusts_frequency"/>
+		<result property="tradeOtherProductsFrequency" column="trade_other_products_frequency"/>
+		<result property="isOpenOptions" column="is_open_options"/>
+		<result property="optionsAccUsageScenarios" column="options_acc_usage_scenarios"/>
+		<result property="isOpenFutures" column="is_open_futures"/>
+		<result property="futuresAccUsageScenarios" column="futures_acc_usage_scenarios"/>
+		<result property="futuresTradeAccount" column="futures_trade_account"/>
+		<result property="stockTradeAccount" column="stock_trade_account"/>
+		<result property="contactPhone" column="contact_phone"/>
+		<result property="bankCurrency" column="bank_currency"/>
+		<result property="investmentHorizon" column="investment_horizon"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-       id,
+        id,
 		application_id,
 		open_account_type,
 		open_account_access_way,
@@ -197,7 +223,33 @@
         other_company_republic,
         other_family_republic,
         cancel_date,
-        room_code
+        room_code,
+        lan,
+        account_type,
+        family_phone,
+        education_level,
+        working_seniority,
+        is_bankrupted,
+        d_statement_receive_mode,
+        unit_trusts_experience,
+        other_products_experience,
+        other_products_name,
+        options_experience,
+        trade_stock_frequency,
+        trade_warrants_frequency,
+        trade_options_frequency,
+        trade_futures_frequency,
+        trade_unit_trusts_frequency,
+        trade_other_products_frequency,
+        is_open_options,
+        options_acc_usage_scenarios,
+        is_open_futures,
+        futures_acc_usage_scenarios,
+        futures_trade_account,
+        stock_trade_account,
+        contact_phone,
+        bank_currency,
+        investment_horizon
     </sql>
 
     <insert id="save" parameterType="com.sunline.modules.api.entity.SecuritiesUserModel">
@@ -295,7 +347,33 @@
             `other_company_republic`,
             `other_family_republic`,
             `cancel_date`,
-            `room_code`
+            `room_code`,
+            lan,
+			account_type,
+			family_phone,
+			education_level,
+			working_seniority,
+			is_bankrupted,
+			d_statement_receive_mode,
+			unit_trusts_experience,
+			other_products_experience,
+			other_products_name,
+			options_experience,
+			trade_stock_frequency,
+			trade_warrants_frequency,
+			trade_options_frequency,
+			trade_futures_frequency,
+			trade_unit_trusts_frequency,
+			trade_other_products_frequency,
+			is_open_options,
+			options_acc_usage_scenarios,
+			is_open_futures,
+			futures_acc_usage_scenarios,
+			futures_trade_account,
+			stock_trade_account,
+			contact_phone,
+			bank_currency,
+			investment_horizon
 		)
 		values
 		(
@@ -391,7 +469,33 @@
 			#{otherCompanyRepublic},
 			#{otherFamilyRepublic},
 			#{cancelDate},
-			#{roomCode}
+			#{roomCode},
+			#{lan},
+			#{accountType},
+			#{familyPhone},
+			#{educationLevel},
+			#{workingSeniority},
+			#{isBankrupted},
+			#{dStatementReceiveMode},
+			#{unitTrustsExperience},
+			#{otherProductsExperience},
+			#{otherProductsName},
+			#{optionsExperience},
+			#{tradeStockFrequency},
+			#{tradeWarrantsFrequency},
+			#{tradeOptionsFrequency},
+			#{tradeFuturesFrequency},
+			#{tradeUnitTrustsFrequency},
+			#{tradeOtherProductsFrequency},
+			#{isOpenOptions},
+			#{optionsAccUsageScenarios},
+			#{isOpenFutures},
+			#{futuresAccUsageScenarios},
+			#{futuresTradeAccount},
+			#{stockTradeAccount},
+			#{contactPhone},
+			#{bankCurrency},
+			#{investmentHorizon}
 		)
 	</insert>
 
@@ -515,7 +619,33 @@
             <if test="otherCompanyRepublic != null">`other_company_republic` = #{otherCompanyRepublic},</if>
             <if test="otherFamilyRepublic != null">`other_family_republic` = #{otherFamilyRepublic},</if>
             <if test="cancelDate != null">`cancel_date` = #{cancelDate},</if>
-            <if test="roomCode != null">`room_code` = #{roomCode}</if>
+            <if test="roomCode != null">`room_code` = #{roomCode},</if>
+			<if test="lan != null">`lan` = #{lan},</if>
+			<if test="accountType != null">`account_type` = #{accountType},</if>
+			<if test="familyPhone != null">`family_phone` = #{familyPhone},</if>
+			<if test="educationLevel != null">`education_level` = #{educationLevel},</if>
+			<if test="workingSeniority != null">`working_seniority` = #{workingSeniority},</if>
+			<if test="isBankrupted != null">`is_bankrupted` = #{isBankrupted},</if>
+			<if test="dStatementReceiveMode != null">`d_statement_receive_mode` = #{dStatementReceiveMode},</if>
+			<if test="unitTrustsExperience != null">`unit_trusts_experience` = #{unitTrustsExperience},</if>
+			<if test="otherProductsExperience != null">`other_products_experience` = #{otherProductsExperience},</if>
+			<if test="otherProductsName != null">`other_products_name` = #{otherProductsName},</if>
+			<if test="optionsExperience != null">`options_experience` = #{optionsExperience},</if>
+			<if test="tradeStockFrequency != null">`trade_stock_frequency` = #{tradeStockFrequency},</if>
+			<if test="tradeWarrantsFrequency != null">`trade_warrants_frequency` = #{tradeWarrantsFrequency},</if>
+			<if test="tradeOptionsFrequency != null">`trade_options_frequency` = #{tradeOptionsFrequency},</if>
+			<if test="tradeFuturesFrequency != null">`trade_futures_frequency` = #{tradeFuturesFrequency},</if>
+			<if test="tradeUnitTrustsFrequency != null">`trade_unit_trusts_frequency` = #{tradeUnitTrustsFrequency},</if>
+			<if test="tradeOtherProductsFrequency != null">`trade_other_products_frequency` = #{tradeOtherProductsFrequency},</if>
+			<if test="isOpenOptions != null">`is_open_options` = #{isOpenOptions},</if>
+			<if test="optionsAccUsageScenarios != null">`options_acc_usage_scenarios` = #{optionsAccUsageScenarios},</if>
+			<if test="isOpenFutures != null">`is_open_futures` = #{isOpenFutures},</if>
+			<if test="futuresAccUsageScenarios != null">`futures_acc_usage_scenarios` = #{futuresAccUsageScenarios},</if>
+			<if test="futuresTradeAccount != null">`futures_trade_account` = #{futuresTradeAccount},</if>
+			<if test="stockTradeAccount != null">`stock_trade_account` = #{stockTradeAccount},</if>
+			<if test="contactPhone != null">`contact_phone` = #{contactPhone},</if>
+			<if test="bankCurrency != null">`bank_currency` = #{bankCurrency},</if>
+			<if test="investmentHorizon != null">`investment_horizon` = #{investmentHorizon}</if>
         </set>
         where id = #{id}
     </update>

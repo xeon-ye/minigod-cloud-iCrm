@@ -794,7 +794,7 @@ public class CustomerOpenAccountConverter {
         securitiesUserModel.setOtherContactRepublic(entity.getOtherContactRepublic());
         securitiesUserModel.setOtherFamilyRepublic(entity.getOtherFamilyRepublic());
 
-        securitiesUserModel.setLanguage(entity.getLan());
+        securitiesUserModel.setLan(entity.getLan());
         securitiesUserModel.setAccountType(entity.getAccountType());
         securitiesUserModel.setFamilyPhone(entity.getFamilyPhone());
         securitiesUserModel.setEducationLevel(entity.getEducationLevel());

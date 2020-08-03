@@ -220,8 +220,8 @@ public class SecuritiesUserModel {
     //大户室号(客户级别1-Common 2-Important 3- VIP 4-PI 5-Capital)
     private Integer roomCode;
 
-    //语言[0=未知 1=英文 2=繁体中文 3=简体中文]
-    private Integer language;
+    //语言[1=英文 2=繁体中文 3=简体中文]
+    private Integer lan;
 
     //账户类型[1、个人账户  2、联名账户   3、公司账户]
     private Integer accountType;
@@ -229,46 +229,46 @@ public class SecuritiesUserModel {
     //住所电话
     private String familyPhone;
 
-    //教育程度[0、未知  1、小学   2、中学   3、专上学院   4、大学或以上]
+    //教育程度[1、小学   2、中学   3、专上学院   4、大学或以上]
     private Integer educationLevel;
 
-    //从业年限[0、未知  1、1-2年   2、2-5年   3、5-10年   4、>10年]
+    //从业年限[1、1-2年   2、2-5年   3、5-10年   4、>10年]
     private Integer workingSeniority;
 
     //你是否曾经破产或被送达要将你破产的申请[0、否   1是]
     private Integer isBankrupted;
 
-    //日结单及月结单发送方式[0、未知  1、电子邮箱  2、邮寄到住宅地址  3、邮寄到营业地址]
+    //日结单及月结单发送方式[1、电子邮箱  2、邮寄到住宅地址  3、邮寄到营业地址]
     private Integer dStatementReceiveMode;
 
-    //单位信托基金/互惠基金[0、未知 1、没有  2、<1年   3、 1-2年   4、>2年]
+    //单位信托基金/互惠基金[1、没有  2、<1年   3、 1-2年   4、>2年]
     private Integer unitTrustsExperience;
 
-    //其它投资产品 [0、未知  1、<10年  2、10-40年   3、 >40年]
+    //其它投资产品 [1、<10年  2、10-40年   3、 >40年]
     private Integer otherProductsExperience;
 
     //其它投资产品名称
     private String otherProductsName;
 
-    //期权投资经验 [0、未知 1、没有  2、<1年   3、 1-2年   4、>2年]
+    //期权投资经验 [1、没有  2、<1年   3、 1-2年   4、>2年]
     private Integer optionsExperience;
 
-    //股票交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    //股票交易频率次/年 [1、<10  2、10-40   3、 >40]
     private Integer tradeStockFrequency;
 
-    //认股证交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    //认股证交易频率次/年 [1、<10  2、10-40   3、 >40]
     private Integer tradeWarrantsFrequency;
 
-    //期权交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    //期权交易频率次/年 [1、<10  2、10-40   3、 >40]
     private Integer tradeOptionsFrequency;
 
-    //期货交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    //期货交易频率次/年 [1、<10  2、10-40   3、 >40]
     private Integer tradeFuturesFrequency;
 
-    //单位信托基金/互惠基金交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    //单位信托基金/互惠基金交易频率次/年 [1、<10  2、10-40   3、 >40]
     private Integer tradeUnitTrustsFrequency;
 
-    //其它投资产品交易频率次/年 [0、未知 1、<10  2、10-40   3、 >40]
+    //其它投资产品交易频率次/年 [1、<10  2、10-40   3、 >40]
     private Integer tradeOtherProductsFrequency;
 
     //是否开通期权 [0、不同意    1、同意]
@@ -295,7 +295,7 @@ public class SecuritiesUserModel {
     //银行卡币种 [0-綜合賬戶 1-港幣賬戶 2-美元賬戶 3-人民币账户]
     private Integer bankCurrency;
 
-    //投资年期 [0-未知 1、<1年  2、1-3年  3、3年以上]
+    //投资年期 [1、<1年  2、1-3年  3、3年以上]
     private Integer investmentHorizon;
 
     /**
@@ -1363,12 +1363,12 @@ public class SecuritiesUserModel {
         this.freelanceOther = freelanceOther;
     }
 
-    public Integer getLanguage() {
-        return language;
+    public Integer getLan() {
+        return lan;
     }
 
-    public void setLanguage(Integer language) {
-        this.language = language;
+    public void setLan(Integer lan) {
+        this.lan = lan;
     }
 
     public Integer getAccountType() {
