@@ -1,10 +1,8 @@
 package com.sunline.modules.account.online.model;
 
-import com.minigod.common.pojo.request.BaseRequestParams;
-
 import java.io.Serializable;
 
-public class SendSMSModel extends BaseRequestParams implements Serializable {
+public class SendSMSModel implements Serializable {
     private Integer certType; // 0 手机号 1 邮箱
     private String certCode; // 账号
     private String type; // 验证码类型
