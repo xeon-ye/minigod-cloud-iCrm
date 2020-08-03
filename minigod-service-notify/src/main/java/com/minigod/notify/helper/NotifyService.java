@@ -23,6 +23,7 @@ import org.springframework.scheduling.annotation.Async;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -147,7 +148,7 @@ public class NotifyService {
      *
      * @param subject 主题
      * @param content 内容
-     * @param paths   附件路径
+     * @param emailFileInfos   附件路径
      * @throws Throwable
      */
     public ResponseData notifySendCloudMail(String subject, String content, List<EmailFileInfo> emailFileInfos) throws Throwable {
@@ -190,7 +191,10 @@ public class NotifyService {
         InputStream inputStream = null;
         File file = null;
         try {
-            URL uFile = new URL(fileUrl);
+            String url1 = URLEncoder.encode(fileUrl, "utf-8").replaceAll("\\+", "%20");
+            String url2 = url1.replaceAll("%3A", ":").replaceAll("%2F", "/")
+                    .replaceAll("%3F","?").replaceAll("%3D","=");
+            URL uFile = new URL(url2);
             HttpURLConnection conn = (HttpURLConnection) uFile.openConnection();
             conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
             inputStream = conn.getInputStream();
