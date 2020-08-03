@@ -45,12 +45,6 @@
             <groupId>com.minigod</groupId>
             <artifactId>minigod-cloud-common</artifactId>
             <version>${project.parent.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-cloud-starter-openfeign</artifactId>
-                    <groupId>org.springframework.cloud</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.minigod</groupId>
@@ -95,6 +89,7 @@
             <version>29.0-android</version>
             <scope>compile</scope>
         </dependency>
+
     </dependencies>
 
     <build>
