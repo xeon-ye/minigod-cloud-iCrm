@@ -1,11 +1,10 @@
 package com.sunline.modules.account.online.model;
 
-import com.minigod.common.pojo.request.BaseRequestParams;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class SendEmailModel extends BaseRequestParams implements Serializable {
+public class SendEmailModel implements Serializable {
     private String sendTo;
     private String sendFrom;
     private String subject;

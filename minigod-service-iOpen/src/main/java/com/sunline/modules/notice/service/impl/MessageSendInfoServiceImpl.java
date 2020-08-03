@@ -3,8 +3,6 @@ package com.sunline.modules.notice.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.minigod.common.pojo.StaticType;
-import com.minigod.common.pojo.request.BaseRequest;
 import com.sunline.common.ConfigUtils;
 import com.sunline.modules.account.online.model.SendEmailModel;
 import com.sunline.modules.account.online.model.SendSMSModel;
@@ -26,10 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @description: 消息发送中心
@@ -164,12 +159,14 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
                         isSucceed = EmailSender.sendEmailTemplate(messageSendInfo.getRecipients(), messageSendInfo.getMessageTitle(), messageSendInfo.getMessageContent(), attachments);
                     }*/
 
+                    // TODO: 处理发送邮件邮箱号、token等逻辑~！！！！20200803
+
                     //new
                     String eurl = IOpenConfigUtils.email_url;
-                    BaseRequest<SendEmailModel> sendEmailParams = new BaseRequest<>();
+                    Map<String, Object> sendEmailParams = new HashMap<>();
                     SendEmailModel sendEmailModel = new SendEmailModel();
                     try {
-                        sendEmailModel.setContent(URLEncoder.encode(messageSendInfo.getMessageContent(),"UTF-8"));
+                        sendEmailModel.setContent(URLEncoder.encode(messageSendInfo.getMessageContent(), "UTF-8"));
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
@@ -177,28 +174,32 @@ public class MessageSendInfoServiceImpl implements MessageSendInfoService {
                     sendEmailModel.setSubject(messageSendInfo.getMessageTitle());
                     sendEmailModel.setSendTo(messageSendInfo.getRecipients());
                     sendEmailModel.setSendFrom("service@zszhizhu.com");
-                    sendEmailParams.setParams(sendEmailModel);
+                    sendEmailParams.put("token", "123");
+                    sendEmailParams.put("params", sendEmailModel);
                     String eResResult = HttpClientUtils.postJson(eurl, JsonUtil.getJsonByObj(sendEmailParams), true);
-                    ResponseVO responseVO =JSON.parseObject(eResResult, ResponseVO.class);
-                    if (responseVO.getCode() == null){
+                    ResponseVO responseVO = JSON.parseObject(eResResult, ResponseVO.class);
+                    if (responseVO.getCode() == null) {
                         isSucceed = false;
-                    }else {
-                        isSucceed = (responseVO.getCode() == StaticType.CodeType.OK.getCode());
+                    } else {
+                        isSucceed = (responseVO.getCode() == 0);
                     }
                     break;
                 case MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS:
                     String surl = IOpenConfigUtils.sms_url;
-                    BaseRequest<SendSMSModel> sendSMSParams = new BaseRequest<>();
+                    Map<String, Object> sendSMSParams = new HashMap<>();
                     SendSMSModel sendSMSModel = new SendSMSModel();
                     sendSMSModel.setCertType(1);
                     sendSMSModel.setCertCode(messageSendInfo.getRecipients());
-                    sendSMSParams.setParams(sendSMSModel);
+
+                    sendSMSParams.put("token", "123");
+                    sendSMSParams.put("params", sendSMSModel);
+
                     String sResResult = HttpClientUtils.postJson(surl, JsonUtil.getJsonByObj(sendSMSParams), true);
-                    ResponseVO _responseVO =JSON.parseObject(sResResult, ResponseVO.class);
-                    if (_responseVO.getCode() == null){
+                    ResponseVO _responseVO = JSON.parseObject(sResResult, ResponseVO.class);
+                    if (_responseVO.getCode() == null) {
                         isSucceed = false;
-                    }else {
-                        isSucceed = (_responseVO.getCode() == StaticType.CodeType.OK.getCode());
+                    } else {
+                        isSucceed = (_responseVO.getCode() == 0);
                     }
                     break;
                 default:
