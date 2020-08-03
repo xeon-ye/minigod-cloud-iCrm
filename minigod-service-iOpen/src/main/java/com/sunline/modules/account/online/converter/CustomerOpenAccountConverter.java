@@ -490,7 +490,7 @@ public class CustomerOpenAccountConverter {
         customerAccountOpenInfoEntity.setCompanyName(accountOpenApplicationprotocol.getCompanyName());
         customerAccountOpenInfoEntity.setCompanyPhoneNumber(accountOpenApplicationprotocol.getCompanyPhoneNumber());
         customerAccountOpenInfoEntity.setJobPosition(accountOpenApplicationprotocol.getJobPosition());
-//        customerAccountOpenInfoEntity.setIndustryRange(accountOpenApplicationprotocol.getIndustryRange());
+        customerAccountOpenInfoEntity.setIndustryRange(accountOpenApplicationprotocol.getIndustryRange());
         customerAccountOpenInfoEntity.setAnnualIncome(accountOpenApplicationprotocol.getAnnualIncome());
 
         if (accountOpenApplicationprotocol.getInvestTarget() != null && accountOpenApplicationprotocol.getInvestTarget().size() > 0) {

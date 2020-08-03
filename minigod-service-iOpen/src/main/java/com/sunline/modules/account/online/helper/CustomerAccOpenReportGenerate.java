@@ -166,7 +166,6 @@ public class CustomerAccOpenReportGenerate {
                     //财产种类
                     List<OpenAccountPropertyTypeEntity> openAccountPropertyTypeList = openAccountPropertyTypeService.queryByApplicationId(values.get("applicationId").toString());
                     for (int i = 0; i < openAccountPropertyTypeList.size(); i++) {
-                        StringBuffer typeAmountCode = new StringBuffer("AO_PROPERTY_TYPE_");
                         values.put("propertyType_" + (openAccountPropertyTypeList.get(i).getPropertyType() != null ? openAccountPropertyTypeList.get(i).getPropertyType() : ""), openAccountPropertyTypeList.get(i).getPropertyType() != null ? openAccountPropertyTypeList.get(i).getPropertyType().toString() : "");
 
                         values.put("propertyTypeAmount_" + (openAccountPropertyTypeList.get(i).getPropertyType() != null ? openAccountPropertyTypeList.get(i).getPropertyType() : ""), openAccountPropertyTypeList.get(i).getPropertyAmount() != null ? openAccountPropertyTypeList.get(i).getPropertyAmount() : "");
@@ -518,11 +517,12 @@ public class CustomerAccOpenReportGenerate {
         reportData.put("phoneNumber", customerAccountOpenInfoEntity.getPhoneNumber());
 //        reportData.put("professionCode", customerAccountOpenInfoEntity.getProfessionCode() != null ? CodeUtils.getCodeName("AO_PROFESSION_CODE", String.valueOf(customerAccountOpenInfoEntity.getProfessionCode())) : "");
         reportData.put("professionCode", customerAccountOpenInfoEntity.getProfessionCode());
-        reportData.put("professionType", customerAccountOpenInfoEntity.getProfessionType());
+        //使用industryRange
+        //reportData.put("professionType", customerAccountOpenInfoEntity.getProfessionType());
         reportData.put("companyName", customerAccountOpenInfoEntity.getCompanyName());
         reportData.put("companyAddress", customerAccountOpenInfoEntity.getCompanyAddress());
         reportData.put("companyPhoneNumber", customerAccountOpenInfoEntity.getCompanyPhoneNumber());
-        reportData.put("jobPosition", customerAccountOpenInfoEntity.getJobPosition());
+        reportData.put("jobPosition", CodeUtils.getCodeName("AO_JOB_POSITION", String.valueOf(customerAccountOpenInfoEntity.getJobPosition())));
         reportData.put("industryRange", customerAccountOpenInfoEntity.getIndustryRange());
         reportData.put("capitalSource", customerAccountOpenInfoEntity.getCapitalSource());
         reportData.put("annualIncome", customerAccountOpenInfoEntity.getAnnualIncome());
@@ -637,7 +637,6 @@ public class CustomerAccOpenReportGenerate {
         reportData.put("accountType", customerAccountOpenInfoEntity.getAccountType());
         reportData.put("familyPhone", customerAccountOpenInfoEntity.getFamilyPhone());
         reportData.put("educationLevel", customerAccountOpenInfoEntity.getEducationLevel());
-        reportData.put("workingSeniority", customerAccountOpenInfoEntity.getWorkingSeniority());
         reportData.put("otherProfession", customerAccountOpenInfoEntity.getOtherProfession());
         reportData.put("isBankrupted", customerAccountOpenInfoEntity.getIsBankrupted());
         reportData.put("dStatementReceiveMode", customerAccountOpenInfoEntity.getdStatementReceiveMode());
@@ -660,23 +659,10 @@ public class CustomerAccOpenReportGenerate {
         reportData.put("contactPhone", customerAccountOpenInfoEntity.getContactPhone());
         reportData.put("bankCurrency", customerAccountOpenInfoEntity.getBankCurrency());
         reportData.put("investmentHorizon", customerAccountOpenInfoEntity.getInvestmentHorizon());
-
-        //从业年限[0、未知  1、1-2年   2、2-5年   3、5-10年   4、>10年]
-        String workingSeniority = "";
-        Integer workingSeniorityInt = customerAccountOpenInfoEntity.getWorkingSeniority();
-        if (workingSeniorityInt != null) {
-            if (workingSeniorityInt == 1) {
-                workingSeniority = "1-2年";
-            } else if (workingSeniorityInt == 2) {
-                workingSeniority = "2-5年";
-            } else if (workingSeniorityInt == 3) {
-                workingSeniority = "5-10年";
-            } else if (workingSeniorityInt == 4) {
-                workingSeniority = ">10年";
-            }
-        }
-
-        reportData.put("workingSeniority", workingSeniority);
+        reportData.put("workingSeniority", CodeUtils.getCodeName("AO_WORKING_SENIORITY",String.valueOf(customerAccountOpenInfoEntity.getWorkingSeniority())));
+        //交易默认勾选
+        reportData.put("isOpenStockAccount", 1);
+        reportData.put("bankName", CodeUtils.getCodeName("AO_BANK_HK",String.valueOf(customerAccountOpenInfoEntity.getBankId())));
         //ADD 2020-07-30
 
         return reportData;

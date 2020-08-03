@@ -138,8 +138,8 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     private Integer professionType;
 
     //公司业务性质或行业类型
-//    @JSONField(name = "industryRange")
-//    private String industryRange;
+    @JSONField(name = "industryRange")
+    private String industryRange;
 
     // 公司名称
     @JSONField(name = "companyName")
@@ -898,15 +898,6 @@ public class AccountOpenApplyProtocol extends BaseParameter {
         this.companyPhoneNumber = companyPhoneNumber;
     }
 
-//    public String getIndustryRange() {
-//        return industryRange;
-//    }
-//
-//    public void setIndustryRange(String industryRange) {
-//        this.industryRange = industryRange;
-//    }
-
-
     public List<OpenAccountPropertyTypeProtocol> getPropertyType() {
         return propertyType;
     }
@@ -1414,5 +1405,13 @@ public class AccountOpenApplyProtocol extends BaseParameter {
 
     public void setInvestmentHorizon(Integer investmentHorizon) {
         this.investmentHorizon = investmentHorizon;
+    }
+
+    public String getIndustryRange() {
+        return industryRange;
+    }
+
+    public void setIndustryRange(String industryRange) {
+        this.industryRange = industryRange;
     }
 }
