@@ -39,6 +39,7 @@ public class PKCSUtil {
             byte[] der = p10.getEncoded();
             p10Code = new String(Base64.encode(der));
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("P10签名失败");
         }
 
@@ -67,6 +68,11 @@ public class PKCSUtil {
 
     public static void main(String[] args) {
         KeyPair kp = PKCSUtil.generageKeyPair();
-        PKCSUtil.genereatePkcs1(kp, "BUTwybPlJ2ShvgWblJzrxOfYKg8=");
+        /*String pk1 = PKCSUtil.genereatePkcs1(kp, "BUTwybPlJ2ShvgWblJzrxOfYKg8=");
+        System.out.println(pk1);*/
+        System.out.println(kp.getPublic().toString());
+
+        String pk10 = PKCSUtil.genereatePkcs10(kp,"CN=周祖盛,OU=430381200008280010,OU=1,O=0,L=湘潭市,ST=湖南省,C=CN");
+        System.out.println(pk10);
     }
 }

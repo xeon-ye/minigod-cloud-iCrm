@@ -8,8 +8,9 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 
 server:
-  context-path:
   port: 8902
+  servlet:
+    context-path:
 
 logging:
   level:

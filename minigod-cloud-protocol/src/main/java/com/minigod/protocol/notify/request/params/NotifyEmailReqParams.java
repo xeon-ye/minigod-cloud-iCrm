@@ -2,6 +2,7 @@ package com.minigod.protocol.notify.request.params;
 
 import com.minigod.common.pojo.request.BaseRequestParams;
 import lombok.Data;
+import org.apache.tomcat.jni.FileInfo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,5 +12,5 @@ public class NotifyEmailReqParams extends BaseRequestParams implements Serializa
    private String sendFrom;
    private String subject;
    private String content;
-   private List<String> paths;
+   private List<EmailFileInfo> paths;
 }

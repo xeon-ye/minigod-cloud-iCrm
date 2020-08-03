@@ -15,6 +15,10 @@ public class SysFileRefer {
      */
     private Integer storageId;
 
+    private String fileName;
+
+    private String fileSuffix;
+
     private String filePath;
 
     private Date createTime;
@@ -43,6 +47,22 @@ public class SysFileRefer {
 
     public void setStorageId(Integer storageId) {
         this.storageId = storageId;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileSuffix() {
+        return fileSuffix;
+    }
+
+    public void setFileSuffix(String fileSuffix) {
+        this.fileSuffix = fileSuffix;
     }
 
     public String getFilePath() {

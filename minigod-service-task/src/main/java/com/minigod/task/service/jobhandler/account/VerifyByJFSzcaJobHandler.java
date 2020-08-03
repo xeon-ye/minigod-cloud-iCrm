@@ -112,9 +112,9 @@ public class VerifyByJFSzcaJobHandler extends IJobHandler {
         String token = szcaPojo.getToken();
 
         // 参数校验
-        if (StringUtils.isEmpty(utoken) || StringUtils.isEmpty(token) || StringUtils.isEmpty(certDn)) {
+       /* if (StringUtils.isEmpty(utoken) || StringUtils.isEmpty(token) || StringUtils.isEmpty(certDn)) {
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
-        }
+        }*/
 
 
         try {
@@ -122,65 +122,65 @@ public class VerifyByJFSzcaJobHandler extends IJobHandler {
             CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
 
             // 获取开户图片
-            List<CustomOpenCnImg> customOpenImgs = customOpenCnImgMapper.selectByUserId(customOpenInfo.getUserId());
-            List<VerifyBankCard> verifyBankCards = verifyBankCardMapper.selectByBankCardAndStatus(openInfo.getBankNo(), 1);
-
-            if(verifyBankCards.size() == 1){
-                reqVo.setCard(verifyBankCards.get(0).getBankCard());
-                reqVo.setMobileNo(verifyBankCards.get(0).getPhone());
-            }
-
-            reqVo.setUtoken(utoken);
-            reqVo.setCarrier("0");
-            reqVo.setAppType("apply");
-            reqVo.setToken(token);
-            reqVo.setCertDn(certDn);
-            reqVo.setIdNo(openInfo.getIdNo());
-            reqVo.setUserName(openInfo.getClientName());
-            // 性别[0=男 1=女 2=其它]
-            reqVo.setSex(openInfo.getSex() == 0 ? "男" : "女");
-//            reqVo.setMobileNo(openInfo.getPhoneNumber());
-            reqVo.setProvince(SzcaHttpClient.parseCertDN(certDn, "ST"));
-            reqVo.setCity(SzcaHttpClient.parseCertDN(certDn, "L"));
-            reqVo.setContactAddr(openInfo.getIdCardAddress());
-            reqVo.setCardedPlace(openInfo.getSigningOrganization());
-            reqVo.setCardedExpiryDate(openInfo.getIdCardValidDateStart().replace("-", ".") + "-" + openInfo.getIdCardValidDateEnd().replace("-", "."));
-            // TODO：图片数量校验？
-            if (CollectionUtils.isNotEmpty(customOpenImgs)) {
-                for (CustomOpenCnImg customOpenImg : customOpenImgs) {
-                    int locationKey = Integer.parseInt(customOpenImg.getLocationKey());
-                    int locationType = Integer.parseInt(customOpenImg.getLocationType());
-                    String imgUrl = customOpenImg.getUrl();
-
-                    if (StringUtils.isEmpty(imgUrl)) {
-                        // 图片不存在
-                        return;
-                    }
-                    String imgBase = ImageUtils.loadImgBase64ByUrl(imgUrl);
-
-                    if (StringUtils.isEmpty(imgBase)) {
-                        // 图片解析错误
-                        return;
-                    }
-
-                    if (locationType == 101) {
-                        reqVo.setIdentityImgTwo(imgBase);
-                    }
-                    if (locationType == 102) {
-                        reqVo.setIdentityImgOne(imgBase);
-                    }
-                    if (locationKey == 5) {
-                        reqVo.setHumanBodyImg(imgBase);
-                    }
-                    if (locationType == 301) {
-                        reqVo.setSignImg(imgBase);
-                    }
-                }
-            }
+//            List<CustomOpenCnImg> customOpenImgs = customOpenCnImgMapper.selectByUserId(customOpenInfo.getUserId());
+//            List<VerifyBankCard> verifyBankCards = verifyBankCardMapper.selectByBankCardAndStatus(openInfo.getBankNo(), 1);
+//
+//            if(verifyBankCards.size() == 1){
+//                reqVo.setCard(verifyBankCards.get(0).getBankCard());
+//                reqVo.setMobileNo(verifyBankCards.get(0).getPhone());
+//            }
+//
+//            reqVo.setUtoken(utoken);
+//            reqVo.setCarrier("0");
+//            reqVo.setAppType("apply");
+//            reqVo.setToken(token);
+//            reqVo.setCertDn(certDn);
+//            reqVo.setIdNo(openInfo.getIdNo());
+//            reqVo.setUserName(openInfo.getClientName());
+//            // 性别[0=男 1=女 2=其它]
+//            reqVo.setSex(openInfo.getSex() == 0 ? "男" : "女");
+////            reqVo.setMobileNo(openInfo.getPhoneNumber());
+//            reqVo.setProvince(SzcaHttpClient.parseCertDN(certDn, "ST"));
+//            reqVo.setCity(SzcaHttpClient.parseCertDN(certDn, "L"));
+//            reqVo.setContactAddr(openInfo.getIdCardAddress());
+//            reqVo.setCardedPlace(openInfo.getSigningOrganization());
+//            reqVo.setCardedExpiryDate(openInfo.getIdCardValidDateStart().replace("-", ".") + "-" + openInfo.getIdCardValidDateEnd().replace("-", "."));
+//            // TODO：图片数量校验？
+//            if (CollectionUtils.isNowtEmpty(customOpenImgs)) {
+//                for (CustomOpenCnImg customOpenImg : customOpenImgs) {
+//                    int locationKey = Integer.parseInt(customOpenImg.getLocationKey());
+//                    int locationType = Integer.parseInt(customOpenImg.getLocationType());
+//                    String imgUrl = customOpenImg.getUrl();
+//
+//                    if (StringUtils.isEmpty(imgUrl)) {
+//                        // 图片不存在
+//                        return;
+//                    }
+//                    String imgBase = ImageUtils.loadImgBase64ByUrl(imgUrl);
+//
+//                    if (StringUtils.isEmpty(imgBase)) {
+//                        // 图片解析错误
+//                        return;
+//                    }
+//
+//                    if (locationType == 101) {
+//                        reqVo.setIdentityImgTwo(imgBase);
+//                    }
+//                    if (locationType == 102) {
+//                        reqVo.setIdentityImgOne(imgBase);
+//                    }
+//                    if (locationKey == 5) {
+//                        reqVo.setHumanBodyImg(imgBase);
+//                    }
+//                    if (locationType == 301) {
+//                        reqVo.setSignImg(imgBase);
+//                    }
+//                }
+//            }
 
             // P10签名
             log.info(kp.getPublic().toString());
-            String p10Code = PKCSUtil.genereatePkcs10(kp, certDn);
+            String p10Code = PKCSUtil.genereatePkcs10(kp, "CN=周祖盛,OU=430381200008280010,OU=1,O=0,L=湘潭市,ST=湖南省,C=CN");
 
             reqVo.setCertP10(p10Code);
 
@@ -193,7 +193,7 @@ public class VerifyByJFSzcaJobHandler extends IJobHandler {
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -328,7 +328,9 @@ public class VerifyByJFSzcaJobHandler extends IJobHandler {
     @Transactional(rollbackFor = Exception.class)
     public ReturnT<String> execute(String param) throws Exception {
         log.info("执行【开户CA认证】调度任务");
+        String p10Code = PKCSUtil.genereatePkcs10(kp, "CN=周祖盛,OU=430381200008280010,OU=1,O=0,L=湘潭市,ST=湖南省,C=CN");
 
+/*
         //查询开户信息
         List<CustomOpenInfo> openInfoList = customOpenInfoMapper.selectByCaStatus(CA_STATUS_NEED_VERIFY);
         if (null == openInfoList || openInfoList.size() <= 0) {
@@ -362,11 +364,11 @@ public class VerifyByJFSzcaJobHandler extends IJobHandler {
                 if (IS_VERIFY_WITH_CA) {
 
                     // step2 获取主题
-                    getCertDnBySzca(verifySzcaPojo, customOpenInfo);
-                    if (StringUtils.isEmpty(verifySzcaPojo.getCertDn())) {
-                        log.error("*********************【开户CA认证】获取主题失败**************************, userId = {}", userId);
-                        continue;
-                    }
+                    //getCertDnBySzca(verifySzcaPojo, customOpenInfo);
+//                    if (StringUtils.isEmpty(verifySzcaPojo.getCertDn())) {
+//                        log.error("*********************【开户CA认证】获取主题失败**************************, userId = {}", userId);
+//                        continue;
+//                    }
 
                     // step3 申请证书(先判断否已申请证书)
 //                    if (!VerifyAuthCaStatusEnum.isFlag(verifySzcaPojo.getStatus(), VerifyAuthCaStatusEnum.CA_P10) || StringUtils.isEmpty(verifySzcaPojo.getCertSn())) {
@@ -408,7 +410,7 @@ public class VerifyByJFSzcaJobHandler extends IJobHandler {
             }
         }
 
-        log.info("完成【开户CA认证】调度任务");
+        log.info("完成【开户CA认证】调度任务");*/
         return SUCCESS;
 
     }

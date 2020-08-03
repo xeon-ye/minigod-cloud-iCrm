@@ -1,7 +1,11 @@
 package com.minigod.notify.helper;
 
+import com.minigod.common.forkjoin.threadpool.impl.ThreadPoolImpl;
+import com.minigod.common.utils.FileUtils;
+import com.minigod.common.utils.HttpClientUtils;
 import com.minigod.common.utils.URIUtil;
 import com.minigod.mail.builder.SendCloudBuilder;
+import com.minigod.mail.config.Config;
 import com.minigod.mail.core.SendCloud;
 import com.minigod.mail.model.MailAddressReceiver;
 import com.minigod.mail.model.MailBody;
@@ -9,12 +13,15 @@ import com.minigod.mail.model.SendCloudMail;
 import com.minigod.mail.model.TextContent;
 import com.minigod.mail.util.ResponseData;
 import com.minigod.protocol.notify.enums.CaptchaSmsTypeEnum;
+import com.minigod.protocol.notify.request.params.EmailFileInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +31,8 @@ import java.util.Map;
  * 商城通知服务类
  */
 public class NotifyService {
+    private static Logger logger = LoggerFactory.getLogger(NotifyService.class);
+
     private MailSender mailSender;
     private String sendFrom;
     private String sendTo;
@@ -141,7 +150,7 @@ public class NotifyService {
      * @param paths   附件路径
      * @throws Throwable
      */
-    public ResponseData notifySendCloudMail(String subject, String content, List<String> paths) throws Throwable {
+    public ResponseData notifySendCloudMail(String subject, String content, List<EmailFileInfo> emailFileInfos) throws Throwable {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sendFrom);
         message.setTo(sendTo);
@@ -155,9 +164,14 @@ public class NotifyService {
         body.setFrom(sendFrom);
         body.setSubject(subject);
         //附件
-        for (String path : paths) {
-            URL pathUrl = new URL(path);
-            body.addAttachments(URIUtil.toFile(URIUtil.toURI(pathUrl)));
+        //创建目录
+        String localPath =  Config.file_path+System.currentTimeMillis()+"/";
+        File fileDir = new File(localPath);
+        if (!fileDir.exists()) {
+            fileDir.mkdirs();
+        }
+        for (EmailFileInfo emailFileInfo : emailFileInfos) {
+            body.addAttachments(getFileByUrl(localPath,emailFileInfo.getPath(), emailFileInfo.getFileName(), emailFileInfo.getSuffix()));
         }
         TextContent textContent = new TextContent();
         textContent.setContent_type(TextContent.ScContentType.html);
@@ -170,6 +184,45 @@ public class NotifyService {
         return sc.sendMail(mail);
     }
 
+    private File getFileByUrl(String localPath,String fileUrl, String fileName, String suffix) {
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        BufferedOutputStream stream = null;
+        InputStream inputStream = null;
+        File file = null;
+        try {
+            URL uFile = new URL(fileUrl);
+            HttpURLConnection conn = (HttpURLConnection) uFile.openConnection();
+            conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+            inputStream = conn.getInputStream();
+            byte[] buffer = new byte[1024];
+            int len = 0;
+            while ((len = inputStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, len);
+            }
+
+            file = new File(localPath+fileName+"." + suffix);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            logger.info("临时文件创建成功={}", file.getCanonicalPath());
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            stream = new BufferedOutputStream(fileOutputStream);
+            stream.write(outStream.toByteArray());
+
+        } catch (Exception e) {
+            logger.error("读取文件异常", e);
+        } finally {
+            try {
+                if (inputStream != null) inputStream.close();
+                if (stream != null) stream.close();
+                outStream.close();
+            } catch (Exception e) {
+                logger.error("关闭流异常", e);
+            }
+        }
+        return file;
+    }
 
     private String getTemplateId(CaptchaSmsTypeEnum notifyType, List<Map<String, String>> values) {
         for (Map<String, String> item : values) {

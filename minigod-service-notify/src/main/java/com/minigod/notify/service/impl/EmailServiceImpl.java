@@ -10,10 +10,10 @@ import com.minigod.persist.notify.mapper.SysFileReferMapper;
 import com.minigod.persist.notify.mapper.SysMailRecordMapper;
 import com.minigod.protocol.notify.model.SysFileRefer;
 import com.minigod.protocol.notify.model.SysMailRecord;
+import com.minigod.protocol.notify.request.params.EmailFileInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
@@ -21,7 +21,6 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@FeignClient(value = "minigod-service-notify")
 public class EmailServiceImpl extends BaseBeanFactory implements EmailService {
     @Autowired
     private NotifyService notifyService;
@@ -40,7 +39,7 @@ public class EmailServiceImpl extends BaseBeanFactory implements EmailService {
      * @param paths
      * @return
      */
-    public ResResult sendMail(String sendTo, String sendFrom, String subject, String content, List<String> paths) {
+    public ResResult sendMail(String sendTo, String sendFrom, String subject, String content, List<EmailFileInfo> emailFileInfos) {
         try {
             if (StringUtils.isEmpty(sendTo) || StringUtils.isEmpty(sendFrom)
                     || StringUtils.isEmpty(subject) || StringUtils.isEmpty(content)) {
@@ -58,19 +57,19 @@ public class EmailServiceImpl extends BaseBeanFactory implements EmailService {
             sysMailRecord.setUpdateTime(new Date());
             int mailId = sysMailRecordMapper.insert(sysMailRecord);
             //保存附件
-            if (paths != null && paths.size() > 0) {
-                for (String path : paths) {
-                    SysFileRefer sysFileRefer = new SysFileRefer();
-                    sysFileRefer.setReferId(mailId);
-                    sysFileRefer.setFilePath(path);
-                    sysFileRefer.setCreateTime(new Date());
-                    sysFileRefer.setUpdateTime(new Date());
-                    sysFileReferMapper.insert(sysFileRefer);
-                }
+            for (EmailFileInfo emailFileInfo : emailFileInfos) {
+                SysFileRefer sysFileRefer = new SysFileRefer();
+                sysFileRefer.setReferId(mailId);
+                sysFileRefer.setFileName(emailFileInfo.getFileName());
+                sysFileRefer.setFileSuffix(emailFileInfo.getSuffix());
+                sysFileRefer.setFilePath(emailFileInfo.getPath());
+                sysFileRefer.setCreateTime(new Date());
+                sysFileRefer.setUpdateTime(new Date());
+                sysFileReferMapper.insert(sysFileRefer);
             }
             notifyService.setSendTo(sendTo);
             notifyService.setSendFrom(sendFrom);
-            ResponseData re = notifyService.notifySendCloudMail(subject, content, paths);
+            ResponseData re = notifyService.notifySendCloudMail(subject, content, emailFileInfos);
             if (re != null && re.getResult()) {
                 return ResResult.success();
             } else {

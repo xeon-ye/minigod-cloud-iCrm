@@ -29,7 +29,7 @@ public class Config {
 	public static final int MAX_MAILLIST = 5;
 	// 邮件内容大小
 	public static final int MAX_CONTENT_SIZE = 1024 * 1024;
-
+	public static String file_path = null;
 	static {
 		try {
 			InputStream f = Config.class.getClassLoader().getResourceAsStream("config.properties");
@@ -43,6 +43,7 @@ public class Config {
 			api_key = pros.getProperty("api_key");
 			sms_user = pros.getProperty("sms_user");
 			sms_key = pros.getProperty("sms_key");
+			file_path = pros.getProperty("file_path");
 			f.close();
 		} catch (Exception e) {
 			e.printStackTrace();

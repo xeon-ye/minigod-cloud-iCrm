@@ -23,7 +23,7 @@ spring:
   redis:
     database: 0
     #        hostName: 127.0.0.1
-    hostName: 10.1.5.110
+    hostName: 127.0.0.1
 
     port: 6380
     #password:       # 密码（默认为空）
