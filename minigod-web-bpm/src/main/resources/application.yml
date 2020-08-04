@@ -7,8 +7,7 @@ server:
 spring:
   # 环境 dev|test|pro
   profiles:
-    active: test2
-
+    active: test3
   http:
   jackson:
     time-zone: GMT+8
