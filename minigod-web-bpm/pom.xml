@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>minigod-service-iOpen</artifactId>
+    <artifactId>minigod-web-bpm</artifactId>
     <packaging>war</packaging>
 
     <dependencies>
