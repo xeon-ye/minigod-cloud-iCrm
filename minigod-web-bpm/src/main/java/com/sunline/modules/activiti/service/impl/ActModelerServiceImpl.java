@@ -69,6 +69,11 @@ import java.util.*;
 
 /**
  * @description: Activiti模型接口实现类
+ * RepositoryService 是Activiti的仓库服务类。所谓的仓库指流程定义文档的两个文件：bpmn文件和流程图片。
+ * RuntimeService 是activiti的流程执行服务类。可以从这个服务类中获取很多关于流程执行相关的信息。
+ * TaskService  是activiti的任务服务类。可以从这个类中获取任务的信息。
+ * HistoryService 是activiti的查询历史信息的类。在一个流程执行完成后，这个对象为我们提供查询历史信息。
+ * IdentityService 组织机构管理
  * @author: Larry Lai
  * @date: 2018/9/29 9:31
  * @version: v1.0

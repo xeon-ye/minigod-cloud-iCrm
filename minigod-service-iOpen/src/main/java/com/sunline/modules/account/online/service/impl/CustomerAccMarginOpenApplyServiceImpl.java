@@ -3,15 +3,11 @@ package com.sunline.modules.account.online.service.impl;
 import com.google.common.collect.Maps;
 import com.sunline.modules.account.online.dao.CustomerAccountMarginOpenApplyDao;
 import com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity;
-import com.sunline.modules.account.online.model.AccountOpenApplyQuery;
-import com.sunline.modules.common.common.Constant;
+import com.sunline.modules.account.online.service.CustomerAccMarginOpenApplyService;
 import com.sunline.modules.common.common.BpmCommonEnum;
+import com.sunline.modules.common.common.Constant;
 import com.sunline.modules.common.utils.OrderUtil;
 import com.sunline.modules.common.utils.UserUtils;
-import com.sunline.modules.common.utils.Utils;
-import com.sunline.modules.account.online.dao.CustomerAccountOpenApplyDao;
-import com.sunline.modules.account.online.entity.CustomerAccountOpenApplyEntity;
-import com.sunline.modules.account.online.service.CustomerAccOpenApplyService;
 import com.sunline.modules.sys.entity.UserEntity;
 import com.sunline.modules.sys.service.UserService;
 import com.sunline.mutidatasource.DataSourceContextHolder;
@@ -24,31 +20,28 @@ import java.util.List;
 import java.util.Map;
 
 
-@Service("customerAccountOpenApplicationService")
-public class CustomerAccOpenApplyServiceImpl implements CustomerAccOpenApplyService {
+@Service("customerAccMarginOpenApplyService")
+public class CustomerAccMarginOpenApplyServiceImpl implements CustomerAccMarginOpenApplyService {
     @Autowired
-    private CustomerAccountOpenApplyDao customerAccountOpenApplyDao;
-
-    @Autowired
-    private CustomerAccountMarginOpenApplyDao customerAccountMarginOpenApplyDao;
+    private CustomerAccountMarginOpenApplyDao customerAccountOpenApplyDao;
 
     @Autowired
     UserService userService;
 
     @Override
-    public CustomerAccountOpenApplyEntity queryObject(String gid) {
+    public CustomerAccountMarginOpenApplyEntity queryObject(String gid) {
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
         return customerAccountOpenApplyDao.queryObject(gid);
     }
 
     @Override
-    public List<CustomerAccountOpenApplyEntity> queryList(Map<String, Object> map) {
+    public List<CustomerAccountMarginOpenApplyEntity> queryList(Map<String, Object> map) {
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
         return customerAccountOpenApplyDao.queryList(map);
     }
 
     @Override
-    public List<CustomerAccountOpenApplyEntity> queryListByBean(CustomerAccountOpenApplyEntity entity) {
+    public List<CustomerAccountMarginOpenApplyEntity> queryListByBean(CustomerAccountMarginOpenApplyEntity entity) {
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
         return customerAccountOpenApplyDao.queryListByBean(entity);
     }
@@ -60,7 +53,7 @@ public class CustomerAccOpenApplyServiceImpl implements CustomerAccOpenApplyServ
     }
 
     @Override
-    public int save(CustomerAccountOpenApplyEntity customerAccountOpenApplication) {
+    public int save(CustomerAccountMarginOpenApplyEntity customerAccountOpenApplication) {
 
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
 
@@ -68,7 +61,7 @@ public class CustomerAccOpenApplyServiceImpl implements CustomerAccOpenApplyServ
 
         // 检验预约流水号的唯一性
         String applicationId = OrderUtil.getOrderNoByAtomic(1);
-        CustomerAccountOpenApplyEntity customerAccoOpenApplyInfo = customerAccountOpenApplyDao.queryObjectByApplicationId(applicationId);
+        CustomerAccountMarginOpenApplyEntity customerAccoOpenApplyInfo = customerAccountOpenApplyDao.queryObjectByApplicationId(applicationId);
         while (null != customerAccoOpenApplyInfo) {
             applicationId = OrderUtil.getOrderNoByAtomic(1);
             customerAccoOpenApplyInfo = customerAccountOpenApplyDao.queryObjectByApplicationId(applicationId);
@@ -89,7 +82,7 @@ public class CustomerAccOpenApplyServiceImpl implements CustomerAccOpenApplyServ
     }
 
     @Override
-    public int update(CustomerAccountOpenApplyEntity customerAccountOpenApplication) {
+    public int update(CustomerAccountMarginOpenApplyEntity customerAccountOpenApplication) {
 
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
 
@@ -111,7 +104,7 @@ public class CustomerAccOpenApplyServiceImpl implements CustomerAccOpenApplyServ
     }
 
     @Override
-    public int updateByApplicationId(CustomerAccountOpenApplyEntity entity) {
+    public int updateByApplicationId(CustomerAccountMarginOpenApplyEntity entity) {
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
         return customerAccountOpenApplyDao.updateByApplicationId(entity);
     }
@@ -140,7 +133,7 @@ public class CustomerAccOpenApplyServiceImpl implements CustomerAccOpenApplyServ
     }
 
     @Override
-    public CustomerAccountOpenApplyEntity queryObjectByApplicationId(String applicationId) {
+    public CustomerAccountMarginOpenApplyEntity queryObjectByApplicationId(String applicationId) {
 
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
         return customerAccountOpenApplyDao.queryObjectByApplicationId(applicationId);
@@ -153,35 +146,9 @@ public class CustomerAccOpenApplyServiceImpl implements CustomerAccOpenApplyServ
      * @return
      */
     @Override
-    public List<CustomerAccountOpenApplyEntity> qryAbnormalData(CustomerAccountOpenApplyEntity queryCondition) {
+    public List<CustomerAccountMarginOpenApplyEntity> qryAbnormalData(CustomerAccountMarginOpenApplyEntity queryCondition) {
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
         return customerAccountOpenApplyDao.qryAbnormalData(queryCondition);
-    }
-
-    @Override
-    public int save(CustomerAccountMarginOpenApplyEntity customerAccountOpenApplication) {
-
-        DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
-        UserEntity supperUser = UserUtils.getManagerUser();
-
-        // 检验预约流水号的唯一性
-        String applicationId = OrderUtil.getOrderNoByAtomic(1);
-        CustomerAccountMarginOpenApplyEntity customerAccoOpenApplyInfo = customerAccountMarginOpenApplyDao.queryObjectByApplicationId(applicationId);
-        while (null != customerAccoOpenApplyInfo) {
-            applicationId = OrderUtil.getOrderNoByAtomic(1);
-            customerAccoOpenApplyInfo = customerAccountMarginOpenApplyDao.queryObjectByApplicationId(applicationId);
-        }
-
-        customerAccountOpenApplication.setCode(applicationId);
-        customerAccountOpenApplication.setApplicationId(customerAccountOpenApplication.getCode());
-        customerAccountOpenApplication.setCreateUser(supperUser.getId());
-        customerAccountOpenApplication.setCreateTime(new Date());
-        customerAccountOpenApplication.setUpdateTime(new Date());
-        customerAccountOpenApplication.setStatus(Constant.ActStauts.DRAFT.getValue());
-        customerAccountOpenApplication.setBapid(supperUser.getBapid());
-        customerAccountOpenApplication.setBaid(supperUser.getBaid());
-        customerAccountOpenApplication.setApplicationStatus(BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_INITIAL_AUDIT_VALUE);
-        return customerAccountMarginOpenApplyDao.save(customerAccountOpenApplication);
     }
 
 }

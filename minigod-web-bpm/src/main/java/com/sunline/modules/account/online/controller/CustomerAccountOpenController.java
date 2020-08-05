@@ -180,6 +180,35 @@ public class CustomerAccountOpenController {
     }
 
     /**
+     * 账户增开列表
+     */
+    @RequestMapping("/marginList")
+    @RequiresPermissions("customer:marginList")
+    public String marginList(Model model, AccountOpenApplyQuery queryCondition, HttpServletRequest request) {
+        String applicationTimeStart = queryCondition.getApplicationTimeStart();
+        String applicationTimeEnd = queryCondition.getApplicationTimeEnd();
+        int pageNum = Utils.parseInt(request.getParameter("pageNum"), 1);
+        if (StringUtils.isNotBlank(applicationTimeStart)) {
+            queryCondition.setApplicationTimeStart(DateUtil.format(DateUtil.beginOfDay(DateUtil.parse(applicationTimeStart)), "yyyy-MM-dd HH:mm:ss"));
+        }
+        if (StringUtils.isNotBlank(applicationTimeEnd)) {
+            queryCondition.setApplicationTimeEnd(DateUtil.format(DateUtil.endOfDay(DateUtil.parse(applicationTimeEnd)), "yyyy-MM-dd HH:mm:ss"));
+        }
+
+        Page<AccountOpenApplyDetailInfo> page = customerAccountOpenService.findMarginPage(queryCondition, pageNum);
+
+        if (StringUtils.isNotBlank(applicationTimeStart)) {
+            queryCondition.setApplicationTimeStart(applicationTimeStart);
+        }
+        if (queryCondition.getApplicationTimeEnd() != null && StringUtils.isNotBlank(queryCondition.getApplicationTimeEnd())) {
+            queryCondition.setApplicationTimeEnd(applicationTimeEnd);
+        }
+        model.addAttribute("queryCondition", queryCondition);
+        model.addAttribute("page", page);
+        return "account/online/marginList";
+    }
+
+    /**
      * 待确认列表
      */
     @RequestMapping("/waitConfirmList")

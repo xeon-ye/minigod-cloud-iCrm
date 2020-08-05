@@ -123,4 +123,11 @@ public class CustomerAccOpenInfoServiceImpl implements CustomerAccOpenInfoServic
         return customerAccountOpenInfoDao.setTradeAccount(customerAccountOpenInfo);
     }
 
+    @Override
+    public int updateMarginInfo(CustomerAccountOpenInfoEntity customerAccountOpenInfo) {
+        DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
+        customerAccountOpenInfo.setUpdateTime(new Date());
+        return customerAccountOpenInfoDao.updateMarginInfo(customerAccountOpenInfo);
+    }
+
 }

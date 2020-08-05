@@ -1,0 +1,1282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.CustomerAccountMarginOpenApplyDao">
+
+    <resultMap type="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" id="customerAccountOpenApplicationMap">
+        <result property="id" column="id"/>
+        <result property="applicationTitle" column="application_title"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="currentNode" column="current_node"/>
+        <result property="approveResult" column="approve_result"/>
+        <result property="currentAccountOpenStep" column="current_account_open_step"/>
+        <result property="currentAccountOpenStepStatus" column="current_account_open_step_status"/>
+        <result property="accountOpenResultStatus" column="account_open_result_status"/>
+        <result property="lastApprovalUser" column="last_approval_user"/>
+        <result property="assignDrafter" column="assign_drafter"/>
+        <result property="approvalOpinion" column="approval_opinion"/>
+        <result property="errorImages" column="error_images"/>
+        <result property="errorContentTypes" column="error_content_types"/>
+        <result property="callbackStatus" column="callback_status"/>
+        <result property="status" column="status"/>
+        <result property="instanceId" column="instance_id"/>
+        <result property="defid" column="defid"/>
+        <result property="code" column="code"/>
+        <result property="startUserId" column="start_user_id"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+        <result property="startTime" column="start_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+        <result property="actResult" column="act_result"/>
+        <result property="applicationStatus" column="application_status"/>
+        <result property="isBack" column="is_back"/>
+        <result property="flowPath" column="flow_path"/>
+        <result property="fireAid" column="fire_aid"/>
+        <result property="witnessUser" column="witness_user"/>
+        <result property="witnessesType" column="witnesses_type"/>
+        <result property="licenseNumber" column="license_number"/>
+        <result property="submitApprovalUser" column="submit_approval_user"/>
+        <result property="otherReasons" column="other_reasons"/>
+        <result property="isExpExcel" column="is_exp_excel"/>
+
+    </resultMap>
+
+    <resultMap type="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity" id="customerAccountOpenInfoMap">
+        <result property="id" column="id"/>
+        <result property="applicationId" column="application_id"/>
+        <result property="openAccountType" column="open_account_type"/>
+        <result property="openAccountAccessWay" column="open_account_access_way"/>
+        <result property="fundAccountType" column="fund_account_type"/>
+        <result property="sourceChannelId" column="source_channel_id"/>
+        <result property="sourceChannelName" column="source_channel_name"/>
+        <result property="userId" column="user_id"/>
+        <result property="inviterId" column="inviter_id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="fundAccount" column="fund_account"/>
+        <result property="clientName" column="client_name"/>
+        <result property="familyName" column="family_name"/>
+        <result property="givenName" column="given_name"/>
+        <result property="clientNameSpell" column="client_name_spell"/>
+        <result property="givenNameSpell" column="given_name_spell"/>
+        <result property="familyNameSpell" column="family_name_spell"/>
+        <result property="idKind" column="id_kind"/>
+        <result property="idNo" column="id_no"/>
+        <result property="sex" column="sex"/>
+        <result property="birthday" column="birthday"/>
+        <result property="idCardAddress" column="id_card_address"/>
+        <result property="idCardValidDateStart" column="id_card_valid_date_start"/>
+        <result property="idCardValidDateEnd" column="id_card_valid_date_end"/>
+        <result property="identitySimilarityPercent" column="identity_similarity_percent"/>
+        <result property="isPassIdentityAuthentication" column="is_pass_identity_authentication"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="bankNo" column="bank_no"/>
+        <result property="bankAccountName" column="bank_account_name"/>
+        <result property="nationality" column="nationality"/>
+        <result property="isAmericanGreenCardHolder" column="is_american_green_card_holder"/>
+        <result property="contactProvinceName" column="contact_province_name"/>
+        <result property="contactCityName" column="contact_city_name"/>
+        <result property="contactCountyName" column="contact_county_name"/>
+        <result property="contactDetailAddress" column="contact_detail_address"/>
+        <result property="familyAddress" column="family_address"/>
+        <result property="contactAddress" column="contact_address"/>
+        <result property="email" column="email"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="professionCode" column="profession_code"/>
+        <result property="professionType" column="profession_type"/>
+        <result property="companyName" column="company_name"/>
+        <result property="companyAddress" column="company_address"/>
+        <result property="companyPhoneNumber" column="company_phone_number"/>
+        <result property="jobPosition" column="job_position"/>
+        <result property="industryRange" column="industry_range"/>
+        <result property="capitalSource" column="capital_source"/>
+        <result property="annualIncome" column="annual_income"/>
+        <result property="investTarget" column="invest_target"/>
+        <result property="investTargetOther" column="invest_target_other"/>
+        <result property="stocksInvestmentExperienceType" column="stocks_investment_experience_type"/>
+        <result property="warrantsInvestmentExperienceType" column="warrants_investment_experience_type"/>
+        <result property="futuresInvestmentExperienceType" column="futures_investment_experience_type"/>
+        <result property="isKnowDerivativeProducts" column="is_know_derivative_products"/>
+        <result property="derivativeProductsStudyType" column="derivative_products_study_type"/>
+        <result property="derivativeProductsStudyTypeOther" column="derivative_products_study_type_other"/>
+        <result property="financingInstitutionWorkExperienceType" column="financing_institution_work_experience_type"/>
+        <result property="financingInstitutionWorkExperienceTypeOther" column="financing_institution_work_experience_type_other"/>
+        <result property="isTradedDerivativeProducts" column="is_traded_derivative_products"/>
+        <result property="isOpenUsaStockMarket" column="is_open_usa_stock_market"/>
+        <result property="isOpenHkStockMarket" column="is_open_hk_stock_market"/>
+        <result property="isAllowProvidePrivacy" column="is_allow_provide_privacy"/>
+        <result property="isAmlSuspicious" column="is_aml_suspicious"/>
+        <result property="isAllowDerivativesTransaction" column="is_allow_derivatives_transaction"/>
+        <result property="initialAccountPassword" column="initial_account_password"/>
+        <result property="openAccountTime" column="open_account_time"/>
+        <result property="applicationTime" column="application_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="recordStatus" column="record_status"/>
+        <result property="bankType" column="bank_type"/>
+        <result property="accountLevel" column="account_level"/>
+        <result property="nation" column="nation"/>
+        <result property="signingOrganization" column="signing_organization"/>
+        <result property="acceptRisk" column="accept_risk"/>
+        <result property="lan" column="lan"/>
+        <result property="accountType" column="account_type"/>
+        <result property="familyPhone" column="family_phone"/>
+        <result property="educationLevel" column="education_level"/>
+        <result property="workingSeniority" column="working_seniority"/>
+        <result property="otherProfession" column="other_profession"/>
+        <result property="isBankrupted" column="is_bankrupted"/>
+        <result property="dStatementReceiveMode" column="d_statement_receive_mode"/>
+        <result property="unitTrustsExperience" column="unit_trusts_experience"/>
+        <result property="otherProductsExperience" column="other_products_experience"/>
+        <result property="otherProductsName" column="other_products_name"/>
+        <result property="optionsExperience" column="options_experience"/>
+        <result property="tradeStockFrequency" column="trade_stock_frequency"/>
+        <result property="tradeWarrantsFrequency" column="trade_warrants_frequency"/>
+        <result property="tradeOptionsFrequency" column="trade_options_frequency"/>
+        <result property="tradeFuturesFrequency" column="trade_futures_frequency"/>
+        <result property="tradeUnitTrustsFrequency" column="trade_unit_trusts_frequency"/>
+        <result property="tradeOtherProductsFrequency" column="trade_other_products_frequency"/>
+        <result property="isOpenOptions" column="is_open_options"/>
+        <result property="optionsAccUsageScenarios" column="options_acc_usage_scenarios"/>
+        <result property="isOpenFutures" column="is_open_futures"/>
+        <result property="futuresAccUsageScenarios" column="futures_acc_usage_scenarios"/>
+        <result property="futuresTradeAccount" column="futures_trade_account"/>
+        <result property="stockTradeAccount" column="stock_trade_account"/>
+        <result property="contactPhone" column="contact_phone"/>
+        <result property="bankCurrency" column="bank_currency"/>
+    </resultMap>
+
+    <resultMap id="AccountOpenApplicationDetailInfoMap" type="com.sunline.modules.account.online.model.AccountOpenApplyDetailInfo" >
+        <id column="caoa_id" jdbcType="VARCHAR" />
+        <association property="customerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap" columnPrefix="caoa_" />
+        <association property="customerAccountOpenInfoEntity" resultMap="customerAccountOpenInfoMap" columnPrefix="caoi_" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,
+		application_title,
+		application_id,
+		current_node,
+		approve_result,
+		current_account_open_step,
+		current_account_open_step_status,
+		account_open_result_status,
+		last_approval_user,
+		approval_opinion,
+		assign_drafter,
+		error_images,
+		error_content_types,
+		callback_status,
+		status,
+		instance_id,
+		defid,
+		code,
+		start_user_id,
+		create_user,
+		update_user,
+		start_time,
+		create_time,
+		update_time,
+		remark,
+		act_result,
+		application_status,
+		is_back,
+		flow_path,
+		fire_aid,
+		witness_user,
+		witnesses_type,
+		license_number,
+		submit_approval_user,
+		other_reasons,
+		is_exp_excel
+    </sql>
+
+	 <sql id="Base_Column_List1">
+	 	caoa.id                                   AS    caoa_id,
+        caoa.application_id                       AS 	caoa_application_id,
+        caoa.application_title                    AS	caoa_application_title,
+        caoa.current_node                         AS 	caoa_current_node,
+        caoa.approve_result                       AS 	caoa_approve_result,
+        caoa.current_account_open_step            AS 	caoa_current_account_open_step,
+        caoa.current_account_open_step_status     AS 	caoa_current_account_open_step_status,
+        caoa.account_open_result_status           AS 	caoa_account_open_result_status,
+        caoa.last_approval_user                   AS 	caoa_last_approval_user,
+        caoa.approval_opinion                     AS 	caoa_approval_opinion,
+        caoa.error_images                         AS 	caoa_error_images,
+        caoa.error_content_types                  AS 	caoa_error_content_types,
+        caoa.callback_status                      AS 	caoa_callback_status,
+        caoa.status                               AS 	caoa_status,
+        caoa.instance_id                          AS 	caoa_instance_id,
+        caoa.defid                                AS 	caoa_defid,
+        caoa.start_user_id                        AS 	caoa_start_user_id,
+        caoa.create_user                          AS 	caoa_create_user,
+        caoa.update_user                          AS 	caoa_update_user,
+        caoa.start_time                           AS 	caoa_start_time,
+        caoa.remark                               AS 	caoa_remark,
+        caoa.act_result                           AS 	caoa_act_result,
+        caoa.application_status                           AS 	caoa_application_status,
+        caoa.is_back                           AS 	caoa_is_back,
+        caoa.flow_path                           AS 	caoa_flow_path,
+        caoa.assign_drafter                       AS 	caoa_assign_drafter,
+        caoa.create_time                          AS 	caoa_create_time,
+        caoa.update_time                          AS 	caoa_update_time,
+        caoa.fire_aid                          AS 	caoa_fire_aid,
+        caoa.other_reasons                     as caoa_other_reasons,
+        caoa.is_exp_excel                      as caoa_is_exp_excel,
+        caoi.id                                                 as caoi_id,
+        caoi.application_id                                     as caoi_application_id,
+        caoi.open_account_type                                  as caoi_open_account_type,
+        caoi.open_account_access_way                            as caoi_open_account_access_way,
+        caoi.fund_account_type                                  as caoi_fund_account_type,
+        caoi.source_channel_id                                  as caoi_source_channel_id,
+        uci.channel_name                                as caoi_source_channel_name,
+        caoi.user_id                                            as caoi_user_id,
+        caoi.inviter_id                                         as caoi_inviter_id,
+        caoi.client_id                                          as caoi_client_id,
+        caoi.fund_account                                       as caoi_fund_account,
+        caoi.client_name                                        as caoi_client_name,
+        caoi.family_name                                        as caoi_family_name,
+        caoi.given_name                                         as caoi_given_name,
+        caoi.client_name_spell                                  as caoi_client_name_spell,
+        caoi.given_name_spell                                   as caoi_given_name_spell,
+        caoi.family_name_spell                                  as caoi_family_name_spell,
+        caoi.id_kind                                            as caoi_id_kind,
+        caoi.id_no                                              as caoi_id_no,
+        caoi.sex                                                as caoi_sex,
+        caoi.birthday                                           as caoi_birthday,
+        caoi.id_card_address                                    as caoi_id_card_address,
+        caoi.id_card_valid_date_start                           as caoi_id_card_valid_date_start,
+        caoi.id_card_valid_date_end                             as caoi_id_card_valid_date_end,
+        caoi.identity_similarity_percent                        as caoi_identity_similarity_percent,
+        caoi.is_pass_identity_authentication                    as caoi_is_pass_identity_authentication,
+        caoi.bank_id                                            as caoi_bank_id,
+        caoi.bank_no                                            as caoi_bank_no,
+        caoi.bank_account_name                                  as caoi_bank_account_name,
+        caoi.nationality                                        as caoi_nationality,
+        caoi.is_american_green_card_holder                      as caoi_is_american_green_card_holder,
+        caoi.contact_province_name                              as caoi_contact_province_name,
+        caoi.contact_city_name                                  as caoi_contact_city_name,
+        caoi.contact_county_name                                as caoi_contact_county_name,
+        caoi.contact_detail_address                             as caoi_contact_detail_address,
+        caoi.family_address                                     as caoi_family_address,
+        caoi.contact_address                                    as caoi_contact_address,
+        caoi.email                                              as caoi_email,
+        caoi.phone_number                                       as caoi_phone_number,
+        caoi.profession_code                                    as caoi_profession_code,
+        caoi.profession_type                                    as caoi_profession_type,
+        caoi.company_name                                       as caoi_company_name,
+        caoi.company_address                                    as caoi_company_address,
+        caoi.company_phone_number                               as caoi_company_phone_number,
+        caoi.job_position                                       as caoi_job_position,
+        caoi.industry_range                                     as caoi_industry_range,
+        caoi.capital_source                                     as caoi_capital_source,
+        caoi.annual_income                                      as caoi_annual_income,
+        caoi.invest_target                                      as caoi_invest_target,
+        caoi.invest_target_other                                as caoi_invest_target_other,
+        caoi.stocks_investment_experience_type                  as caoi_stocks_investment_experience_type,
+        caoi.warrants_investment_experience_type                as caoi_warrants_investment_experience_type,
+        caoi.futures_investment_experience_type                 as caoi_futures_investment_experience_type,
+        caoi.is_know_derivative_products                        as caoi_is_know_derivative_products,
+        caoi.derivative_products_study_type                     as caoi_derivative_products_study_type,
+        caoi.derivative_products_study_type_other               as caoi_derivative_products_study_type_other,
+        caoi.financing_institution_work_experience_type         as caoi_financing_institution_work_experience_type,
+        caoi.financing_institution_work_experience_type_other   as caoi_financing_institution_work_experience_type_other,
+        caoi.is_traded_derivative_products                      as caoi_is_traded_derivative_products,
+        caoi.is_open_usa_stock_market                           as caoi_is_open_usa_stock_market,
+        caoi.is_open_hk_stock_market                            as caoi_is_open_hk_stock_market,
+        caoi.is_allow_provide_privacy                           as caoi_is_allow_provide_privacy,
+        caoi.is_aml_suspicious                                  as caoi_is_aml_suspicious,
+        caoi.is_allow_derivatives_transaction                   as caoi_is_allow_derivatives_transaction,
+        caoi.initial_account_password                           as caoi_initial_account_password,
+        caoi.open_account_time                                  as caoi_open_account_time,
+        caoi.application_time                                   as caoi_application_time,
+        caoi.create_time                                        as caoi_create_time,
+        caoi.update_time                                        as caoi_update_time,
+        caoi.record_status                                      as caoi_record_status,
+        caoi.bank_type                                          as caoi_bank_type,
+        caoi.account_level                                      as caoi_account_level,
+        caoi.nation                                             as caoi_nation,
+        caoi.signing_organization                               as caoi_signing_organization,
+        caoi.accept_risk                                        as caoi_accept_risk,
+        caoi.lan                                                as caoi_lan,
+        caoi.account_type                                       as caoi_account_type,
+        caoi.family_phone                                       as caoi_family_phone,
+        caoi.education_level                                    as caoi_education_level,
+        caoi.working_seniority                                  as caoi_working_seniority,
+        caoi.other_profession                                   as caoi_other_profession,
+        caoi.is_bankrupted                                      as caoi_is_bankrupted,
+        caoi.d_statement_receive_mode                           as caoi_d_statement_receive_mode,
+        caoi.unit_trusts_experience                             as caoi_unit_trusts_experience,
+        caoi.other_products_experience                          as caoi_other_products_experience,
+        caoi.other_products_name                                as caoi_other_products_name,
+        caoi.options_experience                                 as caoi_options_experience,
+        caoi.trade_stock_frequency                              as caoi_trade_stock_frequency,
+        caoi.trade_warrants_frequency                           as caoi_trade_warrants_frequency,
+        caoi.trade_options_frequency                            as caoi_trade_options_frequency,
+        caoi.trade_futures_frequency                            as caoi_trade_futures_frequency,
+        caoi.trade_unit_trusts_frequency                        as caoi_trade_unit_trusts_frequency,
+        caoi.trade_other_products_frequency                     as caoi_trade_other_products_frequency,
+        caoi.is_open_options                                    as caoi_is_open_options,
+        caoi.options_acc_usage_scenarios                        as caoi_options_acc_usage_scenarios,
+        caoi.is_open_futures                                    as caoi_is_open_futures,
+        caoi.futures_acc_usage_scenarios                        as caoi_futures_acc_usage_scenarios,
+        caoi.futures_trade_account                              as caoi_futures_trade_account,
+        caoi.stock_trade_account                                as caoi_stock_trade_account,
+        caoi.contact_phone                                      as caoi_contact_phone,
+        caoi.bank_currency                                      as caoi_bank_currency,
+        caoi.investment_horizon                                 as caoi_investment_horizon,
+        caoi.credit_quota                                       as caoi_credit_quota,
+        caoi.credit_ratio                                       as caoi_credit_ratio
+ 	</sql>
+
+    <sql id="Base_Column_List2">
+	 	caoa.id                                   AS    caoa_id,
+        caoa.application_id                       AS 	caoa_application_id,
+        caoa.application_title                    AS	caoa_application_title,
+        caoa.current_node                         AS 	caoa_current_node,
+        caoa.approve_result                       AS 	caoa_approve_result,
+        caoa.current_account_open_step            AS 	caoa_current_account_open_step,
+        caoa.current_account_open_step_status     AS 	caoa_current_account_open_step_status,
+        caoa.account_open_result_status           AS 	caoa_account_open_result_status,
+        caoa.last_approval_user                   AS 	caoa_last_approval_user,
+        caoa.approval_opinion                     AS 	caoa_approval_opinion,
+        caoa.error_images                         AS 	caoa_error_images,
+        caoa.error_content_types                  AS 	caoa_error_content_types,
+        caoa.callback_status                      AS 	caoa_callback_status,
+        caoa.status                               AS 	caoa_status,
+        caoa.instance_id                          AS 	caoa_instance_id,
+        caoa.defid                                AS 	caoa_defid,
+        caoa.start_user_id                        AS 	caoa_start_user_id,
+        caoa.create_user                          AS 	caoa_create_user,
+        caoa.update_user                          AS 	caoa_update_user,
+        caoa.start_time                           AS 	caoa_start_time,
+        caoa.remark                               AS 	caoa_remark,
+        caoa.act_result                           AS 	caoa_act_result,
+        caoa.application_status                           AS 	caoa_application_status,
+        caoa.is_back                           AS 	caoa_is_back,
+        caoa.flow_path                           AS 	caoa_flow_path,
+        caoa.assign_drafter                       AS 	caoa_assign_drafter,
+        caoa.create_time                          AS 	caoa_create_time,
+        caoa.update_time                          AS 	caoa_update_time,
+        caoa.fire_aid                          AS 	caoa_fire_aid,
+        caoa.other_reasons                     as caoa_other_reasons,
+        caoa.is_exp_excel                      as caoa_is_exp_excel,
+        caoi.id                                                 as caoi_id,
+        caoi.application_id                                     as caoi_application_id,
+        caoi.open_account_type                                  as caoi_open_account_type,
+        caoi.open_account_access_way                            as caoi_open_account_access_way,
+        caoi.fund_account_type                                  as caoi_fund_account_type,
+        caoi.source_channel_id                                  as caoi_source_channel_id,
+        caoi.user_id                                            as caoi_user_id,
+        caoi.inviter_id                                         as caoi_inviter_id,
+        caoi.client_id                                          as caoi_client_id,
+        caoi.fund_account                                       as caoi_fund_account,
+        caoi.client_name                                        as caoi_client_name,
+        caoi.family_name                                        as caoi_family_name,
+        caoi.given_name                                         as caoi_given_name,
+        caoi.client_name_spell                                  as caoi_client_name_spell,
+        caoi.given_name_spell                                   as caoi_given_name_spell,
+        caoi.family_name_spell                                  as caoi_family_name_spell,
+        caoi.id_kind                                            as caoi_id_kind,
+        caoi.id_no                                              as caoi_id_no,
+        caoi.sex                                                as caoi_sex,
+        caoi.birthday                                           as caoi_birthday,
+        caoi.id_card_address                                    as caoi_id_card_address,
+        caoi.id_card_valid_date_start                           as caoi_id_card_valid_date_start,
+        caoi.id_card_valid_date_end                             as caoi_id_card_valid_date_end,
+        caoi.identity_similarity_percent                        as caoi_identity_similarity_percent,
+        caoi.is_pass_identity_authentication                    as caoi_is_pass_identity_authentication,
+        caoi.bank_id                                            as caoi_bank_id,
+        caoi.bank_no                                            as caoi_bank_no,
+        caoi.bank_account_name                                  as caoi_bank_account_name,
+        caoi.nationality                                        as caoi_nationality,
+        caoi.is_american_green_card_holder                      as caoi_is_american_green_card_holder,
+        caoi.contact_province_name                              as caoi_contact_province_name,
+        caoi.contact_city_name                                  as caoi_contact_city_name,
+        caoi.contact_county_name                                as caoi_contact_county_name,
+        caoi.contact_detail_address                             as caoi_contact_detail_address,
+        caoi.family_address                                     as caoi_family_address,
+        caoi.contact_address                                    as caoi_contact_address,
+        caoi.email                                              as caoi_email,
+        caoi.phone_number                                       as caoi_phone_number,
+        caoi.profession_code                                    as caoi_profession_code,
+        caoi.profession_type                                    as caoi_profession_type,
+        caoi.company_name                                       as caoi_company_name,
+        caoi.company_address                                    as caoi_company_address,
+        caoi.company_phone_number                               as caoi_company_phone_number,
+        caoi.job_position                                       as caoi_job_position,
+        caoi.industry_range                                     as caoi_industry_range,
+        caoi.capital_source                                     as caoi_capital_source,
+        caoi.annual_income                                      as caoi_annual_income,
+        caoi.invest_target                                      as caoi_invest_target,
+        caoi.invest_target_other                                as caoi_invest_target_other,
+        caoi.stocks_investment_experience_type                  as caoi_stocks_investment_experience_type,
+        caoi.warrants_investment_experience_type                as caoi_warrants_investment_experience_type,
+        caoi.futures_investment_experience_type                 as caoi_futures_investment_experience_type,
+        caoi.is_know_derivative_products                        as caoi_is_know_derivative_products,
+        caoi.derivative_products_study_type                     as caoi_derivative_products_study_type,
+        caoi.derivative_products_study_type_other               as caoi_derivative_products_study_type_other,
+        caoi.financing_institution_work_experience_type         as caoi_financing_institution_work_experience_type,
+        caoi.financing_institution_work_experience_type_other   as caoi_financing_institution_work_experience_type_other,
+        caoi.is_traded_derivative_products                      as caoi_is_traded_derivative_products,
+        caoi.is_open_usa_stock_market                           as caoi_is_open_usa_stock_market,
+        caoi.is_open_hk_stock_market                            as caoi_is_open_hk_stock_market,
+        caoi.is_allow_provide_privacy                           as caoi_is_allow_provide_privacy,
+        caoi.is_aml_suspicious                                  as caoi_is_aml_suspicious,
+        caoi.is_allow_derivatives_transaction                   as caoi_is_allow_derivatives_transaction,
+        caoi.initial_account_password                           as caoi_initial_account_password,
+        caoi.open_account_time                                  as caoi_open_account_time,
+        caoi.application_time                                   as caoi_application_time,
+        caoi.create_time                                        as caoi_create_time,
+        caoi.update_time                                        as caoi_update_time,
+        caoi.record_status                                      as caoi_record_status,
+        caoi.bank_type                                          as caoi_bank_type,
+        caoi.account_level                                      as caoi_account_level,
+        caoi.nation                                             as caoi_nation,
+        caoi.signing_organization                               as caoi_signing_organization,
+        caoi.accept_risk                                        as caoi_accept_risk,
+        caoi.lan                                                as caoi_lan,
+        caoi.account_type                                       as caoi_account_type,
+        caoi.family_phone                                       as caoi_family_phone,
+        caoi.education_level                                    as caoi_education_level,
+        caoi.working_seniority                                  as caoi_working_seniority,
+        caoi.other_profession                                   as caoi_other_profession,
+        caoi.is_bankrupted                                      as caoi_is_bankrupted,
+        caoi.d_statement_receive_mode                           as caoi_d_statement_receive_mode,
+        caoi.unit_trusts_experience                             as caoi_unit_trusts_experience,
+        caoi.other_products_experience                          as caoi_other_products_experience,
+        caoi.other_products_name                                as caoi_other_products_name,
+        caoi.options_experience                                 as caoi_options_experience,
+        caoi.trade_stock_frequency                              as caoi_trade_stock_frequency,
+        caoi.trade_warrants_frequency                           as caoi_trade_warrants_frequency,
+        caoi.trade_options_frequency                            as caoi_trade_options_frequency,
+        caoi.trade_futures_frequency                            as caoi_trade_futures_frequency,
+        caoi.trade_unit_trusts_frequency                        as caoi_trade_unit_trusts_frequency,
+        caoi.trade_other_products_frequency                     as caoi_trade_other_products_frequency,
+        caoi.is_open_options                                    as caoi_is_open_options,
+        caoi.options_acc_usage_scenarios                        as caoi_options_acc_usage_scenarios,
+        caoi.is_open_futures                                    as caoi_is_open_futures,
+        caoi.futures_acc_usage_scenarios                        as caoi_futures_acc_usage_scenarios,
+        caoi.futures_trade_account                              as caoi_futures_trade_account,
+        caoi.stock_trade_account                                as caoi_stock_trade_account,
+        caoi.contact_phone                                      as caoi_contact_phone,
+        caoi.bank_currency                                      as caoi_bank_currency,
+        caoi.investment_horizon                                 as caoi_investment_horizon,
+        caoi.credit_quota                                       as caoi_credit_quota,
+        caoi.credit_ratio                                       as caoi_credit_ratio
+ 	</sql>
+
+    <sql id="Base_Where_Conditions">
+        <!--<if test ="param != null">-->
+        <if test="id != null">
+            <![CDATA[ and id = #{id}]]>
+        </if>
+        <if test="applicationId != null">
+            <![CDATA[ and application_id = #{applicationId}]]>
+        </if>
+        <if test="applicationTitle != null">
+            <![CDATA[ and application_title = #{applicationTitle}]]>
+        </if>
+        <if test="currentNode != null">
+            <![CDATA[ and current_node = #{currentNode}]]>
+        </if>
+        <if test="approveResult != null">
+            <![CDATA[ and approve_result = #{approveResult}]]>
+        </if>
+        <if test="currentAccountOpenStep != null">
+            <![CDATA[ and current_account_open_step = #{currentAccountOpenStep}]]>
+        </if>
+        <if test="currentAccountOpenStepStatus != null">
+            <![CDATA[ and current_account_open_step_status = #{currentAccountOpenStepStatus}]]>
+        </if>
+        <if test="accountOpenResultStatus != null">
+            <![CDATA[ and account_open_result_status = #{accountOpenResultStatus}]]>
+        </if>
+        <if test="lastApprovalUser != null">
+            <![CDATA[ and last_approval_user = #{lastApprovalUser}]]>
+        </if>
+        <if test="assignDrafter != null">
+            <![CDATA[ and assign_drafter = #{assignDrafter}]]>
+        </if>
+        <if test="approvalOpinion != null">
+            <![CDATA[ and approval_opinion = #{approvalOpinion}]]>
+        </if>
+        <if test="errorImages != null">
+            <![CDATA[ and error_images = #{errorImages}]]>
+        </if>
+        <if test="errorContentTypes != null">
+            <![CDATA[ and error_content_types = #{errorContentTypes}]]>
+        </if>
+        <if test="callbackStatus != null">
+            <![CDATA[ and callback_status = #{callbackStatus}]]>
+        </if>
+        <if test="status != null">
+            <![CDATA[ and status = #{status}]]>
+        </if>
+        <if test="instanceId != null">
+            <![CDATA[ and instance_id = #{instanceId}]]>
+        </if>
+        <if test="defid != null">
+            <![CDATA[ and defid = #{defid}]]>
+        </if>
+        <if test="startUserId != null">
+            <![CDATA[ and start_user_id = #{startUserId}]]>
+        </if>
+        <if test="createId != null">
+            <![CDATA[ and create_user = #{createUser}]]>
+        </if>
+        <if test="updateId != null">
+            <![CDATA[ and update_user = #{updateUser}]]>
+        </if>
+        <if test="startTime != null">
+            <![CDATA[ and start_time = #{startTime}]]>
+        </if>
+        <if test="createTime != null">
+            <![CDATA[ and create_time = #{createTime}]]>
+        </if>
+        <if test="updateTime != null">
+            <![CDATA[ and update_time = #{updateTime}]]>
+        </if>
+        <if test="remark != null">
+            <![CDATA[ and remark = #{remark}]]>
+        </if>
+        <if test="actResult != null">
+            <![CDATA[ and act_result = #{actResult}]]>
+        </if>
+        <if test="applicationStatus != null">
+            <![CDATA[ and application_status = #{applicationStatus}]]>
+        </if>
+        <if test="isBack != null">
+            <![CDATA[ and is_back = #{isBack}]]>
+        </if>
+        <if test="flowPath != null">
+            <![CDATA[ and flow_path = #{flowPath}]]>
+        </if>
+        <if test="isExpExcel != null">
+            <![CDATA[ and is_exp_excel = #{isExpExcel}]]>
+        </if>
+    </sql>
+
+    <sql id="Base_Where_Conditions2">
+        caoa.application_id = caoi.application_id
+        <if test="status != null">
+            <![CDATA[ and caoa.status = #{status}]]>
+        </if>
+        <if test="businessCode != null">
+            <![CDATA[ and caoa.code = #{businessCode}]]>
+        </if>
+        <if test="actResult != null">
+            <![CDATA[ and caoa.act_result = #{actResult}]]>
+        </if>
+        <if test="accountOpenResultStatus != null">
+            <![CDATA[ and caoa.account_open_result_status = #{accountOpenResultStatus}]]>
+        </if>
+        <if test="customerAccountOpenInfoId != null">
+            <![CDATA[ and caoi.customer_account_open_info_id = #{customerAccountOpenInfoId}]]>
+        </if>
+        <if test="applicationId != null">
+            <![CDATA[ and caoa.application_id = #{applicationId}]]>
+        </if>
+        <if test="isExpExcel !=null">
+            <![CDATA[ and caoa.is_exp_excel = #{isExpExcel}]]>
+        </if>
+        <if test="userId != null">
+            <![CDATA[ and caoi.user_id = #{userId}]]>
+        </if>
+        <if test="clientName != null">
+            <![CDATA[ and caoi.client_name = #{clientName}]]>
+        </if>
+        <if test="idNo != null">
+            <![CDATA[ and caoi.id_no = #{idNo}]]>
+        </if>
+        <if test="email != null">
+            <![CDATA[ and caoi.email = #{email}]]>
+        </if>
+        <if test="phoneNumber != null">
+            <![CDATA[ and caoi.phone_number = #{phoneNumber}]]>
+        </if>
+        <if test="sourceChannelId != null">
+            <![CDATA[ and caoi.source_channel_id = #{sourceChannelId}]]>
+        </if>
+        <if test="sourceChannelName != null">
+            <![CDATA[ and uci.channel_name = #{sourceChannelName}]]>
+        </if>
+        <if test="clientId != null">
+        <![CDATA[ and caoi.client_id = #{clientId}]]>
+        </if>
+        <if test="applicationTimeStart != null">
+            <![CDATA[ and caoi.application_time >= #{applicationTimeStart}]]>
+        </if>
+        <if test="applicationTimeEnd != null">
+            <![CDATA[ and caoi.application_time <= #{applicationTimeEnd}]]>
+        </if>
+        <if test="recordStatus != null">
+            <![CDATA[ and caoa.record_status = #{recordStatus}]]>
+        </if>
+        <if test="assignDrafter != null">
+            <![CDATA[ and caoa.assign_drafter = #{assignDrafter}]]>
+        </if>
+        <if test="currentNode != null">
+            <![CDATA[ and caoa.current_node = #{currentNode}]]>
+        </if>
+        <if test="isBack != null">
+            <![CDATA[ and caoa.is_back = #{isBack}]]>
+        </if>
+        <if test="applicationStatus != null">
+            <![CDATA[ and caoa.application_status = #{applicationStatus}]]>
+        </if>
+        <if test="bankType !=null">
+            <![CDATA[ and caoi.bank_type = #{bankType}]]>
+        </if>
+        <if test="idKind !=null">
+            <![CDATA[ and caoi.id_kind = #{idKind}]]>
+        </if>
+        <if test="accountLevel != null">
+            <![CDATA[ and caoi.account_level = #{accountLevel}]]>
+        </if>
+        <if test="openAccountType == 0">
+             and caoi.open_account_type = 0
+        </if>
+        <if test="openAccountType == 1">
+             and caoi.open_account_type = 1
+        </if>
+        <if test="openAccountType == 2">
+            and caoi.open_account_type = 2
+        </if>
+        <if test="openAccountType == 3">
+            and caoi.open_account_type = 3
+        </if>
+        <if test="openAccountType == 4">
+            and caoi.open_account_type = 1 and bank_type =0
+        </if>
+        <if test="openAccountType == 5">
+            and caoi.open_account_type = 1 and bank_type =1 and application_time &lt; '2019-01-12 16:30:00'
+        </if>
+        <if test="openAccountType == 6">
+            and caoi.open_account_type = 1 and bank_type =1 and application_time &gt;= '2019-01-12 16:30:00'
+        </if>
+    </sql>
+
+    <sql id="Base_Where_Conditions3">
+        caoa.application_id = caoi.application_id
+        <if test="status != null">
+            <![CDATA[ and caoa.status = #{status}]]>
+        </if>
+        <if test="channelIds != null">
+            and caoi.source_channel_id in
+            <foreach item="channelId" index="index" collection="channelIds"
+                     open="(" separator="," close=")">
+                #{channelId}
+            </foreach>
+            <![CDATA[ and caoa.act_result = #{actResult}]]>
+        </if>
+        <if test="customerServiceId != null">
+            <![CDATA[ and caoa.assign_drafter = #{customerServiceId}]]>
+        </if>
+        <if test="applicationStartTime != null">
+            <![CDATA[ and caoi.application_time > #{applicationStartTime}]]>
+        </if>
+        <if test="applicationEndTime != null">
+            <![CDATA[ and caoi.application_time < #{applicationEndTime}]]>
+        </if>
+        <if test="distributeType == 2">
+            <![CDATA[ and caoi.application_time < #{applicationEndTime}]]>
+        </if>
+        <if test="distributeType == 3">
+            <![CDATA[ and caoi.application_time < #{applicationEndTime}]]>
+        </if>
+        <choose>
+            <when test="distributeType == 2">
+                and caoa.assign_drafter is null
+            </when>
+            <when test="distributeType == 3">
+                and caoa.assign_drafter is not null
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+    </sql>
+    
+      <sql id="Base_Where_Conditions4">
+        caoa.application_id = caoi.application_id AND caoa.application_status in (1,2,3)
+        <!-- A修改資料，補充資料后不能申領 -->
+        and not EXISTS(
+				select a.* from open_account_process_log as a where id = (select max(id) from open_account_process_log b where a.application_id=b.application_id)
+				and caoa.application_id = a.application_id
+				and (a.is_edit = '1' or a.is_additional = '1')
+				and a.update_user =#{updateUser})
+        
+        <if test="status != null">
+            <![CDATA[ and caoa.status = #{status}]]>
+        </if>
+        <if test="businessCode != null">
+            <![CDATA[ and caoa.code = #{businessCode}]]>
+        </if>
+        <if test="actResult != null">
+            <![CDATA[ and caoa.act_result = #{actResult}]]>
+        </if>
+        <if test="accountOpenResultStatus != null">
+            <![CDATA[ and caoa.account_open_result_status = #{accountOpenResultStatus}]]>
+        </if>
+        <if test="customerAccountOpenInfoId != null">
+            <![CDATA[ and caoi.customer_account_open_info_id = #{customerAccountOpenInfoId}]]>
+        </if>
+        <if test="applicationId != null">
+            <![CDATA[ and caoa.application_id = #{applicationId}]]>
+        </if>
+        <if test="userId != null">
+            <![CDATA[ and caoi.user_id = #{userId}]]>
+        </if>
+        <if test="clientName != null">
+            <![CDATA[ and caoi.client_name = #{clientName}]]>
+        </if>
+        <if test="idNo != null">
+            <![CDATA[ and caoi.id_no = #{idNo}]]>
+        </if>
+        <if test="idKind != null">
+            <![CDATA[ and caoi.id_kind = #{idKind}]]>
+        </if>
+        <if test="email != null">
+            <![CDATA[ and caoi.email = #{email}]]>
+        </if>
+        <if test="phoneNumber != null">
+            <![CDATA[ and caoi.phone_number = #{phoneNumber}]]>
+        </if>
+          <if test="sourceChannelId != null">
+              <![CDATA[ and caoi.source_channel_id = #{sourceChannelId}]]>
+          </if>
+        <if test="sourceChannelName != null">
+            <![CDATA[ and uci.channel_name = #{sourceChannelName}]]>
+        </if>
+        <!--<if test="clientId != null">-->
+        <!--<![CDATA[ and caoi.client_id = #{clientId}]]>-->
+        <!--</if>-->
+        <if test="applicationTimeStart != null">
+            <![CDATA[ and caoi.application_time >= #{applicationTimeStart}]]>
+        </if>
+        <if test="applicationTimeEnd != null">
+            <![CDATA[ and caoi.application_time <= #{applicationTimeEnd}]]>
+        </if>
+        <if test="recordStatus != null">
+            <![CDATA[ and caoa.record_status = #{recordStatus}]]>
+        </if>
+        <if test="assignDrafter != null">
+            <![CDATA[ and (caoa.assign_drafter = #{assignDrafter} || assign_drafter is null) ]]>
+        </if>
+          <if test="currentNode != null">
+              <![CDATA[ and caoa.current_node = #{currentNode} ]]>
+          </if>
+          <if test="currentNodes != null and currentNodes.indexOf('终审') != -1">
+              <![CDATA[
+           AND NOT EXISTS (SELECT 1 FROM extend_act_tasklog WHERE task_name IN ('复审') AND bus_id=caoa.application_id AND deal_id =#{assignDrafter} AND task_name != caoa.current_node)
+               ]]>
+          </if>
+        <if test="currentNodes != null">
+            <if test="currentNodes.size==0">
+                and caoa.current_node = null
+            </if>
+          <if test="currentNodes.size!=0">
+            and caoa.current_node in
+            <foreach item="item" index="index" collection="currentNodes" open="(" separator="," close=")">
+                #{currentNodes[${index}]}
+            </foreach>
+          </if>
+
+        </if>
+        <if test="isBack != null">
+            <![CDATA[ and caoa.is_back = #{isBack}]]>
+        </if>       
+        <if test="bankType != null">
+            <![CDATA[ and caoi.bank_type = #{bankType}]]>
+        </if>
+
+          <if test="openAccountType == 0">
+              and caoi.open_account_type = 0
+          </if>
+          <if test="openAccountType == 1">
+              and caoi.open_account_type = 1
+          </if>
+          <if test="openAccountType == 3">
+              and caoi.open_account_type = 3
+          </if>
+          <if test="openAccountType == 4">
+              and caoi.open_account_type = 1 and bank_type =0
+          </if>
+          <if test="openAccountType == 5">
+              and caoi.open_account_type = 1 and bank_type =1 and application_time &lt;= '2019-01-12 16:30:00'
+          </if>
+          <if test="openAccountType == 6">
+              and caoi.open_account_type = 1 and bank_type =1 and application_time &gt;= '2019-01-12 16:30:00'
+          </if>
+
+          <if test="openAccountType == 2">
+              and caoi.open_account_type = 2
+          </if>
+
+          <!-- 线下开户除当前用户录入不能查询出来，系统管理员除外 and updateUser !='026a564bbfd84861ac4b65393644beef'-->
+          <if test="openAccountType == 2 and updateUser !='026a564bbfd84861ac4b65393644beef' ">
+              <![CDATA[ and ((caoi.open_account_type ='2' and caoa.application_status ='2'
+           AND (caoa.start_user_id <>#{updateUser} or caoa.update_user is null))
+            or (caoi.open_account_type ='2' and caoa.application_status ='3'))]]>
+          </if>
+    </sql>
+
+    <select id="selectAccountOpenApplicationDetailInfo" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="com.sunline.modules.account.online.model.AccountOpenApplyQuery" >
+        SELECT
+        	<include refid="Base_Column_List1"/>        
+        FROM customer_account_open_application caoa,customer_account_open_info caoi
+        LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
+        <where>
+            <include refid="Base_Where_Conditions2"/>
+        </where>
+        ORDER  by caoi.application_time DESC
+    </select>
+
+    <select id="selectUnProcessAccountOpenApplicationRecord" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="com.sunline.modules.account.online.model.query.AccountOpenApplyAllotQuery" >
+        select
+        caoa.id                          AS caoa_id,
+        caoa.application_id               AS caoa_application_id,
+        caoa.application_title               AS caoa_application_title,
+        caoa.current_node               AS caoa_current_node,
+        caoa.approve_result               AS caoa_approve_result,
+        caoa.current_account_open_step               AS caoa_current_account_open_step,
+        caoa.current_account_open_step_status               AS caoa_current_account_open_step_status,
+        caoa.account_open_result_status               AS caoa_account_open_result_status,
+        caoa.last_approval_user               AS caoa_last_approval_user,
+        caoa.approval_opinion               AS caoa_approval_opinion,
+        caoa.error_images               AS caoa_error_images,
+        caoa.error_content_types               AS caoa_error_content_types,
+        caoa.callback_status               AS caoa_callback_status,
+        caoa.STATUS               AS caoa_status,
+        caoa.instance_id               AS caoa_instance_id,
+        caoa.defid               AS caoa_defid,
+        caoa.start_user_id               AS caoa_start_user_id,
+        caoa.create_user               AS caoa_create_user,
+        caoa.update_user               AS caoa_update_user,
+        caoa.start_time              AS caoa_start_time,
+        caoa.remark               AS caoa_remark,
+        caoa.act_result               AS caoa_act_result,
+        caoa.assign_drafter               AS caoa_assign_drafter,
+        caoa.create_time               AS caoa_create_time,
+        caoa.update_time              AS caoa_update_time,
+        caoa.fire_aid              AS caoa_fire_aid,
+        caoa.is_exp_excel                      AS caoa_is_exp_excel,
+        caoi.id                                                 as caoi_id,
+        caoi.application_id                                     as caoi_application_id,
+        caoi.open_account_type                                  as caoi_open_account_type,
+        caoi.open_account_access_way                            as caoi_open_account_access_way,
+        caoi.fund_account_type                                  as caoi_fund_account_type,
+        caoi.source_channel_id                                  as caoi_source_channel_id,
+        caoi.channel_name                                as caoi_source_channel_name,
+        caoi.user_id                                            as caoi_user_id,
+        caoi.inviter_id                                         as caoi_inviter_id,
+        caoi.client_id                                          as caoi_client_id,
+        caoi.fund_account                                       as caoi_fund_account,
+        caoi.client_name                                        as caoi_client_name,
+        caoi.family_name                                        as caoi_family_name,
+        caoi.given_name                                         as caoi_given_name,
+        caoi.client_name_spell                                  as caoi_client_name_spell,
+        caoi.given_name_spell                                   as given_name_spell,
+        caoi.family_name_spell                                  as family_name_spell,
+        caoi.id_kind                                            as caoi_id_kind,
+        caoi.id_no                                              as caoi_id_no,
+        caoi.sex                                                as caoi_sex,
+        caoi.birthday                                           as caoi_birthday,
+        caoi.id_card_address                                    as caoi_id_card_address,
+        caoi.id_card_valid_date_start                           as caoi_id_card_valid_date_start,
+        caoi.id_card_valid_date_end                             as caoi_id_card_valid_date_end,
+        caoi.identity_similarity_percent                        as caoi_identity_similarity_percent,
+        caoi.is_pass_identity_authentication                    as caoi_is_pass_identity_authentication,
+        caoi.bank_id                                            as caoi_bank_id,
+        caoi.bank_no                                            as caoi_bank_no,
+        caoi.bank_account_name                                  as caoi_bank_account_name,
+        caoi.nationality                                        as caoi_nationality,
+        caoi.is_american_green_card_holder                      as caoi_is_american_green_card_holder,
+        caoi.contact_province_name                              as caoi_contact_province_name,
+        caoi.contact_city_name                                  as caoi_contact_city_name,
+        caoi.contact_county_name                                as caoi_contact_county_name,
+        caoi.contact_detail_address                             as caoi_contact_detail_address,
+        caoi.family_address                                     as caoi_family_address,
+        caoi.contact_address                                    as caoi_contact_address,
+        caoi.email                                              as caoi_email,
+        caoi.phone_number                                       as caoi_phone_number,
+        caoi.profession_code                                    as caoi_profession_code,
+        caoi.profession_type                                    as caoi_profession_type,
+        caoi.company_name                                       as caoi_company_name,
+        caoi.company_address                                    as caoi_company_address,
+        caoi.company_phone_number                               as caoi_company_phone_number,
+        caoi.job_position                                       as caoi_job_position,
+        caoi.industry_range                                     as caoi_industry_range,
+        caoi.capital_source                                     as caoi_capital_source,
+        caoi.annual_income                                      as caoi_annual_income,
+        caoi.invest_target                                      as caoi_invest_target,
+        caoi.invest_target_other                                as caoi_invest_target_other,
+        caoi.stocks_investment_experience_type                  as caoi_stocks_investment_experience_type,
+        caoi.warrants_investment_experience_type                as caoi_warrants_investment_experience_type,
+        caoi.futures_investment_experience_type                 as caoi_futures_investment_experience_type,
+        caoi.is_know_derivative_products                        as caoi_is_know_derivative_products,
+        caoi.derivative_products_study_type                     as caoi_derivative_products_study_type,
+        caoi.derivative_products_study_type_other               as caoi_derivative_products_study_type_other,
+        caoi.financing_institution_work_experience_type         as caoi_financing_institution_work_experience_type,
+        caoi.financing_institution_work_experience_type_other   as caoi_financing_institution_work_experience_type_other,
+        caoi.is_traded_derivative_products                      as caoi_is_traded_derivative_products,
+        caoi.is_open_usa_stock_market                           as caoi_is_open_usa_stock_market,
+        caoi.is_open_hk_stock_market                            as caoi_is_open_hk_stock_market,
+        caoi.is_allow_provide_privacy                           as caoi_is_allow_provide_privacy,
+        caoi.is_aml_suspicious                                  as caoi_is_aml_suspicious,
+        caoi.is_allow_derivatives_transaction                   as caoi_is_allow_derivatives_transaction,
+        caoi.initial_account_password                           as caoi_initial_account_password,
+        caoi.open_account_time                                  as caoi_open_account_time,
+        caoi.application_time                                   as caoi_application_time,
+        caoi.create_time                                        as caoi_create_time,
+        caoi.update_time                                        as caoi_update_time,
+        caoi.record_status                                      as caoi_record_status,
+        caoi.bank_type                                          as caoi_bank_type,
+        caoi.investment_horizon                                 as caoi_investment_horizon,
+        caoi.credit_quota                                       as caoi_credit_quota,
+        caoi.credit_ratio                                       as caoi_credit_ratio
+        FROM customer_account_open_application caoa,customer_account_open_info caoi
+        LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
+        WHERE caoa.application_id = caoi.application_id AND caoi.source_channel_id=uci.channel_id
+        <if test="status != null">
+            <![CDATA[ and caoa.status = #{status}]]>
+        </if>
+        <if test="approveResult != null">
+            <![CDATA[ and caoa.approve_result = #{status}]]>
+        </if>
+        <if test="channelIds != null">
+            <if test="channelIds.size > 0">
+                and caoi.source_channel_id in
+                <foreach item="item" index="index" collection="channelIds" open="(" separator="," close=")">
+                    ${item}
+                </foreach>
+            </if>
+        </if>
+        <if test="customerServiceId != null">
+            <![CDATA[ and caoa.assign_drafter = #{customerServiceId}]]>
+        </if>
+        <if test="applicationStartTime != null">
+            <![CDATA[ and caoi.application_time > #{applicationStartTime}]]>
+        </if>
+        <if test="applicationEndTime != null">
+            <![CDATA[ and caoi.application_time < #{applicationEndTime}]]>
+        </if>
+        <if test="currentNode != null">
+            <![CDATA[ and caoa.current_node = #{currentNode}]]>
+        </if>
+        <choose>
+            <when test="distributeType == 2">
+                and caoa.assign_drafter is null
+            </when>
+            <when test="distributeType == 3">
+                and caoa.assign_drafter is not null
+            </when>
+            <otherwise>
+
+            </otherwise>
+        </choose>
+        ORDER  by caoi.application_time asc
+    </select>
+
+    <select id="selectSelective" resultMap="customerAccountOpenApplicationMap" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from customer_account_open_application
+        <where>
+            <include refid="Base_Where_Conditions"/>
+        </where>
+    </select>
+
+    <select id="queryObject" resultType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap">
+        select
+        <include refid="Base_Column_List" />
+        from customer_account_open_application
+        where id  = #{value}
+    </select>
+    
+     <select id="queryObjectByApplicationId" resultType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap">
+        select
+        <include refid="Base_Column_List" />
+        from customer_account_open_application
+        where  application_id = #{applicationId}
+    </select>
+
+    <select id="queryList" resultType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap">
+        select
+        <include refid="Base_Column_List" />
+        from customer_account_open_application
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap">
+        select
+        <include refid="Base_Column_List" />
+        from customer_account_open_application
+        <where>
+            <include refid="Base_Where_Conditions"/>
+        </where>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from customer_account_open_application
+    </select>
+
+    <insert id="save" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
+		insert into customer_account_open_application
+		(
+			`application_id`,
+			`application_title`,
+			`current_node`,
+			`approve_result`,
+			`current_account_open_step`,
+			`current_account_open_step_status`,
+			`account_open_result_status`,
+			`last_approval_user`,
+			`approval_opinion`,
+			`error_images`,
+			`error_content_types`,
+			`callback_status`,
+			`STATUS`,
+			`instance_id`,
+			`defid`,
+			`code`,
+			`start_user_id`,
+			`create_user`,
+			`update_user`,
+			`start_time`,
+			`remark`,
+			`act_result`,
+			`application_status`,
+			`flow_path`,
+			`assign_drafter`,
+			`create_time`,
+			`update_time`,
+			`witness_user`,
+			`witnesses_type`,
+			`license_number`,
+			`submit_approval_user`,
+			`is_exp_excel`
+		)
+		values
+		(
+			#{applicationId},
+			#{applicationTitle},
+			#{currentNode},
+			#{approveResult},
+			#{currentAccountOpenStep},
+			#{currentAccountOpenStepStatus},
+			#{accountOpenResultStatus},
+			#{lastApprovalUser},
+			#{approvalOpinion},
+			#{errorImages},
+			#{errorContentTypes},
+			#{callbackStatus},
+			#{status},
+			#{instanceId},
+			#{defid},
+			#{code},
+			#{startUserId},
+			#{createUser},
+			#{updateUser},
+			#{startTime},
+			#{remark},
+			#{actResult},
+			#{applicationStatus},
+			#{flowPath},
+			#{assignDrafter},
+			#{createTime},
+			#{updateTime},
+			#{witnessUser},
+			#{witnessesType},
+			#{licenseNumber},
+			#{submitApprovalUser},
+			#{isExpExcel}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
+        update customer_account_open_application
+        <set>
+            <if test="applicationId != null">`application_id` = #{applicationId},</if>
+            <if test="applicationTitle != null">`application_title` = #{applicationTitle},</if>
+            <if test="currentNode != null">`current_node` = #{currentNode},</if>
+            <if test="approveResult != null">`approve_result` = #{approveResult},</if>
+            <if test="currentAccountOpenStep != null">`current_account_open_step` = #{currentAccountOpenStep},</if>
+            <if test="currentAccountOpenStepStatus != null">`current_account_open_step_status` =
+                #{currentAccountOpenStepStatus},
+            </if>
+            <if test="accountOpenResultStatus != null">`account_open_result_status` = #{accountOpenResultStatus},</if>
+            <if test="lastApprovalUser != null">`last_approval_user` = #{lastApprovalUser},</if>
+            <if test="approvalOpinion != null">`approval_opinion` = #{approvalOpinion},</if>
+            <if test="errorImages != null">`error_images` = #{errorImages},</if>
+            <if test="errorContentTypes != null">`error_content_types` = #{errorContentTypes},</if>
+            <if test="callbackStatus != null">`callback_status` = #{callbackStatus},</if>
+            <if test="status != null">`STATUS` = #{status},</if>
+            <if test="instanceId != null">`instance_id` = #{instanceId},</if>
+            <if test="defid != null">`defid` = #{defid},</if>
+            <if test="code != null">`code` = #{code},</if>
+            <if test="startUserId != null">`start_user_id` = #{startUserId},</if>
+            <if test="createUser != null">`create_user` = #{createUser},</if>
+            <if test="updateUser != null">`update_user` = #{updateUser},</if>
+            <if test="startTime != null">`start_time` = #{startTime},</if>
+            <if test="remark != null">`remark` = #{remark},</if>
+            <if test="actResult != null">`act_result` = #{actResult},</if>
+            <if test="applicationStatus != null">`application_status` = #{applicationStatus},</if>
+            <if test="isBack != null">`is_back` = #{isBack},</if>
+            <if test="flowPath != null">`flow_path` = #{flowPath},</if>
+            <if test="assignDrafter != null">`assign_drafter` = #{assignDrafter},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="witnessUser != null">`witness_user` = #{witnessUser},</if>
+            <if test="witnessesType != null">`witnesses_type` = #{witnessesType},</if>
+            <if test="licenseNumber != null">`license_number` = #{licenseNumber},</if>
+            <if test="fireAid != null">`fire_aid` = #{fireAid},</if>
+            <if test="submitApprovalUser != null">`submit_approval_user` = #{submitApprovalUser},</if>
+            <if test="otherReasons != null">`other_reasons` = #{otherReasons},</if>
+            <if test="isExpExcel != null">`is_exp_excel` = #{isExpExcel}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateAssignDrafter" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
+        update customer_account_open_application set assign_drafter=#{assignDrafter}
+        where id = #{id}	        
+    </update>
+
+   <update id="updateAssignDrafterByApplicationId" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
+        update customer_account_open_application set assign_drafter=#{assignDrafter}
+        where application_id = #{applicationId}	        
+    </update>
+    
+    <delete id="delete">
+        delete from customer_account_open_application where id = #{value}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from customer_account_open_application where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateByApplicationId" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
+        update customer_account_open_application
+        <set>
+            <if test="applicationId != null">`application_id` = #{applicationId},</if>
+            <if test="applicationTitle != null">`application_title` = #{applicationTitle},</if>
+            <if test="currentNode != null">`current_node` = #{currentNode},</if>
+            <if test="approveResult != null">`approve_result` = #{approveResult},</if>
+            <if test="currentAccountOpenStep != null">`current_account_open_step` = #{currentAccountOpenStep},</if>
+            <if test="currentAccountOpenStepStatus != null">`current_account_open_step_status` =
+                #{currentAccountOpenStepStatus},
+            </if>
+            <if test="accountOpenResultStatus != null">`account_open_result_status` = #{accountOpenResultStatus},</if>
+            <if test="lastApprovalUser != null">`last_approval_user` = #{lastApprovalUser},</if>
+            <if test="approvalOpinion != null">`approval_opinion` = #{approvalOpinion},</if>
+            <if test="errorImages != null">`error_images` = #{errorImages},</if>
+            <if test="errorContentTypes != null">`error_content_types` = #{errorContentTypes},</if>
+            <if test="callbackStatus != null">`callback_status` = #{callbackStatus},</if>
+            <if test="status != null">`STATUS` = #{status},</if>
+            <if test="instanceId != null">`instance_id` = #{instanceId},</if>
+            <if test="defid != null">`defid` = #{defid},</if>
+            <if test="startUserId != null">`start_user_id` = #{startUserId},</if>
+            <if test="createUser != null">`create_user` = #{createUser},</if>
+            <if test="updateUser != null">`update_user` = #{updateUser},</if>
+            <if test="startTime != null">`start_time` = #{startTime},</if>
+            <if test="remark != null">`remark` = #{remark},</if>
+            <if test="actResult != null">`act_result` = #{actResult},</if>
+            <if test="applicationStatus != null">`application_status` = #{applicationStatus},</if>
+            <if test="isBack != null">`is_back` = #{isBack},</if>
+            <if test="flowPath != null">`flow_path` = #{flowPath},</if>
+            <if test="assignDrafter != null">`assign_drafter` = #{assignDrafter},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="updateTime != null">`update_time` = #{updateTime},</if>
+            <if test="fireAid != null">`fire_aid` = #{fireAid},</if>
+            <if test="witnessUser != null">`witness_user` = #{witnessUser},</if>
+            <if test="witnessesType != null">`witnesses_type` = #{witnessesType},</if>
+            <if test="licenseNumber != null">`license_number` = #{licenseNumber},</if>
+            <if test="submitApprovalUser != null">`submit_approval_user` = #{submitApprovalUser},</if>
+            <if test="isExpExcel != null">`is_exp_excel` = #{isExpExcel}</if>
+        </set>
+        where application_id = #{applicationId}
+    </update>
+
+    <select id="selectAccountOpenApplicationDetailInfoCheck" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="com.sunline.modules.account.online.model.AccountOpenApplyQuery" >
+        select
+         	<include refid="Base_Column_List1"/>,
+            (SELECT COUNT(*) FROM customer_account_open_info WHERE user_id=caoi.user_id) AS application_count
+        from customer_account_open_application caoa,customer_account_open_info caoi
+        LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
+        <where>
+            <include refid="Base_Where_Conditions4"/>
+        </where>
+        ORDER BY
+        caoa.fire_aid DESC,
+        application_count DESC,
+        caoa.assign_drafter DESC,
+        caoi.application_time ASC
+    </select>
+
+    <update id="updateBatchByApplicationIds" parameterType="java.util.Map" >
+        UPDATE customer_account_open_application SET fire_aid = 1
+        WHERE application_id IN
+        <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+    </update>
+
+    <update id="updateBatchExpExcelStatus" parameterType="java.util.Map">
+        UPDATE customer_account_open_application SET is_exp_excel = 1
+        WHERE application_id IN
+        <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+    </update>
+
+    <select id="selectAccountOpenBackDetailInfo" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="com.sunline.modules.account.online.model.AccountOpenApplyQuery" >
+        SELECT
+        <include refid="Base_Column_List1"/>
+        FROM customer_account_open_application caoa
+        LEFT JOIN customer_account_open_info caoi ON caoa.application_id=caoi.application_id
+        LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
+        WHERE 1=1
+        AND caoa.application_status=#{applicationStatus}
+        AND NOT EXISTS (SELECT user_id FROM customer_account_open_info t1,customer_account_open_application t2
+        WHERE t2.application_id=t1.application_id AND t2.application_status != #{applicationStatus}  AND t1.user_id=caoi.user_id)
+        AND caoa.application_id IN
+        (SELECT MAX(t3.application_id) FROM customer_account_open_info t1,customer_account_open_application t3
+        WHERE t3.application_id=t1.application_id AND t3.application_status = #{applicationStatus}  AND t1.user_id=caoi.user_id)
+        ORDER  BY caoi.application_time DESC
+    </select>
+
+    <select id="selectAccOpenDetailInfoByApplicationIds" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="java.util.Map" >
+        SELECT
+        <include refid="Base_Column_List2"/>
+        FROM customer_account_open_application caoa
+        LEFT JOIN customer_account_open_info caoi ON caoa.application_id=caoi.application_id
+        WHERE caoa.application_id IN
+        <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
+            #{applicationId}
+        </foreach>
+    </select>
+
+    <select id="qryAbnormalData" resultMap="customerAccountOpenApplicationMap" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" >
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM customer_account_open_application
+        WHERE current_node='完成' AND flow_path LIKE '%初审-完成%'
+    </select>
+
+</mapper>

@@ -32,6 +32,7 @@ public interface CustomerAccOpenInfoService {
     int save(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
 
     int update(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
+
     int updateNoProduct(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
 
 
@@ -65,4 +66,11 @@ public interface CustomerAccOpenInfoService {
      * @return
      */
     int setTradeAccount(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
+
+    /**
+     * 更新margin信息
+     * @param customerAccountOpenInfo
+     * @return
+     */
+    int updateMarginInfo(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
 }

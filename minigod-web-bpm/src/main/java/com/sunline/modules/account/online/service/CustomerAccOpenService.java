@@ -33,10 +33,25 @@ public interface CustomerAccOpenService {
 
     String commitAccountOpenApplication(CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity, List<OpenAccountImageInfo> openAccountImagesInfo);
 
-    String commitAccountOpenApplication(CustomerAccOpenInfoModel customerAccountOpenInfoModel);
+    String commitAccountMarginOpenApplication(CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity);
 
+    /**
+     * 开户流程回调
+     * 正常开户
+     * @param customerAccountOpenApproveInfo
+     * @param processTaskDto
+     * @param task
+     */
     void approveCallback(CustomerAccOpenApproveInfo customerAccountOpenApproveInfo, ProcessTaskDto processTaskDto, Task task);
 
+    /**
+     * 停止开户流程
+     * 结束
+     * @param applicationInfo
+     * @param processTaskDto
+     * @param rejectType
+     * @return
+     */
     boolean terminateAccountOpenApplication(CustomerAccountOpenApplyEntity applicationInfo, ProcessTaskDto processTaskDto, int rejectType);
 
     Map<String, Integer> statisticsOpenAccountErrors(List<CustomerAccOpenDetailModel> accountsOpenInfo);
@@ -104,4 +119,27 @@ public interface CustomerAccOpenService {
     List<AccountOpenApplyDetailInfo> selectAccountOpenBackDetailInfo(AccountOpenApplyQuery accountOpenApplicationQuery);
 
     List<AccountOpenApplyDetailInfo> selectAccOpenDetailInfoByApplicationIds(String[] applicationIds);
+
+    /**
+     * 查询增开列表
+     * @param query
+     * @param pageNum
+     * @return
+     */
+    Page<AccountOpenApplyDetailInfo> findMarginPage(AccountOpenApplyQuery query, int pageNum);
+
+    /**
+     * 增开流程回调
+     * @param customerAccountOpenApproveInfo
+     * @param processTaskDto
+     * @param task
+     */
+    void approveMarginCallback(CustomerAccOpenApproveInfo customerAccountOpenApproveInfo, ProcessTaskDto processTaskDto, Task task);
+
+    /**
+     * 查询增开列表
+     * @param query
+     * @return
+     */
+    List<AccountOpenApplyDetailInfo> findMarginApplyList(AccountOpenApplyQuery query);
 }

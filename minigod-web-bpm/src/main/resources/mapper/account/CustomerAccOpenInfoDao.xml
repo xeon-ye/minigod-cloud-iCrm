@@ -132,6 +132,8 @@
 		<result property="contactPhone" column="contact_phone"/>
 		<result property="bankCurrency" column="bank_currency"/>
 		<result property="investmentHorizon" column="investment_horizon"/>
+		<result property="creditQuota" column="credit_quota"/>
+		<result property="creditRatio" column="credit_ratio"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -258,7 +260,9 @@
         stock_trade_account,
         contact_phone,
         bank_currency,
-        investment_horizon
+        investment_horizon,
+        credit_quota,
+        credit_ratio
     </sql>
 
     <sql id="Base_Where_Conditions">
@@ -483,7 +487,9 @@
             `stock_trade_account`,
             `contact_phone`,
             `bank_currency`,
-            `investment_horizon`
+            `investment_horizon`,
+            `credit_quota`,
+            `credit_ratio`
 		)
 		values
 		(
@@ -759,7 +765,9 @@
 			<if test="stockTradeAccount != null">`stock_trade_account` = #{stockTradeAccount},</if>
 			<if test="contactPhone != null">`contact_phone` = #{contactPhone},</if>
 			<if test="bankCurrency != null">`bank_currency` = #{bankCurrency},</if>
-			<if test="investmentHorizon != null">`investment_horizon` = #{investmentHorizon}</if>
+			<if test="investmentHorizon != null">`investment_horizon` = #{investmentHorizon},</if>
+			<if test="creditQuota != null">`credit_quota` = #{creditQuota},</if>
+			<if test="creditRatio != null">`credit_ratio` = #{creditRatio}</if>
         </set>
         where application_id = #{applicationId}
     </update>
@@ -900,7 +908,9 @@
 			<if test="stockTradeAccount != null">`stock_trade_account` = #{stockTradeAccount},</if>
 			<if test="contactPhone != null">`contact_phone` = #{contactPhone},</if>
 			<if test="bankCurrency != null">`bank_currency` = #{bankCurrency},</if>
-			<if test="investmentHorizon != null">`investment_horizon` = #{investmentHorizon}</if>
+			<if test="investmentHorizon != null">`investment_horizon` = #{investmentHorizon},</if>
+			<if test="creditQuota != null">`credit_quota` = #{creditQuota},</if>
+			<if test="creditRatio != null">`credit_ratio` = #{creditRatio}</if>
 		</set>
         where application_id = #{applicationId}
     </update>
@@ -961,6 +971,15 @@
         <set>
             <if test="futuresTradeAccount != null">`futures_trade_account` = #{futuresTradeAccount},</if>
             <if test="stockTradeAccount != null">`stock_trade_account` = #{stockTradeAccount}</if>
+        </set>
+        where application_id = #{applicationId}
+    </update>
+
+    <update id="updateMarginInfo" parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity">
+        update customer_account_open_info
+        <set>
+            <if test="creditQuota != null">`credit_quota` = #{creditQuota},</if>
+            <if test="creditRatio != null">`credit_ratio` = #{creditRatio}</if>
         </set>
         where application_id = #{applicationId}
     </update>

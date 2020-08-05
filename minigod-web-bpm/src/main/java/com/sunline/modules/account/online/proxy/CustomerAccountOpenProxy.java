@@ -8,6 +8,7 @@ import com.sunline.modules.account.online.entity.OpenAccountBlacklistEntity;
 import com.sunline.modules.account.online.helper.CustomerAccountOpenHelper;
 import com.sunline.modules.account.online.manager.CustomerAccountOpenManager;
 import com.sunline.modules.account.online.model.CustomerAccOpenInfoModel;
+import com.sunline.modules.account.online.protocol.AccountMarginOpenApplyProtocol;
 import com.sunline.modules.account.online.protocol.AccountOpenApplyCallBackProtocol;
 import com.sunline.modules.account.online.protocol.AccountOpenApplyProtocol;
 import com.sunline.modules.account.online.service.CustomerAccOpenInfoService;
@@ -53,7 +54,6 @@ public class CustomerAccountOpenProxy {
     OpenAccountCaVerityInfoService caVerityInfoService;
     @Autowired
     CustomerAccOpenInfoService customerAccountOpenInfoService;
-
 
     /**
      * 开户申请接口，webApp项目调用
@@ -131,6 +131,68 @@ public class CustomerAccountOpenProxy {
     }
 
     /**
+     * 开户申请接口，webApp项目调用
+     *
+     * @param applicationProtocol
+     * @return
+     */
+    @RequestMapping("/accountMarginOpenApplication")
+    @SystemLog(description = "提交增开申请")
+    public
+    @ResponseBody
+    ResponseVO applyAccountMarginOpen(@RequestBody GenericSunlineRequest<AccountMarginOpenApplyProtocol> applicationProtocol) {
+        ResponseVO responseVO = new ResponseVO();
+
+        try {
+            AccountMarginOpenApplyProtocol protocol = applicationProtocol.getParams();
+            if (null != protocol.getApplicationId() || StringUtils.isBlank(protocol.getApplicationId())) {
+                logger.error("【增开预约接口数据完整性校验】：预约ID为空");
+                responseVO.setCode(-1);
+                responseVO.setMessage("预约ID为空");
+                return responseVO;
+            }
+
+            //信用额度为空，则设置默认
+            if (null == protocol.getCreditQuota() || StringUtils.isBlank(protocol.getCreditQuota())) {
+                protocol.setCreditQuota(String.valueOf(10000));
+            }
+
+            //信用比例为空，则设置默认
+            if (null == protocol.getCreditRatio() || StringUtils.isBlank(protocol.getCreditRatio())) {
+                protocol.setCreditRatio(String.valueOf(20.00));
+            }
+
+            CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByApplicationId(protocol.getApplicationId());
+            customerAccountOpenInfoEntity.setCreditRatio(protocol.getCreditRatio());
+            customerAccountOpenInfoEntity.setCreditQuota(protocol.getCreditQuota());
+
+            String applicationId = customerAccountOpenService.commitAccountMarginOpenApplication(customerAccountOpenInfoEntity);
+
+            if (null != applicationId && !"".equals(applicationId)) {
+                logger.info("已成功接收[" + customerAccountOpenInfoEntity.getUserId() + "]用户的增开申请");
+                responseVO.setCode(CrmCommonEnum.CodeType.OK.getCode());
+                responseVO.setMessage(CrmCommonEnum.CodeType.OK.getMessage());
+
+                Map<String, Object> resultMap = Maps.newHashMap();
+                resultMap.put("applicationId", applicationId);
+
+                responseVO.setResult(resultMap);
+            } else {
+                responseVO.setCode(CrmCommonEnum.CodeType.INTERNAL_ERROR.getCode());
+                responseVO.setMessage(CrmCommonEnum.CodeType.INTERNAL_ERROR.getMessage());
+            }
+
+        } catch (Exception e) {
+            logger.error("提交增开申请失败:", e);
+            responseVO.setCode(CrmCommonEnum.CodeType.INTERNAL_ERROR.getCode());
+            responseVO.setMessage(CrmCommonEnum.CodeType.INTERNAL_ERROR.getMessage());
+        }
+
+        return responseVO;
+    }
+
+
+    /**
      * 开户申请回调接口，webApp项目调用
      *
      * @param request
@@ -159,12 +221,12 @@ public class CustomerAccountOpenProxy {
         }
 
         //  CA认证申请结果业务处理
-        boolean isSucceed=customerAccountOpenService.doCaVerityCallBack(request.getParams());
+        boolean isSucceed = customerAccountOpenService.doCaVerityCallBack(request.getParams());
 
-        if(isSucceed) {
+        if (isSucceed) {
             responseVO.setCode(CrmCommonEnum.CodeType.OK.getCode());
             responseVO.setMessage(CrmCommonEnum.CodeType.OK.getMessage());
-        }else {
+        } else {
             responseVO.setCode(CrmCommonEnum.CodeType.INTERNAL_ERROR.getCode());
             responseVO.setMessage(CrmCommonEnum.CodeType.INTERNAL_ERROR.getMessage());
         }

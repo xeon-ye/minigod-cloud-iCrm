@@ -1,5 +1,6 @@
 package com.sunline.modules.account.online.service;
 
+import com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity;
 import com.sunline.modules.account.online.entity.CustomerAccountOpenApplyEntity;
 import com.sunline.modules.account.online.model.AccountOpenApplyQuery;
 
@@ -54,4 +55,11 @@ public interface CustomerAccOpenApplyService {
      * @return
      */
     List<CustomerAccountOpenApplyEntity> qryAbnormalData(CustomerAccountOpenApplyEntity queryCondition);
+
+    /**
+     * 保存增开申请
+     * @param customerAccountOpenApplication
+     * @return
+     */
+    int save(CustomerAccountMarginOpenApplyEntity customerAccountOpenApplication);
 }
