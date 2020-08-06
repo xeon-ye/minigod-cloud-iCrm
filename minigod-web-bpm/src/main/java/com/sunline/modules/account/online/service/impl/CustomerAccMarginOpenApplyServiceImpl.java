@@ -60,15 +60,15 @@ public class CustomerAccMarginOpenApplyServiceImpl implements CustomerAccMarginO
         UserEntity supperUser = UserUtils.getManagerUser();
 
         // 检验预约流水号的唯一性
-        String applicationId = OrderUtil.getOrderNoByAtomic(1);
+        /*String applicationId = OrderUtil.getOrderNoByAtomic(1);
         CustomerAccountMarginOpenApplyEntity customerAccoOpenApplyInfo = customerAccountOpenApplyDao.queryObjectByApplicationId(applicationId);
         while (null != customerAccoOpenApplyInfo) {
             applicationId = OrderUtil.getOrderNoByAtomic(1);
             customerAccoOpenApplyInfo = customerAccountOpenApplyDao.queryObjectByApplicationId(applicationId);
-        }
+        }*/
 
-        customerAccountOpenApplication.setCode(applicationId);
-        customerAccountOpenApplication.setApplicationId(customerAccountOpenApplication.getCode());
+        customerAccountOpenApplication.setCode(customerAccountOpenApplication.getApplicationId());
+        //customerAccountOpenApplication.setApplicationId(customerAccountOpenApplication.getCode());
 //        customerAccountOpenApplication.setCreateId(supperUser.getId());
         customerAccountOpenApplication.setCreateUser(supperUser.getId());
         customerAccountOpenApplication.setCreateTime(new Date());

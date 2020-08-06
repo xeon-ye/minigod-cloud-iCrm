@@ -2,12 +2,12 @@
 server:
   port: 7777
   servlet:
-    context-path: /minigod-service-iOpen
+    context-path: /crm
 
 spring:
   # 环境 dev|test|pro
   profiles:
-    active: test3
+    active: test2
   http:
   jackson:
     time-zone: GMT+8

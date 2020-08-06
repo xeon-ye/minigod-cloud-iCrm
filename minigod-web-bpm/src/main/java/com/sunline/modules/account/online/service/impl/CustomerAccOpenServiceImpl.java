@@ -117,7 +117,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             int count = 0;
 
             CustomerAccountMarginOpenApplyEntity customerAccountOpenApplicationEntity = new CustomerAccountMarginOpenApplyEntity();
-
+            customerAccountOpenApplicationEntity.setApplicationId(customerAccountOpenInfoEntity.getApplicationId());
             customerAccountOpenApplicationEntity.setApproveResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
             customerAccountOpenApplicationEntity.setAccountOpenResultStatus(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
             customerAccountOpenApplicationEntity.setApplicationTitle("互联网开户申请[" + customerAccountOpenInfoEntity.getClientName() + "]");
@@ -125,11 +125,10 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             customerAccountOpenApplicationEntity.setCurrentNode("提交");
 
             //保存增开申请表信息
-            count = customerAccOpenApplyService.save(customerAccountOpenApplicationEntity);
+            count = customerAccMarginOpenApplyService.save(customerAccountOpenApplicationEntity);
 
             if (count > 0) {
-                //更新用户信息（）
-                customerAccountOpenInfoEntity.setApplicationId(customerAccountOpenApplicationEntity.getApplicationId());
+                //更新用户信息
                 count = customerAccOpenInfoService.updateMarginInfo(customerAccountOpenInfoEntity);
             }
 

@@ -826,7 +826,7 @@
     <select id="selectAccountOpenApplicationDetailInfo" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="com.sunline.modules.account.online.model.AccountOpenApplyQuery" >
         SELECT
         	<include refid="Base_Column_List1"/>        
-        FROM customer_account_open_application caoa,customer_account_open_info caoi
+        FROM customer_account_margin_open_application caoa,customer_account_open_info caoi
         LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
         <where>
             <include refid="Base_Where_Conditions2"/>
@@ -937,7 +937,7 @@
         caoi.investment_horizon                                 as caoi_investment_horizon,
         caoi.credit_quota                                       as caoi_credit_quota,
         caoi.credit_ratio                                       as caoi_credit_ratio
-        FROM customer_account_open_application caoa,customer_account_open_info caoi
+        FROM customer_account_margin_open_application caoa,customer_account_open_info caoi
         LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
         WHERE caoa.application_id = caoi.application_id AND caoi.source_channel_id=uci.channel_id
         <if test="status != null">
@@ -983,7 +983,7 @@
     <select id="selectSelective" resultMap="customerAccountOpenApplicationMap" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
         select
         <include refid="Base_Column_List"/>
-        from customer_account_open_application
+        from customer_account_margin_open_application
         <where>
             <include refid="Base_Where_Conditions"/>
         </where>
@@ -992,21 +992,21 @@
     <select id="queryObject" resultType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap">
         select
         <include refid="Base_Column_List" />
-        from customer_account_open_application
+        from customer_account_margin_open_application
         where id  = #{value}
     </select>
     
      <select id="queryObjectByApplicationId" resultType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap">
         select
         <include refid="Base_Column_List" />
-        from customer_account_open_application
+        from customer_account_margin_open_application
         where  application_id = #{applicationId}
     </select>
 
     <select id="queryList" resultType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap">
         select
         <include refid="Base_Column_List" />
-        from customer_account_open_application
+        from customer_account_margin_open_application
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -1023,18 +1023,18 @@
     <select id="queryListByBean" resultType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap">
         select
         <include refid="Base_Column_List" />
-        from customer_account_open_application
+        from customer_account_margin_open_application
         <where>
             <include refid="Base_Where_Conditions"/>
         </where>
     </select>
 
     <select id="queryTotal" resultType="int">
-        select count(*) from customer_account_open_application
+        select count(*) from customer_account_margin_open_application
     </select>
 
     <insert id="save" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
-		insert into customer_account_open_application
+		insert into customer_account_margin_open_application
 		(
 			`application_id`,
 			`application_title`,
@@ -1107,7 +1107,7 @@
 	</insert>
 
     <update id="update" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
-        update customer_account_open_application
+        update customer_account_margin_open_application
         <set>
             <if test="applicationId != null">`application_id` = #{applicationId},</if>
             <if test="applicationTitle != null">`application_title` = #{applicationTitle},</if>
@@ -1151,28 +1151,28 @@
     </update>
 
     <update id="updateAssignDrafter" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
-        update customer_account_open_application set assign_drafter=#{assignDrafter}
+        update customer_account_margin_open_application set assign_drafter=#{assignDrafter}
         where id = #{id}	        
     </update>
 
    <update id="updateAssignDrafterByApplicationId" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
-        update customer_account_open_application set assign_drafter=#{assignDrafter}
+        update customer_account_margin_open_application set assign_drafter=#{assignDrafter}
         where application_id = #{applicationId}	        
     </update>
     
     <delete id="delete">
-        delete from customer_account_open_application where id = #{value}
+        delete from customer_account_margin_open_application where id = #{value}
     </delete>
 
     <delete id="deleteBatch">
-        delete from customer_account_open_application where id in
+        delete from customer_account_margin_open_application where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
 
     <update id="updateByApplicationId" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
-        update customer_account_open_application
+        update customer_account_margin_open_application
         <set>
             <if test="applicationId != null">`application_id` = #{applicationId},</if>
             <if test="applicationTitle != null">`application_title` = #{applicationTitle},</if>
@@ -1217,7 +1217,7 @@
         select
          	<include refid="Base_Column_List1"/>,
             (SELECT COUNT(*) FROM customer_account_open_info WHERE user_id=caoi.user_id) AS application_count
-        from customer_account_open_application caoa,customer_account_open_info caoi
+        from customer_account_margin_open_application caoa,customer_account_open_info caoi
         LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
         <where>
             <include refid="Base_Where_Conditions4"/>
@@ -1230,7 +1230,7 @@
     </select>
 
     <update id="updateBatchByApplicationIds" parameterType="java.util.Map" >
-        UPDATE customer_account_open_application SET fire_aid = 1
+        UPDATE customer_account_margin_open_application SET fire_aid = 1
         WHERE application_id IN
         <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
             #{applicationId}
@@ -1238,7 +1238,7 @@
     </update>
 
     <update id="updateBatchExpExcelStatus" parameterType="java.util.Map">
-        UPDATE customer_account_open_application SET is_exp_excel = 1
+        UPDATE customer_account_margin_open_application SET is_exp_excel = 1
         WHERE application_id IN
         <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
             #{applicationId}
@@ -1248,15 +1248,15 @@
     <select id="selectAccountOpenBackDetailInfo" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="com.sunline.modules.account.online.model.AccountOpenApplyQuery" >
         SELECT
         <include refid="Base_Column_List1"/>
-        FROM customer_account_open_application caoa
+        FROM customer_account_margin_open_application caoa
         LEFT JOIN customer_account_open_info caoi ON caoa.application_id=caoi.application_id
         LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
         WHERE 1=1
         AND caoa.application_status=#{applicationStatus}
-        AND NOT EXISTS (SELECT user_id FROM customer_account_open_info t1,customer_account_open_application t2
+        AND NOT EXISTS (SELECT user_id FROM customer_account_open_info t1,customer_account_margin_open_application t2
         WHERE t2.application_id=t1.application_id AND t2.application_status != #{applicationStatus}  AND t1.user_id=caoi.user_id)
         AND caoa.application_id IN
-        (SELECT MAX(t3.application_id) FROM customer_account_open_info t1,customer_account_open_application t3
+        (SELECT MAX(t3.application_id) FROM customer_account_open_info t1,customer_account_margin_open_application t3
         WHERE t3.application_id=t1.application_id AND t3.application_status = #{applicationStatus}  AND t1.user_id=caoi.user_id)
         ORDER  BY caoi.application_time DESC
     </select>
@@ -1264,7 +1264,7 @@
     <select id="selectAccOpenDetailInfoByApplicationIds" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="java.util.Map" >
         SELECT
         <include refid="Base_Column_List2"/>
-        FROM customer_account_open_application caoa
+        FROM customer_account_margin_open_application caoa
         LEFT JOIN customer_account_open_info caoi ON caoa.application_id=caoi.application_id
         WHERE caoa.application_id IN
         <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
@@ -1275,7 +1275,7 @@
     <select id="qryAbnormalData" resultMap="customerAccountOpenApplicationMap" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" >
         SELECT
         <include refid="Base_Column_List"/>
-        FROM customer_account_open_application
+        FROM customer_account_margin_open_application
         WHERE current_node='完成' AND flow_path LIKE '%初审-完成%'
     </select>
 

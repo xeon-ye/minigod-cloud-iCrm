@@ -145,7 +145,7 @@ public class CustomerAccountOpenProxy {
 
         try {
             AccountMarginOpenApplyProtocol protocol = applicationProtocol.getParams();
-            if (null != protocol.getApplicationId() || StringUtils.isBlank(protocol.getApplicationId())) {
+            if (null == protocol.getApplicationId() || StringUtils.isBlank(protocol.getApplicationId())) {
                 logger.error("【增开预约接口数据完整性校验】：预约ID为空");
                 responseVO.setCode(-1);
                 responseVO.setMessage("预约ID为空");
