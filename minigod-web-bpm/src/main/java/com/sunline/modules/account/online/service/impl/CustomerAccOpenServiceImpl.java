@@ -1440,12 +1440,9 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             if (CodeUtils.getCodeName("OPEN_ACCOUNT_MARGIN_NODE_NAME", "3").equals(customerAccountOpenApproveInfo.getCurrentNode())) {
 
                 // 生成开户表格
-                if (1 == accountOpenInfo.getOpenAccountType()) {
+                /*if (1 == accountOpenInfo.getOpenAccountType()) {
                     String path = customerAccOpenReportGenerate.generateReport(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getApplicationId(), BpmCommonEnum.AccountOpenReport.ACCOUNT_OPEN_REPORT_USER_FORM_REPORT);
-                    if (path != null){
-                        //去ayers开户
-                    }
-                }
+                }*/
 
                 // 更新预约申请表相关信息
                 CustomerAccountMarginOpenApplyEntity customerAccOpenApplyEntity = new CustomerAccountMarginOpenApplyEntity();
