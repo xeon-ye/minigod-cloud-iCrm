@@ -159,6 +159,8 @@ public class CustomerOpenAccountConverter {
         model.setContactPhone(entity.getContactPhone());
         model.setBankCurrency(entity.getBankCurrency());
         model.setInvestmentHorizon(entity.getInvestmentHorizon());
+        model.setCreditQuota(entity.getCreditQuota());
+        model.setCreditRatio(entity.getCreditRatio());
 
         return model;
     }
@@ -411,6 +413,17 @@ public class CustomerOpenAccountConverter {
         } else {
             entity.setDisclosureIsTrue(protocol.getDisclosureIsTrue());
         }
+        entity.setDisclosure1(protocol.getDisclosure1());
+        entity.setDisclosure2(protocol.getDisclosure2());
+        entity.setDisclosure3(protocol.getDisclosure3());
+        entity.setDisclosure4(protocol.getDisclosure4());
+        return entity;
+    }
+
+    public static OpenAccountOtherDisclosureEntity protocolToEntity2(OpenAccountOtherDisclosureProtocol protocol) {
+        OpenAccountOtherDisclosureEntity entity = new OpenAccountOtherDisclosureEntity();
+        entity.setDisclosureCode(protocol.getDisclosureCode());
+        entity.setDisclosureIsTrue(protocol.getDisclosureIsTrue());
         entity.setDisclosure1(protocol.getDisclosure1());
         entity.setDisclosure2(protocol.getDisclosure2());
         entity.setDisclosure3(protocol.getDisclosure3());

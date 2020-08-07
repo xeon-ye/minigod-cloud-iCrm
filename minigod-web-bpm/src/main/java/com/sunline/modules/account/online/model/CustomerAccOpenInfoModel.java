@@ -326,6 +326,12 @@ public class CustomerAccOpenInfoModel {
     //投资年期 [0-未知 1、<1年  2、1-3年  3、3年以上]
     private Integer investmentHorizon;
 
+    //信用额度
+    private String creditQuota;
+
+    //信用比例
+    private String creditRatio;
+
     public Integer getAddressType() {
         return addressType;
     }
@@ -1364,5 +1370,21 @@ public class CustomerAccOpenInfoModel {
 
     public void setInvestmentHorizon(Integer investmentHorizon) {
         this.investmentHorizon = investmentHorizon;
+    }
+
+    public String getCreditQuota() {
+        return creditQuota;
+    }
+
+    public void setCreditQuota(String creditQuota) {
+        this.creditQuota = creditQuota;
+    }
+
+    public String getCreditRatio() {
+        return creditRatio;
+    }
+
+    public void setCreditRatio(String creditRatio) {
+        this.creditRatio = creditRatio;
     }
 }

@@ -135,5 +135,4 @@ public class CustomerAccOpenInfoServiceImpl implements CustomerAccOpenInfoServic
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
         return customerAccountOpenInfoDao.queryByIdCardNumber(idCardNumber);
     }
-
 }

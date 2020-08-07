@@ -149,7 +149,7 @@
                                 </c:if>
                                 <c:if test="${info.customerAccountMarginOpenApplyEntity.assignDrafter == currentUserId}">
                                     <button class="layui-btn layui-btn-small" type="button"
-                                            onclick="doTaskTab('customerAccountMarginOpenApplication','${info.customerAccountOpenInfoEntity.applicationId}','${info.customerAccountMarginOpenApplyEntity.instanceId}','','${info.customerAccountMarginOpenApplyEntity.defid}',''
+                                            onclick="doTaskTab('customerAccountMarginOpenApplication','${info.customerAccountMarginOpenApplyEntity.applicationId}','${info.customerAccountMarginOpenApplyEntity.instanceId}','','${info.customerAccountMarginOpenApplyEntity.defid}',''
                                                     ,'${info.customerAccountMarginOpenApplyEntity.assignDrafter}','${info.customerAccountMarginOpenApplyEntity.currentNode}','${fns:getCodeName("NO_BANK_TYPE",info.customerAccountOpenInfoEntity.bankType)}'
                                                     ,'${fns:getCodeName("AO_OPEN_ACCOUNT_STATUS",info.customerAccountMarginOpenApplyEntity.applicationStatus)}')">
                                         <i class="layui-icon">&#xe705;</i>办理

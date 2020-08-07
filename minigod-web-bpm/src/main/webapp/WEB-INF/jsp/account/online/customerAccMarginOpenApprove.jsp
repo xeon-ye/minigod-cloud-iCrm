@@ -12,12 +12,12 @@
 <body>
 <div class="col-sm-11" id="main-container">
     <form class="col-sm-12  bv-form" id="accountOpenInfo">
-        <%@ include file="customerAccOpenInfo.jsp" %>
+        <%@ include file="customerAccMarginOpenInfo.jsp" %>
     </form>
 </div>
 
 <c:if test="${flag == 2}">
-    <%@include file="processComSubAcct.jsp" %>
+    <%@include file="processComMarginSubAcct.jsp" %>
 </c:if>
 <%--<%@include file="../../activiti/processComSubAcct.jsp" %>--%>
 </br>

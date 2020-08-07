@@ -379,7 +379,50 @@ public class ExtendActDealController {
 
     /**
      * 办理任务
-     *
+     * 增开
+     * @param processTaskDto
+     * @return
+     */
+    @RequestMapping(value = "doActMarginTask", method = RequestMethod.POST)
+    @ResponseBody
+    public Result doActMarginTask(ProcessTaskDto processTaskDto, HttpServletRequest request) {
+        Result result = null;
+        try {
+            Map<String, String[]> parameterMap = request.getParameterMap();
+            Map<String, Object> params = new LinkedCaseInsensitiveMap<>();
+            for (String key : parameterMap.keySet()) {
+                params.put(key, parameterMap.get(key)[0]);
+            }
+
+            actModelerService.doActTask(processTaskDto, params);
+
+            CustomerAccountOpenInfoEntity customerAccountOpenInfo = new CustomerAccountOpenInfoEntity();
+            customerAccountOpenInfo.setApplicationId((String) params.get("applicationId"));
+            String creditQuota = (String) params.get("creditQuota");
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(creditQuota)){
+                customerAccountOpenInfo.setCreditQuota(creditQuota);
+            }
+            String creditRatio = (String) params.get("creditRatio");
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(creditRatio)){
+                customerAccountOpenInfo.setCreditRatio(creditRatio);
+            }
+
+            boolean setCreditQuota = (creditQuota == null && creditRatio == null);
+            if (setCreditQuota){
+                customerAccOpenInfoService.updateMarginInfo(customerAccountOpenInfo);
+            }
+
+            result = Result.ok("操作成功");
+        } catch (Exception e) {
+            logger.error("操作失败", e);
+            result = Result.error("办理任务失败");
+        }
+        return result;
+    }
+
+    /**
+     * 办理任务
+     * 正常开户
      * @param processTaskDto
      * @return
      */

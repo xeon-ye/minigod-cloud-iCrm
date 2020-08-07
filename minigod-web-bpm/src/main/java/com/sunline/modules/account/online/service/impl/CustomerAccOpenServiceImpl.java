@@ -132,6 +132,17 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
                 count = customerAccOpenInfoService.updateMarginInfo(customerAccountOpenInfoEntity);
             }
 
+            if (count > 0) {
+                //其他信息
+                if (customerAccountOpenInfoEntity.getOtherDisclosureList() != null && customerAccountOpenInfoEntity.getOtherDisclosureList().size() > 0) {
+                    for (OpenAccountOtherDisclosureEntity otherDisclosure : customerAccountOpenInfoEntity.getOtherDisclosureList()) {
+                        otherDisclosure.setApplicationId(customerAccountOpenApplicationEntity.getApplicationId());
+                        otherDisclosure.setCreateTime(new Date());
+                        otherDisclosure.setUpdateTime(new Date());
+                    }
+                    count = openAccountOtherDisclosureService.saveBatch(customerAccountOpenInfoEntity.getOtherDisclosureList());
+                }
+            }
 
             if (count > 0) {
                 ProcessDefinition customerAccountOpenProcessDefinition = ActUtils.getlastProcessDefinition(CUSTOMER_ACCOUNT_MARGIN_OPEN_FLOW_MODEL_KEY);

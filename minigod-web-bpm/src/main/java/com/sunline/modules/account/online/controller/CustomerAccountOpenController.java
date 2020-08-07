@@ -480,7 +480,7 @@ public class CustomerAccountOpenController {
             int isCustomer = 0;
             //根据当前角色所拥有权限进入 审核页面分别为（初审 复审 终审）
             List<String> currentNodes = new ArrayList<>();
-            Map<String, List<String>> modelNodeRoleList = actModelerService.getModelNodeUser(SysConfigUtil.getSysConfigValue("ONLINE_OPEN_ACCOUNT_MODEL_ID", null));
+            Map<String, List<String>> modelNodeRoleList = actModelerService.getModelNodeUser(SysConfigUtil.getSysConfigValue("ONLINE_OPEN_ACCOUNT_MARGIN_MODEL_ID", null));
             List<RoleEntity> roleList = roleService.queryByUserId(UserUtils.getCurrentUserId(), "0");
             for (String key : modelNodeRoleList.keySet()) {
                 List<String> modelNodeRole = modelNodeRoleList.get(key);

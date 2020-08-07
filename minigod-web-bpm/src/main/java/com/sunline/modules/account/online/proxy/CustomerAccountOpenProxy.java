@@ -1,16 +1,19 @@
 package com.sunline.modules.account.online.proxy;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sunline.modules.account.online.converter.CustomerOpenAccountConverter;
 import com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity;
 import com.sunline.modules.account.online.entity.OpenAccountBlacklistEntity;
+import com.sunline.modules.account.online.entity.OpenAccountOtherDisclosureEntity;
 import com.sunline.modules.account.online.helper.CustomerAccountOpenHelper;
 import com.sunline.modules.account.online.manager.CustomerAccountOpenManager;
 import com.sunline.modules.account.online.model.CustomerAccOpenInfoModel;
 import com.sunline.modules.account.online.protocol.AccountMarginOpenApplyProtocol;
 import com.sunline.modules.account.online.protocol.AccountOpenApplyCallBackProtocol;
 import com.sunline.modules.account.online.protocol.AccountOpenApplyProtocol;
+import com.sunline.modules.account.online.protocol.OpenAccountOtherDisclosureProtocol;
 import com.sunline.modules.account.online.service.CustomerAccOpenInfoService;
 import com.sunline.modules.account.online.service.CustomerAccOpenService;
 import com.sunline.modules.account.online.service.OpenAccountBlacklistService;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -165,6 +169,11 @@ public class CustomerAccountOpenProxy {
             CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByIdCardNumber(protocol.getIdCardNo());
             customerAccountOpenInfoEntity.setCreditRatio(protocol.getCreditRatio());
             customerAccountOpenInfoEntity.setCreditQuota(protocol.getCreditQuota());
+            List<OpenAccountOtherDisclosureEntity> otherDisclosureList = Lists.newArrayList();
+            for (OpenAccountOtherDisclosureProtocol temp : protocol.getDisclosure()) {
+                otherDisclosureList.add(CustomerOpenAccountConverter.protocolToEntity2(temp));
+            }
+            customerAccountOpenInfoEntity.setOtherDisclosureList(otherDisclosureList);
 
             String applicationId = customerAccountOpenService.commitAccountMarginOpenApplication(customerAccountOpenInfoEntity);
 
