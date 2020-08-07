@@ -90,7 +90,7 @@ public interface ActExtendDao {
 
     /**
      * 根据busId查询待申领的开户记录
-     *
+     * 正常开户
      * @param params
      * @return
      */
@@ -103,4 +103,12 @@ public interface ActExtendDao {
      * @return
      */
     List<ProcessTaskDto> queryValidApplyTask(ProcessTaskDto processTaskDto);
+
+    /**
+     * 根据busId查询待申领的开户记录
+     * 增开
+     * @param params
+     * @return
+     */
+    List<ProcessTaskDto> findMarginByBusIds(Map<String, Object> params);
 }

@@ -130,4 +130,10 @@ public class CustomerAccOpenInfoServiceImpl implements CustomerAccOpenInfoServic
         return customerAccountOpenInfoDao.updateMarginInfo(customerAccountOpenInfo);
     }
 
+    @Override
+    public CustomerAccountOpenInfoEntity queryByIdCardNumber(String idCardNumber) {
+        DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
+        return customerAccountOpenInfoDao.queryByIdCardNumber(idCardNumber);
+    }
+
 }

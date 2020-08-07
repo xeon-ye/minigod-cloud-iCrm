@@ -12,7 +12,7 @@
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 
         <c:choose>
-            <c:when test="${taskDto.actKey =='customerAccountOpenApplication' || taskDto.actKey =='customerAccountOpenApplicationOffline'}">
+            <c:when test="${taskDto.actKey =='customerAccountOpenApplication' || taskDto.actKey =='customerAccountOpenApplicationOffline' || taskDto.actKey =='customerAccountMarginOpenApplication'}">
                 <ul class="layui-tab-title">
                     <li id="flowInfo" class="layui-this">流程信息</li>
                     <li id="operatorLogInfo">操作记录</li>
@@ -122,7 +122,7 @@
         var loading = layer.msg('Loading...', {icon: 16, shade: 0.01});
         var actKey = '${taskDto.actKey}';
         var url;
-        if (actKey == 'customerAccountOpenApplication' || actKey == 'customerAccountOpenApplicationOffline') {
+        if (actKey == 'customerAccountOpenApplication' || actKey == 'customerAccountOpenApplicationOffline' || actKey == 'customerAccountMarginOpenApplication') {
             url = "${webRoot}/customer/tasLogImgAcct";
         } else if (actKey == 'clientFundWithdrawApplication') {
             url = "${webRoot}/clientFundWithdraw/taskLogInfo";

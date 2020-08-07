@@ -67,5 +67,4 @@ public interface CustomerAccountMarginOpenApplyDao extends BaseDao<CustomerAccou
      */
     List<CustomerAccountMarginOpenApplyEntity> qryAbnormalData(CustomerAccountMarginOpenApplyEntity queryCondition);
 
-    List<AccountOpenApplyDetailInfo> selectAccOpenDetailInfoByApplicationIds(Map<String, Object> params);
 }

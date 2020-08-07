@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sunline.common.ConfigUtils;
 import com.sunline.modules.account.online.converter.CustomerOpenAccountConverter;
+import com.sunline.modules.account.online.dao.CustomerAccountMarginOpenApplyDao;
 import com.sunline.modules.account.online.dao.CustomerAccountOpenApplyDao;
 import com.sunline.modules.account.online.entity.*;
 import com.sunline.modules.account.online.helper.CustomerAccOpenReportGenerate;
@@ -76,6 +77,8 @@ public class CustomerAccountOpenController {
     @Autowired
     CustomerAccOpenApplyService customerAccOpenApplyService;
     @Autowired
+    CustomerAccMarginOpenApplyService customerAccMarginOpenApplyService;
+    @Autowired
     CustomerAccOpenInfoService customerAccountOpenInfoService;
     @Autowired
     CustomerAccOpenImageService customerAccountOpenImageService;
@@ -108,6 +111,8 @@ public class CustomerAccountOpenController {
     @Autowired
     CustomerAccountOpenApplyDao customerAccountOpenApplyDao;
     @Autowired
+    CustomerAccountMarginOpenApplyDao customerAccountMarginOpenApplyDao;
+    @Autowired
     private TaskService taskService;
     @Autowired
     private OpenAccountOperatorLogService openAccountOperatorLogService;
@@ -119,6 +124,8 @@ public class CustomerAccountOpenController {
     private final String CUSTOMER_ACCOUNT_OPEN_OFFLINE_FLOW_MODEL_KEY = "customerAccountOpenApplicationOffline";
 
     private final String CUSTOMER_ACCOUNT_OPEN_ONLINE_FLOW_MODEL_KEY = "customerAccountOpenApplication";
+
+    private final String CUSTOMER_ACCOUNT_MARGIN_OPEN_ONLINE_FLOW_MODEL_KEY = "customerAccountMarginOpenApplication";
 
     /**
      * 开户记录列表
@@ -180,35 +187,6 @@ public class CustomerAccountOpenController {
     }
 
     /**
-     * 账户增开列表
-     */
-    @RequestMapping("/marginList")
-    @RequiresPermissions("customer:marginList")
-    public String marginList(Model model, AccountOpenApplyQuery queryCondition, HttpServletRequest request) {
-        String applicationTimeStart = queryCondition.getApplicationTimeStart();
-        String applicationTimeEnd = queryCondition.getApplicationTimeEnd();
-        int pageNum = Utils.parseInt(request.getParameter("pageNum"), 1);
-        if (StringUtils.isNotBlank(applicationTimeStart)) {
-            queryCondition.setApplicationTimeStart(DateUtil.format(DateUtil.beginOfDay(DateUtil.parse(applicationTimeStart)), "yyyy-MM-dd HH:mm:ss"));
-        }
-        if (StringUtils.isNotBlank(applicationTimeEnd)) {
-            queryCondition.setApplicationTimeEnd(DateUtil.format(DateUtil.endOfDay(DateUtil.parse(applicationTimeEnd)), "yyyy-MM-dd HH:mm:ss"));
-        }
-
-        Page<AccountOpenApplyDetailInfo> page = customerAccountOpenService.findMarginPage(queryCondition, pageNum);
-
-        if (StringUtils.isNotBlank(applicationTimeStart)) {
-            queryCondition.setApplicationTimeStart(applicationTimeStart);
-        }
-        if (queryCondition.getApplicationTimeEnd() != null && StringUtils.isNotBlank(queryCondition.getApplicationTimeEnd())) {
-            queryCondition.setApplicationTimeEnd(applicationTimeEnd);
-        }
-        model.addAttribute("queryCondition", queryCondition);
-        model.addAttribute("page", page);
-        return "account/online/marginList";
-    }
-
-    /**
      * 待确认列表
      */
     @RequestMapping("/waitConfirmList")
@@ -240,7 +218,7 @@ public class CustomerAccountOpenController {
     }
 
     /**
-     * 开户审核列表
+     * 开户审核列表（互联网开户）
      */
     @RequestMapping("/checkList")
     @RequiresPermissions("customer:checkList")
@@ -305,6 +283,71 @@ public class CustomerAccountOpenController {
         return "account/online/openAcctCheckList";
     }
 
+    /**
+     * 开户审核列表（账户增开）
+     */
+    @RequestMapping("/checkMarginList")
+    @RequiresPermissions("customer:checkMarginList")
+    public String checkMarginList(Model model, AccountOpenApplyQuery queryCondition, HttpServletRequest request) throws Exception {
+
+        String applicationTimeStart = queryCondition.getApplicationTimeStart();
+        String applicationTimeEnd = queryCondition.getApplicationTimeEnd();
+        if (StringUtils.isNotBlank(applicationTimeStart)) {
+            queryCondition.setApplicationTimeStart(DateUtil.format(DateUtil.beginOfDay(DateUtil.parse(applicationTimeStart)), "yyyy-MM-dd HH:mm:ss"));
+        }
+        if (StringUtils.isNotBlank(applicationTimeEnd)) {
+            queryCondition.setApplicationTimeEnd(DateUtil.format(DateUtil.endOfDay(DateUtil.parse(applicationTimeEnd)), "yyyy-MM-dd HH:mm:ss"));
+        }
+
+        int pageNum = Utils.parseInt(request.getParameter("pageNum"), 1);
+        queryCondition.setUpdateUser(UserUtils.getCurrentUserId());
+
+
+        //根据当前角色所拥有权限进入 审核页面分别为（初审 复审 终审）
+        List<String> currentNodes = new ArrayList<>();
+        Map<String, List<String>> modelNodeRoleList = actModelerService.getModelNodeUser(SysConfigUtil.getSysConfigValue("ONLINE_OPEN_ACCOUNT_MARGIN_MODEL_ID", null));
+        List<RoleEntity> roleList = roleService.queryByUserId(UserUtils.getCurrentUserId(), "0");
+        for (String key : modelNodeRoleList.keySet()) {
+            List<String> modelNodeRole = modelNodeRoleList.get(key);
+            for (String aModelNodeRole : modelNodeRole) {
+                for (RoleEntity role : roleList) {
+                    if (role.getId().equals(aModelNodeRole)) {
+                        currentNodes.add(key);
+                    }
+                }
+            }
+        }
+
+
+        //开户类型设置互联网
+        Integer openAccountType = queryCondition.getOpenAccountType();
+        if (openAccountType == null) {
+            queryCondition.setOpenAccountType(1);
+        }
+
+        //超级管理员  不做权限验证
+        if (UserUtils.getCurrentUserId().equals(Constant.SUPERR_USER)) {
+            queryCondition.setCurrentNode(null);
+        } else {
+            queryCondition.setCurrentNodes(currentNodes.size() > 0 ? currentNodes : Lists.newArrayList());
+        }
+
+        queryCondition.setAssignDrafter(UserUtils.getCurrentUserId());
+        Page<AccountOpenApplyDetailInfo> page = customerAccountOpenService.findMarginPageCheck(queryCondition, pageNum);
+
+        if (StringUtils.isNotBlank(applicationTimeStart)) {
+            queryCondition.setApplicationTimeStart(applicationTimeStart);
+        }
+        if (queryCondition.getApplicationTimeEnd() != null && StringUtils.isNotBlank(queryCondition.getApplicationTimeEnd())) {
+            queryCondition.setApplicationTimeEnd(applicationTimeEnd);
+        }
+        queryCondition.setOpenAccountType(openAccountType);
+        model.addAttribute("page", page);
+        model.addAttribute("queryCondition", queryCondition);
+        model.addAttribute("currentUserId", UserUtils.getCurrentUserId());
+
+        return "account/online/openMarginAcctCheckList";
+    }
 
     /**
      * 客服节点列表
@@ -370,6 +413,108 @@ public class CustomerAccountOpenController {
         getCustomerAccountOpenInfo(model, applicationId);
         model.addAttribute("flag", request.getParameter("flag"));
         return "account/online/customerAccOpenInfoView";
+    }
+
+    private void getCustomerAccountMarginOpenInfo(Model model, String applicationId) {
+
+        //申请表
+        CustomerAccountMarginOpenApplyEntity accountOpenApplicationEntity = customerAccMarginOpenApplyService.queryObjectByApplicationId(applicationId);
+        //开户信息表
+        CustomerAccountOpenInfoEntity customerAccountOpenInfo = customerAccountOpenInfoService.queryByIdCardNumber(accountOpenApplicationEntity.getIdCardNo());
+        //其他信息表
+        List<OpenAccountOtherDisclosureEntity> openAccountOtherDisclosureEntity = openAccountOtherDisclosureService.queryByApplicationId(applicationId);
+
+        //把name和详情拼接为 张三丰,深圳市宝安区;李四,深圳市
+        for (OpenAccountOtherDisclosureEntity entity : openAccountOtherDisclosureEntity) {
+            // 详细资料展示页面  拼接展示
+            StringBuffer nameJoinDetailStr = new StringBuffer();
+            String disclosure1[] = {};
+            String disclosure2[] = {};
+            String disclosure3[] = {};
+            String disclosure4[] = {};
+            if (StringUtils.isNotBlank(entity.getDisclosure1())) {
+                disclosure1 = entity.getDisclosure1().split(",");
+            }
+            if (StringUtils.isNotBlank(entity.getDisclosure2())) {
+                disclosure2 = entity.getDisclosure2().split(",");
+            }
+            if (StringUtils.isNotBlank(entity.getDisclosure3())) {
+                disclosure3 = entity.getDisclosure3().split(",");
+            }
+            if (StringUtils.isNotBlank(entity.getDisclosure4())) {
+                disclosure4 = entity.getDisclosure4().split(",");
+            }
+            int maxLen = Math.max(Math.max(disclosure1.length, disclosure2.length), Math.max(disclosure3.length, disclosure4.length));
+            //生成带填充的矩阵
+            String disclo1[] = new String[maxLen];
+            String disclo2[] = new String[maxLen];
+            String disclo3[] = new String[maxLen];
+            String disclo4[] = new String[maxLen];
+            Arrays.fill(disclo1, "");
+            Arrays.fill(disclo2, "");
+            Arrays.fill(disclo3, "");
+            Arrays.fill(disclo4, "");
+            System.arraycopy(disclosure1, 0, disclo1, 0, disclosure1.length);
+            System.arraycopy(disclosure2, 0, disclo2, 0, disclosure2.length);
+            System.arraycopy(disclosure3, 0, disclo3, 0, disclosure3.length);
+            System.arraycopy(disclosure4, 0, disclo4, 0, disclosure4.length);
+
+            String disclosure[][] = {disclo1, disclo2, disclo3, disclo4};
+            for (int j = 0; j < maxLen; j++) {
+                int col = 0;
+                while (col < disclosure.length) {
+                    if (StringUtils.isNotBlank(disclosure[col][j])) {
+                        nameJoinDetailStr.append(disclosure[col][j]).append(",");
+                    }
+                    col++;
+                }
+                nameJoinDetailStr.deleteCharAt(nameJoinDetailStr.length() - 1);
+                nameJoinDetailStr.append(";");
+            }
+            entity.setDisclosureNameJoinDetail(nameJoinDetailStr.toString());
+        }
+
+        CustomerAccOpenInfoModel customerAccountOpenInfoModel = CustomerOpenAccountConverter.entityToModel(customerAccountOpenInfo);
+
+        try {
+            int isCustomer = 0;
+            //根据当前角色所拥有权限进入 审核页面分别为（初审 复审 终审）
+            List<String> currentNodes = new ArrayList<>();
+            Map<String, List<String>> modelNodeRoleList = actModelerService.getModelNodeUser(SysConfigUtil.getSysConfigValue("ONLINE_OPEN_ACCOUNT_MODEL_ID", null));
+            List<RoleEntity> roleList = roleService.queryByUserId(UserUtils.getCurrentUserId(), "0");
+            for (String key : modelNodeRoleList.keySet()) {
+                List<String> modelNodeRole = modelNodeRoleList.get(key);
+                for (String aModelNodeRole : modelNodeRole) {
+                    for (RoleEntity role : roleList) {
+                        if (role.getId().equals(aModelNodeRole)) {
+                            currentNodes.add(key);
+                        }
+                    }
+                }
+            }
+            if (currentNodes.contains("初审")) {
+                isCustomer = 1;
+            }
+            model.addAttribute("isCustomer", isCustomer);
+        } catch (Exception e) {
+            logger.error("详情查询异常!", e);
+        }
+
+        //申请表
+        model.addAttribute("accountOpenApplicationEntity", accountOpenApplicationEntity);
+
+        if (customerAccountOpenInfoModel.getInvestTarget() != null) {
+            String target = customerAccountOpenInfoModel.getInvestTarget().replace("[", "").replace("]", "");
+            customerAccountOpenInfoModel.setInvestTarget(target);
+        }
+        if (customerAccountOpenInfoModel.getCapitalSource() != null) {
+            String capitalSource = customerAccountOpenInfoModel.getCapitalSource().replace("[", "").replace("]", "");
+            customerAccountOpenInfoModel.setCapitalSource(capitalSource);
+        }
+        //账户申请表
+        model.addAttribute("customerAccountOpenInfoEntity", customerAccountOpenInfoModel);
+        //其他信息表
+        model.addAttribute("openAccountOtherDisclosureList", openAccountOtherDisclosureEntity);
     }
 
     private void getCustomerAccountOpenInfo(Model model, String applicationId) {
@@ -1041,8 +1186,8 @@ public class CustomerAccountOpenController {
 
 
     /**
-     * 开户审批提交
-     *
+     * 开户审批界面
+     * 正常开户
      * @param processTaskDto
      * @param model
      * @param flag
@@ -1097,6 +1242,29 @@ public class CustomerAccountOpenController {
 
         // return "/accountOpen/customerAccountOpenInfoApprove";
         return "/account/online/customerAccOpenInfoApprove";
+    }
+
+    /**
+     * 开户审批界面
+     * 账户增开
+     * @param processTaskDto
+     * @param model
+     * @param flag
+     * @return
+     */
+    @RequestMapping(value = "customerAccountMarginOpenApprove", method = RequestMethod.POST)
+    public String customerAccountMarginOpenApprove(ProcessTaskDto processTaskDto, Model model, String flag) {
+        getCustomerAccountMarginOpenInfo(model, processTaskDto.getBusId());
+
+        // 获取工作流运行时任务ID
+        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processTaskDto.getInstanceId()).list();
+        processTaskDto.setTaskId(tasks.size() > 0 ? tasks.get(0).getId() : null);
+
+        model.addAttribute("taskDto", processTaskDto);
+        model.addAttribute("flag", flag);
+        model.addAttribute("currentUserId", UserUtils.getCurrentUserId());
+
+        return "/account/online/customerAccMarginOpenApprove";
     }
 
     /**
@@ -1261,6 +1429,78 @@ public class CustomerAccountOpenController {
         } catch (Exception e) {
             logger.error("批量申请办理任务异常", e);
             return Result.error("申请办理任务失败");
+        }
+        return result;
+    }
+
+    /**
+     * 批量申请办理任务
+     * 账户增开
+     *
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "applyMarginTaskHandleBatch", method = RequestMethod.POST)
+    @ResponseBody
+    public Result applyMarginTaskHandleBatch(String applicationIds, String toUserId, String actKey, HttpServletRequest request) throws Exception {
+        Result result = null;
+        if (StringUtils.isEmpty(applicationIds)) {
+            throw new MyException("没有勾选需要记录");
+        }
+
+        StringBuffer currentNodes = new StringBuffer();
+
+        Map<String, List<String>> modelNodeRoleList = Maps.newHashMap();
+
+        //根据当前角色所拥有权限,
+        modelNodeRoleList = actModelerService.getModelNodeUser(SysConfigUtil.getSysConfigValue("ONLINE_OPEN_ACCOUNT_MARGIN_MODEL_ID", null));
+
+        List<RoleEntity> roleList = roleService.queryByUserId(UserUtils.getCurrentUserId(), "0");
+        for (String key : modelNodeRoleList.keySet()) {
+            List<String> modelNodeRole = modelNodeRoleList.get(key);
+            for (String aModelNodeRole : modelNodeRole) {
+                for (RoleEntity role : roleList) {
+                    if (role.getId().equals(aModelNodeRole)) {
+                        currentNodes.append(key).append(",");
+                    }
+                }
+            }
+        }
+
+        StringBuffer errorMsg = new StringBuffer();
+        List<ProcessTaskDto> processTaskDtoList = actModelerService.findMarginByBusIds(applicationIds);
+        try {
+            for (int i = 0; i < processTaskDtoList.size(); i++) {
+                CustomerAccountMarginOpenApplyEntity applicationInfo = customerAccMarginOpenApplyService.queryObjectByApplicationId(processTaskDtoList.get(i).getBusId());
+
+                // 超级管理员不做权限验证 ，判断操作人员是否拥有初审 、复审、终审权限
+                if (!currentNodes.toString().contains(applicationInfo.getCurrentNode()) && !UserUtils.getCurrentUserId().equals(Constant.SUPERR_USER)) {
+                    errorMsg.append(processTaskDtoList.get(i).getBusId()).append(",");
+                    continue;
+                }
+
+                // 校验任务是否已被申领
+                if (StringUtils.isNotBlank(applicationInfo.getAssignDrafter())) {
+                    errorMsg.append(processTaskDtoList.get(i).getBusId()).append(",");
+                    continue;
+                }
+
+                result = actModelerService.applyTaskHandle(processTaskDtoList.get(i), UserUtils.getCurrentUserId());
+                if ("0".equals(result.get("code"))) {
+                    //更新申请表指定处理人
+                    applicationInfo.setAssignDrafter(UserUtils.getCurrentUserId());
+                    customerAccountMarginOpenApplyDao.updateAssignDrafter(applicationInfo);
+                } else {
+                    errorMsg.append(processTaskDtoList.get(i).getBusId()).append(",");
+                }
+            }
+            if (!StringUtils.isEmpty(errorMsg)) {
+                errorMsg.append("增开任务已被申请办理");
+                return Result.error(errorMsg.toString());
+            }
+        } catch (Exception e) {
+            logger.error("增开批量申请办理任务异常", e);
+            return Result.error("增开申请办理任务失败");
         }
         return result;
     }

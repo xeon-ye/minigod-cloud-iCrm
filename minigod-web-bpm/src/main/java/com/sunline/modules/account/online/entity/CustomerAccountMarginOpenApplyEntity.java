@@ -90,6 +90,7 @@ public class CustomerAccountMarginOpenApplyEntity extends ActivitiBaseEntity imp
     //其他理由
     private String otherReasons;
     private Integer isExpExcel;
+    private String idCardNo;
 
     public String getWitnessUser() {
         return witnessUser;
@@ -398,5 +399,13 @@ public class CustomerAccountMarginOpenApplyEntity extends ActivitiBaseEntity imp
 
     public void setIsExpExcel(Integer isExpExcel) {
         this.isExpExcel = isExpExcel;
+    }
+
+    public String getIdCardNo() {
+        return idCardNo;
+    }
+
+    public void setIdCardNo(String idCardNo) {
+        this.idCardNo = idCardNo;
     }
 }

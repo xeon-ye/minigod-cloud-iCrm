@@ -46,4 +46,6 @@ public interface CustomerAccountOpenInfoDao extends BaseDao<CustomerAccountOpenI
     int setTradeAccount(CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity);
 
     int updateMarginInfo(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
+
+    CustomerAccountOpenInfoEntity queryByIdCardNumber(String idCardNumber);
 }

@@ -117,12 +117,12 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             int count = 0;
 
             CustomerAccountMarginOpenApplyEntity customerAccountOpenApplicationEntity = new CustomerAccountMarginOpenApplyEntity();
-            customerAccountOpenApplicationEntity.setApplicationId(customerAccountOpenInfoEntity.getApplicationId());
             customerAccountOpenApplicationEntity.setApproveResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
             customerAccountOpenApplicationEntity.setAccountOpenResultStatus(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
-            customerAccountOpenApplicationEntity.setApplicationTitle("互联网开户申请[" + customerAccountOpenInfoEntity.getClientName() + "]");
+            customerAccountOpenApplicationEntity.setApplicationTitle("账户增开申请[" + customerAccountOpenInfoEntity.getClientName() + "]");
             customerAccountOpenApplicationEntity.setIsExpExcel(0);
             customerAccountOpenApplicationEntity.setCurrentNode("提交");
+            customerAccountOpenApplicationEntity.setIdCardNo(customerAccountOpenInfoEntity.getIdNo());
 
             //保存增开申请表信息
             count = customerAccMarginOpenApplyService.save(customerAccountOpenApplicationEntity);
@@ -1526,6 +1526,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
 
             }
 
+
             // 拼接流程审核记录串
             String flowPath = applicationInfo.getFlowPath() != null ? applicationInfo.getFlowPath() + "-" + customerAccountOpenApproveInfo.getCurrentNode() : customerAccountOpenApproveInfo.getCurrentNode();
             applicationInfo.setCurrentNode(customerAccountOpenApproveInfo.getCurrentNode());
@@ -1554,5 +1555,13 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
     public List<AccountOpenApplyDetailInfo> findMarginApplyList(AccountOpenApplyQuery query) {
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
         return customerAccountMarginOpenApplyDao.selectAccountOpenApplicationDetailInfo(query);
+    }
+
+    @Override
+    public Page<AccountOpenApplyDetailInfo> findMarginPageCheck(AccountOpenApplyQuery query, int pageNum) {
+        DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
+        PageHelper.startPage(pageNum, Constant.pageSize);
+        customerAccountMarginOpenApplyDao.selectAccountOpenApplicationDetailInfoCheck(query);
+        return PageHelper.endPage();
     }
 }

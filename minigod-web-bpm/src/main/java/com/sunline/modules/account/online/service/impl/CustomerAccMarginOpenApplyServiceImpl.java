@@ -60,16 +60,15 @@ public class CustomerAccMarginOpenApplyServiceImpl implements CustomerAccMarginO
         UserEntity supperUser = UserUtils.getManagerUser();
 
         // 检验预约流水号的唯一性
-        /*String applicationId = OrderUtil.getOrderNoByAtomic(1);
+        String applicationId = OrderUtil.getOrderNoByAtomic(1);
         CustomerAccountMarginOpenApplyEntity customerAccoOpenApplyInfo = customerAccountOpenApplyDao.queryObjectByApplicationId(applicationId);
         while (null != customerAccoOpenApplyInfo) {
             applicationId = OrderUtil.getOrderNoByAtomic(1);
             customerAccoOpenApplyInfo = customerAccountOpenApplyDao.queryObjectByApplicationId(applicationId);
-        }*/
+        }
 
-        customerAccountOpenApplication.setCode(customerAccountOpenApplication.getApplicationId());
-        //customerAccountOpenApplication.setApplicationId(customerAccountOpenApplication.getCode());
-//        customerAccountOpenApplication.setCreateId(supperUser.getId());
+        customerAccountOpenApplication.setCode(applicationId);
+        customerAccountOpenApplication.setApplicationId(applicationId);
         customerAccountOpenApplication.setCreateUser(supperUser.getId());
         customerAccountOpenApplication.setCreateTime(new Date());
         customerAccountOpenApplication.setUpdateTime(new Date());
@@ -77,7 +76,6 @@ public class CustomerAccMarginOpenApplyServiceImpl implements CustomerAccMarginO
         customerAccountOpenApplication.setBapid(supperUser.getBapid());
         customerAccountOpenApplication.setBaid(supperUser.getBaid());
         customerAccountOpenApplication.setApplicationStatus(BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_INITIAL_AUDIT_VALUE);
-//        customerAccountOpenApplication.setFlowPath("提交");
         return customerAccountOpenApplyDao.save(customerAccountOpenApplication);
     }
 

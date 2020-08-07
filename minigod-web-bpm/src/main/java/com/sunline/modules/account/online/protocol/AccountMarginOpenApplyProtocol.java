@@ -13,8 +13,8 @@ import com.sunline.modules.common.pojo.rest.BaseParameter;
 public class AccountMarginOpenApplyProtocol extends BaseParameter {
 
     //预约流水号
-    @JSONField(name = "applicationId")
-    private String applicationId;
+    @JSONField(name = "idCardNo")
+    private String idCardNo;
 
     //信用额度
     @JSONField(name = "creditQuota")
@@ -24,12 +24,12 @@ public class AccountMarginOpenApplyProtocol extends BaseParameter {
     @JSONField(name = "creditRatio")
     private String creditRatio;
 
-    public String getApplicationId() {
-        return applicationId;
+    public String getIdCardNo() {
+        return idCardNo;
     }
 
-    public void setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
+    public void setIdCardNo(String idCardNo) {
+        this.idCardNo = idCardNo;
     }
 
     public String getCreditQuota() {

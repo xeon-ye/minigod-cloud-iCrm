@@ -145,10 +145,10 @@ public class CustomerAccountOpenProxy {
 
         try {
             AccountMarginOpenApplyProtocol protocol = applicationProtocol.getParams();
-            if (null == protocol.getApplicationId() || StringUtils.isBlank(protocol.getApplicationId())) {
-                logger.error("【增开预约接口数据完整性校验】：预约ID为空");
+            if (null == protocol.getIdCardNo() || StringUtils.isBlank(protocol.getIdCardNo())) {
+                logger.error("【增开预约接口数据完整性校验】：用户不存在");
                 responseVO.setCode(-1);
-                responseVO.setMessage("预约ID为空");
+                responseVO.setMessage("用户不存在");
                 return responseVO;
             }
 
@@ -162,7 +162,7 @@ public class CustomerAccountOpenProxy {
                 protocol.setCreditRatio(String.valueOf(20.00));
             }
 
-            CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByApplicationId(protocol.getApplicationId());
+            CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByIdCardNumber(protocol.getIdCardNo());
             customerAccountOpenInfoEntity.setCreditRatio(protocol.getCreditRatio());
             customerAccountOpenInfoEntity.setCreditQuota(protocol.getCreditQuota());
 

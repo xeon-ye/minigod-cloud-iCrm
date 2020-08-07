@@ -73,4 +73,12 @@ public interface CustomerAccOpenInfoService {
      * @return
      */
     int updateMarginInfo(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
+
+    /**
+     * 根据手机号查询
+     * @param idCardNumber
+     * @return
+     */
+    CustomerAccountOpenInfoEntity queryByIdCardNumber(String idCardNumber);
+
 }

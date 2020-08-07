@@ -208,6 +208,15 @@
         </if>
     </select>
 
+    <select id="findMarginByBusIds" resultType="com.sunline.modules.activiti.dto.ProcessTaskDto">
+        select b.name_ AS taskName,b.CREATE_TIME_ AS createTime,b.id_ AS taskId, b.proc_inst_id_ AS instanceId,a.defid  AS defId,a.application_id as busId
+        from customer_account_margin_open_application a,act_ru_task b
+        where a.instance_id = b.proc_inst_id_
+        <if test="busIds != null and busIds != '' ">
+            and find_in_set (a.application_id,#{busIds})
+        </if>
+    </select>
+
     <select id="queryValidApplyTask" resultType="com.sunline.modules.activiti.dto.ProcessTaskDto">
         select b.name_ AS taskName,b.CREATE_TIME_ AS createTime,b.id_ AS taskId, b.proc_inst_id_ AS instanceId,a.defid  AS defId,a.application_id as busId
         from ${tableName} a,act_ru_task b

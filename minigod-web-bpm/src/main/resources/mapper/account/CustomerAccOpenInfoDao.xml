@@ -613,7 +613,9 @@
 			#{stockTradeAccount},
 			#{contactPhone},
 			#{bankCurrency},
-			#{investmentHorizon}
+			#{investmentHorizon},
+			#{creditQuota},
+			#{creditRatio}
 		)
 	</insert>
 
@@ -983,5 +985,14 @@
         </set>
         where application_id = #{applicationId}
     </update>
+
+    <select id="queryByIdCardNumber"
+            resultType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity"
+            resultMap="customerAccountOpenInfoMap">
+        select
+        <include refid="Base_Column_List"/>
+        from customer_account_open_info
+        where id_no = #{idNo}
+    </select>
 
 </mapper>

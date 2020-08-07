@@ -40,6 +40,7 @@
         <result property="submitApprovalUser" column="submit_approval_user"/>
         <result property="otherReasons" column="other_reasons"/>
         <result property="isExpExcel" column="is_exp_excel"/>
+        <result property="idCardNo" column="id_card_no"/>
 
     </resultMap>
 
@@ -189,10 +190,11 @@
 		license_number,
 		submit_approval_user,
 		other_reasons,
-		is_exp_excel
+		is_exp_excel,
+		id_card_no
     </sql>
 
-	 <sql id="Base_Column_List1">
+    <sql id="Base_Column_List1">
 	 	caoa.id                                   AS    caoa_id,
         caoa.application_id                       AS 	caoa_application_id,
         caoa.application_title                    AS	caoa_application_title,
@@ -224,6 +226,7 @@
         caoa.fire_aid                          AS 	caoa_fire_aid,
         caoa.other_reasons                     as caoa_other_reasons,
         caoa.is_exp_excel                      as caoa_is_exp_excel,
+        caoa.id_card_no                        as caoa_id_card_no,
         caoi.id                                                 as caoi_id,
         caoi.application_id                                     as caoi_application_id,
         caoi.open_account_type                                  as caoi_open_account_type,
@@ -362,6 +365,7 @@
         caoa.fire_aid                          AS 	caoa_fire_aid,
         caoa.other_reasons                     as caoa_other_reasons,
         caoa.is_exp_excel                      as caoa_is_exp_excel,
+        caoa.id_card_no                        as caoa_id_card_no,
         caoi.id                                                 as caoi_id,
         caoi.application_id                                     as caoi_application_id,
         caoi.open_account_type                                  as caoi_open_account_type,
@@ -556,10 +560,13 @@
         <if test="isExpExcel != null">
             <![CDATA[ and is_exp_excel = #{isExpExcel}]]>
         </if>
+        <if test="idCardNo != null">
+            <![CDATA[ and id_card_no = #{idCardNo}]]>
+        </if>
     </sql>
 
     <sql id="Base_Where_Conditions2">
-        caoa.application_id = caoi.application_id
+        caoa.id_card_no = caoi.id_no
         <if test="status != null">
             <![CDATA[ and caoa.status = #{status}]]>
         </if>
@@ -580,6 +587,9 @@
         </if>
         <if test="isExpExcel !=null">
             <![CDATA[ and caoa.is_exp_excel = #{isExpExcel}]]>
+        </if>
+        <if test="idCardNo !=null">
+            <![CDATA[ and caoa.id_card_no = #{idCardNo}]]>
         </if>
         <if test="userId != null">
             <![CDATA[ and caoi.user_id = #{userId}]]>
@@ -603,7 +613,7 @@
             <![CDATA[ and uci.channel_name = #{sourceChannelName}]]>
         </if>
         <if test="clientId != null">
-        <![CDATA[ and caoi.client_id = #{clientId}]]>
+            <![CDATA[ and caoi.client_id = #{clientId}]]>
         </if>
         <if test="applicationTimeStart != null">
             <![CDATA[ and caoi.application_time >= #{applicationTimeStart}]]>
@@ -636,10 +646,10 @@
             <![CDATA[ and caoi.account_level = #{accountLevel}]]>
         </if>
         <if test="openAccountType == 0">
-             and caoi.open_account_type = 0
+            and caoi.open_account_type = 0
         </if>
         <if test="openAccountType == 1">
-             and caoi.open_account_type = 1
+            and caoi.open_account_type = 1
         </if>
         <if test="openAccountType == 2">
             and caoi.open_account_type = 2
@@ -659,7 +669,7 @@
     </sql>
 
     <sql id="Base_Where_Conditions3">
-        caoa.application_id = caoi.application_id
+        caoa.id_card_no = caoi.id_no
         <if test="status != null">
             <![CDATA[ and caoa.status = #{status}]]>
         </if>
@@ -698,16 +708,16 @@
             </otherwise>
         </choose>
     </sql>
-    
-      <sql id="Base_Where_Conditions4">
-        caoa.application_id = caoi.application_id AND caoa.application_status in (1,2,3)
+
+    <sql id="Base_Where_Conditions4">
+        caoa.id_card_no = caoi.id_no AND caoa.application_status in (1,2,3)
         <!-- A修改資料，補充資料后不能申領 -->
         and not EXISTS(
-				select a.* from open_account_process_log as a where id = (select max(id) from open_account_process_log b where a.application_id=b.application_id)
-				and caoa.application_id = a.application_id
-				and (a.is_edit = '1' or a.is_additional = '1')
-				and a.update_user =#{updateUser})
-        
+        select a.* from open_account_process_log as a where id = (select max(id) from open_account_process_log b where a.application_id=b.application_id)
+        and caoa.application_id = a.application_id
+        and (a.is_edit = '1' or a.is_additional = '1')
+        and a.update_user =#{updateUser})
+
         <if test="status != null">
             <![CDATA[ and caoa.status = #{status}]]>
         </if>
@@ -744,9 +754,9 @@
         <if test="phoneNumber != null">
             <![CDATA[ and caoi.phone_number = #{phoneNumber}]]>
         </if>
-          <if test="sourceChannelId != null">
-              <![CDATA[ and caoi.source_channel_id = #{sourceChannelId}]]>
-          </if>
+        <if test="sourceChannelId != null">
+            <![CDATA[ and caoi.source_channel_id = #{sourceChannelId}]]>
+        </if>
         <if test="sourceChannelName != null">
             <![CDATA[ and uci.channel_name = #{sourceChannelName}]]>
         </if>
@@ -765,67 +775,67 @@
         <if test="assignDrafter != null">
             <![CDATA[ and (caoa.assign_drafter = #{assignDrafter} || assign_drafter is null) ]]>
         </if>
-          <if test="currentNode != null">
-              <![CDATA[ and caoa.current_node = #{currentNode} ]]>
-          </if>
-          <if test="currentNodes != null and currentNodes.indexOf('终审') != -1">
-              <![CDATA[
+        <if test="currentNode != null">
+            <![CDATA[ and caoa.current_node = #{currentNode} ]]>
+        </if>
+        <if test="currentNodes != null and currentNodes.indexOf('终审') != -1">
+            <![CDATA[
            AND NOT EXISTS (SELECT 1 FROM extend_act_tasklog WHERE task_name IN ('复审') AND bus_id=caoa.application_id AND deal_id =#{assignDrafter} AND task_name != caoa.current_node)
                ]]>
-          </if>
+        </if>
         <if test="currentNodes != null">
             <if test="currentNodes.size==0">
                 and caoa.current_node = null
             </if>
-          <if test="currentNodes.size!=0">
-            and caoa.current_node in
-            <foreach item="item" index="index" collection="currentNodes" open="(" separator="," close=")">
-                #{currentNodes[${index}]}
-            </foreach>
-          </if>
+            <if test="currentNodes.size!=0">
+                and caoa.current_node in
+                <foreach item="item" index="index" collection="currentNodes" open="(" separator="," close=")">
+                    #{currentNodes[${index}]}
+                </foreach>
+            </if>
 
         </if>
         <if test="isBack != null">
             <![CDATA[ and caoa.is_back = #{isBack}]]>
-        </if>       
+        </if>
         <if test="bankType != null">
             <![CDATA[ and caoi.bank_type = #{bankType}]]>
         </if>
 
-          <if test="openAccountType == 0">
-              and caoi.open_account_type = 0
-          </if>
-          <if test="openAccountType == 1">
-              and caoi.open_account_type = 1
-          </if>
-          <if test="openAccountType == 3">
-              and caoi.open_account_type = 3
-          </if>
-          <if test="openAccountType == 4">
-              and caoi.open_account_type = 1 and bank_type =0
-          </if>
-          <if test="openAccountType == 5">
-              and caoi.open_account_type = 1 and bank_type =1 and application_time &lt;= '2019-01-12 16:30:00'
-          </if>
-          <if test="openAccountType == 6">
-              and caoi.open_account_type = 1 and bank_type =1 and application_time &gt;= '2019-01-12 16:30:00'
-          </if>
+        <if test="openAccountType == 0">
+            and caoi.open_account_type = 0
+        </if>
+        <if test="openAccountType == 1">
+            and caoi.open_account_type = 1
+        </if>
+        <if test="openAccountType == 3">
+            and caoi.open_account_type = 3
+        </if>
+        <if test="openAccountType == 4">
+            and caoi.open_account_type = 1 and bank_type =0
+        </if>
+        <if test="openAccountType == 5">
+            and caoi.open_account_type = 1 and bank_type =1 and application_time &lt;= '2019-01-12 16:30:00'
+        </if>
+        <if test="openAccountType == 6">
+            and caoi.open_account_type = 1 and bank_type =1 and application_time &gt;= '2019-01-12 16:30:00'
+        </if>
 
-          <if test="openAccountType == 2">
-              and caoi.open_account_type = 2
-          </if>
+        <if test="openAccountType == 2">
+            and caoi.open_account_type = 2
+        </if>
 
-          <!-- 线下开户除当前用户录入不能查询出来，系统管理员除外 and updateUser !='026a564bbfd84861ac4b65393644beef'-->
-          <if test="openAccountType == 2 and updateUser !='026a564bbfd84861ac4b65393644beef' ">
-              <![CDATA[ and ((caoi.open_account_type ='2' and caoa.application_status ='2'
+        <!-- 线下开户除当前用户录入不能查询出来，系统管理员除外 and updateUser !='026a564bbfd84861ac4b65393644beef'-->
+        <if test="openAccountType == 2 and updateUser !='026a564bbfd84861ac4b65393644beef' ">
+            <![CDATA[ and ((caoi.open_account_type ='2' and caoa.application_status ='2'
            AND (caoa.start_user_id <>#{updateUser} or caoa.update_user is null))
             or (caoi.open_account_type ='2' and caoa.application_status ='3'))]]>
-          </if>
+        </if>
     </sql>
 
     <select id="selectAccountOpenApplicationDetailInfo" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="com.sunline.modules.account.online.model.AccountOpenApplyQuery" >
         SELECT
-        	<include refid="Base_Column_List1"/>        
+        <include refid="Base_Column_List1"/>
         FROM customer_account_margin_open_application caoa,customer_account_open_info caoi
         LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
         <where>
@@ -863,6 +873,7 @@
         caoa.update_time              AS caoa_update_time,
         caoa.fire_aid              AS caoa_fire_aid,
         caoa.is_exp_excel                      AS caoa_is_exp_excel,
+        caoa.id_card_no                        AS caoa_id_card_no,
         caoi.id                                                 as caoi_id,
         caoi.application_id                                     as caoi_application_id,
         caoi.open_account_type                                  as caoi_open_account_type,
@@ -939,7 +950,7 @@
         caoi.credit_ratio                                       as caoi_credit_ratio
         FROM customer_account_margin_open_application caoa,customer_account_open_info caoi
         LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
-        WHERE caoa.application_id = caoi.application_id AND caoi.source_channel_id=uci.channel_id
+        WHERE caoa.id_card_no = caoi.id_no AND caoi.source_channel_id=uci.channel_id
         <if test="status != null">
             <![CDATA[ and caoa.status = #{status}]]>
         </if>
@@ -995,8 +1006,8 @@
         from customer_account_margin_open_application
         where id  = #{value}
     </select>
-    
-     <select id="queryObjectByApplicationId" resultType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap">
+
+    <select id="queryObjectByApplicationId" resultType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" resultMap="customerAccountOpenApplicationMap">
         select
         <include refid="Base_Column_List" />
         from customer_account_margin_open_application
@@ -1067,7 +1078,8 @@
 			`witnesses_type`,
 			`license_number`,
 			`submit_approval_user`,
-			`is_exp_excel`
+			`is_exp_excel`,
+			`id_card_no`
 		)
 		values
 		(
@@ -1102,7 +1114,8 @@
 			#{witnessesType},
 			#{licenseNumber},
 			#{submitApprovalUser},
-			#{isExpExcel}
+			#{isExpExcel},
+			#{idCardNo}
 		)
 	</insert>
 
@@ -1145,21 +1158,22 @@
             <if test="fireAid != null">`fire_aid` = #{fireAid},</if>
             <if test="submitApprovalUser != null">`submit_approval_user` = #{submitApprovalUser},</if>
             <if test="otherReasons != null">`other_reasons` = #{otherReasons},</if>
-            <if test="isExpExcel != null">`is_exp_excel` = #{isExpExcel}</if>
+            <if test="isExpExcel != null">`is_exp_excel` = #{isExpExcel},</if>
+            <if test="idCardNo != null">`id_card_no` = #{idCardNo}</if>
         </set>
         where id = #{id}
     </update>
 
     <update id="updateAssignDrafter" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
         update customer_account_margin_open_application set assign_drafter=#{assignDrafter}
-        where id = #{id}	        
+        where id = #{id}
     </update>
 
-   <update id="updateAssignDrafterByApplicationId" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
+    <update id="updateAssignDrafterByApplicationId" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity">
         update customer_account_margin_open_application set assign_drafter=#{assignDrafter}
-        where application_id = #{applicationId}	        
+        where application_id = #{applicationId}
     </update>
-    
+
     <delete id="delete">
         delete from customer_account_margin_open_application where id = #{value}
     </delete>
@@ -1208,15 +1222,16 @@
             <if test="witnessesType != null">`witnesses_type` = #{witnessesType},</if>
             <if test="licenseNumber != null">`license_number` = #{licenseNumber},</if>
             <if test="submitApprovalUser != null">`submit_approval_user` = #{submitApprovalUser},</if>
-            <if test="isExpExcel != null">`is_exp_excel` = #{isExpExcel}</if>
+            <if test="isExpExcel != null">`is_exp_excel` = #{isExpExcel},</if>
+            <if test="idCardNo != null">`id_card_no` = #{idCardNo}</if>
         </set>
         where application_id = #{applicationId}
     </update>
 
     <select id="selectAccountOpenApplicationDetailInfoCheck" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="com.sunline.modules.account.online.model.AccountOpenApplyQuery" >
         select
-         	<include refid="Base_Column_List1"/>,
-            (SELECT COUNT(*) FROM customer_account_open_info WHERE user_id=caoi.user_id) AS application_count
+        <include refid="Base_Column_List1"/>,
+        (SELECT COUNT(*) FROM customer_account_open_info WHERE user_id=caoi.user_id) AS application_count
         from customer_account_margin_open_application caoa,customer_account_open_info caoi
         LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
         <where>
@@ -1249,27 +1264,16 @@
         SELECT
         <include refid="Base_Column_List1"/>
         FROM customer_account_margin_open_application caoa
-        LEFT JOIN customer_account_open_info caoi ON caoa.application_id=caoi.application_id
+        LEFT JOIN customer_account_open_info caoi ON caoa.id_card_no=caoi.id_no
         LEFT JOIN  user_channel_info uci ON uci.channel_id = caoi.source_channel_id
         WHERE 1=1
         AND caoa.application_status=#{applicationStatus}
         AND NOT EXISTS (SELECT user_id FROM customer_account_open_info t1,customer_account_margin_open_application t2
-        WHERE t2.application_id=t1.application_id AND t2.application_status != #{applicationStatus}  AND t1.user_id=caoi.user_id)
+        WHERE t2.id_card_no=t1.id_no AND t2.application_status != #{applicationStatus}  AND t1.user_id=caoi.user_id)
         AND caoa.application_id IN
         (SELECT MAX(t3.application_id) FROM customer_account_open_info t1,customer_account_margin_open_application t3
-        WHERE t3.application_id=t1.application_id AND t3.application_status = #{applicationStatus}  AND t1.user_id=caoi.user_id)
+        WHERE t3.id_card_no=t1.id_no AND t3.application_status = #{applicationStatus}  AND t1.user_id=caoi.user_id)
         ORDER  BY caoi.application_time DESC
-    </select>
-
-    <select id="selectAccOpenDetailInfoByApplicationIds" resultMap="AccountOpenApplicationDetailInfoMap" parameterType="java.util.Map" >
-        SELECT
-        <include refid="Base_Column_List2"/>
-        FROM customer_account_margin_open_application caoa
-        LEFT JOIN customer_account_open_info caoi ON caoa.application_id=caoi.application_id
-        WHERE caoa.application_id IN
-        <foreach item="applicationId" collection="applicationIds" open="(" separator="," close=")">
-            #{applicationId}
-        </foreach>
     </select>
 
     <select id="qryAbnormalData" resultMap="customerAccountOpenApplicationMap" parameterType="com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity" >

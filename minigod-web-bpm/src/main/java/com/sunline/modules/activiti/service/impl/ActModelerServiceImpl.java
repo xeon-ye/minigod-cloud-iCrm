@@ -1672,4 +1672,13 @@ public class ActModelerServiceImpl implements ActModelerService {
         return actExtendDao.queryValidApplyTask(processTaskDto);
     }
 
+    @Override
+    public List<ProcessTaskDto> findMarginByBusIds(String busIds) {
+        DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
+        Map<String, Object> params = Maps.newHashMap();
+        params.put("busIds", busIds);
+        List<ProcessTaskDto> processTaskDtos = actExtendDao.findMarginByBusIds(params);
+        return processTaskDtos;
+    }
+
 }

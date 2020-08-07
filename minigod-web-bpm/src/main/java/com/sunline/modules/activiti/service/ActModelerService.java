@@ -244,4 +244,12 @@ public interface ActModelerService {
      * @return
      */
     List<ProcessTaskDto> queryValidApplyTask(ProcessTaskDto processTaskDto);
+
+    /**
+     * 根据busId查询待申领的开户记录
+     * 增开
+     * @param busIds
+     * @return
+     */
+    List<ProcessTaskDto> findMarginByBusIds(String busIds);
 }

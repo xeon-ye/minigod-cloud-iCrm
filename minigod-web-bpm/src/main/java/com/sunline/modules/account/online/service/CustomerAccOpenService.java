@@ -142,4 +142,12 @@ public interface CustomerAccOpenService {
      * @return
      */
     List<AccountOpenApplyDetailInfo> findMarginApplyList(AccountOpenApplyQuery query);
+
+    /**
+     * 账户增开列表
+     * @param query
+     * @param pageNum
+     * @return
+     */
+    Page<AccountOpenApplyDetailInfo> findMarginPageCheck(AccountOpenApplyQuery query, int pageNum);
 }

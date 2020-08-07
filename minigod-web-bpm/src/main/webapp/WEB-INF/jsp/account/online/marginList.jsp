@@ -43,14 +43,6 @@
                 </div>
             </div>
             <div class="layui-inline" style="margin-bottom: 2px;">
-                <label class="layui-form-label">小神号:</label>
-                <div class="layui-input-block">
-                    <input type="text" name="userId" value="${queryCondition.userId}" placeholder="请输入小神号"
-                           class="layui-input">
-                </div>
-
-            </div>
-            <div class="layui-inline" style="margin-bottom: 2px;">
                 <label class="layui-form-label">姓名:</label>
                 <div class="layui-input-block">
                     <input type="text" name="clientName" value="${queryCondition.clientName}" placeholder="请输入姓名"
@@ -108,14 +100,6 @@
 
             </div>
             <div class="layui-inline" style="margin-bottom: 2px;">
-                <label class="layui-form-label">账户等级:</label>
-                <div class="layui-input-block">
-                    <tag:select initSelectedKey="${queryCondition.accountLevel}" nameKey="AO_OPEN_ACCOUNT_LEVEL"
-                                name="accountLevel" isAddDefaltOption="true"></tag:select>
-                </div>
-
-            </div>
-            <div class="layui-inline" style="margin-bottom: 2px;">
                 <label class="layui-form-label">客户帐号:</label>
                 <div class="layui-input-block">
                     <input type="text" name="clientId" value="${queryCondition.clientId}" placeholder="请输入客户帐号"
@@ -149,54 +133,20 @@
         <table id="table-list" class="layui-table" lay-size="">
             <thead>
             <tr width="99%">
-                <th style="width: 5px;height: 20px;"><input type="checkbox" id="checkAll"/></th>
                 <th>预约号</th>
-                <th>申请时间</th>
-                <th>开户途径</th>
-                <th>小神号</th>
                 <th>客户姓名</th>
-                <th>证件类型</th>
                 <th>证件号</th>
-                <th>渠道</th>
                 <th>手机号码</th>
-                <th>开户状态</th>
-                <th>账户等级</th>
-                <th>是否加急</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
             <c:forEach items="${page.result}" var="info" varStatus="i">
                 <tr>
-                    <td>
-                        <input name="selectFlag" type="checkbox"
-                               value="${info.customerAccountMarginOpenApplyEntity.applicationId}"/>
-                    </td>
                     <td>${info.customerAccountOpenInfoEntity.applicationId} </td>
-                    <td><fmt:formatDate value="${info.customerAccountOpenInfoEntity.applicationTime}"
-                                        pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                    <td>
-                        <c:if test="${info.customerAccountOpenInfoEntity.openAccountType == 0}">未知</a></c:if>
-                        <c:if test="${info.customerAccountOpenInfoEntity.openAccountType == 1 && (queryCondition.openAccountType ==null || queryCondition.openAccountType ==1)}">互联网开户</a></c:if>
-                        <c:if test="${info.customerAccountOpenInfoEntity.openAccountType == 1 && info.customerAccountOpenInfoEntity.bankType == 0 && queryCondition.openAccountType == 4}">香港银行卡</a></c:if>
-                        <c:if test="${info.customerAccountOpenInfoEntity.openAccountType == 1 && info.customerAccountOpenInfoEntity.bankType == 1 && queryCondition.openAccountType == 5}">大陆银行卡</a></c:if>
-                        <c:if test="${queryCondition.openAccountType==6}">SZCA电子证书</c:if>
-                        <c:if test="${info.customerAccountOpenInfoEntity.openAccountType == 2}">线下开户</a></c:if>
-                        <c:if test="${info.customerAccountOpenInfoEntity.openAccountType == 3}">BPM</a></c:if>
-                    </td>
-                    <td>${info.customerAccountOpenInfoEntity.userId} </td>
                     <td>${info.customerAccountOpenInfoEntity.clientName}</td>
-                    <td>${fns:getCodeName("AO_ID_KIND",info.customerAccountOpenInfoEntity.idKind)}</td>
                     <td>${info.customerAccountOpenInfoEntity.idNo}</td>
-                    <td>${info.customerAccountOpenInfoEntity.sourceChannelId}</td>
                     <td>${info.customerAccountOpenInfoEntity.phoneNumber}</td>
-                    <td>${fns:getCodeName("AO_OPEN_ACCOUNT_STATUS",info.customerAccountMarginOpenApplyEntity.applicationStatus)}</td>
-                    <td>${fns:getCodeName("AO_OPEN_ACCOUNT_LEVEL",info.customerAccountOpenInfoEntity.accountLevel)}</td>
-                    <td>
-                        <c:if test="${info.customerAccountMarginOpenApplyEntity.fireAid==0}">未加急</c:if>
-                        <c:if test="${info.customerAccountMarginOpenApplyEntity.fireAid==1}"><span
-                                style="color: red">已加急</span></c:if>
-                    </td>
                     <td>
                         <c:choose>
                             <c:when test="${info.customerAccountOpenInfoEntity.openAccountType == 2}">

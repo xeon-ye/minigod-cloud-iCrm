@@ -21,6 +21,7 @@ public class ExtendActBusinessHelper {
 
     static {
         approveTaskUris.put("customerAccountOpenApplication", "customer/customerAccountOpenInfoApprove");
+        approveTaskUris.put("customerAccountMarginOpenApplication", "customer/customerAccountMarginOpenApprove");
         approveTaskUris.put("derivativesTransactionApplication", "userWorkflow/workFlowApproveInfo");
         approveTaskUris.put("usaStockMarketApplication", "userWorkflow/workFlowApproveInfo");
         approveTaskUris.put("employeeLeaveApplication", "employee/employeeLeaveInfoApprove");
