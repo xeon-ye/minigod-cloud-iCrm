@@ -17,7 +17,7 @@ import com.sunline.modules.common.utils.SysConfigUtil;
 import com.sunline.modules.common.vo.ResponseVO;
 import com.sunline.modules.notice.entity.MessageSendInfoEntity;
 import com.sunline.modules.notice.service.MessageSendInfoService;
-import com.xxl.job.core.util.DateUtil;
+//import com.xxl.job.core.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.slf4j.Logger;

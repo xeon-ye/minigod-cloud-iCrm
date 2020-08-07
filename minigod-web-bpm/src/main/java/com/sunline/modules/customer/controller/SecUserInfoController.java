@@ -240,10 +240,10 @@ public class SecUserInfoController extends BaseController {
                 boolean ischeck = false;
                 Integer code = entity1.getDisclosureCode();
                 //1,2,3选择否,11,12,13,14,15选择是时需要添加详细信息
-                if (entity1.getDisclosureIsTrue() == 0 && (code == 1 || code == 2 || code == 3)) {
+                if (entity1.getDisclosureIsTrue() == 0 && (code <= 20)) {
                     ischeck = true;
                 }
-                if (entity1.getDisclosureIsTrue() == 1 && (code > 10 && code < 16)) {
+                if (entity1.getDisclosureIsTrue() == 1 && (code > 20 && code <= 40)) {
                     ischeck = true;
                 }
                 if (ischeck) {

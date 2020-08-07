@@ -122,6 +122,7 @@ public class CustomerAccOpenReportGenerate {
             String userSignImage = customerAccountOpenManager.getAccountOpenCustomerSignImage(customerAccountOpenInfoId);
             if (null != userSignImage && StringUtils.isNoneBlank(userSignImage)) {
                 reportData.put("signImage", userSignImage);
+                reportData.put("signImageNorth", userSignImage);
                 reportData.put("signImageFatca", userSignImage);
             }
 
@@ -232,6 +233,7 @@ public class CustomerAccOpenReportGenerate {
                         }
                     }
 
+                    //TODO:修改~
                     //税务信息
                     List<OpenAccountTaxationInfoEntity> taxationInfoList = openAccountTaxationInfoService.queryByApplicationId(values.get("applicationId").toString());
                     for (int i = 0; i < taxationInfoList.size(); i++) {
@@ -501,9 +503,7 @@ public class CustomerAccOpenReportGenerate {
         reportData.put("idCardValidDateEnd", customerAccountOpenInfoEntity.getIdCardValidDateEnd());
         reportData.put("identitySimilarityPercent", customerAccountOpenInfoEntity.getIdentitySimilarityPercent());
         reportData.put("isPassIdentityAuthentication", customerAccountOpenInfoEntity.getIsPassIdentityAuthentication());
-        reportData.put("bankId", customerAccountOpenInfoEntity.getBankId());
-        reportData.put("bankNo", customerAccountOpenInfoEntity.getBankNo());
-        reportData.put("bankAccountName", customerAccountOpenInfoEntity.getBankAccountName());
+
         reportData.put("nationality", customerAccountOpenInfoEntity.getNationality());
         reportData.put("isAmericanGreenCardHolder", customerAccountOpenInfoEntity.getIsAmericanGreenCardHolder());
         reportData.put("contactProvinceName", customerAccountOpenInfoEntity.getContactProvinceName());
@@ -544,6 +544,9 @@ public class CustomerAccOpenReportGenerate {
         reportData.put("isAllowDerivativesTransaction", customerAccountOpenInfoEntity.getIsAllowDerivativesTransaction());
         reportData.put("initialAccountPassword", customerAccountOpenInfoEntity.getInitialAccountPassword());
         reportData.put("applicationTime", DateUtil.format(customerAccountOpenInfoEntity.getApplicationTime(), "yyyy-MM-dd"));
+        reportData.put("applicationTimeYear", DateUtil.format(customerAccountOpenInfoEntity.getApplicationTime(), "yyyy"));
+        reportData.put("applicationTimeMonth", DateUtil.format(customerAccountOpenInfoEntity.getApplicationTime(), "MM"));
+        reportData.put("applicationTimeDay", DateUtil.format(customerAccountOpenInfoEntity.getApplicationTime(), "dd"));
         reportData.put("recordStatus", customerAccountOpenInfoEntity.getRecordStatus());
         reportData.put("openAccountBankVerityList", customerAccountOpenInfoEntity.getOpenAccountBankVerityList());
         reportData.put("propertyTypeList", customerAccountOpenInfoEntity.getPropertyTypeList());
@@ -613,6 +616,12 @@ public class CustomerAccOpenReportGenerate {
 
         String openAccountWay = "";
         if (customerAccountOpenInfoEntity.getOpenAccountType() == 1 && customerAccountOpenInfoEntity.getBankType() == 0) {
+            reportData.put("bankId", customerAccountOpenInfoEntity.getBankId());
+            reportData.put("bankNo", customerAccountOpenInfoEntity.getBankNo());
+            reportData.put("bankAccountName", customerAccountOpenInfoEntity.getClientNameSpell());
+            reportData.put("bankCurrency", customerAccountOpenInfoEntity.getBankCurrency());
+            reportData.put("bankName", CodeUtils.getCodeName("AO_BANK_HK", String.valueOf(customerAccountOpenInfoEntity.getBankId())));
+
             openAccountWay = "香港银行账户开户";
         } else if (customerAccountOpenInfoEntity.getOpenAccountType() == 1 && customerAccountOpenInfoEntity.getBankType() == 1) {
             openAccountWay = "电子证书开户";
@@ -657,12 +666,10 @@ public class CustomerAccOpenReportGenerate {
         reportData.put("futuresTradeAccount", customerAccountOpenInfoEntity.getFuturesTradeAccount());
         reportData.put("stockTradeAccount", customerAccountOpenInfoEntity.getStockTradeAccount());
         reportData.put("contactPhone", customerAccountOpenInfoEntity.getContactPhone());
-        reportData.put("bankCurrency", customerAccountOpenInfoEntity.getBankCurrency());
         reportData.put("investmentHorizon", customerAccountOpenInfoEntity.getInvestmentHorizon());
-        reportData.put("workingSeniority", CodeUtils.getCodeName("AO_WORKING_SENIORITY",String.valueOf(customerAccountOpenInfoEntity.getWorkingSeniority())));
+        reportData.put("workingSeniority", CodeUtils.getCodeName("AO_WORKING_SENIORITY", String.valueOf(customerAccountOpenInfoEntity.getWorkingSeniority())));
         //交易默认勾选
         reportData.put("isOpenStockAccount", 1);
-        reportData.put("bankName", CodeUtils.getCodeName("AO_BANK_HK",String.valueOf(customerAccountOpenInfoEntity.getBankId())));
         //ADD 2020-07-30
 
         return reportData;

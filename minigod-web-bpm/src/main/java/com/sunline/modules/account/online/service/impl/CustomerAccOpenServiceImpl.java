@@ -360,9 +360,6 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
 
             // 复审节点回调业务处理
             if (CodeUtils.getCodeName("OPEN_ACCOUNT_NODE_NAME", "2").equals(customerAccountOpenApproveInfo.getCurrentNode())) {
-                if (1 == accountOpenInfo.getOpenAccountType()) {
-                    customerAccOpenReportGenerate.generateReport(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getApplicationId(), BpmCommonEnum.AccountOpenReport.ACCOUNT_OPEN_REPORT_USER_FORM_REPORT);
-                }
                 // 更新预约申请表相关信息
                 CustomerAccountOpenApplyEntity customerAccOpenApplyEntity = new CustomerAccountOpenApplyEntity();
                 customerAccOpenApplyEntity.setApplicationId(customerAccountOpenApproveInfo.getApplicationId());

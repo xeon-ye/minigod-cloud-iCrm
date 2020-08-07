@@ -47,12 +47,14 @@ public class CustomerAccountOpenHelper {
      */
     public static boolean imageLocationTypeValidate(Integer imageLocationType) {
         return 101 == imageLocationType || 102 == imageLocationType || 103 == imageLocationType
-                || 104 == imageLocationType || 105 == imageLocationType || 201 == imageLocationType || 301 == imageLocationType
-                || 302 == imageLocationType || 401 == imageLocationType || 402 == imageLocationType
+                || 104 == imageLocationType || 105 == imageLocationType
+                || 201 == imageLocationType
+                || 301 == imageLocationType || 302 == imageLocationType
+                || 401 == imageLocationType || 402 == imageLocationType
                 || 501 == imageLocationType || 502 == imageLocationType || 503 == imageLocationType
                 || 504 == imageLocationType || 505 == imageLocationType || 506 == imageLocationType
                 || 507 == imageLocationType || 508 == imageLocationType || 509 == imageLocationType
-                || 601 == imageLocationType || 602 == imageLocationType || 603 == imageLocationType;
+                || 601 == imageLocationType || 602 == imageLocationType || 603 == imageLocationType || 604 == imageLocationType;
     }
 
 
@@ -104,6 +106,7 @@ public class CustomerAccountOpenHelper {
         imagesLocationType.put("601", "接收衍生产品的方式凭证图");
         imagesLocationType.put("602", "金融机构工作经验凭证图");
         imagesLocationType.put("603", "衍生产品的交易凭证图");
+        imagesLocationType.put("604", "地址证明");
 
         return imagesLocationType;
     }
@@ -426,13 +429,18 @@ public class CustomerAccountOpenHelper {
 //                responseVO.setMessage("请填写公司地址");
 //                return responseVO;
 //            }
-
-            if (null == openAccountInfo.getProfessionType()) {
-                logger.error("【开户预约接口数据完整性校验】：请填写所属行业");
+            if (null == openAccountInfo.getIndustryRange()) {
+                logger.error("【开户预约接口数据完整性校验】：请填写行业性质");
                 responseVO.setCode(-1);
-                responseVO.setMessage("请填写所属行业");
+                responseVO.setMessage("请填写行业性质");
                 return responseVO;
             }
+//            if (null == openAccountInfo.getProfessionType()) {
+//                logger.error("【开户预约接口数据完整性校验】：请填写所属行业");
+//                responseVO.setCode(-1);
+//                responseVO.setMessage("请填写所属行业");
+//                return responseVO;
+//            }
 
 //            if (1 == openAccountInfo.getProfessionCode()) {
 //                if (null == openAccountInfo.getJobPosition() || StringUtils.isBlank(openAccountInfo.getJobPosition())) {
@@ -656,7 +664,7 @@ public class CustomerAccountOpenHelper {
             }
         }
 
-        if (openAccountInfo.getWarrantsInvestmentExperienceType() > 0){
+        if (openAccountInfo.getWarrantsInvestmentExperienceType() > 0) {
             if (null == openAccountInfo.getTradeWarrantsFrequency()) {
                 logger.error("【开户预约接口数据完整性校验】：请填写认股证交易频");
                 responseVO.setCode(-1);
@@ -665,7 +673,7 @@ public class CustomerAccountOpenHelper {
             }
         }
 
-        if (openAccountInfo.getOptionsExperience() > 0){
+        if (openAccountInfo.getOptionsExperience() > 0) {
             if (null == openAccountInfo.getTradeOptionsFrequency()) {
                 logger.error("【开户预约接口数据完整性校验】：请填写期权交易频率");
                 responseVO.setCode(-1);
@@ -674,7 +682,7 @@ public class CustomerAccountOpenHelper {
             }
         }
 
-        if (openAccountInfo.getOptionsExperience() > 0){
+        if (openAccountInfo.getOptionsExperience() > 0) {
             if (null == openAccountInfo.getTradeOptionsFrequency()) {
                 logger.error("【开户预约接口数据完整性校验】：请填写期货交易频率");
                 responseVO.setCode(-1);
@@ -683,7 +691,7 @@ public class CustomerAccountOpenHelper {
             }
         }
 
-        if (openAccountInfo.getUnitTrustsExperience() > 0){
+        if (openAccountInfo.getUnitTrustsExperience() > 0) {
             if (null == openAccountInfo.getTradeUnitTrustsFrequency()) {
                 logger.error("【开户预约接口数据完整性校验】：请填写单位信托基金/互惠基金交易频率");
                 responseVO.setCode(-1);
@@ -692,7 +700,7 @@ public class CustomerAccountOpenHelper {
             }
         }
 
-        if (openAccountInfo.getOtherProductsExperience() > 0){
+        if (openAccountInfo.getOtherProductsExperience() > 0) {
             if (null == openAccountInfo.getTradeOtherProductsFrequency()) {
                 logger.error("【开户预约接口数据完整性校验】：请填写其它投资产品交易频率");
                 responseVO.setCode(-1);
@@ -701,35 +709,35 @@ public class CustomerAccountOpenHelper {
             }
         }
 
-        if (null == openAccountInfo.getIsOpenOptions()){
+        if (null == openAccountInfo.getIsOpenOptions()) {
             logger.error("【开户预约接口数据完整性校验】：请填写开通期权");
             responseVO.setCode(-1);
             responseVO.setMessage("请填写开通期权");
             return responseVO;
         }
 
-        if (null == openAccountInfo.getOptionsAccUsageScenarios()){
+        if (null == openAccountInfo.getOptionsAccUsageScenarios()) {
             logger.error("【开户预约接口数据完整性校验】：请填写期权账号使用场景");
             responseVO.setCode(-1);
             responseVO.setMessage("请填写期权账号使用场景");
             return responseVO;
         }
 
-        if (null == openAccountInfo.getIsOpenFutures()){
+        if (null == openAccountInfo.getIsOpenFutures()) {
             logger.error("【开户预约接口数据完整性校验】：请填写开通期货");
             responseVO.setCode(-1);
             responseVO.setMessage("请填写开通期货");
             return responseVO;
         }
 
-        if (null == openAccountInfo.getFuturesAccUsageScenarios()){
+        if (null == openAccountInfo.getFuturesAccUsageScenarios()) {
             logger.error("【开户预约接口数据完整性校验】：请填写期货账号使用场景");
             responseVO.setCode(-1);
             responseVO.setMessage("请填写期货账号使用场景");
             return responseVO;
         }
 
-        if (null == openAccountInfo.getInvestmentHorizon()){
+        if (null == openAccountInfo.getInvestmentHorizon()) {
             logger.error("【开户预约接口数据完整性校验】：请填写投资年期");
             responseVO.setCode(-1);
             responseVO.setMessage("请填写投资年期");
