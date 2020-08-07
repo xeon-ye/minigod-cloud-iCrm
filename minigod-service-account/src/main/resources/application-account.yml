@@ -22,10 +22,10 @@ minigod:
       idCardHkTemp: 103,105
       idCardPassport: 104
       bankCard: 201
+      address: 604
       signature: 301
       avatar: 401,402,501,502,503,504,505
       cnH5ImageCount: 6
-      cnAppImageCount: 5
   tencentApi:
     region: ap-guangzhou
     secretId: AKIDwc4HEUuuzrY1FGtcS5ThgRwZxFI4Zvzp

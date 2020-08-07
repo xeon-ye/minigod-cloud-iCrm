@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/bx_icrm_main?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    username:  root
+    password:  root
+
+# Mybatis配置
+mybatis:
+  mapper-locations: classpath*:com/minigod/persist/*/mapper/impl/*.xml
+  type-aliases-package: com.minigod.persist.spring_boot.bean

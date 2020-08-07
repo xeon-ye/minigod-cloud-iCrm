@@ -89,7 +89,7 @@ public class WebFilter implements Filter {
         String url = request.getRequestURI();
 
         // 读取文件接口，不受限制
-        if (url.startsWith("/storage/file")) {
+        if (url.startsWith("/securities/storage/file")) {
             filterChain.doFilter(requestWrapper, response);
             return;
         }

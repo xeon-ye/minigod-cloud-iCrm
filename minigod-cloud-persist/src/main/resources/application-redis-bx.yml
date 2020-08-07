@@ -1,8 +1,8 @@
 spring:
   redis:
-    database: 3
+    database: 0
 #    hostName: 127.0.0.1
-    hostName: 47.107.237.160
+    hostName: 127.0.0.1
     port: 6379
     #password:       # 密码（默认为空）
     #cluster.max-redirects: 6

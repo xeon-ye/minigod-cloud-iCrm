@@ -168,20 +168,20 @@
                     </span>
                     </div>
                 </div>
-                <c:if test="${accountOpenApplicationEntity.applicationStatus == 6 || accountOpenApplicationEntity.applicationStatus == 4}">
-                    <div class="row">
-                        <div class="form-group col-sm-6 col-md-6">
-                            <label class="col-sm-2 control-label no-padding-right">电子证书序列号</label>
-                            <div class="col-xs-9">
+            </div>
+            <c:if test="${accountOpenApplicationEntity.applicationStatus == 6 || accountOpenApplicationEntity.applicationStatus == 4}">
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">电子证书序列号</label>
+                        <div class="col-xs-9">
                                 <span class="col-sm-12 block input-icon input-icon-right">
                                     <input id="caCertSn" name="caCertSn" type="text" class="form-control"
                                            value="${caCertSn}" readonly/>
                                 </span>
-                            </div>
                         </div>
                     </div>
-                </c:if>
-            </div>
+                </div>
+            </c:if>
         </div>
     </div>
     <%--预约信息End--%>
@@ -220,8 +220,9 @@
                     <label class="col-sm-2 control-label no-padding-right">证券交易</label>
                     <div class="col-xs-9">
                             <span class="col-sm-12 block input-icon input-icon-right">
-                                <input name="isOpenFutures" type="radio" value="1" disabled="disabled" checked/>开通
-                                <input name="isOpenFutures" type="radio" value="0" disabled="disabled"/>不开通
+                                <input name="isOpenSecurity" type="radio" value="1" disabled="disabled"
+                                       checked="checked"/>开通
+                                <input name="isOpenSecurity" type="radio" value="0" disabled="disabled"/>不开通
                             </span>
                     </div>
                 </div>
@@ -229,9 +230,9 @@
                     <label class="col-sm-2 control-label no-padding-right">证券交易使用场景</label>
                     <div class="col-xs-9">
                             <span class="col-sm-12 block input-icon input-icon-right">
-                                <input name="futuresAccUsageScenarios" type="radio" value="0" disabled="disabled"
+                                <input name="optionsAccUsageScenarios" type="radio" value="0" disabled="disabled"
                                        <c:if test="${customerAccountOpenInfoEntity.optionsAccUsageScenarios==1}">checked</c:if>  />互联网交易
-                                <input name="futuresAccUsageScenarios" type="radio" value="1" disabled="disabled"
+                                <input name="optionsAccUsageScenarios" type="radio" value="1" disabled="disabled"
                                        <c:if test="${customerAccountOpenInfoEntity.optionsAccUsageScenarios==2}">checked</c:if>  />全权委托交易
                             </span>
                     </div>
@@ -763,13 +764,16 @@
                         <label class="col-sm-2 control-label no-padding-right">教育程度</label>
                         <div class="col-xs-9">
                             <span class="col-sm-12 block input-icon input-icon-right">
-                                <tag:select nameKey="AO_EDUCATION_LEVEL"
-                                            id="language" isAddDefaltOption="true"
+                                <tag:select nameKey="AO_EDUCATION_LEVEL_CODE"
+                                            id="educationLevel" isAddDefaltOption="true"
                                             initSelectedKey="${customerAccountOpenInfoEntity.educationLevel}"
                                             clazz="form-control" disabled="true"/>
                             </span>
                         </div>
                     </div>
+
+                </div>
+                <div class="row">
                     <div class="form-group col-sm-6 col-md-6">
                         <label class="col-sm-2 control-label no-padding-right">电子邮箱</label>
                         <div class="col-xs-9">
@@ -779,8 +783,6 @@
                                </span>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="form-group col-sm-6 col-md-6">
                         <label class="col-sm-2 control-label no-padding-right">手机号</label>
                         <div class="col-xs-9">
@@ -790,6 +792,8 @@
                                 </span>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group col-sm-6 col-md-6">
                         <label class="col-sm-2 control-label no-padding-right">住宅电话</label>
                         <div class="col-xs-9">
@@ -797,6 +801,15 @@
                                     <input name="familyPhone" type="text" class="form-control"
                                            value="${customerAccountOpenInfoEntity.familyPhone}" readonly/>
                                 </span>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">通讯电话</label>
+                        <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                            <input id="contactPhone" name="contactPhone" type="text" class="form-control"
+                                   value="${customerAccountOpenInfoEntity.contactPhone}" readonly/>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -811,8 +824,7 @@
                         </div>
                     </div>
                 </div>
-
-                <%--<div class="row">
+                <div class="row">
                     <div class="form-group col-sm-12 col-md-12">
                         <label class="col-sm-1 control-label no-padding-right">通讯地址</label>
                         <div class="col-sm-11">
@@ -823,17 +835,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-sm-6 col-md-6">
-                        <label class="col-sm-2 control-label no-padding-right">通讯电话</label>
-                        <div class="col-xs-9">
-                            <span class="col-sm-12 block input-icon input-icon-right">
-                            <input id="contactPhone" name="contactPhone" type="text" class="form-control"
-                                   value="${customerAccountOpenInfoEntity.contactPhone}" readonly/>
-                            </span>
-                        </div>
-                    </div>
-                <div class="row">
+
+                <%--<div class="row">
                     <div class="form-group col-sm-12 col-md-12">
                         <label class="col-sm-1 control-label no-padding-right">通讯地址拆分</label>
                         <div class="col-xs-11">
@@ -864,6 +867,9 @@
         <ul class="docs-pictures">
         </ul>
     </div>
+    <div hidden id="imageList_604">
+        <ul class="docs-pictures"></ul>
+    </div>
     <!--影像资料 Start-->
     <div id="div1" v-cloak>
         <div v-show="!showList" class="panel panel-default">
@@ -882,6 +888,15 @@
                         <!--循环调用方法-->
                         <script type="text/javascript">pictureList("${imageInfo.storagePath}${imageInfo.fileStorageName}.${imageInfo.extName}", ${i.index});</script>
                     </c:forEach>
+                    <c:if test="${proofImage_604!=null && customerAccountOpenInfoEntity.isTradedDerivativeProducts == 1}">
+                        <script type="text/javascript">pictureListWithId("${proofImage_604.storagePath}${proofImage_604.fileStorageName}.${proofImage_604.extName}", 0, '_604');</script>
+                        <span class="col-xs-2 block input-icon input-icon-right" style="margin-top: 15px">
+                            <button class="layui-btn layui-btn-small layui-btn-warm" type="button"
+                                    onclick="showImage('_604',0)"
+                                    class="layui-icon"><i
+                                    class="layui-icon">&#xe60d;</i>[地址证明]</button>
+                         </span>
+                    </c:if>
                 </div>
                 </br>
             </div>
@@ -905,7 +920,7 @@
                                             disabled="disabled"></tag:select>
                                 <c:if test="${customerAccountOpenInfoEntity.bankId == 'OTHERS'}">
                                     : <input id="otherBankName" name="otherBankName" type="text" class="form-control"
-                                    value="${customerAccountOpenInfoEntity.otherBankName}"/>
+                                             value="${customerAccountOpenInfoEntity.otherBankName}"/>
                                 </c:if>
                             </span>
                         </div>
@@ -1240,7 +1255,7 @@
                             </td>
                             <td class="col-sm-2" style="padding:8px 20px">
                                 <tag:select nameKey="AO_TRADE_STOCK_FREQUENCY"
-                                            id="stocksInvestmentExperienceType"
+                                            id="tradeStockFrequency"
                                             isAddDefaltOption="true"
                                             initSelectedKey="${customerAccountOpenInfoEntity.tradeStockFrequency}"
                                             clazz="form-control "
@@ -1381,10 +1396,10 @@
                 <span class="col-sm-12 block input-icon input-icon-right">
                     <input type="radio" name="isKnowDerivativeProducts" disabled="disabled"
                            value="1" <c:if
-                            test="${customerAccountOpenInfoEntity.isKnowDerivativeProducts==1}"> checked="checked"</c:if> />没有了解
+                            test="${customerAccountOpenInfoEntity.isKnowDerivativeProducts==1}"> checked="checked"</c:if> />有了解
                     <input type="radio" name="isKnowDerivativeProducts" disabled="disabled"
                            value="0" <c:if
-                            test="${customerAccountOpenInfoEntity.isKnowDerivativeProducts==0}"> checked="checked"</c:if> />有了解
+                            test="${customerAccountOpenInfoEntity.isKnowDerivativeProducts==0}"> checked="checked"</c:if> />没有了解
                 </span>
                 </div>
             </div>
@@ -1564,31 +1579,41 @@
                                     </div>
                                     <div class="form-group col-sm-2 col-md-3">
                                         <div class="col-xs-12">
-                                    <span class="col-xs-12 block input-icon input-icon-right">
-                                        <select name="reasonType[]" class="form-control" disabled="disabled">
-                                            <option value="">--- 请下拉选择 ---</option>
-                                            <option value="A"
-                                                    <c:if test="${taxInformationList[i].reasonType=='A'}">selected</c:if> >理由 A – 帐户持有人的居留司法管辖区并没有向其居民发出税务编号。</option>
-                                            <option value="B"
-                                                    <c:if test="${taxInformationList[i].reasonType=='B'}">selected</c:if> >理由 B – 帐户持有人不能取得税务编号。如选取这一理由，解释帐户持有人不能取得税务编号的原因。</option>
-                                            <option value="C"
-                                                    <c:if test="${taxInformationList[i].reasonType=='C'}">selected</c:if> >理由 C – 帐户持有人毋须提供税务编号。居留司法管辖区的主管机关不需要帐户持有人披露税务编号。</option>
-                                        </select>
-                                    </span>
+                                            <span class="col-xs-12 block input-icon input-icon-right">
+                                                <select name="reasonType[]" class="form-control" disabled="disabled">
+                                                    <option value="">--- 请下拉选择 ---</option>
+                                                    <option value="A"
+                                                            <c:if test="${taxInformationList[i].reasonType=='A'}">selected</c:if> >理由 A </option>
+                                                    <option value="B"
+                                                            <c:if test="${taxInformationList[i].reasonType=='B'}">selected</c:if> >理由 B </option>
+                                                    <option value="C"
+                                                            <c:if test="${taxInformationList[i].reasonType=='C'}">selected</c:if> >理由 C </option>
+                                                </select>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="form-group col-sm-2 col-md-3">
                                         <div class="col-xs-12">
-                                    <span class="col-xs-12 block input-icon input-icon-right">
-                                        <input type="text" name="reasonDesc[]"
-                                               value="${taxInformationList[i].reasonDesc}" readonly
-                                               class="form-control">
-                                    </span>
+                                            <span class="col-xs-12 block input-icon input-icon-right">
+                                                <input type="text" name="reasonDesc[]"
+                                                       value="${taxInformationList[i].reasonDesc}" readonly
+                                                       class="form-control">
+                                            </span>
                                         </div>
                                     </div>
+
                                 </div>
+
                             </c:if>
                         </c:forEach>
+                        <div class="row">
+                            <div class="form-group col-sm-12 col-md-12" style="margin: 20px">
+                                <div>无税务编号可选理由：</div>
+                                <div>理由 A – 帐户持有人的居留司法管辖区并没有向其居民发出税务编号。</div>
+                                <div>理由 B – 帐户持有人不能取得税务编号。如选取这一理由，解释帐户持有人不能取得税务编号的原因。</div>
+                                <div>理由 C – 帐户持有人毋须提供税务编号。居留司法管辖区的主管机关不需要帐户持有人披露税务编号。</div>
+                            </div>
+                        </div>
                     </c:if>
                 </form>
             </div>
@@ -1632,7 +1657,7 @@
                     <div class="form-group col-sm-12 col-md-12">
                     <span class="col-sm-12 block input-icon input-icon-right">
                          <%-- 受益人，亲属关系，注册人否的值 --%>
-                         <c:if test="${(openAccountOther.disclosureCode == 1 || openAccountOther.disclosureCode == 2 ||openAccountOther.disclosureCode == 3)}">
+                         <c:if test="${(openAccountOther.disclosureCode <= 20)}">
                              <c:if test="${openAccountOther.disclosureIsTrue ==0 and openAccountOther.disclosureNameJoinDetail!=null}">
                                  <input class="form-control" style="display: inline"
                                         id="disclosureCode" name="disclosureCode" type="text"
@@ -1641,6 +1666,16 @@
                                         readonly/>
                              </c:if>
                          </c:if>
+
+                        <c:if test="${(openAccountOther.disclosureCode >= 21)}">
+                            <c:if test="${openAccountOther.disclosureIsTrue ==1 and openAccountOther.disclosureNameJoinDetail!=null}">
+                                 <input class="form-control" style="display: inline"
+                                        id="disclosureCode" name="disclosureCode" type="text"
+                                        value="${openAccountOther.disclosureNameJoinDetail}"
+                                        style="width:600px; margin-left:25px; height:34px;"
+                                        readonly/>
+                            </c:if>
+                        </c:if>
                     </span>
                     </div>
                 </div>
@@ -1741,15 +1776,14 @@
                         <label class="col-sm-4 control-label no-padding-right">
                             该申请人有无AML可疑信息？</label>
                         <span class="col-sm-4 control-label no-padding-right">
-
-                        <input type="radio" value="${investTargetCodeEntity.value}" disabled="disabled"
-                               <c:if test="${customerAccountOpenInfoEntity.isAmlSuspicious == 1}">checked="true"</c:if>
-                        />有可疑
-                        <input type="radio" value="${investTargetCodeEntity.value}" disabled="disabled"
-                                <c:if test="${customerAccountOpenInfoEntity.isAmlSuspicious == 0}">
-                                    checked="checked"
-                                </c:if>
-                        />无可疑
+                            <input type="radio" value="${investTargetCodeEntity.value}" disabled="disabled"
+                                   <c:if test="${customerAccountOpenInfoEntity.isAmlSuspicious == 1}">checked="true"</c:if>
+                            />有可疑
+                            <input type="radio" value="${investTargetCodeEntity.value}" disabled="disabled"
+                                    <c:if test="${customerAccountOpenInfoEntity.isAmlSuspicious == 0}">
+                                        checked="checked"
+                                    </c:if>
+                            />无可疑
 
 
                 </span>
@@ -1772,8 +1806,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-sm-6 col-md-6">
-                        <label class="col-sm-4 control-label no-padding-right">
-                            客户风险等级</label>
+                        <label class="col-sm-4 control-label no-padding-right">客户风险等级</label>
                         <span class="col-sm-8 control-label no-padding-right">
                                     <input type="radio" name="acceptRisk" value="1" disabled="disabled"
                                            <c:if test="${customerAccountOpenInfoEntity.acceptRisk == 1}">checked="checked"</c:if>
@@ -1785,6 +1818,30 @@
                                 </span>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                            证券交易账号</label>
+                        <span class="col-xs-8 block input-icon input-icon-right">
+                            <input id="stockTradeAccount" name="stockTradeAccount" type="text" class="form-control"
+                                   readonly
+                                   value="${customerAccountOpenInfoEntity.stockTradeAccount}"/>
+                        </span>
+                    </div>
+                </div>
+                <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-md-6">
+                            <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                                期货交易账号</label>
+                            <span class="col-xs-8 block input-icon input-icon-right">
+                            <input id="futuresTradeAccount" name="futuresTradeAccount" type="text" class="form-control"
+                                   readonly
+                                   value="${customerAccountOpenInfoEntity.futuresTradeAccount}"/>
+                        </span>
+                        </div>
+                    </div>
+                </c:if>
             </c:if>
         </div>
     </div>
@@ -1838,7 +1895,7 @@
                         <div class="form-group col-sm-6 col-md-6">
                             <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
                                 客户风险等级</label>
-                            <span class="col-xs-8 block input-icon input-icon-right">
+                            <span class="col-sm-8 control-label no-padding-right">
                                     <input type="radio" name="acceptRisk" value="1" onclick="editAmlRisk();"
                                            <c:if test="${customerAccountOpenInfoEntity.acceptRisk == 1}">checked="checked"</c:if>/>高风险
                                     <input type="radio" name="acceptRisk" value="2" onclick="editAmlRisk();"
@@ -1858,16 +1915,18 @@
                         </span>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col-sm-6 col-md-6">
-                            <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                                期货交易账号</label>
-                            <span class="col-xs-8 block input-icon input-icon-right">
+                    <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">
+                        <div class="row">
+                            <div class="form-group col-sm-6 col-md-6">
+                                <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                                    期货交易账号</label>
+                                <span class="col-xs-8 block input-icon input-icon-right">
                             <input id="futuresTradeAccount" name="futuresTradeAccount" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.futuresTradeAccount}"/>
                         </span>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
                 </div>
             </c:if>
         </div>
@@ -1906,6 +1965,7 @@
         $('#imageList_601').viewer();
         $('#imageList_602').viewer();
         $('#imageList_603').viewer();
+        $('#imageList_604').viewer();
 
         initFreelanceOther('${customerAccountOpenInfoEntity.freelanceOther}');
         //初始化职业类型，收入来源

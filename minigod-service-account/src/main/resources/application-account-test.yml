@@ -6,7 +6,7 @@ minigod:
     userToken.expireSecond: 7200 # 2*60*60
   cubp:
     isRemote: true
-    url: http://10.1.2.99:6888/crm
+    url: http://localhost:7777/bpm
 #    url: http://10.8.0.54:8080/crm
   openAccount:
     isVerifyFromCubp: true
@@ -23,10 +23,10 @@ minigod:
       idCardHkTemp: 103,105
       idCardPassport: 104
       bankCard: 201
+      address: 604
       signature: 301
       avatar: 401,402,501,502,503,504,505
       cnH5ImageCount: 6
-      cnAppImageCount: 5
   tencentApi:
     region: ap-guangzhou
     secretId: AKIDwc4HEUuuzrY1FGtcS5ThgRwZxFI4Zvzp

@@ -1,13 +1,14 @@
 # Tomcat
 server:
-  port: 7777
+  port: 8900
   servlet:
-    context-path: /crm
+    context-path: /bpm
 
 spring:
   # 环境 dev|test|pro
   profiles:
-    active: test2
+    active: test
+
   http:
   jackson:
     time-zone: GMT+8
@@ -21,12 +22,10 @@ spring:
   # Redis配置
   redis:
     database: 0
-    #        hostName: 127.0.0.1
-    hostName: 10.1.5.110
-    #hostName: 47.107.237.160
+#    hostName: 127.0.0.1
+    hostName: 47.107.237.160
 
-    port: 6380
-    #port: 6379
+    port: 6379
     #password:       # 密码（默认为空）
     timeout: 6000  # 连接超时时长（毫秒）
     jedis:

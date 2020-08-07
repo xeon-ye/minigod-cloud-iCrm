@@ -6,9 +6,9 @@ minigod:
     userToken.expireSecond: 7200 # 2*60*60
   cubp:
     isRemote: true
-    url: http://192.168.0.141:6888/bpm
+    url: http://127.0.0.1:8900/bpm
   openAccount:
-    isVerifyFromCubp: false
+    isVerifyFromCubp: true
     isVerifyIdCardFromThird: true
     isVerifyBankCardFromThird: true
     isVerifyLiveFaceFromThird: true
@@ -53,9 +53,10 @@ minigod:
     getSignP7ForPdf: /platform_api/sign_p7_for_pdf
   proxy:
     isSyncOpen: false
-    host: http://uat.zszhizhu.com:17000
+    host: http://uat2.zszhizhu.com:7000
     checkUser: /user_api/fetch_user_info
-    syncHost: http://uat.zszhizhu.com:17000/web_app
+    syncHost: http://uat2.zszhizhu.com:9003
     syncData: /open_api/update_open_user_info
+
 
 

@@ -19,6 +19,7 @@
 	</appender>
 
 	<logger name="org.springframework.cloud" level="INFO" />
+	<logger name="org.mybatis.spring" level="INFO" />
 	<logger name="com.minigod.task" level="INFO" />
 	<root level="INFO">
 		<appender-ref ref="CONSOLE" />
