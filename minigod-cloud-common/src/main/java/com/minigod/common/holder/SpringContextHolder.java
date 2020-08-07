@@ -1,57 +1,72 @@
 package com.minigod.common.holder;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-
 /**
- * 这个类可以直接获取spring 配置文件中引用（注入）到所有的bean对象
  * @author
- *
- **/
-public class SpringContextHolder implements ApplicationContextAware {
+ * @date
+ */
+@Slf4j
+public class SpringContextHolder implements ApplicationContextAware, DisposableBean {
 
-    private static ApplicationContext applicationContextHope = null;
+    private static ApplicationContext applicationContext = null;
 
-    /***
-     * 根据name获取bean
-     * @param name
-     * @return
+    /**
+     * 取得存储在静态变量中的ApplicationContext.
      */
-    public static Object getBean(String name) {
-        return applicationContextHope.getBean(name);
+    public static ApplicationContext getApplicationContext() {
+        assertContextInjected();
+        return applicationContext;
     }
 
-    /***
-     * 根据class获取bean
-     * @param tClass
-     * @param <T>
-     * @return
+    /**
+     * 从静态变量applicationContext中取得Bean, 自动转型为所赋值对象的类型.
      */
-    public static <T> T getBean(Class<T> tClass) {
-        return applicationContextHope.getBean(tClass);
+    public static <T> T getBean(String name) {
+        assertContextInjected();
+        return (T) applicationContext.getBean(name);
     }
 
-    /***
-     * 根据name，指定class返回Bean
-     * @param name
-     * @param tClass
-     * @param <T>
-     * @return
+    /**
+     * 从静态变量applicationContext中取得Bean, 自动转型为所赋值对象的类型.
      */
-    public static <T> T getBean(String name, Class<T> tClass) {
-        return applicationContextHope.getBean(name, tClass);
+    public static <T> T getBean(Class<T> requiredType) {
+        assertContextInjected();
+        return applicationContext.getBean(requiredType);
     }
 
-    /***
-     * 重写
-     * @param applicationContext
-     * @throws BeansException
+    /**
+     * 检查ApplicationContext不为空.
      */
+    private static void assertContextInjected() {
+        if (applicationContext == null) {
+            throw new IllegalStateException("applicaitonContext属性未注入, 请在applicationContext" +
+                    ".xml中定义SpringContextHolder或在SpringBoot启动类中注册SpringContextHolder.");
+        }
+    }
+
+    /**
+     * 清除SpringContextHolder中的ApplicationContext为Null.
+     */
+    public static void clearHolder() {
+        log.debug("清除SpringContextHolder中的ApplicationContext:"
+                + applicationContext);
+        applicationContext = null;
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        SpringContextHolder.clearHolder();
+    }
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        if (applicationContextHope == null) {
-            applicationContextHope = applicationContext;
+        if (SpringContextHolder.applicationContext != null) {
+            log.warn("SpringContextHolder中的ApplicationContext被覆盖, 原有ApplicationContext为:" + SpringContextHolder.applicationContext);
         }
+        SpringContextHolder.applicationContext = applicationContext;
     }
 }

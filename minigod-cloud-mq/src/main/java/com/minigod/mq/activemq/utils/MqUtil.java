@@ -3,6 +3,7 @@ package com.minigod.mq.activemq.utils;
 import com.alibaba.fastjson.JSON;
 import com.minigod.common.holder.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsMessagingTemplate;
 
 import javax.jms.Queue;
@@ -16,7 +17,6 @@ import javax.jms.Topic;
  */
 @Slf4j
 public class MqUtil {
-
     /**
      * 发送队列消息
      * @param queue

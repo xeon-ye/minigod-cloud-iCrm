@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: statistic
   profiles:
     active: db,statistic
   messages:
@@ -8,6 +10,6 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
 
 server:
-  port: 8002
+  port: 8101
   servlet:
     context-path: /statistic
