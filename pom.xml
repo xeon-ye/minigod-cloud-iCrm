@@ -127,7 +127,6 @@
         <fast.version>1.27-SNAPSHOT</fast.version>
         <springfox.swagger2.version>2.6.1</springfox.swagger2.version>
         <lombok.version>1.16.16</lombok.version>
-        <apollo.version>0.8.0</apollo.version>
         <minigod.cloud.version>1.0-SNAPSHOT</minigod.cloud.version>
         <druid.version>1.1.8</druid.version>
         <activiti.version>5.22.0</activiti.version>
