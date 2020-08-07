@@ -135,8 +135,8 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     private Integer professionType;
 
     //公司业务性质或行业类型
-//    @JSONField(name = "industryRange")
-//    private String industryRange;
+    @JSONField(name = "industryRange")
+    private String industryRange;
 
     // 公司名称
     @JSONField(name = "companyName")
@@ -389,7 +389,7 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
     @JSONField(name = "workingSeniority")
     private Integer workingSeniority;
 
-    //办公室电话
+    //其他职业
     @JSONField(name = "otherProfession")
     private String otherProfession;
 

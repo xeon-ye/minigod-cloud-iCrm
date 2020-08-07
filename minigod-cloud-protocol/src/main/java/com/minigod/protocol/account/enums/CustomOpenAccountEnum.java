@@ -40,39 +40,6 @@ public final class CustomOpenAccountEnum {
     }
 
     @Getter
-    public enum OpenAccessWay {
-        H5(1, "H5开户"),
-        APP(2, "APP开户");
-
-        private Integer code;
-        private String message;
-
-        private OpenAccessWay(Integer code, String message) {
-            this.code = code;
-            this.message = message;
-        }
-
-        public static OpenAccessWay getWay(Integer code) {
-            for (OpenAccessWay c : OpenAccessWay.values()) {
-                if (c.getCode().equals(code)) {
-                    return c;
-                }
-            }
-            return null;
-        }
-
-        public static boolean isContainCertType(Integer code) {
-            boolean bool = false;
-            for (OpenAccessWay way : OpenAccessWay.values()) {
-                if (code.equals(way.getCode())) {
-                    bool = true;
-                }
-            }
-            return bool;
-        }
-    }
-
-    @Getter
     public enum FundAccountType {
         CASH(1, "现金账户"),
         MARGIN(2, "融资账户");

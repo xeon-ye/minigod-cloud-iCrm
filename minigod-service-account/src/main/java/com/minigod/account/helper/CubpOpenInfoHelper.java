@@ -129,8 +129,12 @@ public class CubpOpenInfoHelper {
             return false;
         }
         if (1 == openInfo.getProfessionCode() || 2 == openInfo.getProfessionCode()) {
-            if (null == openInfo.getProfessionType()) {
-                log.info("【开户预约接口数据完整性校验】：请填写所属行业");
+//            if (null == openInfo.getProfessionType()) {
+//                log.info("【开户预约接口数据完整性校验】：请填写所属行业");
+//                return false;
+//            }
+            if (null == openInfo.getIndustryRange()) {
+                log.info("【开户预约接口数据完整性校验】：请填写业务范围");
                 return false;
             }
             if (null == openInfo.getJobPosition()) {

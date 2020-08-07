@@ -81,7 +81,9 @@ public class StorageFactoryLocal implements StorageFactory {
     public Resource loadAsResource(String filename) {
         try {
             Path file = load(filename);
+            logger.info("------------------filename：" + filename);
             Resource resource = new UrlResource(file.toUri());
+            logger.info("------------------resource：" + resource);
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {

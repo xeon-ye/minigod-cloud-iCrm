@@ -211,8 +211,6 @@ public class UserServiceImpl extends BaseBeanFactory implements UserService {
             throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);
         }
 
-
-
         // 参数校验 - 非其他密码类型（即密码|验证码登录)，必须有密码
         if (!passwordType.equals(passwordTypeOther) && StringUtils.isEmpty(pwd)) {
             throw new InternalApiException(CodeType.BAD_PARAMS, MessageResource.BAD_PARAMS);

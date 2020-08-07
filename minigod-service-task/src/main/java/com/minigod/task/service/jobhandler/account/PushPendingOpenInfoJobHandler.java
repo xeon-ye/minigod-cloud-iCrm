@@ -84,14 +84,14 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
     private String OPEN_IMG_TYPE_ID_CARD_PASSPORT;
     @Value("${minigod.openAccount.images.bankCard}")
     private String OPEN_IMG_TYPE_BANK_CARD;
+    @Value("${minigod.openAccount.images.address}")
+    private String OPEN_IMG_TYPE_ADDRESS;
     @Value("${minigod.openAccount.images.signature}")
     private String OPEN_IMG_TYPE_SIGNATURE;
     @Value("${minigod.openAccount.images.avatar}")
     private String OPEN_IMG_TYPE_AVATAR;
     @Value("${minigod.openAccount.images.cnH5ImageCount}")
     private Integer OPEN_IMG_COUNT_CN_H5;
-    @Value("${minigod.openAccount.images.cnAppImageCount}")
-    private Integer OPEN_IMG_COUNT_CN_APP;
 
     private static final String split = " | ";
 
@@ -207,11 +207,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
                 locationTypeB.append(",");
                 locationTypeB.append(OPEN_IMG_TYPE_SIGNATURE);
                 locationTypes = locationTypeB.toString().split(",");
-                if (accessWay.equals(CustomOpenAccountEnum.OpenAccessWay.H5.getCode())) {
-                    imageCount = OPEN_IMG_COUNT_CN_H5;
-                } else if (accessWay.equals(CustomOpenAccountEnum.OpenAccessWay.APP.getCode())) {
-                    imageCount = OPEN_IMG_COUNT_CN_APP;
-                }
+                imageCount = OPEN_IMG_COUNT_CN_H5;
 
                 List<CustomOpenCnImg> customOpenImgs = customOpenCnImgMapper.selectByUserIdAndLocationKeyInAndLocationTypeIn(userId, null, locationTypes);
 
@@ -246,6 +242,8 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
             // 处理图片数据-香港银行卡开户
             else if (openType.equals(CustomOpenAccountEnum.OpenType.ONLINE_HK.getCode())) {
                 locationTypeB.append(OPEN_IMG_TYPE_SIGNATURE);
+                locationTypeB.append(",");
+                locationTypeB.append(OPEN_IMG_TYPE_ADDRESS);
                 // 证件类型[0=未知 1=大陆居民身份证 2=香港居民身份证 3=护照 4=香港临时身份证]
                 // 1=大陆居民身份证
                 if (idKind == 1) {
@@ -318,7 +316,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
                 List<VerifyBankCard> verifyBankCards = verifyBankCardMapper.selectByIdCard(idCard);
                 if (CollectionUtils.isNotEmpty(verifyBankCards)) {
                     for (VerifyBankCard verifyBankCard : verifyBankCards) {
-                        if(verifyBankCard.getStatus().equals(1) || !IS_VERIFY_BANK_CARD_FROM_THIRD){
+                        if (verifyBankCard.getStatus().equals(1) || !IS_VERIFY_BANK_CARD_FROM_THIRD) {
                             CubpOpenAccountBankVerityInfoReqVo openAccountBankVerityInfoProtocol = new CubpOpenAccountBankVerityInfoReqVo();
                             openAccountBankVerityInfoProtocol.setClientName(verifyBankCard.getUserName());
                             openAccountBankVerityInfoProtocol.setIdNo(verifyBankCard.getIdCard());

@@ -98,8 +98,6 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
     private String OPEN_IMG_TYPE_AVATAR;
     @Value("${minigod.openAccount.images.cnH5ImageCount}")
     private Integer OPEN_IMG_COUNT_CN_H5;
-    @Value("${minigod.openAccount.images.cnAppImageCount}")
-    private Integer OPEN_IMG_COUNT_CN_APP;
 
     @Value("${minigod.szca.url}")
     private String SZCA_API_URL;
@@ -234,11 +232,11 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         JSONObject formData = params.getFormData();
 
         OpenType openTypeInfo = OpenType.getType(openType);
-        OpenAccessWay accessWayInfo = OpenAccessWay.getWay(accessWay);
+//        OpenAccessWay accessWayInfo = OpenAccessWay.getWay(accessWay);
         FundAccountType fundAccountTypeInfo = FundAccountType.getType(fundAccountType);
 
         // 参数校验 - 基本
-        if (openTypeInfo == null || accessWayInfo == null || fundAccountTypeInfo == null || accountMarkets.size() == 0 || formData == null) {
+        if (openTypeInfo == null || accessWay == null || fundAccountTypeInfo == null || accountMarkets.size() == 0 || formData == null) {
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -285,7 +283,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         formData.put("northTrade", OpenAccountMarket.getFlag(accountMarkets, OpenAccountMarket.NORTH_TRADE));
         // 账户类型
         formData.put("openAccountType", 1); // 开户类型 [0 = 未知 1 = 互联网 2 = 见证宝 3 = BPM] TODO：此处暂时固定1
-        formData.put("openAccountAccessWay", accessWayInfo.getCode()); // 开户接入方式[1=H5开户 2=App]
+        formData.put("openAccountAccessWay", accessWay); // 开户接入方式[1=H5开户 2=App]
         formData.put("fundAccountType", fundAccountTypeInfo.getCode()); // 账户类型 1：现金账户 2：融资账户
 
         // 推荐人、渠道等字段，保留，后期可能使用
@@ -315,11 +313,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             locationTypeB.append(OPEN_IMG_TYPE_AVATAR);
 
             locationTypes = locationTypeB.toString().split(",");
-            if (accessWay.equals(CustomOpenAccountEnum.OpenAccessWay.H5.getCode())) {
                 imageCount = OPEN_IMG_COUNT_CN_H5;
-            } else if (accessWay.equals(CustomOpenAccountEnum.OpenAccessWay.APP.getCode())) {
-                imageCount = OPEN_IMG_COUNT_CN_APP;
-            }
             List<CustomOpenCnImg> openUserImgList = null;
             if (locationTypes != null) {
                 openUserImgList = customOpenCnImgMapper.selectByUserIdAndLocationKeyInAndLocationTypeIn(userId, null, locationTypes);
@@ -411,7 +405,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         customOpenInfo.setIdCard(idCard);
         customOpenInfo.setBankCard(bankCard);
         customOpenInfo.setOpenType(openType);
-        customOpenInfo.setAccessWay(accessWayInfo.getCode());
+        customOpenInfo.setAccessWay(accessWay);
         customOpenInfo.setFundAccountType(fundAccountTypeInfo.getCode());
         customOpenInfo.setAccountMarkets(JSONUtil.toJson(accountMarkets));
 

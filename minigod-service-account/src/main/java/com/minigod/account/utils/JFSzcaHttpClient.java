@@ -41,7 +41,8 @@ public class JFSzcaHttpClient {
     public static ResResult connectJFSzca(String server, Object json) {
         try {
 
-            logger.info("请求 JF SZCA 传入参数：" + JSONUtil.toJson(json));
+//            logger.info("请求 JF SZCA 传入参数：" + JSONUtil.toJson(json));
+            logger.info("请求 JF SZCA 传入参数：未打印");
             String jsonStrRes = CommonUtil.httpPost(server, JSONUtil.toJson(json));
             logger.info("请求 JF SZCA 返回信息：" + jsonStrRes);
 
@@ -75,7 +76,7 @@ public class JFSzcaHttpClient {
 
             if (responseResult.getCode() == 0) {
                 Object res = responseResult.getResult();
-                logger.debug("JFszcaApiHelper回包解析：", res);
+//                logger.debug("JFszcaApiHelper回包解析：", res);
                 if (res != null) {
                     T obj = JSON.parseObject(res.toString(), clazz);
                     if (null != obj) {
