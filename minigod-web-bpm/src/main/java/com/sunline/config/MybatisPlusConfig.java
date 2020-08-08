@@ -7,6 +7,7 @@ import com.sunline.mutidatasource.DynamicDataSource;
 import com.sunline.mutidatasource.config.DruidProperties;
 import com.sunline.mutidatasource.config.SlaveDataSourceProp;
 //import com.sunline.mutidatasource.config.SunlineDataSourceProp;
+import com.sunline.mutidatasource.config.SunlineDataSourceProp;
 import com.sunline.mutidatasource.constant.DataSourceEnum;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,8 @@ public class MybatisPlusConfig {
     DruidProperties druidProperties;
     @Autowired
     SlaveDataSourceProp slaveDataSourceProp;
-//    @Autowired
-//    SunlineDataSourceProp sunlineDataSourceProp;
+    @Autowired
+    SunlineDataSourceProp sunlineDataSourceProp;
 
     /**
      * 主数据源
@@ -62,7 +63,7 @@ public class MybatisPlusConfig {
     private DruidDataSource sunlineDataSource() {
         DruidDataSource dataSource = new DruidDataSource();
         druidProperties.config(dataSource);
-//        sunlineDataSourceProp.config(dataSource);
+        sunlineDataSourceProp.config(dataSource);
         return dataSource;
     }
 
@@ -84,12 +85,12 @@ public class MybatisPlusConfig {
 
         DruidDataSource masterDataSource = masterDataSource();
         DruidDataSource slaveDataSource = slaveDataSource();
-//        DruidDataSource sunlineDataSource = sunlineDataSource();
+        DruidDataSource sunlineDataSource = sunlineDataSource();
 
         try {
             masterDataSource.init();
             slaveDataSource.init();
-//            sunlineDataSource.init();
+            sunlineDataSource.init();
         } catch (SQLException sql) {
             sql.printStackTrace();
         }
@@ -98,7 +99,7 @@ public class MybatisPlusConfig {
         HashMap<Object, Object> hashMap = Maps.newHashMap();
         hashMap.put(DataSourceEnum.DATA_SOURCE_MASTER, masterDataSource);
         hashMap.put(DataSourceEnum.DATA_SOURCE_SALVE, slaveDataSource);
-//        hashMap.put(DataSourceEnum.DATA_SOURCE_SUNLINE, sunlineDataSource);
+        hashMap.put(DataSourceEnum.DATA_SOURCE_SUNLINE, sunlineDataSource);
         dynamicDataSource.setTargetDataSources(hashMap);
         dynamicDataSource.setDefaultTargetDataSource(masterDataSource);
         return dynamicDataSource;

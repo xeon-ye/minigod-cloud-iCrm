@@ -2,11 +2,9 @@ package com.sunline.modules.quartz.task;
 
 import com.alibaba.fastjson.JSON;
 import com.sunline.modules.account.online.converter.CustomerOpenAccountConverter;
-import com.sunline.modules.account.online.entity.CustomerAccountOpenApplyEntity;
-import com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity;
-import com.sunline.modules.account.online.service.CustomerAccOpenApplyService;
-import com.sunline.modules.account.online.service.CustomerAccOpenInfoService;
-import com.sunline.modules.account.online.service.CustomerAccOpenService;
+import com.sunline.modules.account.online.entity.*;
+import com.sunline.modules.account.online.model.AccountOpenApplyDetailInfo;
+import com.sunline.modules.account.online.service.*;
 import com.sunline.modules.account.online.service.impl.HundsunOpenAccountService;
 import com.sunline.modules.activiti.service.ActModelerService;
 import com.sunline.modules.api.entity.SecuritiesUserModel;
@@ -41,6 +39,8 @@ public class HundsunAccountOpenJob {
     @Autowired
     CustomerAccOpenApplyService customerAccOpenApplyService;
     @Autowired
+    CustomerAccMarginOpenApplyService customerAccMarginOpenApplyService;
+    @Autowired
     CustomerAccOpenInfoService customerAccountOpenInfoService;
     @Autowired
     ApiUserService userApiService;
@@ -50,9 +50,11 @@ public class HundsunAccountOpenJob {
     SecuritiesUserInfoService securitiesUserInfoService;
     @Autowired
     CustomerAccOpenService customerAccountOpenService;
+    @Autowired
+    AyersAccOpenService ayersAccOpenService;
 
     /**
-     * 恒生后台开户
+     * ayers柜台导入数据
      *
      * @param params
      */
@@ -60,19 +62,72 @@ public class HundsunAccountOpenJob {
 
         logger.info(params + "任务开始");
 
+        //正常开户
         List<CustomerAccountOpenApplyEntity> waitingForAccountOpenData = getWaitingForAccountOpenData();
         logger.info("互联网后台开户开始，待开户数据条数：" + waitingForAccountOpenData.size());
+        doArrangeData(waitingForAccountOpenData);
 
-        for (CustomerAccountOpenApplyEntity openApplicationEntity : waitingForAccountOpenData) {
+        //增开
+        List<CustomerAccountMarginOpenApplyEntity> waitingForAccountMarginOpenData = getWaitingForAccountMarginOpenData();
+        logger.info("增开后台开户开始，待开户数据条数：" + waitingForAccountMarginOpenData.size());
+        doArrangeMarginData(waitingForAccountMarginOpenData);
+    }
 
-            boolean isAccountOpenSucceed = hundsunOpenAccountService.doOpenAccount(openApplicationEntity.getApplicationId());
+    /**
+     * 获取待开户申请列表
+     * 正常开户
+     *
+     * @return
+     */
+    private List<CustomerAccountOpenApplyEntity> getWaitingForAccountOpenData() {
+        CustomerAccountOpenApplyEntity queryCondition = new CustomerAccountOpenApplyEntity();
+        queryCondition.setCurrentNode("开户");
+        return customerAccOpenApplyService.queryListByBean(queryCondition);
+    }
 
-            if (isAccountOpenSucceed) {
+    /**
+     * 获取待开户申请列表
+     * 增开
+     *
+     * @return
+     */
+    private List<CustomerAccountMarginOpenApplyEntity> getWaitingForAccountMarginOpenData() {
+        CustomerAccountMarginOpenApplyEntity queryCondition = new CustomerAccountMarginOpenApplyEntity();
+        queryCondition.setCurrentNode("开户");
+        return customerAccMarginOpenApplyService.queryListByBean(queryCondition);
+    }
 
+    /**
+     * 数据归档
+     * 正常开户
+     *
+     * @param openAcctList
+     */
+    private void doArrangeData(List<CustomerAccountOpenApplyEntity> openAcctList) {
+        for (CustomerAccountOpenApplyEntity openApplicationEntity : openAcctList) {
+            int count = 0;
+            AyersClientInfoEntity clientInfoEntity = new AyersClientInfoEntity();
+            clientInfoEntity.setClientId("A111");
+            clientInfoEntity.setCreateUser("A222");
+            clientInfoEntity.setCreateTime(new Date());
+            count = ayersAccOpenService.saveClientInfo(clientInfoEntity);
+            CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByApplicationId(openApplicationEntity.getApplicationId());
+            if (count > 0) {
+                AyersClientAccEntity clientAccEntity = new AyersClientAccEntity();
+                clientAccEntity.setClientAccId("A111");
+                clientAccEntity.setClientId("A111");
+                clientAccEntity.setCreateUser("A222");
+                clientAccEntity.setCreateTime(new Date());
+                //融资账户
+                if (customerAccountOpenInfoEntity.getFundAccountType() != null && customerAccountOpenInfoEntity.getFundAccountType() == 2){
+                    clientAccEntity.setAccType("M");
+                }
+                count = ayersAccOpenService.saveClineAcc(clientAccEntity);
+            }
+
+            if (count > 0) {
                 // 数据归档
-                CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByApplicationId(openApplicationEntity.getApplicationId());
                 SecuritiesUserModel securitiesUserModel = CustomerOpenAccountConverter.converterToSecuritiesUserInfo(customerAccountOpenInfoEntity);
-
                 ResponseVO responseVO = securitiesUserInfoService.addSecuritiesUserInfo(securitiesUserModel);
                 logger.info("同步开户数据至统一用户中心结果：" + JSON.toJSONString(responseVO));
 
@@ -88,6 +143,37 @@ public class HundsunAccountOpenJob {
                 // 备份AML文件
                 customerAccountOpenService.backupAccountOpenAml(customerAccountOpenInfoEntity.getClientId(), customerAccountOpenInfoEntity.getApplicationId());
 
+                // 归档节点程序自动审核
+                CustomerAccountOpenApplyEntity customerAccountOpenApplyEntity = customerAccOpenApplyService.queryObjectByApplicationId(openApplicationEntity.getApplicationId());
+                CustomerAccountOpenInfoEntity customerAccountOpenInfo = customerAccountOpenInfoService.queryByApplicationId(openApplicationEntity.getApplicationId());
+
+                if (CodeUtils.getCodeName("OPEN_ACCOUNT_NODE_NAME", "5").equals(customerAccountOpenApplyEntity.getCurrentNode())) {
+
+                    // CA认证更新开户状态为已开户，帐户等级为标准帐户
+                    //线下开户等级为标准账户
+                    if (1 == customerAccountOpenInfo.getBankType() || 2 == customerAccountOpenInfo.getOpenAccountType()) {
+                        // 更新预约申请表相关信息
+                        CustomerAccountOpenApplyEntity customerAccOpenApply = new CustomerAccountOpenApplyEntity();
+                        customerAccOpenApply.setApplicationId(customerAccountOpenApplyEntity.getApplicationId());
+                        customerAccOpenApply.setApplicationStatus(BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_OPEN_ACCOUNT_VALUE);
+
+                        customerAccOpenApplyService.updateByApplicationId(customerAccOpenApply);
+
+                        // 更新账户等级
+                        CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity1 = new CustomerAccountOpenInfoEntity();
+                        customerAccountOpenInfoEntity1.setApplicationId(customerAccountOpenApplyEntity.getApplicationId());
+                        customerAccountOpenInfoEntity1.setAccountLevel(3);
+                        customerAccountOpenInfoService.update(customerAccountOpenInfoEntity1);
+                    } else {
+                        // 更新账户等级为预批帐户
+                        CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity2 = new CustomerAccountOpenInfoEntity();
+                        customerAccountOpenInfoEntity2.setApplicationId(customerAccountOpenApplyEntity.getApplicationId());
+                        customerAccountOpenInfoEntity2.setAccountLevel(1);
+                        customerAccountOpenInfoService.update(customerAccountOpenInfoEntity2);
+                    }
+
+                    actModelerService.doNextFlow(openApplicationEntity.getApplicationId(), openApplicationEntity.getInstanceId(), "");
+                }
             } else {
                 // 更新预约申请表相关信息
                 CustomerAccountOpenApplyEntity customerAccOpenApplyEntity = new CustomerAccountOpenApplyEntity();
@@ -98,51 +184,53 @@ public class HundsunAccountOpenJob {
 
                 customerAccOpenApplyService.updateByApplicationId(customerAccOpenApplyEntity);
             }
-
-            // 归档节点程序自动审核
-            CustomerAccountOpenApplyEntity customerAccountOpenApplyEntity = customerAccOpenApplyService.queryObjectByApplicationId(openApplicationEntity.getApplicationId());
-            CustomerAccountOpenInfoEntity customerAccountOpenInfo = customerAccountOpenInfoService.queryByApplicationId(openApplicationEntity.getApplicationId());
-
-            if (CodeUtils.getCodeName("OPEN_ACCOUNT_NODE_NAME", "5").equals(customerAccountOpenApplyEntity.getCurrentNode())) {
-
-                // CA认证更新开户状态为已开户，帐户等级为标准帐户
-                //线下开户等级为标准账户
-                if (1 == customerAccountOpenInfo.getBankType() || 2 == customerAccountOpenInfo.getOpenAccountType()) {
-                    // 更新预约申请表相关信息
-                    CustomerAccountOpenApplyEntity customerAccOpenApply = new CustomerAccountOpenApplyEntity();
-                    customerAccOpenApply.setApplicationId(customerAccountOpenApplyEntity.getApplicationId());
-                    customerAccOpenApply.setApplicationStatus(BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_OPEN_ACCOUNT_VALUE);
-
-                    customerAccOpenApplyService.updateByApplicationId(customerAccOpenApply);
-
-                    // 更新账户等级
-                    CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = new CustomerAccountOpenInfoEntity();
-                    customerAccountOpenInfoEntity.setApplicationId(customerAccountOpenApplyEntity.getApplicationId());
-                    customerAccountOpenInfoEntity.setAccountLevel(3);
-                    customerAccountOpenInfoService.update(customerAccountOpenInfoEntity);
-                }else{
-                    // 更新账户等级为预批帐户
-                    CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = new CustomerAccountOpenInfoEntity();
-                    customerAccountOpenInfoEntity.setApplicationId(customerAccountOpenApplyEntity.getApplicationId());
-                    customerAccountOpenInfoEntity.setAccountLevel(1);
-                    customerAccountOpenInfoService.update(customerAccountOpenInfoEntity);
-                }
-
-                actModelerService.doNextFlow(openApplicationEntity.getApplicationId(), openApplicationEntity.getInstanceId(), "");
-            }
         }
     }
 
     /**
-     * 获取恒生后台开户任务
+     * 数据归档
+     * 增开
      *
-     * @return
+     * @param openAcctList
      */
-    private List<CustomerAccountOpenApplyEntity> getWaitingForAccountOpenData() {
-        CustomerAccountOpenApplyEntity queryCondition = new CustomerAccountOpenApplyEntity();
-        queryCondition.setCurrentNode("开户");
-//        queryCondition.setApplicationStatus(BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_APPROVAL_PROGRESS_VALUE);
-        return customerAccOpenApplyService.queryListByBean(queryCondition);
-    }
+    private void doArrangeMarginData(List<CustomerAccountMarginOpenApplyEntity> openAcctList) {
+        for (CustomerAccountMarginOpenApplyEntity openApplicationEntity : openAcctList) {
 
+            int count = 0;
+
+            AyersClientInfoEntity clientInfoEntity = new AyersClientInfoEntity();
+            clientInfoEntity.setClientId("A111");
+            clientInfoEntity.setCreateUser("A222");
+            clientInfoEntity.setCreateTime(new Date());
+            count = ayersAccOpenService.saveClientInfo(clientInfoEntity);
+            if (count > 0) {
+                AyersClientAccEntity clientAccEntity = new AyersClientAccEntity();
+                clientAccEntity.setClientAccId("A111");
+                clientAccEntity.setClientId("A111");
+                clientAccEntity.setCreateUser("A222");
+                clientAccEntity.setCreateTime(new Date());
+                clientAccEntity.setAccType("M");
+                count = ayersAccOpenService.saveClineAcc(clientAccEntity);
+            }
+
+            if (count > 0) {
+                CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByIdCardNumber(openApplicationEntity.getIdCardNo());
+                SecuritiesUserModel securitiesUserModel = CustomerOpenAccountConverter.converterToSecuritiesUserInfo(customerAccountOpenInfoEntity);
+                securitiesUserModel.setFundAccountType(2);
+                ResponseVO responseVO = securitiesUserInfoService.addSecuritiesUserInfo(securitiesUserModel);
+                logger.info("同步开户数据至统一用户中心结果：" + JSON.toJSONString(responseVO));
+                // 驱动流程下一步
+                actModelerService.doNextFlow(openApplicationEntity.getApplicationId(), openApplicationEntity.getInstanceId(), "");
+            } else {
+                // 更新预约申请表相关信息
+                CustomerAccountMarginOpenApplyEntity customerAccOpenApplyEntity = new CustomerAccountMarginOpenApplyEntity();
+                customerAccOpenApplyEntity.setApplicationId(openApplicationEntity.getApplicationId());
+                //增开失败
+                customerAccOpenApplyEntity.setApplicationStatus(BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_APPROVAL_FAILURE_VALUE);
+                customerAccOpenApplyEntity.setIsBack(BpmCommonEnum.YesNo.NO.getIndex());
+                customerAccOpenApplyEntity.setUpdateTime(new Date());
+                customerAccMarginOpenApplyService.updateByApplicationId(customerAccOpenApplyEntity);
+            }
+        }
+    }
 }

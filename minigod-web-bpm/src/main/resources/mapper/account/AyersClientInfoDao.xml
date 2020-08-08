@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sunline.modules.account.online.dao.AyersClientInfoDao">
+
+    <resultMap type="com.sunline.modules.account.online.entity.AyersClientInfoEntity" id="clientInfoMap">
+        <result property="uuid" column="uuid"/>
+        <result property="clientId" column="client_id"/>
+        <result property="createUser" column="create_user"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		uuid,
+		client_id,
+		create_user,
+		create_time
+    </sql>
+
+	<sql id="Base_Where_Conditions">
+		<if test="uuid != null">
+			<![CDATA[ and uuid = #{uuid}]]>
+		</if>
+		<if test="clientId != null">
+			<![CDATA[ and client_id = #{clientId}]]>
+		</if>
+		<if test="createUser != null">
+			<![CDATA[ and create_user = #{createUser}]]>
+		</if>
+		<if test="createTime != null">
+			<![CDATA[ and create_time = #{createTime}]]>
+		</if>			
+	</sql>
+	
+	<insert id="save" parameterType="com.sunline.modules.account.online.entity.AyersClientInfoEntity">
+		<selectKey keyProperty="uuid" resultType="java.lang.String" order="BEFORE">
+			select replace(uuid(),'-','') AS uuid
+		</selectKey>
+		insert into upload_client
+		(
+			`uuid`,
+			`client_id`,
+			`create_user`,
+			`create_time`
+		)
+		values
+		(
+			#{uuid,jdbcType=VARCHAR},
+			#{clientId},
+			#{createUser},
+			#{createTime}
+		)
+	</insert>
+
+</mapper>
