@@ -1,4 +1,4 @@
-package com.minigod.protocol.account.cubp.request;
+package com.minigod.protocol.account.bpm.request;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * 税务信息
  */
-public class CubpOpenAccountTaxationInfoReqVo implements Serializable {
+public class BpmOpenAccountTaxationInfoReqVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	//司法管辖区

@@ -3750,7 +3750,7 @@ UploadImg.prototype = {
                 }
                 uploadImgServer = uploadImgServer + key + '=' + val;
 
-                // 第二，将参数添加到 formdata 中
+                // 第二，将参数添加到 formData 中
                 formdata.append(key, val);
             });
             if (uploadImgServerHash) {

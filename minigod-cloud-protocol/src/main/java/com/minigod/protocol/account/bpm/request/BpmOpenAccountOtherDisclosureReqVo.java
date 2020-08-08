@@ -1,4 +1,4 @@
-package com.minigod.protocol.account.cubp.request;
+package com.minigod.protocol.account.bpm.request;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * 其他信息披露
  */
-public class CubpOpenAccountOtherDisclosureReqVo implements Serializable {
+public class BpmOpenAccountOtherDisclosureReqVo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	//编号

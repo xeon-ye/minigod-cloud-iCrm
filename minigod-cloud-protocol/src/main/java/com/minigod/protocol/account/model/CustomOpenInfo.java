@@ -121,7 +121,7 @@ public class CustomOpenInfo implements Serializable {
     /**
      * 开户数据
      */
-    private String formdata;
+    private String formData;
 
     /**
      * 开户PDF文件地址

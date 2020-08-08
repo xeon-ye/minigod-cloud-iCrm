@@ -9,7 +9,7 @@ import com.minigod.common.pojo.StaticType;
 import com.minigod.common.security.PKCSUtil;
 import com.minigod.common.utils.ImageUtils;
 import com.minigod.persist.account.mapper.*;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountAppointmentReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountAppointmentReqVo;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.enums.VerifyAuthCaStatusEnum;
 import com.minigod.protocol.account.model.*;
@@ -75,7 +75,7 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
 
         SzcaCertDnReqVo szcaCertDnReqVo = new SzcaCertDnReqVo();
 
-        CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
+        BpmOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormData(), BpmOpenAccountAppointmentReqVo.class);
 
         szcaCertDnReqVo.setToken(token);
         szcaCertDnReqVo.setIdNo(openInfo.getIdNo());
@@ -108,7 +108,7 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
 
         try {
             SzcaCertApplyP10ReqVo reqVo = new SzcaCertApplyP10ReqVo();
-            CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
+            BpmOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormData(), BpmOpenAccountAppointmentReqVo.class);
 
             // 获取开户图片
             List<CustomOpenCnImg> customOpenImgs = customOpenCnImgMapper.selectByUserId(customOpenInfo.getUserId());
@@ -235,7 +235,7 @@ public class VerifyBySzcaJobHandler extends IJobHandler {
 
         try {
             SzcaPdfInfoForSignReqVo szcaPdfInfoForSignReqVo = new SzcaPdfInfoForSignReqVo();
-            CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
+            BpmOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormData(), BpmOpenAccountAppointmentReqVo.class);
 
             szcaPdfInfoForSignReqVo.setUserName(openInfo.getClientName());
             szcaPdfInfoForSignReqVo.setIdCode(openInfo.getIdNo());

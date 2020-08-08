@@ -8,8 +8,8 @@
 //import com.minigod.common.utils.ImageUtils;
 //import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
 //import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
-//import com.minigod.protocol.account.cubp.request.CubpOpenAccountAppointmentReqVo;
-//import com.minigod.protocol.account.cubp.request.CubpOpenAccountImageInfoReqVo;
+//import com.minigod.protocol.account.bpm.request.BpmOpenAccountAppointmentReqVo;
+//import com.minigod.protocol.account.bpm.request.BpmOpenAccountImageInfoReqVo;
 //import com.minigod.protocol.account.model.CustomOpenCnImg;
 //import com.minigod.protocol.account.model.CustomOpenInfo;
 //import com.minigod.protocol.account.szca.request.*;

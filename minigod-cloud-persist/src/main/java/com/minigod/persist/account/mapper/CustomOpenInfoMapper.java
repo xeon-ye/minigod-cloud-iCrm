@@ -63,7 +63,4 @@ public interface CustomOpenInfoMapper {
 
     List<CustomOpenInfo> selectByStatusAndIsNoticedFalse(@Param("status")Integer status);
 
-
-
-
 }

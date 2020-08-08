@@ -1,4 +1,4 @@
-package com.minigod.protocol.account.cubp.request;
+package com.minigod.protocol.account.bpm.request;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import java.util.Date;
 
 
 @Data
-public class CubpOpenAccountCaVeritySnInfoVo implements Serializable {
+public class BpmOpenAccountCaVeritySnInfoVo implements Serializable {
     private static final long serialVersionUID = 1611100035148527827L;
 
     private String caCertDn;

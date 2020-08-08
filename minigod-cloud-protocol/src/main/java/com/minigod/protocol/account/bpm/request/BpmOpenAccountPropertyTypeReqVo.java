@@ -1,4 +1,4 @@
-package com.minigod.protocol.account.cubp.request;
+package com.minigod.protocol.account.bpm.request;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * 财产种类
  */
-public class CubpOpenAccountPropertyTypeReqVo implements Serializable {
+public class BpmOpenAccountPropertyTypeReqVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	//财产种类

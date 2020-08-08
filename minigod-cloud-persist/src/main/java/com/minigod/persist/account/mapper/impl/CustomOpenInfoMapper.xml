@@ -26,7 +26,7 @@
     <result column="open_date" jdbcType="TIMESTAMP" property="openDate" />
     <result column="trade_account" jdbcType="VARCHAR" property="tradeAccount" />
     <result column="is_send" jdbcType="BOOLEAN" property="isSend" />
-    <result column="formData" jdbcType="VARCHAR" property="formdata" />
+    <result column="form_data" jdbcType="VARCHAR" property="formData" />
     <result column="open_account_pdf_url" jdbcType="VARCHAR" property="openAccountPdfUrl" />
     <result column="open_source" jdbcType="VARCHAR" property="openSource" />
     <result column="open_invite_id" jdbcType="INTEGER" property="openInviteId" />
@@ -39,7 +39,7 @@
     id, user_id, access_way, id_kind, id_card, open_type, bank_card, fund_account_type, 
     account_markets, `status`, pending_type, fail_type, fail_reason, is_noticed, notice_err_count, 
     is_pushed, push_err_count, remote_id, ca_status, open_date, trade_account, is_send, 
-    formData, open_account_pdf_url, open_source, open_invite_id, open_channel, create_time, 
+    form_data, open_account_pdf_url, open_source, open_invite_id, open_channel, create_time,
     update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -63,7 +63,7 @@
       is_noticed, notice_err_count, is_pushed, 
       push_err_count, remote_id, ca_status, 
       open_date, trade_account, is_send, 
-      formData, open_account_pdf_url, open_source, 
+      form_data, open_account_pdf_url, open_source,
       open_invite_id, open_channel, create_time, 
       update_time)
     values (#{userId,jdbcType=INTEGER}, #{accessWay,jdbcType=INTEGER}, #{idKind,jdbcType=INTEGER}, 
@@ -73,7 +73,7 @@
       #{isNoticed,jdbcType=BOOLEAN}, #{noticeErrCount,jdbcType=INTEGER}, #{isPushed,jdbcType=BOOLEAN}, 
       #{pushErrCount,jdbcType=INTEGER}, #{remoteId,jdbcType=VARCHAR}, #{caStatus,jdbcType=INTEGER}, 
       #{openDate,jdbcType=TIMESTAMP}, #{tradeAccount,jdbcType=VARCHAR}, #{isSend,jdbcType=BOOLEAN}, 
-      #{formdata,jdbcType=VARCHAR}, #{openAccountPdfUrl,jdbcType=VARCHAR}, #{openSource,jdbcType=VARCHAR}, 
+      #{formData,jdbcType=VARCHAR}, #{openAccountPdfUrl,jdbcType=VARCHAR}, #{openSource,jdbcType=VARCHAR},
       #{openInviteId,jdbcType=INTEGER}, #{openChannel,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -144,8 +144,8 @@
       <if test="isSend != null">
         is_send,
       </if>
-      <if test="formdata != null">
-        formData,
+      <if test="formData != null">
+        form_data,
       </if>
       <if test="openAccountPdfUrl != null">
         open_account_pdf_url,
@@ -230,8 +230,8 @@
       <if test="isSend != null">
         #{isSend,jdbcType=BOOLEAN},
       </if>
-      <if test="formdata != null">
-        #{formdata,jdbcType=VARCHAR},
+      <if test="formData != null">
+        #{formData,jdbcType=VARCHAR},
       </if>
       <if test="openAccountPdfUrl != null">
         #{openAccountPdfUrl,jdbcType=VARCHAR},
@@ -320,8 +320,8 @@
       <if test="isSend != null">
         is_send = #{isSend,jdbcType=BOOLEAN},
       </if>
-      <if test="formdata != null">
-        formData = #{formdata,jdbcType=VARCHAR},
+      <if test="formData != null">
+        form_data = #{formData,jdbcType=VARCHAR},
       </if>
       <if test="openAccountPdfUrl != null">
         open_account_pdf_url = #{openAccountPdfUrl,jdbcType=VARCHAR},
@@ -368,7 +368,7 @@
       open_date = #{openDate,jdbcType=TIMESTAMP},
       trade_account = #{tradeAccount,jdbcType=VARCHAR},
       is_send = #{isSend,jdbcType=BOOLEAN},
-      formData = #{formdata,jdbcType=VARCHAR},
+      form_data = #{formData,jdbcType=VARCHAR},
       open_account_pdf_url = #{openAccountPdfUrl,jdbcType=VARCHAR},
       open_source = #{openSource,jdbcType=VARCHAR},
       open_invite_id = #{openInviteId,jdbcType=INTEGER},

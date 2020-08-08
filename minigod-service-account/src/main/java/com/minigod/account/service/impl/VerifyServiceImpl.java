@@ -2,24 +2,19 @@ package com.minigod.account.service.impl;
 
 import com.minigod.account.helper.FileStorageHelper;
 import com.minigod.account.helper.TencentApiIaiHelper;
-import com.minigod.account.utils.SzcaHttpClient;
 import com.minigod.common.utils.ImageUtils;
 import com.minigod.common.utils.JSONUtil;
 import com.minigod.common.verify.utils.VerifyUtil;
 import com.minigod.helper.bean.BaseBeanFactory;
-import com.minigod.account.helper.RestCubpHelper;
+import com.minigod.account.helper.RestBpmHelper;
 import com.minigod.account.helper.TencentApiFaceIdHelper;
 import com.minigod.persist.account.mapper.*;
-import com.minigod.protocol.account.enums.VerifyAuthCaStatusEnum;
 import com.minigod.protocol.account.model.*;
 import com.minigod.protocol.account.request.params.VerifyReqParams;
 import com.minigod.protocol.account.response.VerifyResVo;
 import com.minigod.account.service.VerifyService;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.pojo.StaticType;
-import com.minigod.protocol.account.pojo.VerifySzcaPojo;
-import com.minigod.protocol.account.szca.request.*;
-import com.minigod.protocol.account.szca.response.*;
 import com.tencentcloudapi.faceid.v20180301.models.*;
 import com.tencentcloudapi.iai.v20200303.models.DetectLiveFaceResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -50,7 +44,7 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
     @Autowired
     CustomOpenCnImgMapper customOpenCnImgMapper;
     @Autowired
-    RestCubpHelper restCubpHelper;
+    RestBpmHelper restBpmHelper;
     @Autowired
     TencentApiFaceIdHelper tencentApiFaceIdHelper;
     @Autowired
@@ -59,8 +53,8 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
     @Autowired
     FileStorageHelper fileStorageHelper;
 
-    @Value("${minigod.openAccount.isVerifyFromCubp}")
-    private Boolean IS_VERIFY_FROM_CUBP;
+    @Value("${minigod.openAccount.isVerifyFromBpm}")
+    private Boolean IS_VERIFY_FROM_BPM;
 
     @Value("${minigod.openAccount.isVerifyIdCardFromThird}")
     private Boolean IS_VERIFY_ID_CARD_FROM_THIRD;
@@ -102,9 +96,9 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_FORMAT_PHONE);
         }
 
-        if (IS_VERIFY_FROM_CUBP) {
-            // cubp中心校验
-            return !restCubpHelper.verifyPhone(phone);
+        if (IS_VERIFY_FROM_BPM) {
+            // bpm中心校验
+            return !restBpmHelper.verifyPhone(phone);
         }
 
         return false;
@@ -117,9 +111,9 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_FORMAT_EMAIL);
         }
 
-        if (IS_VERIFY_FROM_CUBP) {
-            // cubp中心校验
-            return !restCubpHelper.verifyEmail(email);
+        if (IS_VERIFY_FROM_BPM) {
+            // bpm中心校验
+            return !restBpmHelper.verifyEmail(email);
         }
 
         return false;
@@ -132,9 +126,9 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_FORMAT_ID_CARD);
         }
 
-        if (IS_VERIFY_FROM_CUBP) {
-            // 调用cubp中心校验（黑名单/已开户）
-            return !restCubpHelper.verifyIdCard(idCard);
+        if (IS_VERIFY_FROM_BPM) {
+            // 调用bpm中心校验（黑名单/已开户）
+            return !restBpmHelper.verifyIdCard(idCard);
         }
         return false;
     }
@@ -218,9 +212,9 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
         VerifyResVo verifyResVo = verifyResVoChecked();
 
         try {
-            // 调用cubp中心校验
-            if (IS_VERIFY_FROM_CUBP && !restCubpHelper.verifyPhone(phone)) {
-                // cubp校验不通过，返回手机号已使用
+            // 调用bpm中心校验
+            if (IS_VERIFY_FROM_BPM && !restBpmHelper.verifyPhone(phone)) {
+                // bpm校验不通过，返回手机号已使用
                 verifyResVo.setIsValid(false);
                 verifyResVo.setRemark(getResMessage(params, StaticType.MessageResource.PHONE_IS_USED));
             }
@@ -247,9 +241,9 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
         VerifyResVo verifyResVo = verifyResVoChecked();
 
         try {
-            // 调用cubp中心校验
-            if (IS_VERIFY_FROM_CUBP && !restCubpHelper.verifyEmail(email)) {
-                // cubp校验不通过，返回邮箱已使用
+            // 调用bpm中心校验
+            if (IS_VERIFY_FROM_BPM && !restBpmHelper.verifyEmail(email)) {
+                // bpm校验不通过，返回邮箱已使用
                 verifyResVo.setIsValid(false);
                 verifyResVo.setRemark(getResMessage(params, StaticType.MessageResource.EMAIL_IS_USED));
             }
@@ -294,9 +288,9 @@ public class VerifyServiceImpl extends BaseBeanFactory implements VerifyService 
         VerifyResVo verifyResVo = verifyResVoChecked();
 
         try {
-            // 调用cubp中心校验（黑名单/已开户）
-            if (IS_VERIFY_FROM_CUBP && !restCubpHelper.verifyIdCard(params.getIdCard())) {
-                // cubp校验不通过，返回账号已使用/不支持
+            // 调用bpm中心校验（黑名单/已开户）
+            if (IS_VERIFY_FROM_BPM && !restBpmHelper.verifyIdCard(params.getIdCard())) {
+                // bpm校验不通过，返回账号已使用/不支持
                 verifyResVo.setIsValid(false);
                 verifyResVo.setRemark(getResMessage(params, StaticType.MessageResource.ID_CARD_USED_OR_UNSUPPORT));
                 return verifyResVo;

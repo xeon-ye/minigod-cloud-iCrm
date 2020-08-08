@@ -1,36 +1,26 @@
 package com.minigod.task.service.jobhandler.account;
 
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Lists;
 import com.minigod.common.pojo.response.ResResult;
 import com.minigod.common.utils.DateUtils;
 import com.minigod.common.utils.HttpClientUtils;
 import com.minigod.persist.account.mapper.*;
-import com.minigod.protocol.account.cubp.callback.CubpOpenInfoCallbackVo;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountAppointmentReqVo;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountBankVerityInfoReqVo;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountImageInfoReqVo;
+import com.minigod.protocol.account.bpm.callback.BpmOpenInfoCallbackVo;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.model.*;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.IJobHandler;
 import com.xxl.job.core.handler.annotation.JobHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -121,7 +111,7 @@ public class NoticeSuccessOpenInfoJobHandler extends IJobHandler {
                 continue;
             }
 
-            CubpOpenInfoCallbackVo openInfoCallbackVo = new CubpOpenInfoCallbackVo();
+            BpmOpenInfoCallbackVo openInfoCallbackVo = new BpmOpenInfoCallbackVo();
 
             openInfoCallbackVo.setUserId(customInfo.getThirdCode());
             openInfoCallbackVo.setOpenStatus(0);
@@ -132,7 +122,7 @@ public class NoticeSuccessOpenInfoJobHandler extends IJobHandler {
             try {
                 log.info("*********************【客户开户成功下发】回调开始**************************, userId = {}", userId);
                 log.info(userId + "【客户开户成功下发】回调传入数据：" + JSONObject.toJSONString(openInfoCallbackVo));
-                // 调用cubp开户接口
+                // 调用bpm开户接口
                 String server = PROXY_SYNC_HOST + PROXY_SYNC_DATA_API;
                 String result = HttpClientUtils.postJson(server, JSONObject.toJSONString(openInfoCallbackVo), Charset.forName("UTF-8"), true);
                 log.info(userId + "【客户开户成功下发】返回结果：" + result);

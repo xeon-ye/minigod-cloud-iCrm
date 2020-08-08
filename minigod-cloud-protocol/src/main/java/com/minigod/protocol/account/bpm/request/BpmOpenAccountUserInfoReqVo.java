@@ -1,4 +1,4 @@
-package com.minigod.protocol.account.cubp.request;
+package com.minigod.protocol.account.bpm.request;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class CubpOpenAccountUserInfoReqVo implements Serializable {
+public class BpmOpenAccountUserInfoReqVo implements Serializable {
     private static final long serialVersionUID = -5117281934075876024L;
     // 用户号
     private Integer userId;

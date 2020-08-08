@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.common.pojo.response.ResResult;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountUserInfoReqVo;
-import com.minigod.protocol.account.cubp.response.CubpOpenAccountUserInfoResVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountUserInfoReqVo;
+import com.minigod.protocol.account.bpm.response.BpmOpenAccountUserInfoResVo;
 import com.minigod.account.utils.CommonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -19,12 +19,12 @@ import java.util.Map;
 
 @Slf4j
 @Service
-public class RestCubpHelper {
-    @Value("${minigod.cubp.isRemote}")
+public class RestBpmHelper {
+    @Value("${minigod.bpm.isRemote}")
     private Boolean isRemote;
 
-    @Value("${minigod.cubp.url}")
-    private String CUBP_API_URL;
+    @Value("${minigod.bpm.url}")
+    private String BPM_API_URL;
 
     private String VERIFY_EMAIL = "";
     private String VERIFY_PHONE = "";
@@ -34,22 +34,22 @@ public class RestCubpHelper {
 
     @PostConstruct
     private void init() {
-        VERIFY_EMAIL = CUBP_API_URL + "/proxy/customer/openAccountEmailValidate";
-        VERIFY_PHONE = CUBP_API_URL + "/proxy/customer/openAccountPhoneValidate";
-        VERIFY_ID_CARD = CUBP_API_URL + "/proxy/customer/openAccountIdCardValidate";
-        QUERY_USERINFO_OBJ = CUBP_API_URL + "/securitiesUserInfo/querySecuritiesUserInfo";
-        FIND_DATA_DICTIONARY_BY_MARK = CUBP_API_URL + "/crm_api/findDataDictionaryByMark";
+        VERIFY_EMAIL = BPM_API_URL + "/proxy/customer/openAccountEmailValidate";
+        VERIFY_PHONE = BPM_API_URL + "/proxy/customer/openAccountPhoneValidate";
+        VERIFY_ID_CARD = BPM_API_URL + "/proxy/customer/openAccountIdCardValidate";
+        QUERY_USERINFO_OBJ = BPM_API_URL + "/securitiesUserInfo/querySecuritiesUserInfo";
+        FIND_DATA_DICTIONARY_BY_MARK = BPM_API_URL + "/crm_api/findDataDictionaryByMark";
     }
 
-    private ResResult connectCubp(String server, Object json) {
+    private ResResult connectBpm(String server, Object json) {
         if (!isRemote) {
             return ResResult.success();
         }
         try {
             String jsonStrReq = CommonUtil.getRequestJson(json);
-            log.info("请求cubp传入参数：" + jsonStrReq);
+            log.info("请求bpm传入参数：" + jsonStrReq);
             String jsonStrRes = CommonUtil.httpPost(server, jsonStrReq);
-            log.info("请求cubp返回信息：" + jsonStrRes);
+            log.info("请求bpm返回信息：" + jsonStrRes);
 
             if (StringUtils.isNotBlank(jsonStrRes)) {
                 ResResult responseVO = JSONObject.parseObject(jsonStrRes, ResResult.class);
@@ -64,11 +64,11 @@ public class RestCubpHelper {
     }
 
     private <T> T getResult(String server, Object json, Class<T> clazz) {
-        ResResult responseResult = connectCubp(server, json);
+        ResResult responseResult = connectBpm(server, json);
 
         if (responseResult.getCode() == 0) {
             Object res = responseResult.getResult();
-            log.debug("RestCubpHelper回包解析：", res);
+            log.debug("RestBpmHelper回包解析：", res);
             if (res != null) {
                 T obj = JSON.parseObject(res.toString(), clazz);
                 if (null != obj) {
@@ -80,7 +80,7 @@ public class RestCubpHelper {
     }
 
     private Boolean getResult(String server, Object json) {
-        ResResult responseResult = connectCubp(server, json);
+        ResResult responseResult = connectBpm(server, json);
         return responseResult.getCode() == 0;
     }
 
@@ -103,8 +103,8 @@ public class RestCubpHelper {
         return getResult(VERIFY_ID_CARD, map);
     }
 
-    public CubpOpenAccountUserInfoResVo selectSecuritiesUserInfo(CubpOpenAccountUserInfoReqVo reqVo) {
-        return getResult(QUERY_USERINFO_OBJ, reqVo, CubpOpenAccountUserInfoResVo.class);
+    public BpmOpenAccountUserInfoResVo selectSecuritiesUserInfo(BpmOpenAccountUserInfoReqVo reqVo) {
+        return getResult(QUERY_USERINFO_OBJ, reqVo, BpmOpenAccountUserInfoResVo.class);
     }
 
     public List findDictionaryData(String mark) {

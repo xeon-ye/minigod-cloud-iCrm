@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>minigod-service-account</artifactId>
-    <description>cubp系统中台</description>
+    <description>bpm系统中台</description>
 
     <dependencies>
         <!-- Ailibaba Json处理工具包 -->

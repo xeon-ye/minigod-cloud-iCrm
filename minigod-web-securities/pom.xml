@@ -8,7 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <description>cubp系统中台Web服务</description>
+    <description>icrm系统中台Web服务</description>
 
     <artifactId>minigod-web-securities</artifactId>
     <dependencies>

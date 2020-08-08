@@ -1,13 +1,13 @@
 package com.minigod.account.helper;
 
 import com.alibaba.fastjson.JSON;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountAppointmentReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountAppointmentReqVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 @Slf4j
-public class CubpOpenInfoHelper {
+public class BpmOpenInfoHelper {
     // 日志对象
 
     /**
@@ -16,7 +16,7 @@ public class CubpOpenInfoHelper {
      * @param openInfo
      * @return
      */
-    public static boolean openInfoValid(CubpOpenAccountAppointmentReqVo openInfo) {
+    public static boolean openInfoValid(BpmOpenAccountAppointmentReqVo openInfo) {
         if (null == openInfo.getFundAccountType()) {
             log.info("【开户预约接口数据完整性校验】：请填写账户类型");
             return false;
@@ -231,7 +231,7 @@ public class CubpOpenInfoHelper {
 
     public static void main(String[] args) {
         String info = "{\"idCardAddress\":\"广东省广州市白云区金融科技大厦\",\"openAccountType\":1,\"birthday\":\"1991-02-03\",\"companyAddress\":\"\",\"sex\":1,\"fundAccountType\":1,\"jobPosition\":\"\",\"idCardValidDateEnd\":\"2024-10-30\",\"familyAddress\":\"广东省广州市白云区金融科技大厦\",\"isTradedDerivativeProducts\":0,\"bankNo\":\"87346455\",\"annualIncome\":1,\"phoneNumber\":\"18000003039\",\"taxationInfo\":[{\"taxNumber\":\"649789199102036589\",\"taxCountry\":\"中国大陆\",\"hasTaxNumber\":1}],\"userId\":2002144,\"clientName\":\"哦搜狗\",\"professionType\":\"\",\"isKnowDerivativeProducts\":0,\"clientNameSpell\":\"POSIJ\",\"otherDisclosure\":[{\"disclosureDetail\":\",\",\"disclosureName\":\",\",\"disclosureIsTrue\":1,\"disclosureCode\":1},{\"disclosureDetail\":\"\",\"disclosureName\":\"\",\"disclosureIsTrue\":1,\"disclosureCode\":2},{\"disclosureDetail\":\"\",\"disclosureName\":\"\",\"disclosureIsTrue\":1,\"disclosureCode\":3},{\"disclosureDetail\":\"\",\"disclosureName\":\"\",\"disclosureIsTrue\":1,\"disclosureCode\":4},{\"disclosureDetail\":\"\",\"disclosureName\":\"\",\"disclosureIsTrue\":1,\"disclosureCode\":5},{\"disclosureDetail\":\"\",\"disclosureName\":\"\",\"disclosureIsTrue\":1,\"disclosureCode\":6},{\"disclosureDetail\":\"\",\"disclosureName\":\"\",\"disclosureIsTrue\":1,\"disclosureCode\":7},{\"disclosureDetail\":\"\",\"disclosureName\":\"\",\"disclosureIsTrue\":1,\"disclosureCode\":8},{\"disclosureDetail\":\"\",\"disclosureName\":\"\",\"disclosureIsTrue\":1,\"disclosureCode\":9},{\"disclosureDetail\":\"\",\"disclosureName\":\"\",\"disclosureIsTrue\":1,\"disclosureCode\":10}],\"openAccountAccessWay\":\"2\",\"idCardValidDateStart\":\"2018-10-30\",\"isAllowProvidePrivacy\":1,\"investTarget\":[1,2,3],\"derivativeProductsStudyTypeOther\":\"\",\"idNo\":\"649789199102036589\",\"sourceChannelId\":\"1\",\"financingInstitutionWorkExperienceType\":\"\",\"professionCode\":4,\"derivativeProductsStudyType\":\"\",\"investTargetOther\":false,\"inviterId\":1,\"idKind\":1,\"capitalSource\":[6],\"futuresInvestmentExperienceType\":0,\"companyName\":\"\",\"warrantsInvestmentExperienceType\":0,\"bankId\":\"ABC\",\"nationality\":0,\"propertyType\":[{\"propertyType\":1,\"propertyAmount\":\"6\"}],\"email\":\"jpeg@sonp.com\",\"bankType\":1,\"stocksInvestmentExperienceType\":0,\"financingInstitutionWorkExperienceTypeOther\":\"\",\"contactAddress\":\"广东省广州市白云区金融科技大厦\"}";
-        CubpOpenAccountAppointmentReqVo openInfo = JSON.parseObject(info, CubpOpenAccountAppointmentReqVo.class);
+        BpmOpenAccountAppointmentReqVo openInfo = JSON.parseObject(info, BpmOpenAccountAppointmentReqVo.class);
         openInfoValid(openInfo);
     }
 

@@ -2,49 +2,40 @@ package com.minigod.account.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.minigod.account.helper.CubpOpenInfoHelper;
+import com.minigod.account.helper.BpmOpenInfoHelper;
 import com.minigod.account.service.*;
-import com.minigod.account.utils.SzcaHttpClient;
-import com.minigod.common.exception.WebApiException;
 import com.minigod.helper.bean.BaseBeanFactory;
-import com.minigod.common.security.PKCSUtil;
 import com.minigod.common.utils.DateUtils;
-import com.minigod.common.utils.ImageUtils;
 import com.minigod.common.utils.JSONUtil;
 import com.minigod.account.helper.FileStorageHelper;
-import com.minigod.account.helper.RestCubpHelper;
+import com.minigod.account.helper.RestBpmHelper;
 import com.minigod.account.helper.TencentApiOcrHelper;
 import com.minigod.persist.account.mapper.*;
 import com.minigod.persist.common.mapper.ConfigLanguageMapper;
-import com.minigod.protocol.account.cubp.callback.CubpOpenInfoCallbackVo;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountAppointmentReqVo;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountImageInfoReqVo;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountUserInfoReqVo;
-import com.minigod.protocol.account.cubp.response.CubpOpenAccountUserInfoResVo;
+import com.minigod.protocol.account.bpm.callback.BpmOpenInfoCallbackVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountAppointmentReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountImageInfoReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountUserInfoReqVo;
+import com.minigod.protocol.account.bpm.response.BpmOpenAccountUserInfoResVo;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum.*;
 import com.minigod.protocol.account.enums.OcrEnum;
-import com.minigod.protocol.account.enums.VerifyAuthCaStatusEnum;
 import com.minigod.protocol.account.model.*;
 import com.minigod.protocol.account.pojo.OpenStatusPojo;
-import com.minigod.protocol.account.pojo.VerifySzcaPojo;
 import com.minigod.protocol.account.request.params.*;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.protocol.account.response.OpenUserInfoResVo;
-import com.minigod.protocol.account.szca.request.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
-import org.testng.collections.Lists;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.KeyPair;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,7 +53,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
     @Autowired
     VerifySzcaService verifySzcaService;
     @Autowired
-    RestCubpHelper restCubpHelper;
+    RestBpmHelper restBpmHelper;
     @Autowired
     FileStorageHelper fileStorageHelper;
     @Autowired
@@ -151,12 +142,12 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
         }
 
-        return restCubpHelper.findDictionaryData(mark);
+        return restBpmHelper.findDictionaryData(mark);
     }
 
     // 必填字段校验
-    private boolean verifyOpenInfoData(CubpOpenAccountAppointmentReqVo reqVo) {
-        return CubpOpenInfoHelper.openInfoValid(reqVo);
+    private boolean verifyOpenInfoData(BpmOpenAccountAppointmentReqVo reqVo) {
+        return BpmOpenInfoHelper.openInfoValid(reqVo);
     }
 
     @Override
@@ -228,6 +219,10 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         Integer openType = params.getOpenType();
         Integer accessWay = params.getAccessWay();
         Integer fundAccountType = params.getFundAccountType();
+        Integer lang = params.getLanguage();
+        Integer activeId = params.getActiveId();
+        Integer inviteId = params.getInviteId();
+        Integer channelId = params.getChannelId();
         ArrayList<Integer> accountMarkets = params.getAccountMarkets();
         JSONObject formData = params.getFormData();
 
@@ -236,7 +231,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         FundAccountType fundAccountTypeInfo = FundAccountType.getType(fundAccountType);
 
         // 参数校验 - 基本
-        if (openTypeInfo == null || accessWay == null || fundAccountTypeInfo == null || accountMarkets.size() == 0 || formData == null) {
+        if (openTypeInfo == null || lang == null ||accessWay == null || fundAccountTypeInfo == null || accountMarkets.size() == 0 || formData == null) {
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -280,17 +275,26 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         // 交易市场相关
         formData.put("isOpenHkStockMarket", OpenAccountMarket.getFlag(accountMarkets, OpenAccountMarket.HK_TRADE));
         formData.put("isOpenUsaStockMarket", OpenAccountMarket.getFlag(accountMarkets, OpenAccountMarket.US_TRADE));
-        formData.put("northTrade", OpenAccountMarket.getFlag(accountMarkets, OpenAccountMarket.NORTH_TRADE));
+//        formData.put("northTrade", OpenAccountMarket.getFlag(accountMarkets, OpenAccountMarket.NORTH_TRADE));
+
         // 账户类型
         formData.put("openAccountType", 1); // 开户类型 [0 = 未知 1 = 互联网 2 = 见证宝 3 = BPM] TODO：此处暂时固定1
         formData.put("openAccountAccessWay", accessWay); // 开户接入方式[1=H5开户 2=App]
         formData.put("fundAccountType", fundAccountTypeInfo.getCode()); // 账户类型 1：现金账户 2：融资账户
+        formData.put("language", lang); // 语言
 
         // 推荐人、渠道等字段，保留，后期可能使用
-        formData.put("inviterId", 1);
-        formData.put("sourceChannelId", 1);
+        formData.put("inviterId", inviteId);
+        formData.put("sourceChannelId", channelId);
 
-        CubpOpenAccountAppointmentReqVo reqVo = JSONObject.parseObject(JSONObject.toJSONString(formData), CubpOpenAccountAppointmentReqVo.class);
+        if (inviteId == null) {
+            formData.put("inviterId", 1);
+        }
+         if (channelId == null) {
+            formData.put("sourceChannelId", 1);
+        }
+
+        BpmOpenAccountAppointmentReqVo reqVo = JSONObject.parseObject(JSONObject.toJSONString(formData), BpmOpenAccountAppointmentReqVo.class);
 
         // 必填字段校验
         if (!verifyOpenInfoData(reqVo)) {
@@ -313,7 +317,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             locationTypeB.append(OPEN_IMG_TYPE_AVATAR);
 
             locationTypes = locationTypeB.toString().split(",");
-                imageCount = OPEN_IMG_COUNT_CN_H5;
+            imageCount = OPEN_IMG_COUNT_CN_H5;
             List<CustomOpenCnImg> openUserImgList = null;
             if (locationTypes != null) {
                 openUserImgList = customOpenCnImgMapper.selectByUserIdAndLocationKeyInAndLocationTypeIn(userId, null, locationTypes);
@@ -409,7 +413,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         customOpenInfo.setFundAccountType(fundAccountTypeInfo.getCode());
         customOpenInfo.setAccountMarkets(JSONUtil.toJson(accountMarkets));
 
-        customOpenInfo.setFormdata(JSONUtil.toJson(formData));
+        customOpenInfo.setFormData(JSONUtil.toJson(formData));
 
         customOpenInfo.setStatus(OpenStatus.PENDING.getCode()); // 开户中
         customOpenInfo.setPendingType(PendingStatusType.DOING.getCode()); // 预批中
@@ -424,10 +428,10 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         customOpenInfo.setCreateTime(new Date());
         customOpenInfo.setUpdateTime(new Date());
 
-        if(localOpenInfo != null){
+        if (localOpenInfo != null) {
             customOpenInfo.setId(localOpenInfo.getId());
             customOpenInfoMapper.updateByPrimaryKey(customOpenInfo);
-        }else{
+        } else {
             customOpenInfoMapper.insertSelective(customOpenInfo);
         }
 
@@ -514,15 +518,15 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
     }
 
     @Override
-    public void updateOpenInfo(CubpOpenInfoCallbackVo cubpOpenInfoCallbackVo) {
-        log.info("请求 /callback/update_open_info：" + JSONUtil.toCompatibleJson(cubpOpenInfoCallbackVo));
+    public void updateOpenInfo(BpmOpenInfoCallbackVo bpmOpenInfoCallbackVo) {
+        log.info("请求 /callback/update_open_info：" + JSONUtil.toCompatibleJson(bpmOpenInfoCallbackVo));
         try {
-            if (cubpOpenInfoCallbackVo == null) {
+            if (bpmOpenInfoCallbackVo == null) {
                 throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
             }
 
-            Integer backUserId = cubpOpenInfoCallbackVo.getUserId();
-            String phoneNumber = cubpOpenInfoCallbackVo.getPhoneNumber();
+            Integer backUserId = bpmOpenInfoCallbackVo.getUserId();
+            String phoneNumber = bpmOpenInfoCallbackVo.getPhoneNumber();
 
             CustomInfo localCustomInfo = customInfoMapper.selectOneByPhone(phoneNumber);
 
@@ -549,18 +553,18 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             }
 
             // 开户状态
-            OpenStatusPojo openStatusPojo = getOpenCallbackStatusInfo(String.valueOf(cubpOpenInfoCallbackVo.getOpenStatus()));
+            OpenStatusPojo openStatusPojo = getOpenCallbackStatusInfo(String.valueOf(bpmOpenInfoCallbackVo.getOpenStatus()));
 
             Boolean isClearImg = false;
 
             if (openStatusPojo == null || openStatusPojo.getOpenStatus().equals(OpenStatus.ACCOUNT_ABO)) {
-                log.error("开户状态信息异常：cubpOpenInfoCallbackVo" + JSON.toJSONString(cubpOpenInfoCallbackVo));
+                log.error("开户状态信息异常：bpmOpenInfoCallbackVo" + JSON.toJSONString(bpmOpenInfoCallbackVo));
                 throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_ARGS);
             }
 
             // TODO: 开户成功
             if (openStatusPojo.getOpenStatus().equals(OpenStatus.SUCCESS)) {
-                String openAccountDate = cubpOpenInfoCallbackVo.getOpenDate();
+                String openAccountDate = bpmOpenInfoCallbackVo.getOpenDate();
                 if (StringUtils.isNotEmpty(openAccountDate)) {
                     Date openDate = DateUtils.stringToDate(openAccountDate, DateUtils.TimeFormatter.YYYY_MM_DD_HH_MM_SS);
                     localOpenInfo.setOpenDate(openDate);
@@ -575,8 +579,8 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
                     localOpenInfo.setCaStatus(CaStatus.IS_NEED_VERIFY.getCode());
                 }
 
-                String openAccountFilrUrl = cubpOpenInfoCallbackVo.getOpenAccountFileUrl();
-                if(StringUtils.isNotEmpty(openAccountFilrUrl)) {
+                String openAccountFilrUrl = bpmOpenInfoCallbackVo.getOpenAccountFileUrl();
+                if (StringUtils.isNotEmpty(openAccountFilrUrl)) {
                     URL url = new URL(openAccountFilrUrl);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     int httpResult = conn.getResponseCode();
@@ -596,7 +600,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             else if (openStatusPojo.getOpenStatus().equals(OpenStatus.FAILED)) {
                 StringBuffer openAccountResult = new StringBuffer();
                 String openResult = "";
-                String errorInfo = cubpOpenInfoCallbackVo.getErrorInfo(); // 退回理由
+                String errorInfo = bpmOpenInfoCallbackVo.getErrorInfo(); // 退回理由
 
                 if (StringUtils.isNotBlank(errorInfo)) {
                     List<String> openResultList = JSONObject.parseArray(errorInfo, String.class);
@@ -611,8 +615,8 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
 
                 if (openStatusPojo.getFailStatusType().equals(FailStatusType.ERROR_PIC)) {
                     // 图片错误，修改图片错误状态
-                    if (CollectionUtils.isNotEmpty(cubpOpenInfoCallbackVo.getErrorImages())) {
-                        for (CubpOpenAccountImageInfoReqVo openAccountImageInfo : cubpOpenInfoCallbackVo.getErrorImages()) {
+                    if (CollectionUtils.isNotEmpty(bpmOpenInfoCallbackVo.getErrorImages())) {
+                        for (BpmOpenAccountImageInfoReqVo openAccountImageInfo : bpmOpenInfoCallbackVo.getErrorImages()) {
                             // 活体校验图片错误，删除缓存影像资料
                             if (openAccountImageInfo.getImageLocation() == 3) {
                                 isClearImg = true;
@@ -630,12 +634,11 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
             }
             // 取消/终止开户 | 销户 | 未提交 | 异常等
             else {
-                // 更新开户信息表状态
                 // 清理开户缓存数据
                 // 清理开户图片数据
             }
 
-            String clientId = cubpOpenInfoCallbackVo.getClientId();
+            String clientId = bpmOpenInfoCallbackVo.getClientId();
             localOpenInfo.setTradeAccount(clientId == null ? localOpenInfo.getTradeAccount() : clientId);
 
             localOpenInfo.setStatus(openStatusPojo.getOpenStatus().getCode());
@@ -736,19 +739,19 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         String tradeAccount = null;
         String fundAccount = null;
 
-        // 查询cubp用户中心开户数据（根据手机号）
-        CubpOpenAccountUserInfoReqVo cubpOpenAccountUserInforeqVo = new CubpOpenAccountUserInfoReqVo();
+        // 查询bpm用户中心开户数据（根据手机号）
+        BpmOpenAccountUserInfoReqVo bpmOpenAccountUserInforeqVo = new BpmOpenAccountUserInfoReqVo();
         if (thirdCode != null && thirdCode > 0) {
-            cubpOpenAccountUserInforeqVo.setUserId(thirdCode);
+            bpmOpenAccountUserInforeqVo.setUserId(thirdCode);
         } else {
-            cubpOpenAccountUserInforeqVo.setPhoneNumber(phone);
+            bpmOpenAccountUserInforeqVo.setPhoneNumber(phone);
         }
-        CubpOpenAccountUserInfoResVo cubpOpenAccountUserInfoResVo = restCubpHelper.selectSecuritiesUserInfo(cubpOpenAccountUserInforeqVo);
+        BpmOpenAccountUserInfoResVo bpmOpenAccountUserInfoResVo = restBpmHelper.selectSecuritiesUserInfo(bpmOpenAccountUserInforeqVo);
 
-        // 查询到cubp用户数据
-        if (cubpOpenAccountUserInfoResVo != null) {
+        // 查询到bpm用户数据
+        if (bpmOpenAccountUserInfoResVo != null) {
             // clientStatus 客户状态[0-正常 1-冻结 2-挂失 3-销户 D-休眠 E-不合格 F-锁定]
-            String clientStatus = cubpOpenAccountUserInfoResVo.getClientStatus();
+            String clientStatus = bpmOpenAccountUserInfoResVo.getClientStatus();
 
             if (clientStatus.equals("0")) {
                 // 正常
@@ -761,10 +764,10 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
                 openStatusInfo = OpenStatus.ACCOUNT_ABO;
             }
 
-            openType = cubpOpenAccountUserInfoResVo.getOpenAccountType();
-            fundAccountType = cubpOpenAccountUserInfoResVo.getFundAccountType();
-            fundAccount = cubpOpenAccountUserInfoResVo.getFundAccount();
-            tradeAccount = cubpOpenAccountUserInfoResVo.getTradeAccount();
+            openType = bpmOpenAccountUserInfoResVo.getOpenAccountType();
+            fundAccountType = bpmOpenAccountUserInfoResVo.getFundAccountType();
+            fundAccount = bpmOpenAccountUserInfoResVo.getFundAccount();
+            tradeAccount = bpmOpenAccountUserInfoResVo.getTradeAccount();
         } else if (customOpenInfo != null) {
             Integer openStatus = customOpenInfo.getStatus();
             openStatusInfo = OpenStatus.getStatus(openStatus);

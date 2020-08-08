@@ -14,7 +14,7 @@ import com.minigod.account.helper.FileStorageHelper;
 import com.minigod.persist.account.mapper.CustomOpenCnCacheInfoMapper;
 import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
 import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountImageInfoReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountImageInfoReqVo;
 import com.minigod.protocol.account.model.CustomOpenCnCacheInfo;
 import com.minigod.protocol.account.model.CustomOpenCnImg;
 import com.minigod.protocol.account.request.params.OpenCacheDataReqParams;
@@ -171,7 +171,7 @@ public class OpenAccountOnlineCnServiceImpl extends BaseBeanFactory implements O
     }
 
     @Override
-    public void saveErrorImg(Integer userId, CubpOpenAccountImageInfoReqVo params) {
+    public void saveErrorImg(Integer userId, BpmOpenAccountImageInfoReqVo params) {
         // 参数校验
         if (userId == null || params == null) {
             log.error("saveErrorImg参数异常: OpenImgResVo_CN", JSON.toJSONString(params));

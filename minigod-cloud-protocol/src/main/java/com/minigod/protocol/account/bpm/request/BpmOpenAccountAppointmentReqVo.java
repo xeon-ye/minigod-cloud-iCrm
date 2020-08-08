@@ -1,4 +1,4 @@
-package com.minigod.protocol.account.cubp.request;
+package com.minigod.protocol.account.bpm.request;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Data
 @ToString
-public class CubpOpenAccountAppointmentReqVo implements Serializable {
+public class BpmOpenAccountAppointmentReqVo implements Serializable {
     private static final long serialVersionUID = 5643282110965780507L;
 
     //开户类型[0=未知 1=互联网 2=见证宝 3=BPM]
@@ -160,7 +160,7 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
 
     //财产种类
     @JSONField(name = "propertyType")
-    private List<CubpOpenAccountPropertyTypeReqVo> propertyType;
+    private List<BpmOpenAccountPropertyTypeReqVo> propertyType;
 
     // 投资目标类型 [NEW 1=股息收入 2=短期投资 3=长期投资 4=其他 5=保本 6-资本增值 7-投机 8-对冲]
     @JSONField(name = "investTarget")
@@ -223,15 +223,15 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
 
     // 税务信息
     @JSONField(name = "taxationInfo")
-    private List<CubpOpenAccountTaxationInfoReqVo> taxationInfo;
+    private List<BpmOpenAccountTaxationInfoReqVo> taxationInfo;
 
     //其他信息披露
     @JSONField(name = "otherDisclosure")
-    private List<CubpOpenAccountOtherDisclosureReqVo> otherDisclosure;
+    private List<BpmOpenAccountOtherDisclosureReqVo> otherDisclosure;
 
     //四要素
     @JSONField(name = "bankVerityInfo")
-    private List<CubpOpenAccountBankVerityInfoReqVo> bankVerityInfo;
+    private List<BpmOpenAccountBankVerityInfoReqVo> bankVerityInfo;
 
     //是否开通美股市场[0=否 1=是]
     @JSONField(name = "isOpenUsaStockMarket")
@@ -259,7 +259,7 @@ public class CubpOpenAccountAppointmentReqVo implements Serializable {
 
     // 图片信息
     @JSONField(name = "openAccountImagesInfo")
-    private List<CubpOpenAccountImageInfoReqVo> openAccountImagesInfo;
+    private List<BpmOpenAccountImageInfoReqVo> openAccountImagesInfo;
 
     // 最后更新时间
     @JSONField(name = "lastUpdateTime")

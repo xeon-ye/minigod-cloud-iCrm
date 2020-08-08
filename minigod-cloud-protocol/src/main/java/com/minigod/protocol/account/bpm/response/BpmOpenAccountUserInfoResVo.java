@@ -1,4 +1,4 @@
-package com.minigod.protocol.account.cubp.response;
+package com.minigod.protocol.account.bpm.response;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class CubpOpenAccountUserInfoResVo implements Serializable {
+public class BpmOpenAccountUserInfoResVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //主键ID

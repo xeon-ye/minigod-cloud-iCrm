@@ -1,6 +1,5 @@
 package com.minigod.account.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.common.utils.DateUtils;
@@ -9,7 +8,7 @@ import com.minigod.helper.bean.BaseBeanFactory;
 import com.minigod.account.service.OpenAccountOfflineService;
 import com.minigod.persist.account.mapper.CustomInfoMapper;
 import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
-import com.minigod.protocol.account.cubp.callback.CubpOpenInfoCallbackVo;
+import com.minigod.protocol.account.bpm.callback.BpmOpenInfoCallbackVo;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.model.CustomInfo;
 import com.minigod.protocol.account.model.CustomOpenInfo;
@@ -29,14 +28,14 @@ public class OpenAccountOfflineServiceImpl extends BaseBeanFactory implements Op
     CustomOpenInfoMapper customOpenInfoMapper;
 
     @Override
-    public Integer saveOrUpdateOpenInfo(CubpOpenInfoCallbackVo cubpOpenInfoCallbackVo) {
-        log.info("请求 /callback/offline：" + JSONUtil.toCompatibleJson(cubpOpenInfoCallbackVo));
+    public Integer saveOrUpdateOpenInfo(BpmOpenInfoCallbackVo bpmOpenInfoCallbackVo) {
+        log.info("请求 /callback/offline：" + JSONUtil.toCompatibleJson(bpmOpenInfoCallbackVo));
         try {
-            if (cubpOpenInfoCallbackVo == null) {
+            if (bpmOpenInfoCallbackVo == null) {
                 throw new InternalApiException(StaticType.CodeType.BAD_ARGS, StaticType.MessageResource.BAD_PARAMS);
             }
 
-            String backClientId = cubpOpenInfoCallbackVo.getClientId();
+            String backClientId = bpmOpenInfoCallbackVo.getClientId();
             Integer userId = null;
 
             CustomOpenInfo localOpenInfo = customOpenInfoMapper.selectOneByTradeAccount(backClientId);
@@ -65,8 +64,8 @@ public class OpenAccountOfflineServiceImpl extends BaseBeanFactory implements Op
                 localOpenInfo.setFailReason("");
                 openInfo.setCreateTime(new Date());
                 openInfo.setUpdateTime(new Date());
-                if (StringUtils.isNotEmpty(cubpOpenInfoCallbackVo.getOpenDate())) {
-                    Date openDate = DateUtils.stringToDate(cubpOpenInfoCallbackVo.getOpenDate(), DateUtils.TimeFormatter.YYYY_MM_DD_HH_MM_SS);
+                if (StringUtils.isNotEmpty(bpmOpenInfoCallbackVo.getOpenDate())) {
+                    Date openDate = DateUtils.stringToDate(bpmOpenInfoCallbackVo.getOpenDate(), DateUtils.TimeFormatter.YYYY_MM_DD_HH_MM_SS);
                     localOpenInfo.setOpenDate(openDate);
                 }
                 customOpenInfoMapper.insertSelective(openInfo);

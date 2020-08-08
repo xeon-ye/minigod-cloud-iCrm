@@ -1,6 +1,6 @@
 package com.minigod.account.service;
 
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountImageInfoReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountImageInfoReqVo;
 import com.minigod.protocol.account.request.params.OpenCacheDataReqParams;
 import com.minigod.protocol.account.request.params.OpenImgReqParams;
 import com.minigod.protocol.account.request.params.OpenCacheInfoReqParams;
@@ -12,7 +12,7 @@ public interface OpenAccountOnlineCnService {
 
     public OpenImgResVo saveOrUpdateCnImg(Integer userId, OpenImgReqParams params);
 
-    public void saveErrorImg(Integer userId, CubpOpenAccountImageInfoReqVo params);
+    public void saveErrorImg(Integer userId, BpmOpenAccountImageInfoReqVo params);
 
     public String getImgUrl(Integer userId, String locationKey, String locationType);
 

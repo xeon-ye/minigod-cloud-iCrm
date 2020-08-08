@@ -12,7 +12,7 @@ import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
 import com.minigod.persist.account.mapper.CustomOpenHkImgMapper;
 import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
 import com.minigod.persist.account.mapper.VerifyBankCardMapper;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountAppointmentReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountAppointmentReqVo;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.enums.VerifyAuthCaStatusEnum;
 import com.minigod.protocol.account.model.CustomOpenCnImg;
@@ -34,9 +34,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.testng.collections.Lists;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.KeyPair;
 import java.util.Date;
 import java.util.List;
@@ -84,7 +81,7 @@ public class VerifyByJFSzcaJobHandler extends IJobHandler {
 
         JFSzcaCertDnReqVo szcaCertDnReqVo = new JFSzcaCertDnReqVo();
 
-        CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
+        BpmOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormData(), BpmOpenAccountAppointmentReqVo.class);
 
         szcaCertDnReqVo.setUtoken(utoken);
         szcaCertDnReqVo.setToken(token);
@@ -119,7 +116,7 @@ public class VerifyByJFSzcaJobHandler extends IJobHandler {
 
         try {
             JFSzcaCertApplyP10ReqVo reqVo = new JFSzcaCertApplyP10ReqVo();
-            CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
+            BpmOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormData(), BpmOpenAccountAppointmentReqVo.class);
 
             // 获取开户图片
             List<CustomOpenCnImg> customOpenImgs = customOpenCnImgMapper.selectByUserId(customOpenInfo.getUserId());
@@ -259,7 +256,7 @@ public class VerifyByJFSzcaJobHandler extends IJobHandler {
 
         try {
             JFSzcaPdfInfoForSignReqVo szcaPdfInfoForSignReqVo = new JFSzcaPdfInfoForSignReqVo();
-            CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
+            BpmOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormData(), BpmOpenAccountAppointmentReqVo.class);
 
             szcaPdfInfoForSignReqVo.setUtoken(utoken);
             szcaPdfInfoForSignReqVo.setUserName(openInfo.getClientName());

@@ -1110,18 +1110,16 @@
                     </span>
                     </div>
                 </div>--%>
-
-
             </div>
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
                     <label class="col-sm-2 control-label no-padding-right">职位级别</label>
                     <div class="col-xs-9">
                    <span class="col-sm-12 block input-icon input-icon-right">
-                    <tag:select nameKey="AO_JOB_POSITION" id="jobPosition"
-                                initSelectedKey="${customerAccountOpenInfoEntity.jobPosition}"
-                                clazz="form-control" isAddDefaltOption="true"
-                                disabled="false"/>
+                        <tag:select nameKey="AO_JOB_POSITION" id="jobPosition"
+                                    initSelectedKey="${customerAccountOpenInfoEntity.jobPosition}"
+                                    clazz="form-control" isAddDefaltOption="true"
+                                    disabled="false"/>
                     </span>
                     </div>
                 </div>
@@ -1162,6 +1160,18 @@
                                    initSelectedKey="${customerAccountOpenInfoEntity.annualIncome}"
                                    clazz="form-control" disabled="false"/>
                     </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">投资年期</label>
+                    <div class="col-xs-9">
+                       <span class="col-sm-12 block input-icon input-icon-right">
+                           <tag:select nameKey="AO_INVESTMENT_HORIZON" id="income" isAddDefaltOption="true"
+                                       initSelectedKey="${customerAccountOpenInfoEntity.investmentHorizon}"
+                                       clazz="form-control" disabled="false"/>
+                        </span>
                     </div>
                 </div>
             </div>

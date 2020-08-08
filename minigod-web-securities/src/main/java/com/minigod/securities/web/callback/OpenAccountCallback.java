@@ -6,7 +6,7 @@ import com.minigod.common.exception.InternalApiException;
 import com.minigod.common.exception.WebApiException;
 import com.minigod.common.pojo.StaticType;
 import com.minigod.common.pojo.response.ResResult;
-import com.minigod.protocol.account.cubp.callback.CubpOpenInfoCallbackVo;
+import com.minigod.protocol.account.bpm.callback.BpmOpenInfoCallbackVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +34,7 @@ public class OpenAccountCallback {
      * @return
      */
     @PostMapping("/update_open_info")
-    public ResResult fetchCaptcha(@RequestBody CubpOpenInfoCallbackVo callbackVo) {
+    public ResResult fetchCaptcha(@RequestBody BpmOpenInfoCallbackVo callbackVo) {
         try {
             openAccountOnlineService.updateOpenInfo(callbackVo);
 
@@ -53,7 +53,7 @@ public class OpenAccountCallback {
      * @return
      */
     @PostMapping("/offline_open_account")
-    public ResResult offlineOpenAccount(@RequestBody CubpOpenInfoCallbackVo callbackVo) {
+    public ResResult offlineOpenAccount(@RequestBody BpmOpenInfoCallbackVo callbackVo) {
         try {
             Integer userId = openAccountOfflineService.saveOrUpdateOpenInfo(callbackVo);
             Map<String, Object> map = new HashMap<>();

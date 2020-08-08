@@ -10,18 +10,16 @@ import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
 import com.minigod.persist.account.mapper.CustomOpenHkImgMapper;
 import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
 import com.minigod.persist.account.mapper.VerifyAuthCaMapper;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountCaVerityInfoVo;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountCaVeritySnInfoVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountCaVerityInfoVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountCaVeritySnInfoVo;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.enums.VerifyAuthCaStatusEnum;
 import com.minigod.protocol.account.model.CustomOpenInfo;
 import com.minigod.protocol.account.model.VerifyAuthCa;
-import com.minigod.protocol.account.pojo.VerifySzcaPojo;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.IJobHandler;
 import com.xxl.job.core.handler.annotation.JobHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +27,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +52,8 @@ public class PushVerifiedAuthCaInfoJobHandler extends IJobHandler {
     @Autowired
     OpenAccountOnlineService openAccountOnlineService;
 
-    @Value("${minigod.cubp.url}")
-    private String CUBP_API_URL;
+    @Value("${minigod.bpm.url}")
+    private String BPM_API_URL;
     @Value("${minigod.openAccount.isVerifyWithCa}")
     private Boolean IS_VERIFY_WITH_CA;
 
@@ -74,7 +71,7 @@ public class PushVerifiedAuthCaInfoJobHandler extends IJobHandler {
             return SUCCESS;
         }
 
-        String server = CUBP_API_URL + "/proxy/customer/accountOpenApplicationCallBack";
+        String server = BPM_API_URL + "/proxy/customer/accountOpenApplicationCallBack";
 
         for (CustomOpenInfo customOpenInfo : openInfoList) {
             Integer userId = customOpenInfo.getUserId();
@@ -108,15 +105,15 @@ public class PushVerifiedAuthCaInfoJobHandler extends IJobHandler {
             }
 
             // TODO: CA接口多次失败逻辑处理？？？
-            CubpOpenAccountCaVerityInfoVo openAccountCaVerityInfoVo = new CubpOpenAccountCaVerityInfoVo();
+            BpmOpenAccountCaVerityInfoVo openAccountCaVerityInfoVo = new BpmOpenAccountCaVerityInfoVo();
             openAccountCaVerityInfoVo.setApplicationId(applicationId);
             openAccountCaVerityInfoVo.setCaVerifyStatus(caVerifyStatus);
             openAccountCaVerityInfoVo.setCaVerifyMsg(caVerifyMsg);
             openAccountCaVerityInfoVo.setCaSignHashCode(verifyAuthCa.getFileHash());
 
-            List<CubpOpenAccountCaVeritySnInfoVo> openAccountCaVeritySnInfoVoList = Lists.newArrayList();
+            List<BpmOpenAccountCaVeritySnInfoVo> openAccountCaVeritySnInfoVoList = Lists.newArrayList();
 
-            CubpOpenAccountCaVeritySnInfoVo openAccountCaVeritySnInfoVo = new CubpOpenAccountCaVeritySnInfoVo();
+            BpmOpenAccountCaVeritySnInfoVo openAccountCaVeritySnInfoVo = new BpmOpenAccountCaVeritySnInfoVo();
             openAccountCaVeritySnInfoVo.setCaCertDn(verifyAuthCa.getCertDn());
             openAccountCaVeritySnInfoVo.setCaCertSn(verifyAuthCa.getCertSn());
             openAccountCaVeritySnInfoVo.setCertTime(verifyAuthCa.getUpdateTime());

@@ -3,10 +3,6 @@ package com.minigod.task.service.jobhandler.account;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.minigod.account.helper.TencentApiFaceIdHelper;
-import com.minigod.account.helper.TencentApiIaiHelper;
-import com.minigod.account.helper.TencentApiOcrHelper;
-import com.minigod.account.service.OpenAccountOnlineService;
-import com.minigod.account.service.VerifyService;
 import com.minigod.common.pojo.response.ResResult;
 import com.minigod.common.utils.HttpClientUtils;
 import com.minigod.common.utils.ImageUtils;
@@ -14,16 +10,15 @@ import com.minigod.persist.account.mapper.CustomOpenCnImgMapper;
 import com.minigod.persist.account.mapper.CustomOpenHkImgMapper;
 import com.minigod.persist.account.mapper.CustomOpenInfoMapper;
 import com.minigod.persist.account.mapper.VerifyBankCardMapper;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountAppointmentReqVo;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountBankVerityInfoReqVo;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountImageInfoReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountAppointmentReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountBankVerityInfoReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountImageInfoReqVo;
 import com.minigod.protocol.account.enums.CustomOpenAccountEnum;
 import com.minigod.protocol.account.model.CustomOpenCnImg;
 import com.minigod.protocol.account.model.CustomOpenHkImg;
 import com.minigod.protocol.account.model.CustomOpenInfo;
 import com.minigod.protocol.account.model.VerifyBankCard;
 import com.tencentcloudapi.faceid.v20180301.models.ImageRecognitionResponse;
-import com.tencentcloudapi.iai.v20180301.models.CompareFaceResponse;
 import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.IJobHandler;
 import com.xxl.job.core.handler.annotation.JobHandler;
@@ -63,8 +58,8 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
     @Autowired
     TencentApiFaceIdHelper tencentApiFaceIdHelper;
 
-    @Value("${minigod.cubp.url}")
-    private String CUBP_API_URL;
+    @Value("${minigod.bpm.url}")
+    private String BPM_API_URL;
 
     @Value("${minigod.openAccount.isVerifyBankCardFromThird}")
     private Boolean IS_VERIFY_BANK_CARD_FROM_THIRD;
@@ -95,7 +90,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
 
     private static final String split = " | ";
 
-    private void updageIdentityInfo(CubpOpenAccountAppointmentReqVo openInfo, String imgUrl) {
+    private void updageIdentityInfo(BpmOpenAccountAppointmentReqVo openInfo, String imgUrl) {
         String imgBase64 = ImageUtils.loadImgBase64ByUrl(imgUrl);
 
         // 调用公安系统，进行身份相识度识别
@@ -182,7 +177,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
             String idCard = customOpenInfo.getIdCard();
             String bankCard = customOpenInfo.getBankCard();
             Integer openType = customOpenInfo.getOpenType(); // 开户方式：1、线上预约开户，2、线下（开户宝）3、香港预约开户
-            CubpOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormdata(), CubpOpenAccountAppointmentReqVo.class);
+            BpmOpenAccountAppointmentReqVo openInfo = JSONObject.parseObject(customOpenInfo.getFormData(), BpmOpenAccountAppointmentReqVo.class);
 
             // 完善开户数据
             openInfo.setOpenAccountAccessWay(customOpenInfo.getAccessWay());
@@ -195,7 +190,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
             String[] locationTypes = null;
             Integer imageCount = 0;
             // 开户图片数据
-            List<CubpOpenAccountImageInfoReqVo> openAccountImageInfoProtocolList = Lists.newArrayList();
+            List<BpmOpenAccountImageInfoReqVo> openAccountImageInfoProtocolList = Lists.newArrayList();
             boolean isErrorImage = false;
             StringBuffer errorImages = new StringBuffer();
 
@@ -213,7 +208,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
 
                 if (CollectionUtils.isNotEmpty(customOpenImgs)) {
                     for (CustomOpenCnImg customOpenImg : customOpenImgs) {
-                        CubpOpenAccountImageInfoReqVo openAccountImageInfoProtocol = new CubpOpenAccountImageInfoReqVo();
+                        BpmOpenAccountImageInfoReqVo openAccountImageInfoProtocol = new BpmOpenAccountImageInfoReqVo();
 
                         Integer locationKey = Integer.parseInt(customOpenImg.getLocationKey());
                         Integer locationType = Integer.parseInt(customOpenImg.getLocationType());
@@ -272,7 +267,7 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
                 List<CustomOpenHkImg> customOpenImgs = customOpenHkImgMapper.selectByUserIdAndLocationKeyInAndLocationTypeIn(userId, null, locationTypes);
                 if (CollectionUtils.isNotEmpty(customOpenImgs)) {
                     for (CustomOpenHkImg customOpenImg : customOpenImgs) {
-                        CubpOpenAccountImageInfoReqVo openAccountImageInfoProtocol = new CubpOpenAccountImageInfoReqVo();
+                        BpmOpenAccountImageInfoReqVo openAccountImageInfoProtocol = new BpmOpenAccountImageInfoReqVo();
 
                         String imgUrl = customOpenImg.getUrl();
 
@@ -311,13 +306,13 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
             // 处理四要素认证信息-内地身份开户仅有
             if (openType.equals(CustomOpenAccountEnum.OpenType.ONLINE_CN.getCode())) {
                 // 四要素认证信息
-                List<CubpOpenAccountBankVerityInfoReqVo> openAccountBankVerityInfoProtocols = Lists.newArrayList();
+                List<BpmOpenAccountBankVerityInfoReqVo> openAccountBankVerityInfoProtocols = Lists.newArrayList();
 
                 List<VerifyBankCard> verifyBankCards = verifyBankCardMapper.selectByIdCard(idCard);
                 if (CollectionUtils.isNotEmpty(verifyBankCards)) {
                     for (VerifyBankCard verifyBankCard : verifyBankCards) {
                         if (verifyBankCard.getStatus().equals(1) || !IS_VERIFY_BANK_CARD_FROM_THIRD) {
-                            CubpOpenAccountBankVerityInfoReqVo openAccountBankVerityInfoProtocol = new CubpOpenAccountBankVerityInfoReqVo();
+                            BpmOpenAccountBankVerityInfoReqVo openAccountBankVerityInfoProtocol = new BpmOpenAccountBankVerityInfoReqVo();
                             openAccountBankVerityInfoProtocol.setClientName(verifyBankCard.getUserName());
                             openAccountBankVerityInfoProtocol.setIdNo(verifyBankCard.getIdCard());
                             openAccountBankVerityInfoProtocol.setBankCard(verifyBankCard.getBankCard());
@@ -335,8 +330,8 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
             try {
                 log.info("*********************【预批客户上传BPM】回调开始**************************, userId = {}", userId);
                 log.info(userId + "【预批客户上传BPM】回调传入数据：" + JSONObject.toJSONString(openInfo));
-                // 调用cubp开户接口
-                String server = CUBP_API_URL + "/proxy/customer/accountOpenApplication";
+                // 调用bpm开户接口
+                String server = BPM_API_URL + "/proxy/customer/accountOpenApplication";
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("params", openInfo);
                 String result = HttpClientUtils.postJson(server, JSONObject.toJSONString(map), Charset.forName("UTF-8"), true);
@@ -360,8 +355,8 @@ public class PushPendingOpenInfoJobHandler extends IJobHandler {
 
                 } else {
                     // 异常，记录操作日志
-                    log.error("【预批客户上传BPM】连接服务器异常，CUBP返回结果为NULL！");
-                    saveErrorInfo(customOpenInfo, "连接服务器异常，CUBP返回结果为NULL", result);
+                    log.error("【预批客户上传BPM】连接服务器异常，BPM返回结果为NULL！");
+                    saveErrorInfo(customOpenInfo, "连接服务器异常，BPM返回结果为NULL", result);
                 }
             } catch (Exception e) {
                 log.error("*********************【预批客户上传BPM】异常**************************,", e);

@@ -1,7 +1,7 @@
-package com.minigod.protocol.account.cubp.callback;
+package com.minigod.protocol.account.bpm.callback;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.minigod.protocol.account.cubp.request.CubpOpenAccountImageInfoReqVo;
+import com.minigod.protocol.account.bpm.request.BpmOpenAccountImageInfoReqVo;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Data
-public class CubpOpenInfoCallbackVo implements Serializable {
+public class BpmOpenInfoCallbackVo implements Serializable {
 
     private static final long serialVersionUID = 2634294250832256177L;
     /**
@@ -43,7 +43,7 @@ public class CubpOpenInfoCallbackVo implements Serializable {
     private String errorInfo;
 
     @JSONField(name = "errorImages")
-    private List<CubpOpenAccountImageInfoReqVo> errorImages;
+    private List<BpmOpenAccountImageInfoReqVo> errorImages;
 
     @JSONField(name = "openAccountFileUrl")
     private String openAccountFileUrl;

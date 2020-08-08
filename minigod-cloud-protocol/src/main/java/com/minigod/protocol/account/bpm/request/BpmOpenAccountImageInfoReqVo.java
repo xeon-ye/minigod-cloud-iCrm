@@ -1,4 +1,4 @@
-package com.minigod.protocol.account.cubp.request;
+package com.minigod.protocol.account.bpm.request;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 开户图片信息
  */
 
-public class CubpOpenAccountImageInfoReqVo implements Serializable {
+public class BpmOpenAccountImageInfoReqVo implements Serializable {
 
     private static final long serialVersionUID = -6332540545611763261L;
     @JSONField(name = "imageLocation")

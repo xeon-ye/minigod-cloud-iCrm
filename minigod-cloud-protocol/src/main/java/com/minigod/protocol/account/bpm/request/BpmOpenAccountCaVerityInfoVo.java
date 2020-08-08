@@ -1,4 +1,4 @@
-package com.minigod.protocol.account.cubp.request;
+package com.minigod.protocol.account.bpm.request;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class CubpOpenAccountCaVerityInfoVo implements Serializable {
+public class BpmOpenAccountCaVerityInfoVo implements Serializable {
     private static final long serialVersionUID = 4738512623933513977L;
 
     private String applicationId;
@@ -15,6 +15,6 @@ public class CubpOpenAccountCaVerityInfoVo implements Serializable {
     private String caSignHashCode;
     private String caVerifyFileUrl;
 
-    private List<CubpOpenAccountCaVeritySnInfoVo> CaVerityInfoList;
+    private List<BpmOpenAccountCaVeritySnInfoVo> CaVerityInfoList;
 
 }

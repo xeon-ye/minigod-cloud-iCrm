@@ -4,12 +4,12 @@ minigod:
     authCode.expireSecond: 7200 # 2*60*60
     # 用户token失效时间 s
     userToken.expireSecond: 7200 # 2*60*60
-  cubp:
+  bpm:
     isRemote: true
     url: http://localhost:7777/bpm
 #    url: http://10.8.0.54:8080/crm
   openAccount:
-    isVerifyFromCubp: true
+    isVerifyFromBpm: true
     isVerifyIdCardFromThird: true
     isVerifyBankCardFromThird: true
     isVerifyLiveFaceFromThird: true
