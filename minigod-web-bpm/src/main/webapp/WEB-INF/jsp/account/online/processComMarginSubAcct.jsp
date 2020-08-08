@@ -29,9 +29,9 @@
                 <div class="col-sm-1">
                     <button class="layui-btn" type="button" onclick="clickSubmit()">同意</button>
                 </div>
-                <div class="col-sm-1">
+                <%--<div class="col-sm-1">
                     <button class="layui-btn layui-btn-danger" type="button" onclick="goBackView()">退回</button>
-                </div>
+                </div>--%>
 
                 <div class="col-sm-1">
                     <button class="layui-btn layui-btn-danger" type="button"
@@ -84,7 +84,7 @@
             //var applicationId = busId;
             var approvalOpinion = $("#remark").val();
             var params = "approvalOpinion=" + approvalOpinion + param;
-            var url = "${webRoot}/customer/doRejectTermination";
+            var url = "${webRoot}/customer/doRejectMarginTermination";
             $.post(url, params, function callback(result) {
                 if (result.code == '0') {
 
@@ -252,7 +252,7 @@
                     'varValue': processInfo.varValue,
                     'varName': processInfo.varName,
                     'nodeType': processInfo.nodeType,
-                    'applicationId': '${customerAccountOpenInfoEntity.applicationId}',
+                    'applicationId': '${accountOpenApplicationEntity.applicationId}',
                     'applicationStatus': '${accountOpenApplicationEntity.applicationStatus}',
                     'creditQuota': creditQuota,
                     'creditRatio': creditRatio,
@@ -308,7 +308,7 @@
                     'varValue': processInfo.varValue,
                     'varName': processInfo.varName,
                     'nodeType': processInfo.nodeType,
-                    'applicationId': '${customerAccountOpenInfoEntity.applicationId}',
+                    'applicationId': '${accountOpenApplicationEntity.applicationId}',
                     'applicationStatus': '${accountOpenApplicationEntity.applicationStatus}',
                     'creditQuota': creditQuota,
                     'creditRatio': creditRatio,
@@ -365,7 +365,7 @@
                     'varValue': processInfo.varValue,
                     'varName': processInfo.varName,
                     'nodeType': processInfo.nodeType,
-                    'applicationId': '${customerAccountOpenInfoEntity.applicationId}',
+                    'applicationId': '${accountOpenApplicationEntity.applicationId}',
                     'applicationStatus': '${accountOpenApplicationEntity.applicationStatus}',
                     'creditQuota': creditQuota,
                     'creditRatio': creditRatio,

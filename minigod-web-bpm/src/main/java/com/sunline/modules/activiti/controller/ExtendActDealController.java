@@ -1,7 +1,9 @@
 package com.sunline.modules.activiti.controller;
 
 import com.google.common.collect.Maps;
+import com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity;
 import com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity;
+import com.sunline.modules.account.online.service.CustomerAccMarginOpenApplyService;
 import com.sunline.modules.account.online.service.CustomerAccOpenApplyService;
 import com.sunline.modules.account.online.service.CustomerAccOpenInfoService;
 import com.sunline.modules.activiti.dto.ProcessNodeDto;
@@ -70,6 +72,9 @@ public class ExtendActDealController {
 
     @Autowired
     CustomerAccOpenApplyService customerAccOpenApplyService;
+
+    @Autowired
+    CustomerAccMarginOpenApplyService marginOpenApplyService;
 
     @Autowired
     CustomerAccOpenInfoService customerAccOpenInfoService;
@@ -394,10 +399,11 @@ public class ExtendActDealController {
                 params.put(key, parameterMap.get(key)[0]);
             }
 
+            CustomerAccountMarginOpenApplyEntity accountMarginOpenApplyEntity = marginOpenApplyService.queryObjectByApplicationId((String) params.get("applicationId"));
             actModelerService.doActTask(processTaskDto, params);
 
             CustomerAccountOpenInfoEntity customerAccountOpenInfo = new CustomerAccountOpenInfoEntity();
-            customerAccountOpenInfo.setApplicationId((String) params.get("applicationId"));
+            customerAccountOpenInfo.setIdNo(accountMarginOpenApplyEntity.getIdCardNo());
             String creditQuota = (String) params.get("creditQuota");
             if (org.apache.commons.lang3.StringUtils.isNotBlank(creditQuota)){
                 customerAccountOpenInfo.setCreditQuota(creditQuota);
@@ -408,7 +414,7 @@ public class ExtendActDealController {
             }
 
             boolean setCreditQuota = (creditQuota == null && creditRatio == null);
-            if (setCreditQuota){
+            if (!setCreditQuota){
                 customerAccOpenInfoService.updateMarginInfo(customerAccountOpenInfo);
             }
 

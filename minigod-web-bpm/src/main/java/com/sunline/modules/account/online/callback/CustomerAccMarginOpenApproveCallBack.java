@@ -37,7 +37,7 @@ public class CustomerAccMarginOpenApproveCallBack {
             if (null != task) {
                 customerAccountOpenApproveInfo.setCurrentNode(task.getName());
             } else {
-                customerAccountOpenApproveInfo.setCurrentNode(CodeUtils.getCodeName("OPEN_ACCOUNT_MARGIN_NODE_NAME", "4"));
+                customerAccountOpenApproveInfo.setCurrentNode(CodeUtils.getCodeName("OPEN_ACCOUNT_MARGIN_NODE_NAME", "5"));
             }
 
             CustomerAccOpenService customerAccountOpenService = (CustomerAccOpenService) SpringContextUtils.getBean("customerAccountOpenService");

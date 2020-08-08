@@ -978,7 +978,7 @@ public class CustomerAccountOpenController {
 
     /**
      * 流程终止操作
-     *
+     * 正常开户
      * @param approvalOpinion 审批意见
      * @return
      */
@@ -1001,6 +1001,51 @@ public class CustomerAccountOpenController {
         customerAccountOpenApply.setLastApprovalUser(UserUtils.getCurrentUserId());
 
         customerAccountOpenService.terminateAccountOpenApplication(customerAccountOpenApply, processTaskDto, BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_APPROVAL_TERMINATION_VALUE);
+
+        try {
+
+            actModelerService.terminationFlow(processTaskDto, Constant.ActTaskResult.TERMINATION.getValue());
+            result = Result.ok(Constant.RESULT.CODE_YES.getValue(), "操作成功");
+        } catch (Exception e) {
+            logger.error("终止失败", e);
+            result = Result.error("操作失败");
+        }
+
+        //更新开户业务流程日志记录
+        OpenAccountProcessLogEntity openAccountProcessLog = new OpenAccountProcessLogEntity();
+        openAccountProcessLog.setTaskId(Integer.valueOf(processTaskDto.getTaskId()));
+        openAccountProcessLog.setIsBackApp(BpmCommonEnum.YesNo.YES.getIndex());
+        openAccountProcessLogService.updateByTaskId(openAccountProcessLog);
+
+        return result;
+    }
+
+
+    /**
+     * 流程终止操作
+     * 正常开户
+     * @param approvalOpinion 审批意见
+     * @return
+     */
+    @RequestMapping("doRejectMarginTermination")
+    public
+    @ResponseBody
+    Result doRejectMarginTermination(String approvalOpinion, String busId, String taskId, String defId, String instanceId, String actKey) {
+        Result result = null;
+        ProcessTaskDto processTaskDto = new ProcessTaskDto();
+        processTaskDto.setBusId(busId);
+        processTaskDto.setTaskId(taskId);
+        processTaskDto.setDefId(defId);
+        processTaskDto.setActKey(actKey);
+        processTaskDto.setInstanceId(instanceId);
+        processTaskDto.setRemark(approvalOpinion);
+
+        CustomerAccountMarginOpenApplyEntity customerAccountOpenApply = customerAccMarginOpenApplyService.queryObjectByApplicationId(busId);
+
+        customerAccountOpenApply.setApprovalOpinion(approvalOpinion);
+        customerAccountOpenApply.setLastApprovalUser(UserUtils.getCurrentUserId());
+
+        customerAccountOpenService.terminateAccountMarginOpenApplication(customerAccountOpenApply, processTaskDto, BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_APPROVAL_TERMINATION_VALUE);
 
         try {
 
@@ -1694,10 +1739,59 @@ public class CustomerAccountOpenController {
         return result;
     }
 
+    /**
+     * 流程信息详情
+     * 增开
+     * @param model
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "tasLogImgMarginAcct", method = RequestMethod.POST)
+    public String tasLogImgMarginAcct(Model model, HttpServletRequest request, String busId, String instanceId) {
+
+        CustomerAccountMarginOpenApplyEntity applyEntity= customerAccMarginOpenApplyService.queryObjectByApplicationId(busId);
+
+        // 通过证件类型，证件号码查询历史流程信息
+        CustomerAccountOpenInfoEntity customerAccountOpenInfo = customerAccountOpenInfoService.queryByIdCardNumber(applyEntity.getIdCardNo());
+
+        ExtendActTasklogEntity extendActTasklogEntity = new ExtendActTasklogEntity();
+        extendActTasklogEntity.setBusId(busId);
+        List<ExtendActTasklogEntity> tasklogList = tasklogService.queryListProcessLog(extendActTasklogEntity);
+
+        customerAccountOpenService.joinBackReasonType(tasklogList);
+        model.addAttribute("taskLogs", tasklogList);
+
+        CustomerAccountOpenInfoEntity entity = new CustomerAccountOpenInfoEntity();
+        entity.setIdNo(customerAccountOpenInfo.getIdNo());
+        entity.setIdKind(customerAccountOpenInfo.getIdKind());
+        List<CustomerAccountOpenInfoEntity> customerAccountOpenInfoList = customerAccountOpenInfoService.queryListByBean(entity);
+
+        //查询历史流程信息
+        List<String> busIds = new ArrayList<>();
+        for (CustomerAccountOpenInfoEntity customerAcc : customerAccountOpenInfoList) {
+            if (!busId.equals(customerAcc.getApplicationId())) {
+                busIds.add(customerAcc.getApplicationId());
+            }
+        }
+
+        if (busIds.size() > 0) {
+            ExtendActTasklogEntity extendActTasklogHis = new ExtendActTasklogEntity();
+            extendActTasklogHis.setBusId(busId);
+            extendActTasklogHis.setBusIds(busIds);
+            List<ExtendActTasklogEntity> tasklogListHis = tasklogService.queryListProcessLogHis(extendActTasklogHis);
+            customerAccountOpenService.joinBackReasonType(tasklogListHis);
+            model.addAttribute("taskLogsHis", tasklogListHis);
+        }
+
+        model.addAttribute("instanceId", instanceId);
+
+        return "account/online/taskLogImgAcct";
+    }
+
 
     /**
      * 流程信息详情
-     *
+     * 正常开户
      * @param model
      * @param request
      * @return

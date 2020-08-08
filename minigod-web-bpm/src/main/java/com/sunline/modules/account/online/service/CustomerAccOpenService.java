@@ -1,5 +1,6 @@
 package com.sunline.modules.account.online.service;
 
+import com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity;
 import com.sunline.modules.account.online.entity.CustomerAccountOpenApplyEntity;
 import com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity;
 import com.sunline.modules.account.online.model.*;
@@ -46,7 +47,7 @@ public interface CustomerAccOpenService {
 
     /**
      * 停止开户流程
-     * 结束
+     * 结束(正常开户)
      * @param applicationInfo
      * @param processTaskDto
      * @param rejectType
@@ -150,4 +151,14 @@ public interface CustomerAccOpenService {
      * @return
      */
     Page<AccountOpenApplyDetailInfo> findMarginPageCheck(AccountOpenApplyQuery query, int pageNum);
+
+    /**
+     * 停止开户流程
+     * 结束(账户增开)
+     * @param applicationInfo
+     * @param processTaskDto
+     * @param rejectType
+     * @return
+     */
+    boolean terminateAccountMarginOpenApplication(CustomerAccountMarginOpenApplyEntity applicationInfo, ProcessTaskDto processTaskDto, int rejectType);
 }

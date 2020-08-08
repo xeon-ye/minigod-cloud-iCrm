@@ -1503,8 +1503,29 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
                 openAccountProcessLogService.save(openAccountProcessLogEntity);
             }
 
-            // 终止节点回调业务处理
+            // 完成节点回调业务处理
             if (CodeUtils.getCodeName("OPEN_ACCOUNT_MARGIN_NODE_NAME", "5").equals(customerAccountOpenApproveInfo.getCurrentNode())) {
+
+                if (!CodeUtils.getCodeName("OPEN_ACCOUNT_MARGIN_NODE_NAME", "6").equals(applicationInfo.getCurrentNode())) {
+                    // 新增客户开户业务流程日志记录
+                    OpenAccountProcessLogEntity openAccountProcessLogEntity = new OpenAccountProcessLogEntity();
+                    openAccountProcessLogEntity.setApplicationId(customerAccountOpenApproveInfo.getApplicationId());
+                    openAccountProcessLogEntity.setCurrentNode(customerAccountOpenApproveInfo.getCurrentNode());
+                    openAccountProcessLogEntity.setTaskId(null);
+                    openAccountProcessLogEntity.setIsEdit(BpmCommonEnum.YesNo.NO.getIndex());
+                    openAccountProcessLogEntity.setIsAdditional(BpmCommonEnum.YesNo.NO.getIndex());
+                    openAccountProcessLogEntity.setIsBackWorkflow(BpmCommonEnum.YesNo.NO.getIndex());
+                    openAccountProcessLogEntity.setIsBackApp(BpmCommonEnum.YesNo.NO.getIndex());
+                    openAccountProcessLogEntity.setIsReject(BpmCommonEnum.YesNo.NO.getIndex());
+                    openAccountProcessLogEntity.setIsRejectBlacklist(BpmCommonEnum.YesNo.NO.getIndex());
+                    openAccountProcessLogEntity.setCreateUser(processTaskDto.getDealId());
+                    openAccountProcessLogEntity.setCreateTime(new Date());
+                    openAccountProcessLogService.save(openAccountProcessLogEntity);
+                }
+            }
+
+            // 终止节点回调业务处理
+            if (CodeUtils.getCodeName("OPEN_ACCOUNT_MARGIN_NODE_NAME", "6").equals(customerAccountOpenApproveInfo.getCurrentNode())) {
 
                 // 更新流程信息
                 applicationInfo.setCallbackStatus(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
@@ -1568,5 +1589,28 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
         PageHelper.startPage(pageNum, Constant.pageSize);
         customerAccountMarginOpenApplyDao.selectAccountOpenApplicationDetailInfoCheck(query);
         return PageHelper.endPage();
+    }
+
+    @Override
+    public boolean terminateAccountMarginOpenApplication(CustomerAccountMarginOpenApplyEntity customerAccountOpenApply, ProcessTaskDto processTaskDto, int applicationStatus) {
+        customerAccMarginOpenApplyService.update(customerAccountOpenApply);
+
+        CustomerAccOpenApproveInfo customerAccountOpenApproveInfo = new CustomerAccOpenApproveInfo();
+        customerAccountOpenApproveInfo.setApplicationId(customerAccountOpenApply.getApplicationId());
+        customerAccountOpenApproveInfo.setCurrentNode(CodeUtils.getCodeName("OPEN_ACCOUNT_MARGIN_NODE_NAME", "6"));
+
+        // 更新预约申请表相关信息
+        CustomerAccountMarginOpenApplyEntity customerAccOpenApplyEntity = new CustomerAccountMarginOpenApplyEntity();
+        customerAccOpenApplyEntity.setApplicationId(customerAccountOpenApproveInfo.getApplicationId());
+        customerAccOpenApplyEntity.setApplicationStatus(applicationStatus);
+        customerAccOpenApplyEntity.setUpdateTime(new Date());
+        customerAccOpenApplyEntity.setLastApprovalUser(UserUtils.getCurrentUserId());
+        customerAccOpenApplyEntity.setApprovalOpinion(processTaskDto.getRemark());
+        customerAccMarginOpenApplyService.updateByApplicationId(customerAccOpenApplyEntity);
+
+        //approveCallback(customerAccountOpenApproveInfo, processTaskDto, null);
+        approveMarginCallback(customerAccountOpenApproveInfo, processTaskDto, null);
+
+        return true;
     }
 }

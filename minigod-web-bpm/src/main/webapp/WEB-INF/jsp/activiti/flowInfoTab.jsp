@@ -122,9 +122,11 @@
         var loading = layer.msg('Loading...', {icon: 16, shade: 0.01});
         var actKey = '${taskDto.actKey}';
         var url;
-        if (actKey == 'customerAccountOpenApplication' || actKey == 'customerAccountOpenApplicationOffline' || actKey == 'customerAccountMarginOpenApplication') {
+        if (actKey == 'customerAccountOpenApplication' || actKey == 'customerAccountOpenApplicationOffline') {
             url = "${webRoot}/customer/tasLogImgAcct";
-        } else if (actKey == 'clientFundWithdrawApplication') {
+        } else if (actKey == 'customerAccountMarginOpenApplication'){
+            url = "${webRoot}/customer/tasLogImgMarginAcct";
+        }else if (actKey == 'clientFundWithdrawApplication') {
             url = "${webRoot}/clientFundWithdraw/taskLogInfo";
         } else if (actKey == 'fundWithdrawRefundApplication') {
             url = "${webRoot}/fundWithdrawRefund/taskLogInfo";

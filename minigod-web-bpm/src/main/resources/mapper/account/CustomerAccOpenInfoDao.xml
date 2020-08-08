@@ -983,7 +983,7 @@
             <if test="creditQuota != null">`credit_quota` = #{creditQuota},</if>
             <if test="creditRatio != null">`credit_ratio` = #{creditRatio}</if>
         </set>
-        where application_id = #{applicationId}
+        where id_no = #{idNo}
     </update>
 
     <select id="queryByIdCardNumber"

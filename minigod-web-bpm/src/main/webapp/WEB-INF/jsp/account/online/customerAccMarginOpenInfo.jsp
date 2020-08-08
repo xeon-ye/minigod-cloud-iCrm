@@ -80,7 +80,7 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">信用比率</label>
+                    <label class="col-sm-2 control-label no-padding-right">信用比率(%)</label>
                     <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
                         <input id="creditRatio" name="creditRatio" type="text" class="form-control"
@@ -255,89 +255,12 @@
         });
     }
 
-    //进入补充资料页面
-    function addSupInformation(applicationId, additionalId) {
-        var url = "${webRoot}/supOpenAccountInfo/supOpenAccountInfo?applicationId=" + applicationId;
-        //弹框层
-        layer.open({
-            scrollbar: false,
-            type: 2,
-            title: ["补充资料", true],
-            area: ['50%', '80%'], //宽高
-            content: [url, 'yes'],
-            shadeClose: false,
-        });
-    }
 
     /**
      * 下载用户报表
      */
     function downloadAccountOpenReport(fullFilePath) {
         window.location.href = webRoot + "/common/downloadFile?fullFilePath=" + fullFilePath;
-    }
-
-    /**
-     * 更新AML信息
-     */
-    function editAmlInfo() {
-        var isAmlSuspicious = $('input[name="isAmlSuspicious"]').filter(':checked').val();
-        var acceptRisk = $('input[name="acceptRisk"]').filter(':checked').val();
-
-        if (isAmlSuspicious == 1) {
-            $("input[name='acceptRisk'][value='" + 1 + "']").prop("checked", true);
-            $("input[name='acceptRisk'][value='" + 2 + "']").prop("checked", false);
-            $("input[name='acceptRisk'][value='" + 3 + "']").prop("checked", false);
-            acceptRisk = 1;
-        }
-
-        url = "${webRoot}/customer/editAmlInfo?isAmlSuspicious=" + isAmlSuspicious + "&acceptRisk=" + acceptRisk + "&applicationId=" + '${customerAccountOpenInfoEntity.applicationId}';
-        $.post(url)
-    }
-
-    /**
-     * 更新AML信息
-     */
-    function editAmlRisk() {
-        var acceptRisk = $('input[name="acceptRisk"]').filter(':checked').val();
-
-        url = "${webRoot}/customer/editAmlInfo?acceptRisk=" + acceptRisk + "&applicationId=" + '${customerAccountOpenInfoEntity.applicationId}';
-        $.post(url)
-    }
-
-    /**
-     * 删除AML信息
-     */
-    function delAmlInfo(id) {
-        confirm("您确定要删除吗?", function () {
-            var url = "${webRoot}/customer/delAmlInfo";
-            var params = {
-                'applicationId': ${customerAccountOpenInfoEntity.applicationId},
-                'id': id
-            };
-            $.post(url, params, function (result) {
-                if (result.code == '0') {
-                    $.ajax({
-                        type: "get",
-                        async: false,
-                        cache: false,
-                        url: "${webRoot}/customer/amlRefresh?applicationId=${customerAccountOpenInfoEntity.applicationId}",
-                        timeout: 3000, success: function (page) {
-                            $.ajaxPrefilter('script', function (options) {
-                                options.cache = true;
-                            });
-                            $("#amlFlag").remove();
-                            $("#amlDiv").html(page);
-                            alert("删除成功");
-                        },
-                        error: function () {
-                            console.log("faild");
-                        }
-                    });
-                } else {
-                    alertMsg(result.msg);
-                }
-            });
-        });
     }
 
     function showFileOnline(urlPath, type) {
