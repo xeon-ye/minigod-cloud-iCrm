@@ -1439,10 +1439,10 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
             // 开户节点回调业务处理
             if (CodeUtils.getCodeName("OPEN_ACCOUNT_MARGIN_NODE_NAME", "3").equals(customerAccountOpenApproveInfo.getCurrentNode())) {
 
-                // 生成开户表格
-                /*if (1 == accountOpenInfo.getOpenAccountType()) {
+                // 生成开户表格（更新开户表格）
+                if (1 == accountOpenInfo.getOpenAccountType()) {
                     String path = customerAccOpenReportGenerate.generateReport(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getApplicationId(), BpmCommonEnum.AccountOpenReport.ACCOUNT_OPEN_REPORT_USER_FORM_REPORT);
-                }*/
+                }
 
                 // 更新预约申请表相关信息
                 CustomerAccountMarginOpenApplyEntity customerAccOpenApplyEntity = new CustomerAccountMarginOpenApplyEntity();
