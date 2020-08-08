@@ -3,7 +3,6 @@ package com.sunline.modules.quartz.task;
 import com.alibaba.fastjson.JSON;
 import com.sunline.modules.account.online.converter.CustomerOpenAccountConverter;
 import com.sunline.modules.account.online.entity.*;
-import com.sunline.modules.account.online.model.AccountOpenApplyDetailInfo;
 import com.sunline.modules.account.online.service.*;
 import com.sunline.modules.account.online.service.impl.HundsunOpenAccountService;
 import com.sunline.modules.activiti.service.ActModelerService;
@@ -106,21 +105,23 @@ public class HundsunAccountOpenJob {
     private void doArrangeData(List<CustomerAccountOpenApplyEntity> openAcctList) {
         for (CustomerAccountOpenApplyEntity openApplicationEntity : openAcctList) {
             int count = 0;
+            CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByApplicationId(openApplicationEntity.getApplicationId());
             AyersClientInfoEntity clientInfoEntity = new AyersClientInfoEntity();
-            clientInfoEntity.setClientId("A111");
+            clientInfoEntity.setClientId(customerAccountOpenInfoEntity.getStockTradeAccount());
             clientInfoEntity.setCreateUser("A222");
             clientInfoEntity.setCreateTime(new Date());
             count = ayersAccOpenService.saveClientInfo(clientInfoEntity);
-            CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByApplicationId(openApplicationEntity.getApplicationId());
             if (count > 0) {
                 AyersClientAccEntity clientAccEntity = new AyersClientAccEntity();
-                clientAccEntity.setClientAccId("A111");
-                clientAccEntity.setClientId("A111");
+                clientAccEntity.setClientAccId(customerAccountOpenInfoEntity.getStockTradeAccount());
+                clientAccEntity.setClientId(customerAccountOpenInfoEntity.getStockTradeAccount());
                 clientAccEntity.setCreateUser("A222");
                 clientAccEntity.setCreateTime(new Date());
                 //融资账户
-                if (customerAccountOpenInfoEntity.getFundAccountType() != null && customerAccountOpenInfoEntity.getFundAccountType() == 2){
+                if (customerAccountOpenInfoEntity.getFundAccountType() != null && customerAccountOpenInfoEntity.getFundAccountType() == 2) {
                     clientAccEntity.setAccType("M");
+                } else {
+                    clientAccEntity.setAccType("C");
                 }
                 count = ayersAccOpenService.saveClineAcc(clientAccEntity);
             }
@@ -197,24 +198,16 @@ public class HundsunAccountOpenJob {
         for (CustomerAccountMarginOpenApplyEntity openApplicationEntity : openAcctList) {
 
             int count = 0;
-
-            AyersClientInfoEntity clientInfoEntity = new AyersClientInfoEntity();
-            clientInfoEntity.setClientId("A111");
-            clientInfoEntity.setCreateUser("A222");
-            clientInfoEntity.setCreateTime(new Date());
-            count = ayersAccOpenService.saveClientInfo(clientInfoEntity);
-            if (count > 0) {
-                AyersClientAccEntity clientAccEntity = new AyersClientAccEntity();
-                clientAccEntity.setClientAccId("A111");
-                clientAccEntity.setClientId("A111");
-                clientAccEntity.setCreateUser("A222");
-                clientAccEntity.setCreateTime(new Date());
-                clientAccEntity.setAccType("M");
-                count = ayersAccOpenService.saveClineAcc(clientAccEntity);
-            }
+            CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByIdCardNumber(openApplicationEntity.getIdCardNo());
+            AyersClientAccEntity clientAccEntity = new AyersClientAccEntity();
+            clientAccEntity.setClientAccId(customerAccountOpenInfoEntity.getStockTradeAccount());
+            clientAccEntity.setClientId(customerAccountOpenInfoEntity.getStockTradeAccount());
+            clientAccEntity.setCreateUser("A222");
+            clientAccEntity.setCreateTime(new Date());
+            clientAccEntity.setAccType("M");
+            count = ayersAccOpenService.saveClineAcc(clientAccEntity);
 
             if (count > 0) {
-                CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = customerAccountOpenInfoService.queryByIdCardNumber(openApplicationEntity.getIdCardNo());
                 SecuritiesUserModel securitiesUserModel = CustomerOpenAccountConverter.converterToSecuritiesUserInfo(customerAccountOpenInfoEntity);
                 securitiesUserModel.setFundAccountType(2);
                 ResponseVO responseVO = securitiesUserInfoService.addSecuritiesUserInfo(securitiesUserModel);

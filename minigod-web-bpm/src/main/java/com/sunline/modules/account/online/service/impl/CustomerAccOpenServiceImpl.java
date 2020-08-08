@@ -3,16 +3,19 @@ package com.sunline.modules.account.online.service.impl;
 import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sunline.common.ConfigUtils;
-import com.sunline.modules.account.online.converter.CustomerOpenAccountConverter;
 import com.sunline.modules.account.online.dao.CustomerAccountMarginOpenApplyDao;
 import com.sunline.modules.account.online.dao.CustomerAccountOpenApplyDao;
 import com.sunline.modules.account.online.entity.*;
 import com.sunline.modules.account.online.helper.CustomerAccOpenReportGenerate;
 import com.sunline.modules.account.online.helper.CustomerAccountOpenHelper;
-import com.sunline.modules.account.online.model.*;
+import com.sunline.modules.account.online.model.AccountOpenApplyDetailInfo;
+import com.sunline.modules.account.online.model.AccountOpenApplyQuery;
+import com.sunline.modules.account.online.model.CustomerAccOpenApproveInfo;
+import com.sunline.modules.account.online.model.CustomerAccOpenDetailModel;
 import com.sunline.modules.account.online.model.query.AccountOpenApplyAllotQuery;
 import com.sunline.modules.account.online.protocol.AccountOpenApplyCallBackProtocol;
 import com.sunline.modules.account.online.protocol.CaVerityInfoProtocol;
@@ -711,7 +714,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
 
     /**
      * 生成邮件通知数据
-     * (保存数据到message_send_info表，定时任务扫描发磅)
+     * (保存数据到message_send_info表，定时任务扫描发送)
      *
      * @param accountOpenApplicationDetailInfo
      */
@@ -1479,7 +1482,7 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
                 // 更新预约申请表相关信息
                 CustomerAccountMarginOpenApplyEntity customerAccOpenApplyEntity = new CustomerAccountMarginOpenApplyEntity();
                 customerAccOpenApplyEntity.setApplicationId(customerAccountOpenApproveInfo.getApplicationId());
-                customerAccOpenApplyEntity.setApplicationStatus(BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_APPROVAL_SUCCESS_VALUE);
+                customerAccOpenApplyEntity.setApplicationStatus(BpmCommonEnum.ApplicationStatus.APPLICATION_STATUS_OPEN_ACCOUNT_VALUE);
                 customerAccOpenApplyEntity.setIsBack(BpmCommonEnum.YesNo.NO.getIndex());
                 customerAccOpenApplyEntity.setUpdateTime(new Date());
                 customerAccOpenApplyEntity.setLastApprovalUser(processTaskDto.getDealId());
@@ -1501,6 +1504,20 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
                 openAccountProcessLogEntity.setCreateUser(processTaskDto.getDealId());
                 openAccountProcessLogEntity.setCreateTime(new Date());
                 openAccountProcessLogService.save(openAccountProcessLogEntity);
+
+                //生成发送邮件、短信数据
+                List<String> paramList = Lists.newArrayList();
+                // 发送邮件通知(保存数据到message_send_info表，定时任务扫描发邮件)
+                sendAccountMarginOpenEmail(accountOpenInfo);
+
+                paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() != null && !"".equals(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName()) ?
+                        accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() : accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientNameSpell());
+                //paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientId());
+                paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getStockTradeAccount());
+                //宝新无交易密码
+                //paramList.add(ProtocolUtils.getDecryptPhone(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getInitialAccountPassword()));
+                generateOpenAccRetSendSms(1105, accountOpenInfo.getPhoneNumber(), paramList,"寶新證券帳戶開戶歡迎函");
+
             }
 
             // 完成节点回调业务处理
@@ -1612,5 +1629,65 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
         approveMarginCallback(customerAccountOpenApproveInfo, processTaskDto, null);
 
         return true;
+    }
+
+    @Override
+    public boolean generateOpenAccRetSendSms(Integer templateCode, String phoneNumber, List<String> paramList,String title) {
+        try {
+
+            JSONObject paraMap = new JSONObject();
+
+            paraMap.put("userType", 1);
+            paraMap.put("sendType", 0);
+            paraMap.put("phone", phoneNumber);
+            paraMap.put("params", paramList);
+            paraMap.put("templateCode", templateCode);
+
+            MessageSendInfoEntity messageSendInfoEntity = new MessageSendInfoEntity();
+            messageSendInfoEntity.setMessageType(BpmCommonEnum.MessageNoticeType.MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS_VALUE);
+            //改用接口调用发短信弃用
+            //messageSendInfoEntity.setRecipients(ConfigUtils.get("message.center.sms.url"));
+            messageSendInfoEntity.setRecipients(phoneNumber);
+            messageSendInfoEntity.setMessageTitle(title);
+            messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
+            messageSendInfoEntity.setMessageContent(JSON.toJSONString(paraMap, SerializerFeature.WriteMapNullValue));
+            messageSendInfoEntity.setContentType(1);
+
+            // 开户文件
+            messageSendInfoEntity.setAttachmentUris("");
+            int isSucceed = messageSendInfoService.save(messageSendInfoEntity);
+
+            return 1 == isSucceed;
+        } catch (Exception e) {
+            logger.error("开户短信发送异常", e);
+        }
+
+        return false;
+    }
+
+    @Override
+    public void sendAccountMarginOpenEmail(CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity) {
+        MessageSendInfoEntity messageSendInfoEntity = new MessageSendInfoEntity();
+        messageSendInfoEntity.setMessageType(BpmCommonEnum.MessageNoticeType.MESSAGE_NOTICE_TYPE_EMAIL_VALUE);
+        messageSendInfoEntity.setRecipients(customerAccountOpenInfoEntity.getEmail());
+        messageSendInfoEntity.setMessageTitle("寶新證券帳戶開戶歡迎函");
+        messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
+        Map<String, String> emailModel = Maps.newHashMap();
+        emailModel.put("clientName", customerAccountOpenInfoEntity.getClientName() != null && !"".equals(customerAccountOpenInfoEntity.getClientName()) ? customerAccountOpenInfoEntity.getClientName() : customerAccountOpenInfoEntity.getClientNameSpell());
+        emailModel.put("tradeAccount", customerAccountOpenInfoEntity.getStockTradeAccount());
+        emailModel.put("futuresTradeAccount", customerAccountOpenInfoEntity.getFuturesTradeAccount());
+        //emailModel.put("tradeAccountPassword", ProtocolUtils.getDecryptPhone(customerAccountOpenInfoEntity.getInitialAccountPassword()));
+        messageSendInfoEntity.setMessageContent(VelocityUtil.fillTemplate(VelocityUtil.ACCOUNT_OPEN_SUCCEED_EMAIL_TEMPLATE, emailModel));
+        messageSendInfoEntity.setContentType(2);
+
+        List<String> attachmentUris = Lists.newArrayList();
+        String userFormReportFile = customerAccOpenReportGenerate.makeOutputPath(customerAccountOpenInfoEntity.getApplicationId(), BpmCommonEnum.AccountOpenReport.ACCOUNT_OPEN_REPORT_USER_FORM_REPORT);
+        attachmentUris.add(userFormReportFile);
+        attachmentUris.add(ConfigUtils.get("openAccount.user.report.rootPath") + "/" + ConfigUtils.get("openAccount.user.report.riskDisclosure"));
+        attachmentUris.add(ConfigUtils.get("openAccount.user.report.rootPath") + "/" + ConfigUtils.get("openAccount.user.report.cashUserProtocol"));
+
+        // 开户文件
+        messageSendInfoEntity.setAttachmentUris(JSON.toJSONString(attachmentUris));
+        messageSendInfoService.save(messageSendInfoEntity);
     }
 }

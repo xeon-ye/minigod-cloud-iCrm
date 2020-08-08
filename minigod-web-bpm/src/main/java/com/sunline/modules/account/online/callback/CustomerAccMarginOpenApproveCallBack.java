@@ -5,10 +5,12 @@ import com.sunline.modules.account.online.service.CustomerAccOpenService;
 import com.sunline.modules.activiti.dto.ProcessTaskDto;
 import com.sunline.modules.common.utils.CodeUtils;
 import com.sunline.modules.common.utils.SpringContextUtils;
+import com.sunline.modules.notice.service.MessageSendInfoService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -22,6 +24,9 @@ import java.util.Map;
 public class CustomerAccMarginOpenApproveCallBack {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    MessageSendInfoService messageSendInfoService;
 
     public void callback(ProcessTaskDto processTaskDto, Map<String, Object> map) {
 
@@ -49,5 +54,4 @@ public class CustomerAccMarginOpenApproveCallBack {
             logger.error("增开审批回调异常", e);
         }
     }
-
 }

@@ -3,7 +3,10 @@ package com.sunline.modules.account.online.service;
 import com.sunline.modules.account.online.entity.CustomerAccountMarginOpenApplyEntity;
 import com.sunline.modules.account.online.entity.CustomerAccountOpenApplyEntity;
 import com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity;
-import com.sunline.modules.account.online.model.*;
+import com.sunline.modules.account.online.model.AccountOpenApplyDetailInfo;
+import com.sunline.modules.account.online.model.AccountOpenApplyQuery;
+import com.sunline.modules.account.online.model.CustomerAccOpenApproveInfo;
+import com.sunline.modules.account.online.model.CustomerAccOpenDetailModel;
 import com.sunline.modules.account.online.model.query.AccountOpenApplyAllotQuery;
 import com.sunline.modules.account.online.protocol.AccountOpenApplyCallBackProtocol;
 import com.sunline.modules.account.online.protocol.OpenAccountImageInfo;
@@ -161,4 +164,17 @@ public interface CustomerAccOpenService {
      * @return
      */
     boolean terminateAccountMarginOpenApplication(CustomerAccountMarginOpenApplyEntity applicationInfo, ProcessTaskDto processTaskDto, int rejectType);
+
+    /**
+     * 生成短信发送数据
+     * (保存数据到message_send_info表，定时任务扫描发送)
+     * @param templateCode
+     * @param phoneNumber
+     * @param paramList
+     * @param title
+     * @return
+     */
+    boolean generateOpenAccRetSendSms(Integer templateCode, String phoneNumber, List<String> paramList,String title);
+
+    void sendAccountMarginOpenEmail(CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity);
 }

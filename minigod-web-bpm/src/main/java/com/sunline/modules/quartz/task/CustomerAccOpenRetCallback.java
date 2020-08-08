@@ -142,7 +142,7 @@ public class CustomerAccOpenRetCallback {
                     //宝新无交易密码
                     //paramList.add(ProtocolUtils.getDecryptPhone(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getInitialAccountPassword()));
 
-                    generateOpenAccRetSendSms(1105, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList);
+                    customerAccOpenService.generateOpenAccRetSendSms(1105, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList,"寶新證券帳戶開戶申請");
 
                     // 开户成功推送到用户中心扩展
                     if (0 == proto.getOpenStatus()) {
@@ -213,7 +213,7 @@ public class CustomerAccOpenRetCallback {
                         paramList.add("待修改的信息是：" + reason + "。如有疑问，请拨打客服电话咨询：香港(852) 2379 8888或国内400-688-3187");
                     }
 
-                    generateOpenAccRetSendSms(1003, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList);
+                    customerAccOpenService.generateOpenAccRetSendSms(1003, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList,"寶新證券帳戶開戶申請");
                 }
 
                 // 生成拒绝短信通知
@@ -224,7 +224,7 @@ public class CustomerAccOpenRetCallback {
                     paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() != null && !"".equals(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName()) ?
                             accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() : accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientNameSpell());
 
-                    generateOpenAccRetSendSms(1094, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList);
+                    customerAccOpenService.generateOpenAccRetSendSms(1094, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList,"寶新證券帳戶開戶申請");
                 }
 
                 // 生成终止短信通知
@@ -233,7 +233,7 @@ public class CustomerAccOpenRetCallback {
                     paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() != null && !"".equals(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName()) ?
                             accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() : accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientNameSpell());
 
-                    generateOpenAccRetSendSms(1095, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList);
+                    customerAccOpenService.generateOpenAccRetSendSms(1095, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList,"寶新證券帳戶開戶申請");
                 }
 
                 // 生成终审通过短信通知
@@ -242,54 +242,11 @@ public class CustomerAccOpenRetCallback {
                     paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() != null && !"".equals(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName()) ?
                             accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() : accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientNameSpell());
 
-                    generateOpenAccRetSendSms(1104, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList);
+                    customerAccOpenService.generateOpenAccRetSendSms(1104, accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getPhoneNumber(), paramList,"寶新證券帳戶開戶申請");
                 }
 
                 logger.info("开户结果回调下游最终处理结果：" + isSucceed);
             }
         }
-    }
-
-    /**
-     * 生成短信发送数据
-     * (保存数据到message_send_info表，定时任务扫描发磅)
-     *
-     * @param phoneNumber
-     * @param paramList
-     * @param templateCode
-     * @return
-     */
-    private boolean generateOpenAccRetSendSms(Integer templateCode, String phoneNumber, List<String> paramList) {
-
-        try {
-
-            JSONObject paraMap = new JSONObject();
-
-            paraMap.put("userType", 1);
-            paraMap.put("sendType", 0);
-            paraMap.put("phone", phoneNumber);
-            paraMap.put("params", paramList);
-            paraMap.put("templateCode", templateCode);
-
-            MessageSendInfoEntity messageSendInfoEntity = new MessageSendInfoEntity();
-            messageSendInfoEntity.setMessageType(BpmCommonEnum.MessageNoticeType.MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS_VALUE);
-            //改用接口调用发短信弃用
-            //messageSendInfoEntity.setRecipients(ConfigUtils.get("message.center.sms.url"));
-            messageSendInfoEntity.setRecipients(phoneNumber);
-            messageSendInfoEntity.setMessageTitle("寶新證券帳戶開戶申請");
-            messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
-            messageSendInfoEntity.setMessageContent(JSON.toJSONString(paraMap, SerializerFeature.WriteMapNullValue));
-            messageSendInfoEntity.setContentType(1);
-
-            // 开户文件
-            messageSendInfoEntity.setAttachmentUris("");
-            int isSucceed = messageSendInfoService.save(messageSendInfoEntity);
-
-            return 1 == isSucceed;
-        } catch (Exception e) {
-            logger.error("开户短信发送异常", e);
-        }
-
-        return false;
     }
 }
