@@ -10,8 +10,8 @@ spring:
     packages:
       trust-all: true #注意 对象传输需开启包白名单 否则会报错- -
     in-memory: true
-    queue-name: gourd-queue
-    topic-name: gourd-topic
-    group-name: gourd-group
+    queue-name: statistic-queue
+    topic-name: statistic-topic
+    group-name: statistic-group
   jms:
     pub-sub-domain: true

@@ -9,7 +9,6 @@ import com.minigod.common.pojo.response.ResResult;
 import com.minigod.protocol.account.cubp.callback.CubpOpenInfoCallbackVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,6 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RefreshScope
 @RequestMapping("/callback")
 public class OpenAccountCallback {
     @Autowired

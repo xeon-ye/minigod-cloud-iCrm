@@ -15,7 +15,6 @@ import com.minigod.protocol.account.response.AuthProxyResVo;
 import com.minigod.securities.annotation.LoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RefreshScope
 @RequestMapping("/proxy")
 public class AccountServiceProxy {
     @Autowired

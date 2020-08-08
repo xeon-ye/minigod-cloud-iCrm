@@ -39,7 +39,7 @@ public class GourdConsumerListener {
         }
     }
 
-    @JmsListener(destination = "${spring.activemq.topic-name:gourd-topic}",selector="${spring.activemq.group-name:gourd-group}",containerFactory = "jmsListenerContainerTopic")
+    @JmsListener(destination = "${spring.activemq.topic-name:gourd-topic}"/*,selector="${spring.activemq.group-name:gourd-group}"*/,containerFactory = "jmsListenerContainerTopic")
     @SendTo("gourd-topic")
     public void receiveTopic(final TextMessage message) throws JMSException {
         String messageText = message.getText();
