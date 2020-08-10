@@ -7,8 +7,11 @@ server:
 spring:
   # 环境 dev|test|pro
   profiles:
-    active: bx
-
+    active: test2
+  security:
+    user:
+      name: user
+      password: 1234
   http:
   jackson:
     time-zone: GMT+8

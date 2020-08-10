@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: db-test, redis-test, notify-bx, storage-bx, account-bx, web
+    active: db-test, redis, notify-bx, storage-bx, account-bx, web
   messages:
     encoding: UTF-8
   jackson:

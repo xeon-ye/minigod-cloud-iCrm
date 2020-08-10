@@ -12,6 +12,5 @@ spring:
     in-memory: true
     queue-name: statistic-queue
     topic-name: statistic-topic
-    group-name: statistic-group
   jms:
     pub-sub-domain: true

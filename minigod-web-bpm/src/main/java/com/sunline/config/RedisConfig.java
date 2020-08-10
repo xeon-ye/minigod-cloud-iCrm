@@ -21,7 +21,7 @@ import redis.clients.jedis.JedisPoolConfig;
 public class RedisConfig {
     private static Logger logger = LoggerFactory.getLogger(RedisConfig.class);
 
-    private String hostName;
+    private String host;
 
     private int port;
 
@@ -31,25 +31,24 @@ public class RedisConfig {
 
     @Bean
     public JedisPoolConfig getRedisConfig(){
-        JedisPoolConfig config = new JedisPoolConfig();
-        return config;
+        return new JedisPoolConfig();
     }
 
     @Bean
     public JedisPool getJedisPool(){
         JedisPoolConfig config = getRedisConfig();
-        JedisPool pool = new JedisPool(config,hostName,port,timeout,password);
+        JedisPool pool = new JedisPool(config, host,port,timeout,password);
 //        JedisPool pool = new JedisPool(config,hostName,port,timeout);
         logger.info("init JredisPool ...");
         return pool;
     }
 
-    public String getHostName() {
-        return hostName;
+    public String getHost() {
+        return host;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public int getPort() {

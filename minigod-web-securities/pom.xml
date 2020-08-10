@@ -41,6 +41,7 @@
             <artifactId>minigod-service-notify</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
     </dependencies>
     <build>
         <plugins>
