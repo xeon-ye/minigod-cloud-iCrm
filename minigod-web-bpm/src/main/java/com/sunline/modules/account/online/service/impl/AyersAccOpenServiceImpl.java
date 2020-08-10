@@ -100,7 +100,7 @@ public class AyersAccOpenServiceImpl implements AyersAccOpenService {
         //clientInfoEntity.setFax("");
         //clientInfoEntity.setContactPerson("");
         clientInfoEntity.setEmploymentName(accInfoEntity.getCompanyName());
-        clientInfoEntity.setPayeeBankAcc("043-481-00036183");
+        clientInfoEntity.setPayeeBankAcc(accInfoEntity.getBankNo());
         clientInfoEntity.setPayeeBankCode(accInfoEntity.getBankId());
         clientInfoEntity.setOccupation(accInfoEntity.getIndustryRange());
         //clientInfoEntity.setStmtFax("")
@@ -138,8 +138,10 @@ public class AyersAccOpenServiceImpl implements AyersAccOpenService {
         //不填
         //clientAccEntity.setLoanExpiryDate(new Date());
         clientAccEntity.setTradingLimit(new BigDecimal(0.00));
-        //不填
-        //clientAccEntity.setBillPayNo("");
+        //待确认
+        if (accInfoEntity.getFundAccountType() == 2){
+            //clientAccEntity.setBillPayNo("");
+        }
         clientAccEntity.setInternetTrading("Y");
         clientAccEntity.setIvrsTrading("Y");
         clientAccEntity.setMangoTrading("Y");

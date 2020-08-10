@@ -137,8 +137,8 @@ public class CustomerAccOpenRetCallback {
 
                     paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() != null && !"".equals(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName()) ?
                             accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() : accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientNameSpell());
-                    //paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientId());
-                    paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getStockTradeAccount());
+                    paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientId());
+                    //paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getStockTradeAccount());
                     //宝新无交易密码
                     //paramList.add(ProtocolUtils.getDecryptPhone(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getInitialAccountPassword()));
 

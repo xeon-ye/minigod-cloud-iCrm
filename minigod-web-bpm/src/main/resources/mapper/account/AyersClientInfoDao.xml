@@ -6,6 +6,36 @@
     <resultMap type="com.sunline.modules.account.online.entity.AyersClientInfoEntity" id="clientInfoMap">
         <result property="uuid" column="uuid"/>
         <result property="clientId" column="client_id"/>
+        <result property="name" column="cname"/>
+        <result property="big5Names" column="big5_names"/>
+        <result property="gbNames" column="gb_names"/>
+        <result property="engNames" column="eng_names"/>
+        <result property="idType" column="id_type"/>
+        <result property="idCode" column="id_code"/>
+        <result property="aeCode" column="ae_code"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="otherPhone" column="other_phone"/>
+        <result property="addr_1" column="addr_1"/>
+        <result property="addr_2" column="addr_2"/>
+        <result property="addr_3" column="addr_3"/>
+        <result property="addr_4" column="addr_4"/>
+        <result property="gender" column="gender"/>
+        <result property="dateOfBirth" column="date_of_birth"/>
+        <result property="clientGroupCode" column="client_group_code"/>
+        <result property="clientType" column="client_type"/>
+        <result property="statementLang" column="statement_lang"/>
+        <result property="nationality" column="nationality"/>
+        <result property="stmtEmail" column="stmtEmail"/>
+        <result property="stmtEmailMonthly" column="stmt_email_monthly"/>
+        <result property="stmtMail" column="stmt_mail"/>
+        <result property="stmtMailMonthly" column="stmt_mail_monthly"/>
+        <result property="fax" column="fax"/>
+        <result property="contactPerson" column="contact_person"/>
+        <result property="employmentName" column="employment_name"/>
+        <result property="payeeBankAcc" column="payee_bank_acc"/>
+        <result property="occupation" column="occupation"/>
+        <result property="stmtFax" column="stmt_fax"/>
         <result property="createUser" column="create_user"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
@@ -13,6 +43,36 @@
     <sql id="Base_Column_List" >
 		uuid,
 		client_id,
+		cname,
+		big5_names,
+		gb_names,
+		eng_names,
+		id_type,
+		id_code,
+		ae_code,
+		email,
+		phone,
+		other_phone,
+		addr_1,
+		addr_2,
+		addr_3,
+		addr_4,
+		gender,
+		date_of_birth,
+		client_group_code,
+		client_type,
+		statement_lang,
+		nationality,
+		stmt_email,
+		stmt_email_monthly,
+		stmt_mail,
+		stmt_mail_monthly,
+		fax,
+		contact_person,
+		employment_name,
+		payee_bank_acc,
+		occupation,
+		stmt_fax,
 		create_user,
 		create_time
     </sql>
@@ -23,6 +83,96 @@
 		</if>
 		<if test="clientId != null">
 			<![CDATA[ and client_id = #{clientId}]]>
+		</if>
+		<if test="name != null">
+			<![CDATA[ and cname = #{name}]]>
+		</if>
+		<if test="big5Names != null">
+			<![CDATA[ and big5_names = #{big5Names}]]>
+		</if>
+		<if test="gbNames != null">
+			<![CDATA[ and gb_names = #{gbNames}]]>
+		</if>
+		<if test="engNames != null">
+			<![CDATA[ and eng_names = #{engNames}]]>
+		</if>
+		<if test="idType != null">
+			<![CDATA[ and id_type = #{idType}]]>
+		</if>
+		<if test="idCode != null">
+			<![CDATA[ and id_code = #{idCode}]]>
+		</if>
+		<if test="aeCode != null">
+			<![CDATA[ and ae_code = #{aeCode}]]>
+		</if>
+		<if test="email != null">
+			<![CDATA[ and email = #{email}]]>
+		</if>
+		<if test="phone != null">
+			<![CDATA[ and phone = #{phone}]]>
+		</if>
+		<if test="otherPhone != null">
+			<![CDATA[ and other_phone = #{otherPhone}]]>
+		</if>
+		<if test="addr_1 != null">
+			<![CDATA[ and addr_1 = #{addr_1}]]>
+		</if>
+		<if test="addr_2 != null">
+			<![CDATA[ and addr_2 = #{addr_2}]]>
+		</if>
+		<if test="addr_3 != null">
+			<![CDATA[ and addr_3 = #{addr_3}]]>
+		</if>
+		<if test="addr_4 != null">
+			<![CDATA[ and addr_4 = #{addr_4}]]>
+		</if>
+		<if test="gender != null">
+			<![CDATA[ and gender = #{gender}]]>
+		</if>
+		<if test="dateOfBirth != null">
+			<![CDATA[ and date_of_birth = #{dateOfBirth}]]>
+		</if>
+		<if test="clientGroupCode != null">
+			<![CDATA[ and client_group_code = #{clientGroupCode}]]>
+		</if>
+		<if test="clientType != null">
+			<![CDATA[ and client_type = #{clientType}]]>
+		</if>
+		<if test="statementLang != null">
+			<![CDATA[ and statement_lang = #{statementLang}]]>
+		</if>
+		<if test="nationality != null">
+			<![CDATA[ and nationality = #{nationality}]]>
+		</if>
+		<if test="stmtEmail != null">
+			<![CDATA[ and stmt_email = #{stmtEmail}]]>
+		</if>
+		<if test="stmtEmailMonthly != null">
+			<![CDATA[ and stmt_email_monthly = #{stmtEmailMonthly}]]>
+		</if>
+		<if test="stmtMail != null">
+			<![CDATA[ and stmt_mail = #{stmtMail}]]>
+		</if>
+		<if test="stmtMailMonthly != null">
+			<![CDATA[ and stmt_mail_monthly = #{stmtMailMonthly}]]>
+		</if>
+		<if test="fax != null">
+			<![CDATA[ and fax = #{fax}]]>
+		</if>
+		<if test="contactPerson != null">
+			<![CDATA[ and contact_person = #{contactPerson}]]>
+		</if>
+		<if test="employmentName != null">
+			<![CDATA[ and employment_name = #{employmentName}]]>
+		</if>
+		<if test="payeeBankAcc != null">
+			<![CDATA[ and payee_bank_acc = #{payeeBankAcc}]]>
+		</if>
+		<if test="occupation != null">
+			<![CDATA[ and occupation = #{occupation}]]>
+		</if>
+		<if test="stmtFax != null">
+			<![CDATA[ and stmt_fax = #{stmtFax}]]>
 		</if>
 		<if test="createUser != null">
 			<![CDATA[ and create_user = #{createUser}]]>
@@ -40,6 +190,36 @@
 		(
 			`uuid`,
 			`client_id`,
+			`cname`,
+			`big5_names`,
+			`gb_names`,
+			`eng_names`,
+			`id_type`,
+			`id_code`,
+			`ae_code`,
+			`email`,
+			`phone`,
+			`other_phone`,
+			`addr_1`,
+			`addr_2`,
+			`addr_3`,
+			`addr_4`,
+			`gender`,
+			`date_of_birth`,
+			`client_group_code`,
+			`client_type`,
+			`statement_lang`,
+			`nationality`,
+			`stmt_email`,
+			`stmt_email_monthly`,
+			`stmt_mail`,
+			`stmt_mail_monthly`,
+			`fax`,
+			`contact_person`,
+			`employment_name`,
+			`payee_bank_acc`,
+			`occupation`,
+			`stmt_fax`,
 			`create_user`,
 			`create_time`
 		)
@@ -47,6 +227,36 @@
 		(
 			#{uuid,jdbcType=VARCHAR},
 			#{clientId},
+			#{name},
+			#{big5Names},
+			#{gbNames},
+			#{engNames},
+			#{idType},
+			#{idCode},
+			#{aeCode},
+			#{email},
+			#{phone},
+			#{otherPhone},
+			#{addr_1},
+			#{addr_2},
+			#{addr_3},
+			#{addr_4},
+			#{gender},
+			#{dateOfBirth},
+			#{clientGroupCode},
+			#{clientType},
+			#{statementLang},
+			#{nationality},
+			#{stmtEmail},
+			#{stmtEmailMonthly},
+			#{stmtMail},
+			#{stmtMailMonthly},
+			#{fax},
+			#{contactPerson},
+			#{employmentName},
+			#{payeeBankAcc},
+			#{occupation},
+			#{stmtFax},
 			#{createUser},
 			#{createTime}
 		)

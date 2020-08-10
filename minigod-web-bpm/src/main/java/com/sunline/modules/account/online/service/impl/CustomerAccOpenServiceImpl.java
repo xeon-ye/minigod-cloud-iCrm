@@ -729,7 +729,13 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
         messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
         Map<String, String> emailModel = Maps.newHashMap();
         emailModel.put("clientName", customerAccountOpenInfoEntity.getClientName() != null && !"".equals(customerAccountOpenInfoEntity.getClientName()) ? customerAccountOpenInfoEntity.getClientName() : customerAccountOpenInfoEntity.getClientNameSpell());
-        emailModel.put("tradeAccount", customerAccountOpenInfoEntity.getStockTradeAccount());
+        if (customerAccountOpenInfoEntity.getFundAccountType() == 1){
+            emailModel.put("tradeAccount", "C"+customerAccountOpenInfoEntity.getClientId());
+        }else if (customerAccountOpenInfoEntity.getFundAccountType() == 2){
+            emailModel.put("tradeAccount", "M"+customerAccountOpenInfoEntity.getClientId());
+        }else {
+            emailModel.put("tradeAccount", "");
+        }
         emailModel.put("futuresTradeAccount", customerAccountOpenInfoEntity.getFuturesTradeAccount());
         //emailModel.put("tradeAccountPassword", ProtocolUtils.getDecryptPhone(customerAccountOpenInfoEntity.getInitialAccountPassword()));
         messageSendInfoEntity.setMessageContent(VelocityUtil.fillTemplate(VelocityUtil.ACCOUNT_OPEN_SUCCEED_EMAIL_TEMPLATE, emailModel));
@@ -1512,8 +1518,8 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
 
                 paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() != null && !"".equals(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName()) ?
                         accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientName() : accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientNameSpell());
-                //paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientId());
-                paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getStockTradeAccount());
+                paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getClientId());
+                //paramList.add(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getStockTradeAccount());
                 //宝新无交易密码
                 //paramList.add(ProtocolUtils.getDecryptPhone(accountOpenApplicationDetailInfo.getCustomerAccountOpenInfoEntity().getInitialAccountPassword()));
                 generateOpenAccRetSendSms(1105, accountOpenInfo.getPhoneNumber(), paramList,"寶新證券帳戶開戶歡迎函");
@@ -1674,7 +1680,14 @@ public class CustomerAccOpenServiceImpl implements CustomerAccOpenService {
         messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
         Map<String, String> emailModel = Maps.newHashMap();
         emailModel.put("clientName", customerAccountOpenInfoEntity.getClientName() != null && !"".equals(customerAccountOpenInfoEntity.getClientName()) ? customerAccountOpenInfoEntity.getClientName() : customerAccountOpenInfoEntity.getClientNameSpell());
-        emailModel.put("tradeAccount", customerAccountOpenInfoEntity.getStockTradeAccount());
+        if (customerAccountOpenInfoEntity.getFundAccountType() == 1){
+            emailModel.put("tradeAccount", "C"+customerAccountOpenInfoEntity.getClientId());
+        }else if (customerAccountOpenInfoEntity.getFundAccountType() == 2){
+            emailModel.put("tradeAccount", "M"+customerAccountOpenInfoEntity.getClientId());
+        }else {
+            emailModel.put("tradeAccount", "");
+        }
+
         emailModel.put("futuresTradeAccount", customerAccountOpenInfoEntity.getFuturesTradeAccount());
         //emailModel.put("tradeAccountPassword", ProtocolUtils.getDecryptPhone(customerAccountOpenInfoEntity.getInitialAccountPassword()));
         messageSendInfoEntity.setMessageContent(VelocityUtil.fillTemplate(VelocityUtil.ACCOUNT_OPEN_SUCCEED_EMAIL_TEMPLATE, emailModel));

@@ -16,9 +16,6 @@ public class AyersClientAccEntity implements Serializable {
      * M - Margin
      */
     private String accType;
-    /**
-     * 账户代码
-     */
     private String accCode;
     /**
      * AE代码
