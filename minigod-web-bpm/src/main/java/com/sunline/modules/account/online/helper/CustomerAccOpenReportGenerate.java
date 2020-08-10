@@ -483,7 +483,13 @@ public class CustomerAccOpenReportGenerate {
         reportData.put("sourceChannelName", customerAccountOpenInfoEntity.getSourceChannelName());
         reportData.put("userId", customerAccountOpenInfoEntity.getUserId());
         reportData.put("inviterId", customerAccountOpenInfoEntity.getInviterId());
-        reportData.put("clientId", customerAccountOpenInfoEntity.getClientId());
+        if (customerAccountOpenInfoEntity.getFundAccountType() == 1){
+            reportData.put("clientId", "C"+customerAccountOpenInfoEntity.getClientId());
+        }else if (customerAccountOpenInfoEntity.getFundAccountType() == 2){
+            reportData.put("clientId", "M"+customerAccountOpenInfoEntity.getClientId());
+        }else {
+            reportData.put("clientId", customerAccountOpenInfoEntity.getClientId());
+        }
         reportData.put("fundAccount", customerAccountOpenInfoEntity.getFundAccount());
         reportData.put("clientName", customerAccountOpenInfoEntity.getClientName());
         reportData.put("familyName", customerAccountOpenInfoEntity.getFamilyName());
