@@ -164,7 +164,7 @@
                     <div class="col-xs-9">
                     <span class="col-sm-12 block input-icon input-icon-right">
                         <input id="clientId" name="clientId" type="text" class="form-control"
-                               value="${customerAccountOpenInfoEntity.clientId}" readonly/>
+                               value="${customerAccountOpenInfoEntity.clientId}"/>
                     </span>
                     </div>
                 </div>
@@ -1828,7 +1828,7 @@
                                 </span>
                     </div>
                 </div>
-                <div class="row">
+                <%--<div class="row">
                     <div class="form-group col-sm-6 col-md-6">
                         <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
                             证券交易账号</label>
@@ -1838,8 +1838,8 @@
                                    value="${customerAccountOpenInfoEntity.stockTradeAccount}"/>
                         </span>
                     </div>
-                </div>
-                <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">
+                </div>--%>
+                <%--<c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">
                     <div class="row">
                         <div class="form-group col-sm-6 col-md-6">
                             <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
@@ -1851,7 +1851,7 @@
                         </span>
                         </div>
                     </div>
-                </c:if>
+                </c:if>--%>
             </c:if>
         </div>
     </div>
@@ -1915,14 +1915,14 @@
                                 </span>
                         </div>
                     </div>
-                    <div class="row">
+                    <%--<div class="row">
                         <div class="form-group col-sm-6 col-md-6">
                             <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                                证券交易账号</label>
+                                交易账号</label>
                             <span class="col-xs-8 block input-icon input-icon-right">
                             <input id="stockTradeAccount" name="stockTradeAccount" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.stockTradeAccount}"/>
-                        </span>
+                            </span>
                         </div>
                     </div>
                     <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">
@@ -1936,7 +1936,7 @@
                         </span>
                             </div>
                         </div>
-                    </c:if>
+                    </c:if>--%>
                 </div>
             </c:if>
         </div>

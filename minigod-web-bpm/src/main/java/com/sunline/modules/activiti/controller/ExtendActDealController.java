@@ -444,21 +444,12 @@ public class ExtendActDealController {
             }
 
             actModelerService.doActTask(processTaskDto, params);
-
-            if ("2".equals(params.get("applicationStatus"))){
+            if ("2".equals(params.get("applicationStatus")) || "1".equals(params.get("applicationStatus"))){
                 CustomerAccountOpenInfoEntity customerAccountOpenInfo = new CustomerAccountOpenInfoEntity();
                 customerAccountOpenInfo.setApplicationId((String) params.get("applicationId"));
-                String stockTradeAccount = (String) params.get("stockTradeAccount");
-                if (org.apache.commons.lang3.StringUtils.isNotBlank(stockTradeAccount)){
-                    customerAccountOpenInfo.setStockTradeAccount(stockTradeAccount);
-                }
-                String futuresTradeAccount = (String) params.get("futuresTradeAccount");
-                if (org.apache.commons.lang3.StringUtils.isNotBlank(futuresTradeAccount)){
-                    customerAccountOpenInfo.setFuturesTradeAccount((String) params.get("futuresTradeAccount"));
-                }
-
-                boolean setTradeAccount = (stockTradeAccount == null && futuresTradeAccount == null);
-                if (setTradeAccount){
+                String clientId = (String) params.get("clientId");
+                if (org.apache.commons.lang3.StringUtils.isNotBlank(clientId)){
+                    customerAccountOpenInfo.setClientId(clientId);
                     customerAccOpenInfoService.setTradeAccount(customerAccountOpenInfo);
                 }
             }

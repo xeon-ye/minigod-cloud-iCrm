@@ -2,6 +2,7 @@ package com.sunline.modules.account.online.service;
 
 import com.sunline.modules.account.online.entity.AyersClientAccEntity;
 import com.sunline.modules.account.online.entity.AyersClientInfoEntity;
+import com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity;
 
 public interface AyersAccOpenService {
     /**
@@ -20,4 +21,8 @@ public interface AyersAccOpenService {
      * @return
      */
     int saveClineAcc(AyersClientAccEntity accEntity);
+
+    AyersClientInfoEntity createClientInfoEntity(CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity);
+
+    AyersClientAccEntity createClientAccEntity(CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity);
 }

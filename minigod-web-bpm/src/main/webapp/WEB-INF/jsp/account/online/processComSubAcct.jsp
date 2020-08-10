@@ -266,14 +266,9 @@
     function clickSubmit() {
         if (${accountOpenApplicationEntity.applicationStatus == 2 }) {
 
-            var stockTradeAccount = $("#stockTradeAccount").val();
-            var futuresTradeAccount = $("#futuresTradeAccount").val();
-            if (!stockTradeAccount || stockTradeAccount == ''){
-                alertMsg("请输入证券交易账号");
-            }
-
-            if (!futuresTradeAccount || futuresTradeAccount == ''){
-                alertMsg("请输入期货交易账号");
+            var clientId = $("#clientId").val();
+            if (!clientId || clientId == ''){
+                alertMsg("请输入客户账号");
             }
 
             var isAmlSuspicious = $('input[name="isAmlSuspicious"]').filter(':checked').val();
@@ -304,8 +299,7 @@
                         'nodeType': processInfo.nodeType,
                         'applicationId': '${accountOpenApplicationEntity.applicationId}',
                         'applicationStatus': '${accountOpenApplicationEntity.applicationStatus}',
-                        'stockTradeAccount': stockTradeAccount,
-                        'futuresTradeAccount': futuresTradeAccount,
+                        'clientId': clientId,
                         'nextUserIds': userIds.join(",")
                     };
                     var remark = $("#remark").val();
@@ -339,6 +333,12 @@
                 });
             }
         } else if (${accountOpenApplicationEntity.applicationStatus == 1 }) {
+            var clientId = $("#clientId").val();
+            if (!clientId || clientId == ''){
+                alertMsg("请输入客户账号");
+            }
+
+
             var isAmlSuspicious = $('input[name="isAmlSuspicious"]').filter(':checked').val();
 
             if (isAmlSuspicious != null && $("#amlFlag").val() == "true") {
@@ -363,6 +363,9 @@
                         'varValue': processInfo.varValue,
                         'varName': processInfo.varName,
                         'nodeType': processInfo.nodeType,
+                        'applicationId': '${accountOpenApplicationEntity.applicationId}',
+                        'applicationStatus': '${accountOpenApplicationEntity.applicationStatus}',
+                        'clientId': clientId,
                         'nextUserIds': userIds.join(",")
                     };
                     var remark = $("#remark").val();

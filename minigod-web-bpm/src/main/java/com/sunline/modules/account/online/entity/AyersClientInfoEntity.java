@@ -14,6 +14,12 @@ public class AyersClientInfoEntity implements Serializable {
     private String gbNames;
     //名字英文
     private String engNames;
+    /**
+     * IDHK – HK ID no
+     * IDCN – China ID no
+     * PPCN – China Passport no
+     * PPOTH – Oversea Passport
+     */
     private String idType;
     private String idCode;
     private String aeCode;

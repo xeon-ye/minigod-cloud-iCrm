@@ -36,7 +36,7 @@ public class CustomerAccountOpenInfoEntity implements Serializable {
     private Integer userId;
     //开户邀请人的userId
     private String inviterId;
-    //交易帐号（弃用）
+    //交易帐号
     private String clientId;
     //资金帐号
     private String fundAccount;

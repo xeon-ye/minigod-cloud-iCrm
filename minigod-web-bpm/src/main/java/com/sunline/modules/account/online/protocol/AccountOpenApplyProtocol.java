@@ -480,6 +480,18 @@ public class AccountOpenApplyProtocol extends BaseParameter {
     @JSONField(name = "investmentHorizon")
     private Integer investmentHorizon;
 
+    //信用额度
+    @JSONField(name = "creditQuota")
+    private String creditQuota;
+
+    //信用比例
+    @JSONField(name = "creditRatio")
+    private String creditRatio;
+
+    //交易账号 [如C0001，M0001]
+    @JSONField(name = "clientId")
+    private String clientId;
+
     public String getIsAmlSuspicious() {
         return isAmlSuspicious;
     }
@@ -1413,5 +1425,29 @@ public class AccountOpenApplyProtocol extends BaseParameter {
 
     public void setIndustryRange(String industryRange) {
         this.industryRange = industryRange;
+    }
+
+    public String getCreditQuota() {
+        return creditQuota;
+    }
+
+    public void setCreditQuota(String creditQuota) {
+        this.creditQuota = creditQuota;
+    }
+
+    public String getCreditRatio() {
+        return creditRatio;
+    }
+
+    public void setCreditRatio(String creditRatio) {
+        this.creditRatio = creditRatio;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 }

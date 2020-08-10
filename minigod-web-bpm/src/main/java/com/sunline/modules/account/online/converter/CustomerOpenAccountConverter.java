@@ -298,6 +298,8 @@ public class CustomerOpenAccountConverter {
         entity.setContactPhone(model.getContactPhone());
         entity.setBankCurrency(model.getBankCurrency());
         entity.setInvestmentHorizon(model.getInvestmentHorizon());
+        entity.setCreditQuota(model.getCreditQuota());
+        entity.setCreditRatio(model.getCreditRatio());
 
         return entity;
     }
@@ -648,6 +650,9 @@ public class CustomerOpenAccountConverter {
         customerAccountOpenInfoEntity.setContactPhone(accountOpenApplicationprotocol.getContactPhone());
         customerAccountOpenInfoEntity.setBankCurrency(accountOpenApplicationprotocol.getBankCurrency());
         customerAccountOpenInfoEntity.setInvestmentHorizon(accountOpenApplicationprotocol.getInvestmentHorizon());
+        customerAccountOpenInfoEntity.setCreditRatio(accountOpenApplicationprotocol.getCreditRatio());
+        customerAccountOpenInfoEntity.setCreditQuota(accountOpenApplicationprotocol.getCreditQuota());
+        customerAccountOpenInfoEntity.setClientId(accountOpenApplicationprotocol.getClientId());
 
         return customerAccountOpenInfoEntity;
     }
@@ -834,6 +839,9 @@ public class CustomerOpenAccountConverter {
         securitiesUserModel.setBankCurrency(entity.getBankCurrency());
         securitiesUserModel.setInvestmentHorizon(entity.getInvestmentHorizon());
         securitiesUserModel.setOtherProfession(entity.getOtherProfession());
+        securitiesUserModel.setCreditQuota(entity.getCreditQuota());
+        securitiesUserModel.setCreditRatio(entity.getCreditRatio());
+        securitiesUserModel.setClientId(entity.getClientId());
 
         return securitiesUserModel;
     }

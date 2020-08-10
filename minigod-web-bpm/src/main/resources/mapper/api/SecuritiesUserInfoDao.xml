@@ -126,6 +126,9 @@
 		<result property="contactPhone" column="contact_phone"/>
 		<result property="bankCurrency" column="bank_currency"/>
 		<result property="investmentHorizon" column="investment_horizon"/>
+		<result property="creditQuota" column="credit_quota"/>
+		<result property="creditRatio" column="credit_ratio"/>
+		<result property="clientId" column="client_id"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -249,7 +252,10 @@
         stock_trade_account,
         contact_phone,
         bank_currency,
-        investment_horizon
+        investment_horizon,
+        client_id,
+        credit_quota,
+        credit_ratio
     </sql>
 
     <insert id="save" parameterType="com.sunline.modules.api.entity.SecuritiesUserModel">
@@ -348,32 +354,35 @@
             `other_family_republic`,
             `cancel_date`,
             `room_code`,
-            lan,
-			account_type,
-			family_phone,
-			education_level,
-			working_seniority,
-			is_bankrupted,
-			d_statement_receive_mode,
-			unit_trusts_experience,
-			other_products_experience,
-			other_products_name,
-			options_experience,
-			trade_stock_frequency,
-			trade_warrants_frequency,
-			trade_options_frequency,
-			trade_futures_frequency,
-			trade_unit_trusts_frequency,
-			trade_other_products_frequency,
-			is_open_options,
-			options_acc_usage_scenarios,
-			is_open_futures,
-			futures_acc_usage_scenarios,
-			futures_trade_account,
-			stock_trade_account,
-			contact_phone,
-			bank_currency,
-			investment_horizon
+            `lan`,
+			`account_type`,
+			`family_phone`,
+			`education_level`,
+			`working_seniority`,
+			`is_bankrupted`,
+			`d_statement_receive_mode`,
+			`unit_trusts_experience`,
+			`other_products_experience`,
+			`other_products_name`,
+			`options_experience`,
+			`trade_stock_frequency`,
+			`trade_warrants_frequency`,
+			`trade_options_frequency`,
+			`trade_futures_frequency`,
+			`trade_unit_trusts_frequency`,
+			`trade_other_products_frequency`,
+			`is_open_options`,
+			`options_acc_usage_scenarios`,
+			`is_open_futures`,
+			`futures_acc_usage_scenarios`,
+			`futures_trade_account`,
+			`stock_trade_account`,
+			`contact_phone`,
+			`bank_currency`,
+			`investment_horizon`,
+			`client_id`,
+			`credit_quota`,
+			`credit_ratio`
 		)
 		values
 		(
@@ -495,7 +504,10 @@
 			#{stockTradeAccount},
 			#{contactPhone},
 			#{bankCurrency},
-			#{investmentHorizon}
+			#{investmentHorizon},
+			#{clientId},
+			#{creditQuota},
+			#{creditRatio}
 		)
 	</insert>
 
@@ -645,7 +657,10 @@
 			<if test="stockTradeAccount != null">`stock_trade_account` = #{stockTradeAccount},</if>
 			<if test="contactPhone != null">`contact_phone` = #{contactPhone},</if>
 			<if test="bankCurrency != null">`bank_currency` = #{bankCurrency},</if>
-			<if test="investmentHorizon != null">`investment_horizon` = #{investmentHorizon}</if>
+			<if test="investmentHorizon != null">`investment_horizon` = #{investmentHorizon},</if>
+			<if test="clientId != null">`client_id` = #{clientId},</if>
+			<if test="creditQuota != null">`credit_quota` = #{creditQuota},</if>
+			<if test="creditRatio != null">`credit_ratio` = #{creditRatio}</if>
         </set>
         where id = #{id}
     </update>

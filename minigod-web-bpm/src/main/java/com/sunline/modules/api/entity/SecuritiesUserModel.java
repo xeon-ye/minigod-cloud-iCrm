@@ -298,6 +298,15 @@ public class SecuritiesUserModel {
     //投资年期 [1、<1年  2、1-3年  3、3年以上]
     private Integer investmentHorizon;
 
+    //信用额度
+    private String creditQuota;
+
+    //信用比例
+    private String creditRatio;
+
+    //交易帐号
+    private String clientId;
+
     /**
      * 设置：主键ID
      */
@@ -1569,6 +1578,30 @@ public class SecuritiesUserModel {
 
     public void setInvestmentHorizon(Integer investmentHorizon) {
         this.investmentHorizon = investmentHorizon;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getCreditQuota() {
+        return creditQuota;
+    }
+
+    public void setCreditQuota(String creditQuota) {
+        this.creditQuota = creditQuota;
+    }
+
+    public String getCreditRatio() {
+        return creditRatio;
+    }
+
+    public void setCreditRatio(String creditRatio) {
+        this.creditRatio = creditRatio;
     }
 }
 

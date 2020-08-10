@@ -971,8 +971,7 @@
     <update id="setTradeAccount" parameterType="com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity">
         update customer_account_open_info
         <set>
-            <if test="futuresTradeAccount != null">`futures_trade_account` = #{futuresTradeAccount},</if>
-            <if test="stockTradeAccount != null">`stock_trade_account` = #{stockTradeAccount}</if>
+            <if test="clientId != null">`client_id` = #{clientId}</if>
         </set>
         where application_id = #{applicationId}
     </update>
