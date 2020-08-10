@@ -11,6 +11,7 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.connection.CachingConnectionFactory;
+import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.util.backoff.FixedBackOff;
 
@@ -21,6 +22,7 @@ import static org.apache.activemq.ActiveMQSession.INDIVIDUAL_ACKNOWLEDGE;
 
 /**
  * active消息队列配置
+ *
  * @author
  */
 @Configuration
@@ -29,6 +31,7 @@ public class ActiveMqConfig {
 
     /**
      * 定义存放消息的队列
+     *
      * @return
      */
     @Bean
@@ -38,6 +41,7 @@ public class ActiveMqConfig {
 
     /**
      * 发布订阅模式
+     *
      * @return
      */
     @Bean
@@ -46,8 +50,8 @@ public class ActiveMqConfig {
     }
 
     @Bean
-    public RedeliveryPolicy redeliveryPolicy(){
-        RedeliveryPolicy  redeliveryPolicy= new RedeliveryPolicy();
+    public RedeliveryPolicy redeliveryPolicy() {
+        RedeliveryPolicy redeliveryPolicy = new RedeliveryPolicy();
         // 启用指数倍数递增的方式增加延迟时间。
         redeliveryPolicy.setUseExponentialBackOff(true);
         // 重连时间间隔递增倍数，只有值大于1和启用useExponentialBackOff参数时才生效。默认5
@@ -66,20 +70,20 @@ public class ActiveMqConfig {
 
 
     @Bean
-    public ActiveMQConnectionFactory activeMQConnectionFactory (
+    public ActiveMQConnectionFactory activeMQConnectionFactory(
             @Value("${spring.activemq.broker-url}") String url,
             @Value("${spring.activemq.user}") String user,
             @Value("${spring.activemq.password}") String password,
-            RedeliveryPolicy redeliveryPolicy){
+            RedeliveryPolicy redeliveryPolicy) {
         ActiveMQConnectionFactory activeMQConnectionFactory =
-                new ActiveMQConnectionFactory(user,password,url);
+                new ActiveMQConnectionFactory(user, password, url);
         activeMQConnectionFactory.setRedeliveryPolicy(redeliveryPolicy);
         return activeMQConnectionFactory;
     }
 
     @Bean
     public JmsTemplate getJmsTemplate(ActiveMQConnectionFactory activeMQConnectionFactory,
-        @Value("${spring.jms.pub-sub-domain}") Boolean subAdmin){
+                                      @Value("${spring.jms.pub-sub-domain}") Boolean subAdmin) {
         //使用CachingConnectionFactory可以提高部分性能。
         CachingConnectionFactory cachingConnectionFactory = new CachingConnectionFactory();
         cachingConnectionFactory.setSessionCacheSize(100);
@@ -113,7 +117,7 @@ public class ActiveMqConfig {
         //开启持久化订阅
         factory.setSubscriptionDurable(true);
         factory.setClientId(applicationName);
-        FixedBackOff backOff=new FixedBackOff();
+        FixedBackOff backOff = new FixedBackOff();
         backOff.setInterval(200);
         backOff.setMaxAttempts(6);
         factory.setBackOff(backOff);

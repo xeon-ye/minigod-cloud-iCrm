@@ -32,5 +32,6 @@ public class StatisticConsumerListener {
         log.info("statistic-queue-consumer收到的报文为:{}", messageText);
         Statistic statistic = JSON.parseObject(messageText, Statistic.class);
         statisticCallService.save(statistic);
+        message.acknowledge();
     }
 }
