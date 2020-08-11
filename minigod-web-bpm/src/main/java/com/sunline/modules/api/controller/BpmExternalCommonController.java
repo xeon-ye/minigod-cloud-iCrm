@@ -512,18 +512,18 @@ public class BpmExternalCommonController {
                 List<String> paramList = Lists.newArrayList();
                 paramList.add(customerAccountOpenInfo.getClientName());
 
-                messageSendInfoService.generateSunlineSendSms(1106, customerAccountOpenInfo.getPhoneNumber(), paramList, "智珠证券账户开户申请");
+                messageSendInfoService.generateSunlineSendSms(1106, customerAccountOpenInfo.getPhoneNumber(), paramList, "宝新证券账户开户申请");
 
             } else {
                 // 发送邮件
                 CustomerAccountOpenInfoEntity customerAccountOpenInfo = customerAccOpenInfoService.queryByApplicationId(request.getParams().getApplicationId());
                 StringBuilder errMsg = new StringBuilder();
-                errMsg.append("小神号：" + customerAccountOpenInfo.getUserId() + "<br>客户号：" + customerAccountOpenInfo.getClientId() + "<br>姓名：" + customerAccountOpenInfo.getClientName()
+                errMsg.append("用户号：" + customerAccountOpenInfo.getUserId() + "<br>客户号：" + customerAccountOpenInfo.getClientId() + "<br>姓名：" + customerAccountOpenInfo.getClientName()
                         + "<br>证券手机号码：" + customerAccountOpenInfo.getPhoneNumber() + "<br>返回错误码：" + request.getParams().getCaVerifyStatus() + "<br>错误描述：" + request.getParams().getCaVerifyMsg());
 
                 errMsg.append("<br>烦请尽快处理！");
 
-                messageSendInfoService.generateSendEmailText("【CA认证失败通知】小神号" + customerAccountOpenInfo.getUserId(), errMsg.toString(), 1
+                messageSendInfoService.generateSendEmailText("【CA认证失败通知】用户号" + customerAccountOpenInfo.getUserId(), errMsg.toString(), 1
                         , SysConfigUtil.getSysConfigValue("CA_EMAIL_WARNING_GROUP", "warning@zszhizhu.com"), Lists.newArrayList());
             }
 

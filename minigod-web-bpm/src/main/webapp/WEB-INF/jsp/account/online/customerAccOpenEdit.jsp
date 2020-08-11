@@ -1117,7 +1117,7 @@
             </br>
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-12 control-label no-padding-right">您是否确认《个人资料（私隐）条例通知》并同意智珠证券及其控股集团使用及向其他人士提供本人的个人资料作直接促销用途。</label>
+                    <label class="col-sm-12 control-label no-padding-right">您是否确认《个人资料（私隐）条例通知》并同意宝新证券及其控股集团使用及向其他人士提供本人的个人资料作直接促销用途。</label>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                         <span class="col-xs-12 block input-icon input-icon-right">
@@ -1134,7 +1134,7 @@
             </div>
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-12 control-label no-padding-right">您是否确认智珠证券根据《有关中华通证券北向交易的个人资料收集声明》所述的目的使用您的个人资料</label>
+                    <label class="col-sm-12 control-label no-padding-right">您是否确认宝新证券根据《有关中华通证券北向交易的个人资料收集声明》所述的目的使用您的个人资料</label>
                 </div>
                 <div class="form-group col-sm-6 col-md-6">
                         <span class="col-xs-12 block input-icon input-icon-right">

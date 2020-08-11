@@ -149,7 +149,7 @@ public class OfflineCustAccOpenCallBackJob {
             MessageSendInfoEntity messageSendInfoEntity = new MessageSendInfoEntity();
             messageSendInfoEntity.setMessageType(BpmCommonEnum.MessageNoticeType.MESSAGE_NOTICE_TYPE_PLATFORM_SEND_SMS_VALUE);
             messageSendInfoEntity.setRecipients(ConfigUtils.get("message.center.sms.url"));
-            messageSendInfoEntity.setMessageTitle("智珠证券账户开户申请");
+            messageSendInfoEntity.setMessageTitle("宝新证券账户开户申请");
             messageSendInfoEntity.setSendResult(BpmCommonEnum.CommonProcessStatus.COMMON_PROCESS_STATUS_WAITING_VALUE);
             messageSendInfoEntity.setMessageContent(JSON.toJSONString(paraMap, SerializerFeature.WriteMapNullValue));
             messageSendInfoEntity.setContentType(1);

@@ -5,7 +5,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.BaseRowModel;
 
 /**
- * @description: 小神用户资料Excel模板
+ * @description: 用户资料Excel模板
  * @author: fu yanyan
  * @date: 2018/11/28
  * @version: v1.0

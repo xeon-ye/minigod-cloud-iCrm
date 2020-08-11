@@ -108,7 +108,7 @@ public class ActivityStatisticsController extends BaseController {
      */
     @RequestMapping(value = "/activityStatisticsExp")
     @RequiresPermissions("activity:exp")
-    @SysLog("小神用户查询导出")
+    @SysLog("用户查询导出")
     public void cusUserExpExcel(ActivityStatisticsEntity activityStatisticsEntity, HttpServletRequest request, HttpServletResponse response) {
         try {
 

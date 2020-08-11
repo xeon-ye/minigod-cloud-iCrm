@@ -335,7 +335,7 @@
         </if>
     </select>
 
-    <!-- 根据小神号查是否存在客户-->
+    <!-- 根据用户号查是否存在客户-->
     <select id="queryByUserId" resultType="com.sunline.modules.customer.entity.SecuritiesUserInfoEntity"
             resultMap="securitiesUserInfoMap">
         select

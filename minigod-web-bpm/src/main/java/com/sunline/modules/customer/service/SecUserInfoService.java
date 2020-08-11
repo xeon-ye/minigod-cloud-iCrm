@@ -62,7 +62,7 @@ public interface SecUserInfoService {
     Page<SecuritiesUserInfoEntity> findPageFilter(SecuritiesUserInfoEntity securitiesUserInfoEntity, int pageNum);
 
     /**
-     * 小神用户查询分页列表
+     * 用户查询分页列表
      * @param securitiesUserInfoEntity
      * @param pageNum
      * @return

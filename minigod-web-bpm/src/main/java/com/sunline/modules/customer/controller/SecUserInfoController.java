@@ -434,7 +434,7 @@ public class SecUserInfoController extends BaseController {
     }
 
     /**
-     * 小神用户信息列表
+     * 用户信息列表
      *
      * @param model
      * @param securitiesUserInfoEntity

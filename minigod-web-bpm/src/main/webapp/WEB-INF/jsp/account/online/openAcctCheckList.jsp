@@ -37,14 +37,6 @@
                                placeholder="请输入预约号" class="layui-input">
                     </div>
                 </div>
-                <div class="layui-inline" style="margin-bottom: 2px;">
-                    <label class="layui-form-label">小神号:</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="userId" value="${queryCondition.userId}" placeholder="请输入小神号"
-                               class="layui-input">
-                    </div>
-
-                </div>
                 <div class="layui-inline" style="margin-bottom: 2px;"><label class="layui-form-label">客户姓名:</label>
                     <div class="layui-input-block">
                         <input type="text" name="clientName" value="${queryCondition.clientName}" placeholder="请输入姓名"

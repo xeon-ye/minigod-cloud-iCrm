@@ -181,7 +181,7 @@ public class SecUserInfoServiceImpl implements SecUserInfoService {
     }
 
     /**
-     * 小神用户分页查询
+     * 用户分页查询
      *
      * @param securitiesUserInfoEntity
      * @param pageNum

@@ -26,7 +26,7 @@ public interface SecUserInfoDao extends BaseDao<SecuritiesUserInfoEntity> {
     SecuritiesUserInfoEntity queryById(SecuritiesUserInfoEntity entity);
 
     /**
-     * 查询小神用户
+     * 查询用户
      */
     List<SecuritiesUserInfoEntity> queryUserList(Object id);
 

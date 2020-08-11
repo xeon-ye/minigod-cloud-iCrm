@@ -166,9 +166,9 @@ public class CustomerAccountOpenHelper {
             return responseVO;
         }
         if (null == openAccountInfo.getUserId()) {
-            logger.error("【开户预约接口数据完整性校验】：请填写小神号");
+            logger.error("【开户预约接口数据完整性校验】：请填写用户号");
             responseVO.setCode(-1);
-            responseVO.setMessage("请填写小神号");
+            responseVO.setMessage("请填写用户号");
             return responseVO;
         }
         if (null == openAccountInfo.getClientNameSpell() || StringUtils.isBlank(openAccountInfo.getClientNameSpell())) {
