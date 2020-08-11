@@ -265,15 +265,12 @@
      */
     function clickSubmit() {
         if (${accountOpenApplicationEntity.applicationStatus == 2 }) {
-
-            var clientId = $("#clientId").val();
-            if (!clientId || clientId == ''){
-                alertMsg("请输入客户账号");
-            }
-
+            var clientId = $('input[name="clientId"]').val();
             var isAmlSuspicious = $('input[name="isAmlSuspicious"]').filter(':checked').val();
             var acceptRisk = $('input[name="acceptRisk"]').filter(':checked').val();
-            if (isAmlSuspicious == null || isAmlSuspicious == '') {
+            if (clientId == null || clientId == ''){
+                alertMsg("请输入客户账号");
+            }else if (isAmlSuspicious == null || isAmlSuspicious == '') {
                 alertMsg("请勾选该申请人有无AML可疑信息");
             } else if ($("#amlFlag").val() == "true") {
                 alertMsg("请上传AML证明文件")
@@ -333,15 +330,11 @@
                 });
             }
         } else if (${accountOpenApplicationEntity.applicationStatus == 1 }) {
-            var clientId = $("#clientId").val();
-            if (!clientId || clientId == ''){
-                alertMsg("请输入客户账号");
-            }
-
-
+            var clientId = $('input[name="clientId"]').val();
             var isAmlSuspicious = $('input[name="isAmlSuspicious"]').filter(':checked').val();
-
-            if (isAmlSuspicious != null && $("#amlFlag").val() == "true") {
+            if (clientId == null || clientId == ''){
+                alertMsg("请输入客户账号");
+            }else if (isAmlSuspicious != null && $("#amlFlag").val() == "true") {
                 alertMsg("请上传AML证明文件");
             }else if(isAmlSuspicious == null && $("#amlFlag").val() == "false") {
                 alertMsg("请勾选该申请人有无AML可疑信息");
