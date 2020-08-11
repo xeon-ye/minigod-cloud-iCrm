@@ -61,4 +61,11 @@ public interface SecuritiesUserInfoService {
      * @return
      */
     List<SecuritiesUserModel> verifyIsRestrictOpenAccount(SecuritiesUserModel model);
+
+    /**
+     * 更新
+     * @param request
+     * @return
+     */
+    ResponseVO updateByApplicationId(SecuritiesUserModel request);
 }

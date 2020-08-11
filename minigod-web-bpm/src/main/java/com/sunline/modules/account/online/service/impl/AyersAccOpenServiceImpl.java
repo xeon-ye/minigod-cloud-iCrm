@@ -7,14 +7,15 @@ import com.sunline.modules.account.online.entity.AyersClientInfoEntity;
 import com.sunline.modules.account.online.entity.CustomerAccountOpenInfoEntity;
 import com.sunline.modules.account.online.service.AyersAccOpenService;
 import com.sunline.modules.account.online.utils.DateTimeUtils;
-import com.sunline.modules.common.utils.DateUtils;
 import com.sunline.mutidatasource.DataSourceContextHolder;
 import com.sunline.mutidatasource.constant.DataSourceEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Service("ayersAccOpenService")
 public class AyersAccOpenServiceImpl implements AyersAccOpenService {
@@ -135,13 +136,15 @@ public class AyersAccOpenServiceImpl implements AyersAccOpenService {
         //期货适用
         //clientAccEntity.setClearingAccType("");
         clientAccEntity.setLoanLimit(new BigDecimal(5000000.00));
-        //不填
-        //clientAccEntity.setLoanExpiryDate(new Date());
-        clientAccEntity.setTradingLimit(new BigDecimal(0.00));
-        //待确认
         if (accInfoEntity.getFundAccountType() == 2){
-            //clientAccEntity.setBillPayNo("");
+            Date date = new Date(); //取时间
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(date);
+            calendar.add(calendar.DATE,1);
+            clientAccEntity.setLoanExpiryDate(calendar.getTime());
         }
+        clientAccEntity.setTradingLimit(new BigDecimal(0.00));
+        //clientAccEntity.setBillPayNo("");
         clientAccEntity.setInternetTrading("Y");
         clientAccEntity.setIvrsTrading("Y");
         clientAccEntity.setMangoTrading("Y");

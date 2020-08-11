@@ -196,9 +196,15 @@ public class HundsunAccountOpenJob {
             }
 
             if (count > 0) {
-                SecuritiesUserModel securitiesUserModel = CustomerOpenAccountConverter.converterToSecuritiesUserInfo(customerAccountOpenInfoEntity);
+                SecuritiesUserModel securitiesUserModel = new SecuritiesUserModel();
+                securitiesUserModel.setApplicationId(customerAccountOpenInfoEntity.getApplicationId());
                 securitiesUserModel.setFundAccountType(2);
-                ResponseVO responseVO = securitiesUserInfoService.addSecuritiesUserInfo(securitiesUserModel);
+                securitiesUserModel.setOpenAccountTime(new Date());
+                securitiesUserModel.setClientId(customerAccountOpenInfoEntity.getClientId());
+                securitiesUserModel.setTradeAccount(customerAccountOpenInfoEntity.getClientId());
+                securitiesUserModel.setCreditQuota(customerAccountOpenInfoEntity.getCreditQuota());
+                securitiesUserModel.setCreditRatio(customerAccountOpenInfoEntity.getCreditRatio());
+                ResponseVO responseVO = securitiesUserInfoService.updateByApplicationId(securitiesUserModel);
                 logger.info("同步开户数据至统一用户中心结果：" + JSON.toJSONString(responseVO));
                 // 驱动流程下一步
                 actModelerService.doNextFlow(openApplicationEntity.getApplicationId(), openApplicationEntity.getInstanceId(), "");

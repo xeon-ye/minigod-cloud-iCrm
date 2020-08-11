@@ -50,7 +50,7 @@ public class SecuritiesUserInfoServiceImpl implements SecuritiesUserInfoService 
             return vo;
         }
 
-        if (request.getStockTradeAccount() == null || "".equals(request.getStockTradeAccount())) {
+        if (request.getClientId() == null || "".equals(request.getClientId())) {
             vo.setCode(BpmCommonEnum.CodeType.PARAMETER_DISMATCH.getCode());
             vo.setMessage("交易帐号不可为空！");
             return vo;
@@ -259,5 +259,26 @@ public class SecuritiesUserInfoServiceImpl implements SecuritiesUserInfoService 
     public List<SecuritiesUserModel> verifyIsRestrictOpenAccount(SecuritiesUserModel model) {
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
         return securitiesUserInfoDao.verifyIsRestrictOpenAccount(model);
+    }
+
+    @Override
+    public ResponseVO updateByApplicationId(SecuritiesUserModel request) {
+        DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
+        ResponseVO vo = new ResponseVO();
+
+        try {
+
+            int count = securitiesUserInfoDao.updateByApplicationId(request);
+            if (count > 0) {
+                vo.setCode(BpmCommonEnum.CodeType.OK.getCode());
+                vo.setMessage(BpmCommonEnum.CodeType.OK.getMessage());
+            }
+
+        } catch (Exception e) {
+            vo.setCode(BpmCommonEnum.CodeType.INTERNAL_ERROR.getCode());
+            vo.setMessage(BpmCommonEnum.CodeType.INTERNAL_ERROR.getMessage());
+            logger.error("新增用户出现异常", e);
+        }
+        return vo;
     }
 }

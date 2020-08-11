@@ -768,9 +768,7 @@ public class CustomerOpenAccountConverter {
         securitiesUserModel.setIsAllowDerivativesTransaction(entity.getIsAllowDerivativesTransaction());
         securitiesUserModel.setTradeAccount(entity.getClientId());
         securitiesUserModel.setFundAccount(entity.getFundAccount());
-        if (null != entity.getOpenAccountTime()) {
-            securitiesUserModel.setOpenAccountTime(entity.getOpenAccountTime());
-        }
+        securitiesUserModel.setOpenAccountTime(new Date());
         securitiesUserModel.setCreateTime(new Date());
         securitiesUserModel.setUpdateTime(new Date());
         securitiesUserModel.setApplicationId(entity.getApplicationId());

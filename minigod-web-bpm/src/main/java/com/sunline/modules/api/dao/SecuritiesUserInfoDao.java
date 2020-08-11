@@ -70,4 +70,6 @@ public interface SecuritiesUserInfoDao extends BaseDao<SecuritiesUserModel> {
      * @return
      */
     List<SecuritiesUserModel> verifyIsRestrictOpenAccount(SecuritiesUserModel model);
+
+    int updateByApplicationId(SecuritiesUserModel model);
 }
