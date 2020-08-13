@@ -145,22 +145,22 @@ public class UserController extends BaseController {
             openAccountApplyFlag = true;
             noticeFlag = true;
             myUpcomingFlag = true;
-            stockNoticeFlag = true;
-            fundDepositApply = true;
+//            stockNoticeFlag = true;
+//            fundDepositApply = true;
         }
 
         //入金申请跳转url
-        String fundDepositUrl = "";
-        if (shiro.hasPermission("clientFundDeposit:checkList")) {
-            fundDepositUrl = "clientFundDeposit/checkList";
-            fundDepositApply = true;
-        } else if (shiro.hasPermission("depositBankBillFlow:bankCheck")) {
-            fundDepositUrl = "depositBankBillFlow/bankCheckList";
-            fundDepositApply = true;
-        } else if (shiro.hasPermission("clientFundDeposit:accEntryList")) {
-            fundDepositUrl = "clientFundDeposit/accEntryList";
-            fundDepositApply = true;
-        }
+//        String fundDepositUrl = "";
+//        if (shiro.hasPermission("clientFundDeposit:checkList")) {
+//            fundDepositUrl = "clientFundDeposit/checkList";
+//            fundDepositApply = true;
+//        } else if (shiro.hasPermission("depositBankBillFlow:bankCheck")) {
+//            fundDepositUrl = "depositBankBillFlow/bankCheckList";
+//            fundDepositApply = true;
+//        } else if (shiro.hasPermission("clientFundDeposit:accEntryList")) {
+//            fundDepositUrl = "clientFundDeposit/accEntryList";
+//            fundDepositApply = true;
+//        }
 
         // 待办条数
         int myUpcomingCount = actModelerService.myUpcomingCount();
@@ -175,9 +175,14 @@ public class UserController extends BaseController {
 
 
         return Result.ok().put("user", user).put("myUpcomingCount", myUpcomingCount).put("myNoticeCount", myNoticeCount).put("myOpenApplicationCount", myOpenApplicationCount)
-                .put("openAccountApplyFlag", openAccountApplyFlag).put("noticeFlag", noticeFlag).put("myUpcomingFlag", myUpcomingFlag).put("stockNoticeFlag", stockNoticeFlag)
-                .put("myStockNoticeCount", myStockNoticeCount).put("fundDepositApply", fundDepositApply).put("myFundDepositCount", myFundDepositCount)
-                .put("fundDepositUrl", fundDepositUrl);
+                .put("openAccountApplyFlag", openAccountApplyFlag)
+                .put("noticeFlag", noticeFlag)
+                .put("myUpcomingFlag", myUpcomingFlag)
+//                .put("stockNoticeFlag", stockNoticeFlag)
+                .put("myStockNoticeCount", myStockNoticeCount)
+//                .put("fundDepositApply", fundDepositApply)
+                .put("myFundDepositCount", myFundDepositCount);
+//                .put("fundDepositUrl", fundDepositUrl);
     }
 
     /**

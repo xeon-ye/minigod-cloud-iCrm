@@ -15,7 +15,7 @@ public class OpenInfoReqParams extends BaseRequestParams implements Serializable
     private Integer accessWay;
     private Integer fundAccountType;
     private Integer inviteId;
-    private Integer channelId;
+    private String channelId;
     private Integer activeId;
     private Integer language;
     private ArrayList<Integer> accountMarkets;
