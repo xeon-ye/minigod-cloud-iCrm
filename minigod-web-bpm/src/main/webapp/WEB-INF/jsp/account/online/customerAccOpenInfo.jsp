@@ -1048,10 +1048,10 @@
             <div class="panel-heading"><b style="color: #368763">职业信息</b></div>
             </br>
             <div class="row">
-                <div class="form-group col-sm-12 col-md-12">
+                <div class="form-group col-sm-6 col-md-12">
                     <label class="col-sm-1 control-label no-padding-right">职业状态</label>
                     <div class="col-xs-11">
-                        <span class="col-sm-12 block input-icon input-icon-right">
+                        <span class="col-sm-6 block input-icon input-icon-right">
                             <c:forEach var="professionEntity"
                                        items="${fns:getCodeInfoByParentMark('AO_PROFESSION_CODE')}"
                                        varStatus="i">
@@ -1078,7 +1078,19 @@
                         </span>
                     </div>
                 </div>
+
+                <div class="form-group col-sm-6 col-md-6">
+                    <label class="col-sm-2 control-label no-padding-right">从业年限</label>
+                    <div class="col-xs-9">
+                    <span class="col-sm-12 block input-icon input-icon-right">
+                        <input id="workingSeniority" name="workingSeniority" type="text" class="form-control"
+                               value="${customerAccountOpenInfoEntity.workingSeniority}" readonly/>
+                    </span>
+                    </div>
+                </div>
             </div>
+
+
             <div class="row">
                 <div class="form-group col-sm-6 col-md-6">
                     <label class="col-sm-2 control-label no-padding-right">公司名称</label>

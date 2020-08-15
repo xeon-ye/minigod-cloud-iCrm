@@ -702,7 +702,7 @@
         and not EXISTS(
 				select a.* from open_account_process_log as a where id = (select max(id) from open_account_process_log b where a.application_id=b.application_id)
 				and caoa.application_id = a.application_id
-				and (a.is_edit = '1' or a.is_additional = '1')
+				and (a.is_edit = '5' or a.is_additional = '5')
 				and a.update_user =#{updateUser})
         
         <if test="status != null">

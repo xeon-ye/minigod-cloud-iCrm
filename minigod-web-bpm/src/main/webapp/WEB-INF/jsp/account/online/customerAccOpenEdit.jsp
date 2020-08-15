@@ -199,8 +199,18 @@
                         <div class="form-group col-sm-6 col-md-6">
                             <label class="col-sm-3 control-label no-padding-right">国家/地区</label>
                             <div class="col-xs-9">
+                               <span class="col-sm-12 block input-icon input-icon-right">
+                                    <input name="nationality" type="text" class="form-control"
+                                           value="${fns:getCodeName("AO_NATIONALITY",customerAccountOpenInfoEntity.nationality)}"/>
+                                </span>
+                            </div>
+                        </div>
+
+                       <%-- <div class="form-group col-sm-6 col-md-6">
+                            <label class="col-sm-3 control-label no-padding-right">国家/地区</label>
+                            <div class="col-xs-9">
                                 <span class="col-xs-12 block input-icon input-icon-right">
-                                    <tag:select id="nationality" name="nationality" nameKey="AO_NATIONALITY"
+                                    <tag:select id="nationality" name="nationality" nameKey="AO_NATIONALITY" isAddDefaltOption="true"
                                                 initSelectedKey="${customerAccountOpenInfoEntity.nationality}"
                                                 clazz="form-control"/>
                                     <c:choose>
@@ -216,7 +226,7 @@
                                     </c:choose>
                                 </span>
                             </div>
-                        </div>
+                        </div>--%>
                     </div>
 
                     <div class="row">
@@ -465,7 +475,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                 <%--   <div class="row">
                         <div class="form-group col-sm-6 col-md-6">
                             <label class="col-sm-2 control-label no-padding-right">证件类型</label>
                             <div class="col-xs-9">
@@ -498,7 +508,7 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
+                    </div>--%>
 
                     <div class="row">
                         <div class="form-group col-sm-6 col-md-6">
@@ -814,6 +824,31 @@
                     </div>
                 </div>
 
+
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">公司电话</label>
+                        <div class="col-xs-9">
+                        <span class="col-xs-12 block input-icon input-icon-right">
+                            <input id="companyPhoneNumber" name="companyPhoneNumber" type="text" class="form-control"
+                                   value="${customerAccountOpenInfoEntity.companyPhoneNumber}"/>
+                        </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-3 control-label no-padding-right">从业年限</label>
+                        <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                <input id="workingSeniority" name="workingSeniority" type="text" class="form-control"
+                                       value="${customerAccountOpenInfoEntity.workingSeniority}" />
+                            </span>
+                        </div>
+                    </div>
+
+
+                </div>
+
                 <div class="row">
                     <div class="form-group col-sm-12 col-md-12">
                         <label class="col-sm-1 control-label no-padding-right">公司地址</label>
@@ -926,7 +961,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+            <%--    <div class="row">
                     <div class="form-group col-sm-6 col-md-6">
                         <label class="col-sm-2 control-label no-padding-right">投资目标</label>
                         <div class="col-xs-9">
@@ -939,6 +974,25 @@
                                    name="investTargetOther" type="text"
                                    value="${customerAccountOpenInfoEntity.investTargetOther}"/>
                         </span>
+                        </div>
+                    </div>
+                </div>--%>
+
+                <div class="row">
+                    <div class="form-group col-sm-6 col-md-6">
+                        <label class="col-sm-2 control-label no-padding-right">投资目标</label>
+                        <div class="col-xs-9">
+                    <span class="col-xs-12 block input-icon input-icon-right" style="width:1000px">
+                         <span class="layui-inline">
+                             <tag:checkbox name="investTarget" nameKey="AO_INVEST_TARGET"
+                                           initCheckKey="${customerAccountOpenInfoEntity.investTarget}"
+                                           style="display: inline"></tag:checkbox>
+                         </span>
+                            <input class="form-control " style="width: 200px;display: inline"
+                                   id="investTargetOther"
+                                   name="investTargetOther" type="text"
+                                   value="${customerAccountOpenInfoEntity.investTargetOther}" />
+                    </span>
                         </div>
                     </div>
                 </div>
