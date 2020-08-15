@@ -597,12 +597,12 @@ public class CustomerAccountOpenHelper {
             return responseVO;
         }
 
-        if (null == openAccountInfo.getFamilyPhone() || StringUtils.isBlank(openAccountInfo.getFamilyPhone())) {
-            logger.error("【开户预约接口数据完整性校验】：请填写住所电话");
-            responseVO.setCode(-1);
-            responseVO.setMessage("请填写住所电话");
-            return responseVO;
-        }
+//        if (null == openAccountInfo.getFamilyPhone() || StringUtils.isBlank(openAccountInfo.getFamilyPhone())) {
+//            logger.error("【开户预约接口数据完整性校验】：请填写住所电话");
+//            responseVO.setCode(-1);
+//            responseVO.setMessage("请填写住所电话");
+//            return responseVO;
+//        }
 
         if (null == openAccountInfo.getEducationLevel()) {
             logger.error("【开户预约接口数据完整性校验】：请填写教育程度");

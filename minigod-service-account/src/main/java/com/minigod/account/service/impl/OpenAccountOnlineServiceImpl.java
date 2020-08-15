@@ -222,7 +222,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         Integer lang = params.getLanguage();
         Integer activeId = params.getActiveId();
         Integer inviteId = params.getInviteId();
-        Integer channelId = params.getChannelId();
+        String channelId = params.getChannelId();
         ArrayList<Integer> accountMarkets = params.getAccountMarkets();
         JSONObject formData = params.getFormData();
 
@@ -231,7 +231,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         FundAccountType fundAccountTypeInfo = FundAccountType.getType(fundAccountType);
 
         // 参数校验 - 基本
-        if (openTypeInfo == null || lang == null ||accessWay == null || fundAccountTypeInfo == null || accountMarkets.size() == 0 || formData == null) {
+        if (openTypeInfo == null || lang == null || accessWay == null || fundAccountTypeInfo == null || accountMarkets.size() == 0 || formData == null) {
             throw new InternalApiException(StaticType.CodeType.BAD_PARAMS, StaticType.MessageResource.BAD_PARAMS);
         }
 
@@ -284,15 +284,15 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         formData.put("language", lang); // 语言
 
         // 推荐人、渠道等字段，保留，后期可能使用
+        if (inviteId == null || inviteId == 0) {
+            inviteId = 1;
+        }
+        if (StringUtils.isEmpty(channelId)) {
+            channelId = "1";
+        }
+
         formData.put("inviterId", inviteId);
         formData.put("sourceChannelId", channelId);
-
-        if (inviteId == null) {
-            formData.put("inviterId", 1);
-        }
-         if (channelId == null) {
-            formData.put("sourceChannelId", 1);
-        }
 
         BpmOpenAccountAppointmentReqVo reqVo = JSONObject.parseObject(JSONObject.toJSONString(formData), BpmOpenAccountAppointmentReqVo.class);
 
@@ -424,6 +424,8 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         customOpenInfo.setIsPushed(false);
         customOpenInfo.setIsNoticed(false);
         customOpenInfo.setIsSend(false);
+        customOpenInfo.setOpenInviteId(inviteId);
+        customOpenInfo.setOpenChannel(channelId);
 
         customOpenInfo.setCreateTime(new Date());
         customOpenInfo.setUpdateTime(new Date());

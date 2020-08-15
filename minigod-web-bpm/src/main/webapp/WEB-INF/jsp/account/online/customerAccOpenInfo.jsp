@@ -159,15 +159,6 @@
                     </span>
                     </div>
                 </div>
-                <div class="form-group col-sm-6 col-md-6">
-                    <label class="col-sm-2 control-label no-padding-right">客户帐号</label>
-                    <div class="col-xs-9">
-                    <span class="col-sm-12 block input-icon input-icon-right">
-                        <input id="clientId" name="clientId" type="text" class="form-control"
-                               value="${customerAccountOpenInfoEntity.clientId}"/>
-                    </span>
-                    </div>
-                </div>
             </div>
             <c:if test="${accountOpenApplicationEntity.applicationStatus == 6 || accountOpenApplicationEntity.applicationStatus == 4}">
                 <div class="row">
@@ -1840,17 +1831,28 @@
                                 </span>
                     </div>
                 </div>
-                <%--<div class="row">
+                <div class="row">
                     <div class="form-group col-sm-6 col-md-6">
-                        <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                            证券交易账号</label>
-                        <span class="col-xs-8 block input-icon input-icon-right">
-                            <input id="stockTradeAccount" name="stockTradeAccount" type="text" class="form-control"
-                                   readonly
-                                   value="${customerAccountOpenInfoEntity.stockTradeAccount}"/>
-                        </span>
+                        <label class="col-sm-2 control-label no-padding-right">客户帐号</label>
+                        <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                <input name="clientId" type="text" class="form-control"
+                                       value="${customerAccountOpenInfoEntity.clientId}" readonly/>
+                            </span>
+                        </div>
                     </div>
-                </div>--%>
+                </div>
+                <%-- <div class="row">
+                     <div class="form-group col-sm-6 col-md-6">
+                         <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                             证券交易账号</label>
+                         <span class="col-xs-8 block input-icon input-icon-right">
+                             <input id="stockTradeAccount" name="stockTradeAccount" type="text" class="form-control"
+                                    readonly
+                                    value="${customerAccountOpenInfoEntity.stockTradeAccount}"/>
+                         </span>
+                     </div>
+                 </div>--%>
                 <%--<c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">
                     <div class="row">
                         <div class="form-group col-sm-6 col-md-6">
@@ -1927,17 +1929,28 @@
                                 </span>
                         </div>
                     </div>
-                    <%--<div class="row">
+                    <div class="row">
+                        <div class="form-group col-sm-6 col-md-6">
+                            <label class="col-sm-2 control-label no-padding-right">客户帐号</label>
+                            <div class="col-xs-9">
+                            <span class="col-sm-12 block input-icon input-icon-right">
+                                <input name="clientId" type="text" class="form-control"
+                                       value="${customerAccountOpenInfoEntity.clientId}" readonly/>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                   <%-- <div class="row">
                         <div class="form-group col-sm-6 col-md-6">
                             <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                                交易账号</label>
+                                证券交易账号</label>
                             <span class="col-xs-8 block input-icon input-icon-right">
                             <input id="stockTradeAccount" name="stockTradeAccount" type="text" class="form-control"
                                    value="${customerAccountOpenInfoEntity.stockTradeAccount}"/>
-                            </span>
+                        </span>
                         </div>
-                    </div>
-                    <c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">
+                    </div>--%>
+                    <%--<c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">
                         <div class="row">
                             <div class="form-group col-sm-6 col-md-6">
                                 <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
