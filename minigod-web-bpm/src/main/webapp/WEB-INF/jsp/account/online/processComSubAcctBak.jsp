@@ -35,7 +35,7 @@
                     </div>
                 </c:if>
 
-                <%--<c:if test="${accountOpenApplicationEntity.applicationStatus == '1' || accountOpenApplicationEntity.applicationStatus == '2'}">
+                <c:if test="${accountOpenApplicationEntity.applicationStatus == '1' || accountOpenApplicationEntity.applicationStatus == '2'}">
                     <c:if test="${openImgModified == 1 and supImgModified == 0 }">
                         <div class="col-sm-1">
                             <button class="layui-btn " type="button" onclick="openAccountInfoEdit(${taskDto.busId});">
@@ -62,7 +62,7 @@
                             </button>
                         </div>
                     </c:if>
-                </c:if>--%>
+                </c:if>
 
                 <c:if test="${openImgModified==0 and supImgModified == 0 }">
                     <div class="col-sm-1">
@@ -254,81 +254,92 @@
             scrollbar: false,
             type: 2,
             title: ["退回理由", true],
-            area: ['60%', '75%'], //宽高
+            area: ['60%', '95%'], //宽高
             content: [url, 'yes']
         });
     }
 
 
+    function realDoActTask(clientId){
+        confirm("确认办理此任务吗?", function () {
+
+            var loading = layer.msg('Loading...', {icon: 16, shade: 0.01});
+
+            var url = "${webRoot}/act/deal/doActTask";
+            var userIds = new Array();
+            $("#userTab input[name='userIds']").each(function () {
+                userIds.push($(this).val());
+            });
+            var params = {
+                'busId': '${taskDto.busId}',
+                'taskId': '${taskDto.taskId}',
+                'instanceId': '${taskDto.instanceId}',
+                'defId': '${taskDto.defId}',
+                'varValue': processInfo.varValue,
+                'varName': processInfo.varName,
+                'nodeType': processInfo.nodeType,
+                'nextUserIds': userIds.join(","),
+                'applicationId': '${accountOpenApplicationEntity.applicationId}',
+                'applicationStatus': '${accountOpenApplicationEntity.applicationStatus}',
+                'clientId': clientId,
+            };
+            var remark = $("#remark").val();
+            params["remark"] = remark;
+            $.post(url, params, function (result) {
+                if (result.code == '0') {
+
+                    layer.close(loading);
+
+                    if (${accountOpenApplicationEntity.applicationStatus == '2'}) {
+                        alert(result, function () {
+                            //刷新父窗口列表
+                            parent.location.reload();
+                            //关闭弹框
+                            closeThisWindow();
+                        });
+                    } else {
+                        alert(result, function () {
+                            //刷新父窗口列表
+                            parent.location.reload();
+                            //关闭弹框
+                            closeThisWindow();
+                        });
+                    }
+                } else {
+                    layer.close(loading);
+                    alertMsg(result.msg);
+                }
+            });
+
+        });
+    }
+
     /**
      * 办理任务
      */
     function clickSubmit() {
-        if (${accountOpenApplicationEntity.applicationStatus == 2 }) {
+        // 初审阶段
+        if (${accountOpenApplicationEntity.applicationStatus == 1 }) {
             var clientId = $('input[name="clientId"]').val();
-            var isAmlSuspicious = $('input[name="isAmlSuspicious"]').filter(':checked').val();
-            var acceptRisk = $('input[name="acceptRisk"]').filter(':checked').val();
-            if (clientId == null || clientId == '') {
-                alertMsg("请输入客户账号");
-            } else if (isAmlSuspicious == null || isAmlSuspicious == '') {
-                alertMsg("请勾选该申请人有无AML可疑信息");
-            } else if ($("#amlFlag").val() == "true") {
-                alertMsg("请上传AML证明文件")
-            } else if (acceptRisk == null) {
-                alertMsg("请勾选该申请人客户风险等级");
-            } else {
-                confirm("确认办理此任务吗?", function () {
 
-                    var loading = layer.msg('Loading...', {icon: 16, shade: 0.01});
-
-                    var url = "${webRoot}/act/deal/doActTask";
-                    var userIds = new Array();
-                    $("#userTab input[name='userIds']").each(function () {
-                        userIds.push($(this).val());
-                    });
-                    var params = {
-                        'busId': '${taskDto.busId}',
-                        'taskId': '${taskDto.taskId}',
-                        'instanceId': '${taskDto.instanceId}',
-                        'defId': '${taskDto.defId}',
-                        'varValue': processInfo.varValue,
-                        'varName': processInfo.varName,
-                        'nodeType': processInfo.nodeType,
-                        'applicationId': '${accountOpenApplicationEntity.applicationId}',
-                        'applicationStatus': '${accountOpenApplicationEntity.applicationStatus}',
-                        'nextUserIds': userIds.join(",")
-                    };
-                    var remark = $("#remark").val();
-                    params["remark"] = remark;
-                    $.post(url, params, function (result) {
-                        if (result.code == '0') {
-
-                            layer.close(loading);
-
-                            if (${accountOpenApplicationEntity.applicationStatus == '2'}) {
-                                alert(result, function () {
-                                    //刷新父窗口列表
-                                    parent.location.reload();
-                                    //关闭弹框
-                                    closeThisWindow();
-                                });
-                            } else {
-                                alert(result, function () {
-                                    //刷新父窗口列表
-                                    parent.location.reload();
-                                    //关闭弹框
-                                    closeThisWindow();
-                                });
-                            }
+      /*      if (clientId != null && clientId != '') {
+                $.ajax({
+                    url: "${webRoot}/secUserInfo/checkTradeAccount",   //处理页面的名称
+                    data: {
+                        tradeAccount: clientId
+                    },  //为值取个名字
+                    type: "POST",  //传值方式
+                    dataType: "text",  //数据类型
+                    success: function (d) {
+                        if (d.trim() == "exist") {
+                            alertMsg("客户账号已存在");
                         } else {
-                            layer.close(loading);
-                            alertMsg(result.msg);
-                        }
-                    });
 
-                });
-            }
-        } else if (${accountOpenApplicationEntity.applicationStatus == 1 }) {
+                        }
+                    }
+                })
+            };*/
+
             var isAmlSuspicious = $('input[name="isAmlSuspicious"]').filter(':checked').val();
 
             if (isAmlSuspicious != null && $("#amlFlag").val() == "true") {
@@ -355,6 +366,7 @@
                         'nodeType': processInfo.nodeType,
                         'applicationId': '${accountOpenApplicationEntity.applicationId}',
                         'applicationStatus': '${accountOpenApplicationEntity.applicationStatus}',
+                        'clientId': clientId,
                         'nextUserIds': userIds.join(",")
                     };
                     var remark = $("#remark").val();
@@ -387,55 +399,78 @@
 
                 });
             }
-        } else {
-            confirm("确认办理此任务吗?", function () {
+        }
+        // 复审阶段
+        else if (${accountOpenApplicationEntity.applicationStatus == 2 }) {
+                var clientId = $('input[name="clientId"]').val();
+                var isAmlSuspicious = $('input[name="isAmlSuspicious"]').filter(':checked').val();
+                var acceptRisk = $('input[name="acceptRisk"]').filter(':checked').val();
+                if (clientId == null || clientId == '') {
+                    alertMsg("请输入客户账号");
+                } else if (isAmlSuspicious == null || isAmlSuspicious == '') {
+                    alertMsg("请勾选该申请人有无AML可疑信息1");
+                } else if ($("#amlFlag").val() == "true") {
+                    alertMsg("请上传AML证明文件1")
+                } else if (acceptRisk == null) {
+                    alertMsg("请勾选该申请人客户风险等级");
+                } else {
+                    confirm("确认办理此任务吗?", function () {
 
-                var loading = layer.msg('Loading...', {icon: 16, shade: 0.01});
+                        var loading = layer.msg('Loading...', {icon: 16, shade: 0.01});
 
-                var url = "${webRoot}/act/deal/doActTask";
-                var userIds = new Array();
-                $("#userTab input[name='userIds']").each(function () {
-                    userIds.push($(this).val());
-                });
-                var params = {
-                    'busId': '${taskDto.busId}',
-                    'taskId': '${taskDto.taskId}',
-                    'instanceId': '${taskDto.instanceId}',
-                    'defId': '${taskDto.defId}',
-                    'varValue': processInfo.varValue,
-                    'varName': processInfo.varName,
-                    'nodeType': processInfo.nodeType,
-                    'nextUserIds': userIds.join(",")
-                };
-                var remark = $("#remark").val();
-                params["remark"] = remark;
-                $.post(url, params, function (result) {
-                    if (result.code == '0') {
+                        var url = "${webRoot}/act/deal/doActTask";
+                        var userIds = new Array();
+                        $("#userTab input[name='userIds']").each(function () {
+                            userIds.push($(this).val());
+                        });
+                        var params = {
+                            'busId': '${taskDto.busId}',
+                            'taskId': '${taskDto.taskId}',
+                            'instanceId': '${taskDto.instanceId}',
+                            'defId': '${taskDto.defId}',
+                            'varValue': processInfo.varValue,
+                            'varName': processInfo.varName,
+                            'nodeType': processInfo.nodeType,
+                            'applicationId': '${accountOpenApplicationEntity.applicationId}',
+                            'applicationStatus': '${accountOpenApplicationEntity.applicationStatus}',
+                            'clientId': clientId,
+                            'nextUserIds': userIds.join(",")
+                        };
+                        var remark = $("#remark").val();
+                        params["remark"] = remark;
+                        $.post(url, params, function (result) {
+                            if (result.code == '0') {
 
-                        layer.close(loading);
+                                layer.close(loading);
 
-                        if (${accountOpenApplicationEntity.applicationStatus == '2'}) {
-                            alert(result, function () {
-                                //刷新父窗口列表
-                                parent.location.reload();
-                                //关闭弹框
-                                closeThisWindow();
-                            });
-                        } else {
-                            alert(result, function () {
-                                //刷新父窗口列表
-                                parent.location.reload();
-                                //关闭弹框
-                                closeThisWindow();
-                            });
-                        }
-                    } else {
-                        layer.close(loading);
-                        alertMsg(result.msg);
-                    }
-                });
+                                if (${accountOpenApplicationEntity.applicationStatus == '2'}) {
+                                    alert(result, function () {
+                                        //刷新父窗口列表
+                                        parent.location.reload();
+                                        //关闭弹框
+                                        closeThisWindow();
+                                    });
+                                } else {
+                                    alert(result, function () {
+                                        //刷新父窗口列表
+                                        parent.location.reload();
+                                        //关闭弹框
+                                        closeThisWindow();
+                                    });
+                                }
+                            } else {
+                                layer.close(loading);
+                                alertMsg(result.msg);
+                            }
+                        });
 
-            });
+                    });
+                }
+            }
+
+        // 其他
+        else {
+
         }
 
     }

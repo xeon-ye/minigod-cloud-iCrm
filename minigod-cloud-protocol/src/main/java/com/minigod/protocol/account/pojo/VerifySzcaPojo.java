@@ -15,4 +15,5 @@ public class VerifySzcaPojo {
     private String fileUrl;
     private Boolean isValid;
     private String remark;
+    private String applyType = "apply";
 }

@@ -13,7 +13,7 @@ import java.io.InputStream;
 
 //@FeignClient(value = "minigod-account-service")
 public interface VerifySzcaService {
-     // 获取操作标示（SZCA）
+    // 获取操作标示（SZCA）
     public VerifySzcaPojo getTokenBySzca();
 
     // 获取证书主题

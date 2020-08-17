@@ -14,9 +14,9 @@
         <c:choose>
             <c:when test="${taskDto.actKey =='customerAccountOpenApplication' || taskDto.actKey =='customerAccountOpenApplicationOffline' || taskDto.actKey =='customerAccountMarginOpenApplication'}">
                 <ul class="layui-tab-title">
-                    <li id="flowInfo" class="layui-this">流程信息</li>
-                    <li id="operatorLogInfo">操作记录</li>
                     <li id="custInfo" onclick="busInfoClick('${flag}','${approveTaskPageUri}')">开户资料</li>
+                    <li id="operatorLogInfo">操作记录</li>
+                    <li id="flowInfo" class="layui-this">流程信息</li>
                 </ul>
             </c:when>
             <c:when test="${taskDto.actKey =='clientFundWithdrawApplication'}">
@@ -44,15 +44,15 @@
                         <li id="flowInfo" class="layui-this">流程信息</li>
                     </c:if>
                     <c:if test="${flag ==1}">
-                        <li id="flowInfo" class="layui-this">流程信息</li>
                         <li id="professionalInfo">审核详情</li>
+                        <li id="flowInfo" class="layui-this">流程信息</li>
                     </c:if>
                 </ul>
             </c:when>
             <c:otherwise>
                 <ul class="layui-tab-title">
-                    <li class="layui-this" id="flowInfo">流程信息</li>
                     <li onclick="busInfoClick('${flag}','${approveTaskPageUri}')">任务审批</li>
+                    <li class="layui-this" id="flowInfo">流程信息</li>
                 </ul>
             </c:otherwise>
         </c:choose>
@@ -73,7 +73,9 @@
 
         //初始化tab
         var actKey = '${taskDto.actKey}';
-        if (actKey == 'clientFundWithdrawApplication') {
+        if (actKey == 'customerAccountOpenApplication' || actKey == 'customerAccountOpenApplicationOffline' || actKey == 'customerAccountMarginOpenApplication') {
+            $("#custInfo").click();
+        } else if (actKey == 'clientFundWithdrawApplication') {
             $("#fundWithdrawInfo").click();
         } else if (actKey == 'fundWithdrawRefundApplication') {
             $("#fundWithdrawRefundInfo").click();

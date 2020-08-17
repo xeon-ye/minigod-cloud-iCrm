@@ -53,10 +53,10 @@ public class AyersAccOpenServiceImpl implements AyersAccOpenService {
         clientInfoEntity.setCreateTime(new Date());
 
         //其它字段
-        clientInfoEntity.setName(accInfoEntity.getGivenNameSpell());
+        clientInfoEntity.setName(accInfoEntity.getClientNameSpell());
         //clientInfoEntity.setBig5Names(accInfoEntity.getClientName());
         clientInfoEntity.setGbNames(accInfoEntity.getClientName());
-        clientInfoEntity.setEngNames(accInfoEntity.getGivenNameSpell());
+        clientInfoEntity.setEngNames(accInfoEntity.getClientNameSpell());
         //证件类型[0=未知 1=大陆居民身份证 2=香港居民身份证 3=护照 4=驾驶证]
         if (accInfoEntity.getIdKind() == 1){
             clientInfoEntity.setIdType("IDCN");

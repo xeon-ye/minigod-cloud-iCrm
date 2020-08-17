@@ -44,7 +44,7 @@ minigod:
   jfszca:
     userName: admin01
     userPwd: AF_88888888
-    url: http://121.35.249.14:9008
+    url: https://sns.9fstock.com:9008
     login: /platform_api/org_login
     getToken: /platform_api/get_ca_token
     getCert: /platform_api/get_ca_cert_dn

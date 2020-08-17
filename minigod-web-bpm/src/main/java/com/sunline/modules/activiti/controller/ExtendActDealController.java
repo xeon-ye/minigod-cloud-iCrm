@@ -444,15 +444,6 @@ public class ExtendActDealController {
             }
 
             actModelerService.doActTask(processTaskDto, params);
-            if ("2".equals(params.get("applicationStatus")) || "1".equals(params.get("applicationStatus"))){
-                CustomerAccountOpenInfoEntity customerAccountOpenInfo = new CustomerAccountOpenInfoEntity();
-                customerAccountOpenInfo.setApplicationId((String) params.get("applicationId"));
-                String clientId = (String) params.get("clientId");
-                if (org.apache.commons.lang3.StringUtils.isNotBlank(clientId)){
-                    customerAccountOpenInfo.setClientId(clientId);
-                    customerAccOpenInfoService.setTradeAccount(customerAccountOpenInfo);
-                }
-            }
             result = Result.ok("操作成功");
         } catch (Exception e) {
             logger.error("操作失败", e);

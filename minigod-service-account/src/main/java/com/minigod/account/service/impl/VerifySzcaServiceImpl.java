@@ -193,7 +193,7 @@ public class VerifySzcaServiceImpl extends BaseBeanFactory implements VerifySzca
         // 本地记录未校验，进行SZCA远程校验
         if (localAuthCa.getStatus() == null || !VerifyAuthCaStatusEnum.isFlag(localAuthCa.getStatus(), VerifyAuthCaStatusEnum.CA_P10)) {
 
-            SzcaCertApplyP10ResVo szcaCertApplyP10ResVo = SzcaHttpClient.getResult(URL_GET_SIGN_P7_FOR_PDF, "apply", reqVo, SzcaCertApplyP10ResVo.class);
+            SzcaCertApplyP10ResVo szcaCertApplyP10ResVo = SzcaHttpClient.getResult(URL_GET_CERT_APPLY_P10, "apply", reqVo, SzcaCertApplyP10ResVo.class);
 
             if (szcaCertApplyP10ResVo.getRetCode().equals("0")) {
                 localAuthCa.setCertSn(szcaCertApplyP10ResVo.getCertSn());

@@ -949,6 +949,37 @@ public class CustomerAccountOpenController {
         }
     }
 
+    /**
+     * 修改客户资料
+     *
+     * @param
+     * @return
+     */
+
+    @RequestMapping(value = "/editTradeAccount")
+    public
+    @ResponseBody
+    Result editTradeAccount(CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity) {
+
+        if (StringUtils.isBlank(customerAccountOpenInfoEntity.getApplicationId())) {
+            return Result.ok();
+        }
+
+        if (customerAccountOpenInfoEntity.getClientId() != null && !"".equals(customerAccountOpenInfoEntity.getClientId())) {
+            int tradeAccountNumber = customerAccountOpenInfoService.validateTradeAccount(customerAccountOpenInfoEntity);
+            if (tradeAccountNumber > 0) {
+                return Result.error("该客户帐号已被申请!");
+            }
+        }
+
+        customerAccountOpenInfoService.update(customerAccountOpenInfoEntity);
+        boolean isSucceed = true;
+        if (isSucceed) {
+            return Result.ok();
+        }
+
+        return Result.error();
+    }
 
     /**
      * 终止流程页面
@@ -979,6 +1010,7 @@ public class CustomerAccountOpenController {
     /**
      * 流程终止操作
      * 正常开户
+     *
      * @param approvalOpinion 审批意见
      * @return
      */
@@ -1024,6 +1056,7 @@ public class CustomerAccountOpenController {
     /**
      * 流程终止操作
      * 正常开户
+     *
      * @param approvalOpinion 审批意见
      * @return
      */
@@ -1233,6 +1266,7 @@ public class CustomerAccountOpenController {
     /**
      * 开户审批界面
      * 正常开户
+     *
      * @param processTaskDto
      * @param model
      * @param flag
@@ -1292,6 +1326,7 @@ public class CustomerAccountOpenController {
     /**
      * 开户审批界面
      * 账户增开
+     *
      * @param processTaskDto
      * @param model
      * @param flag
@@ -1742,6 +1777,7 @@ public class CustomerAccountOpenController {
     /**
      * 流程信息详情
      * 增开
+     *
      * @param model
      * @param request
      * @return
@@ -1749,7 +1785,7 @@ public class CustomerAccountOpenController {
     @RequestMapping(value = "tasLogImgMarginAcct", method = RequestMethod.POST)
     public String tasLogImgMarginAcct(Model model, HttpServletRequest request, String busId, String instanceId) {
 
-        CustomerAccountMarginOpenApplyEntity applyEntity= customerAccMarginOpenApplyService.queryObjectByApplicationId(busId);
+        CustomerAccountMarginOpenApplyEntity applyEntity = customerAccMarginOpenApplyService.queryObjectByApplicationId(busId);
 
         // 通过证件类型，证件号码查询历史流程信息
         CustomerAccountOpenInfoEntity customerAccountOpenInfo = customerAccountOpenInfoService.queryByIdCardNumber(applyEntity.getIdCardNo());
@@ -1792,6 +1828,7 @@ public class CustomerAccountOpenController {
     /**
      * 流程信息详情
      * 正常开户
+     *
      * @param model
      * @param request
      * @return
@@ -2255,7 +2292,7 @@ public class CustomerAccountOpenController {
         try {
 
             if (applicationIds == null || StringUtils.isBlank(applicationIds)) {
-                return ;
+                return;
             }
 
             String[] applicationIdArray = applicationIds.split(",");
@@ -2309,7 +2346,7 @@ public class CustomerAccountOpenController {
     @SysLog("开户确认")
     public void batchConfirmOpenAcct(String applicationIds, HttpServletRequest request, HttpServletResponse response) {
         if (applicationIds == null || StringUtils.isBlank(applicationIds)) {
-            return ;
+            return;
         }
 
         String[] applicationIdArray = applicationIds.split(",");

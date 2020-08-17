@@ -2,6 +2,8 @@ package com.minigod.persist.account.mapper;
 
 import com.minigod.protocol.account.model.VerifyAuthCa;import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface VerifyAuthCaMapper {
     /**
      * delete by primary key
@@ -53,7 +55,13 @@ public interface VerifyAuthCaMapper {
 
     VerifyAuthCa selectOneByIdCard(@Param("idCard") String idCard);
 
+    VerifyAuthCa selectOneByIdCardP10(@Param("idCard") String idCard);
+
+    List<VerifyAuthCa> selectByIdCardAndStatus(@Param("idCard") String idCard,@Param("status")Integer status);
+
     VerifyAuthCa selectOneByCertDn(@Param("certDn") String certDn);
+
+    List<VerifyAuthCa>  selectByIdCardAndStatusLessThan(@Param("idCard")String idCard,@Param("maxStatus")Integer maxStatus);
 
     int deleteByIdCardAndStatusLessThan(@Param("idCard")String idCard,@Param("maxStatus")Integer maxStatus);
 

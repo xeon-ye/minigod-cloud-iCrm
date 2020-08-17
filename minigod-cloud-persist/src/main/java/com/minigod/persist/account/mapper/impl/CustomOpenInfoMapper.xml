@@ -23,6 +23,7 @@
     <result column="push_err_count" jdbcType="INTEGER" property="pushErrCount" />
     <result column="remote_id" jdbcType="VARCHAR" property="remoteId" />
     <result column="ca_status" jdbcType="INTEGER" property="caStatus" />
+    <result column="ca_valid_id" jdbcType="INTEGER" property="caValidId" />
     <result column="open_date" jdbcType="TIMESTAMP" property="openDate" />
     <result column="trade_account" jdbcType="VARCHAR" property="tradeAccount" />
     <result column="is_send" jdbcType="BOOLEAN" property="isSend" />
@@ -71,7 +72,7 @@
       #{fundAccountType,jdbcType=INTEGER}, #{accountMarkets,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{pendingType,jdbcType=INTEGER}, #{failType,jdbcType=INTEGER}, #{failReason,jdbcType=VARCHAR}, 
       #{isNoticed,jdbcType=BOOLEAN}, #{noticeErrCount,jdbcType=INTEGER}, #{isPushed,jdbcType=BOOLEAN}, 
-      #{pushErrCount,jdbcType=INTEGER}, #{remoteId,jdbcType=VARCHAR}, #{caStatus,jdbcType=INTEGER}, 
+      #{pushErrCount,jdbcType=INTEGER}, #{remoteId,jdbcType=VARCHAR}, #{caStatus,jdbcType=INTEGER}, #{caValidId,jdbcType=INTEGER},
       #{openDate,jdbcType=TIMESTAMP}, #{tradeAccount,jdbcType=VARCHAR}, #{isSend,jdbcType=BOOLEAN}, 
       #{formData,jdbcType=VARCHAR}, #{openAccountPdfUrl,jdbcType=VARCHAR}, #{openSource,jdbcType=VARCHAR},
       #{openInviteId,jdbcType=INTEGER}, #{openChannel,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
@@ -134,6 +135,9 @@
       </if>
       <if test="caStatus != null">
         ca_status,
+      </if>
+      <if test="caValidId != null">
+        ca_valid_id,
       </if>
       <if test="openDate != null">
         open_date,
@@ -220,6 +224,9 @@
       </if>
       <if test="caStatus != null">
         #{caStatus,jdbcType=INTEGER},
+      </if>
+      <if test="caValidId != null">
+        #{caValidId,jdbcType=INTEGER},
       </if>
       <if test="openDate != null">
         #{openDate,jdbcType=TIMESTAMP},
@@ -311,6 +318,9 @@
       <if test="caStatus != null">
         ca_status = #{caStatus,jdbcType=INTEGER},
       </if>
+      <if test="caValidId != null">
+        ca_valid_id = #{caValidId,jdbcType=INTEGER},
+      </if>
       <if test="openDate != null">
         open_date = #{openDate,jdbcType=TIMESTAMP},
       </if>
@@ -365,6 +375,7 @@
       push_err_count = #{pushErrCount,jdbcType=INTEGER},
       remote_id = #{remoteId,jdbcType=VARCHAR},
       ca_status = #{caStatus,jdbcType=INTEGER},
+      ca_valid_id = #{caValidId,jdbcType=INTEGER},
       open_date = #{openDate,jdbcType=TIMESTAMP},
       trade_account = #{tradeAccount,jdbcType=VARCHAR},
       is_send = #{isSend,jdbcType=BOOLEAN},

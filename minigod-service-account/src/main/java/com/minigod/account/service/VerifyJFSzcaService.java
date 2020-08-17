@@ -1,5 +1,6 @@
 package com.minigod.account.service;
 
+import com.minigod.protocol.account.model.CustomOpenInfo;
 import com.minigod.protocol.account.model.VerifyAuthCa;
 import com.minigod.protocol.account.pojo.VerifySzcaPojo;
 import com.minigod.protocol.account.szca.jfrequest.*;
@@ -16,18 +17,17 @@ public interface VerifyJFSzcaService {
     public VerifySzcaPojo getTokenBySzca(VerifySzcaPojo reqVo);
 
     // 获取证书主题
-    public VerifyAuthCa getCertDnBySzca(JFSzcaCertDnReqVo reqVo);
+    public VerifySzcaPojo getCertDnBySzca(VerifySzcaPojo reqVo, CustomOpenInfo customOpenInfo);
 
     // 申请证书
-    public VerifyAuthCa getCertApplyP10BySzca(JFSzcaCertApplyP10ReqVo reqVo);
-
-    // 备案记录合成生成PDF
-    public VerifyAuthCa getSignP7ForPdfBySzca(JFSzcaSignP7ForPdfReqVo reqVo);
+    public VerifySzcaPojo getCertApplyP10BySzca(VerifySzcaPojo verifySzcaPojo, CustomOpenInfo customOpenInfo);
 
     // 针对 PDF 文件生成签名域接口-推送 pdf
-    public VerifyAuthCa getPdfInfoForSignBySzca(JFSzcaPdfInfoForSignReqVo reqVo);
+    public VerifySzcaPojo getPdfInfoForSignBySzca(VerifySzcaPojo szcaPojo, CustomOpenInfo customOpenInfo);
 
-    public void clearLocalVerifyCa(String idCard);
+    // 备案记录合成生成PDF
+    public VerifySzcaPojo getSignP7ForPdfBySzca(VerifySzcaPojo verifySzcaPojo, CustomOpenInfo customOpenInfo);
+
 
 //    public SzcaSealPdfResVo getSealPdfBySzca(Integer userId);
 }

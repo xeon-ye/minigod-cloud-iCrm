@@ -33,7 +33,7 @@ public class FileStorageHelper {
         try {
             byte[] imgByte = FileUtils.Base64ToByte(base64File);
             InputStream inputStream = new ByteArrayInputStream(imgByte);
-            SysStorage loanStorage = storageService.store(inputStream, base64File.length(), "file/pdf", fileName);
+            SysStorage loanStorage = storageService.store(inputStream, base64File.length(), "application/pdf", fileName);
             return loanStorage.getUrl();
         } catch (Exception e) {
 
@@ -43,7 +43,7 @@ public class FileStorageHelper {
 
     public String uploadPdf(String fileName, InputStream inputStream) {
         try {
-            SysStorage loanStorage = storageService.store(inputStream,inputStream.available() , "file/pdf", fileName);
+            SysStorage loanStorage = storageService.store(inputStream,inputStream.available() , "application/pdf", fileName);
             return loanStorage.getUrl();
         } catch (Exception e) {
 

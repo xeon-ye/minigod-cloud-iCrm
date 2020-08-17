@@ -1869,6 +1869,10 @@
             </c:if>
         </div>
     </div>
+    <div style="display:none;">
+        <input name="entityClientId" type="text" class="form-control"
+               value="${customerAccountOpenInfoEntity.clientId}" readonly/>
+    </div>
 
     <c:if test="${flag==2}">
         <div v-cloak>
@@ -1878,7 +1882,7 @@
                     </br>
                     <div class="row">
                         <div class="form-group col-sm-6 col-md-6">
-                            <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                            <label class="col-sm-4 control-label no-padding-right">
                                 该申请人有无AML可疑信息？</label>
                             <span class="col-sm-4 control-label no-padding-right">
                             <input type="radio" name="isAmlSuspicious" value="1" onclick="editAmlInfo();"
@@ -1917,8 +1921,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-sm-6 col-md-6">
-                            <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                                客户风险等级</label>
+                            <label class="col-sm-4 control-label no-padding-right">客户风险等级</label>
                             <span class="col-sm-8 control-label no-padding-right">
                                     <input type="radio" name="acceptRisk" value="1" onclick="editAmlRisk();"
                                            <c:if test="${customerAccountOpenInfoEntity.acceptRisk == 1}">checked="checked"</c:if>/>高风险
@@ -1931,37 +1934,47 @@
                     </div>
                     <div class="row">
                         <div class="form-group col-sm-6 col-md-6">
-                            <label class="col-sm-2 control-label no-padding-right">客户帐号</label>
-                            <div class="col-xs-9">
-                            <span class="col-sm-12 block input-icon input-icon-right">
-                                <input name="clientId" type="text" class="form-control"
-                                       value="${customerAccountOpenInfoEntity.clientId}" readonly/>
-                            </span>
-                            </div>
+                            <label class="col-sm-4 control-label no-padding-right">客户账号</label>
+                            <c:choose>
+                                <c:when test="${accountOpenApplicationEntity.applicationStatus ==1 || accountOpenApplicationEntity.applicationStatus ==2}">
+                                    <span class="col-sm-6 block input-icon input-icon-right">
+                                        <input name="clientId" type="text" class="form-control"
+                                               value="${customerAccountOpenInfoEntity.clientId}"/>
+                                    </span>
+                                    <span class="col-sm-2">
+                                        <button type="button" class="layui-btn layui-btn-normal"
+                                                onclick="updateClientId();">设置</button>
+                                    </span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="col-sm-6 block input-icon input-icon-right">
+                                        <input name="clientId" type="text" class="form-control"
+                                               value="${customerAccountOpenInfoEntity.clientId}" readonly/>
+                                    </span>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
-                   <%-- <div class="row">
-                        <div class="form-group col-sm-6 col-md-6">
-                            <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                                证券交易账号</label>
-                            <span class="col-xs-8 block input-icon input-icon-right">
-                            <input id="stockTradeAccount" name="stockTradeAccount" type="text" class="form-control"
-                                   value="${customerAccountOpenInfoEntity.stockTradeAccount}"/>
-                        </span>
+                    <div class="row">
+                        <div class="form-group col-sm-12 col-md-12" style="margin: 20px">
+                            <div>客户交易账户说明：</div>
+                            <div>期货交易账号 = F+客户账号</div>
+                            <div>证券现金交易账号 = P+客户账号</div>
+                            <div>证券孖展交易账号 = M+客户账号</div>
                         </div>
-                    </div>--%>
-                    <%--<c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">
-                        <div class="row">
-                            <div class="form-group col-sm-6 col-md-6">
-                                <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
-                                    期货交易账号</label>
-                                <span class="col-xs-8 block input-icon input-icon-right">
-                            <input id="futuresTradeAccount" name="futuresTradeAccount" type="text" class="form-control"
-                                   value="${customerAccountOpenInfoEntity.futuresTradeAccount}"/>
-                        </span>
+                    </div>
+                        <%--<c:if test="${customerAccountOpenInfoEntity.isOpenFutures==1}">
+                            <div class="row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label class="col-sm-4 control-label no-padding-right" style="margin-left: 10px">
+                                        期货交易账号</label>
+                                    <span class="col-xs-8 block input-icon input-icon-right">
+                                <input id="futuresTradeAccount" name="futuresTradeAccount" type="text" class="form-control"
+                                       value="${customerAccountOpenInfoEntity.futuresTradeAccount}"/>
+                            </span>
+                                </div>
                             </div>
-                        </div>
-                    </c:if>--%>
+                        </c:if>--%>
                 </div>
             </c:if>
         </div>
@@ -2358,6 +2371,43 @@
             });
         });
     }
+
+    /**
+     * 更新AML信息
+     */
+    function updateClientId() {
+
+        var clientId = $('input[name="clientId"]').val();
+        var entityClientId = $('input[name="entityClientId"]').val();
+        if (clientId == null || clientId == '') {
+            alertMsg("请填写客户账号");
+        } else if (clientId == entityClientId) {
+            alertMsg("客户账号未修改");
+        } else {
+            $.ajax({
+                url: "${webRoot}/secUserInfo/checkTradeAccount",   //处理页面的名称
+                data: {
+                    tradeAccount: clientId
+                },  //为值取个名字
+                type: "POST",  //传值方式
+                dataType: "text",  //数据类型
+                success: function (d) {
+                    if (d.trim() == "exist") {
+                        alertMsg("客户账号已存在");
+                    } else {
+                        url = "${webRoot}/customer/editTradeAccount?clientId=" + clientId + "&applicationId=" + '${customerAccountOpenInfoEntity.applicationId}';
+                        $.post(url, {}, function (result) {
+                            if (result.code == '0') {
+                                alert("客户账号设置成功");
+                            }
+                        });
+                    }
+                }
+            })
+        }
+
+    }
+
 
     function showFileOnline(urlPath, type) {
 

@@ -419,6 +419,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
         customOpenInfo.setPendingType(PendingStatusType.DOING.getCode()); // 预批中
         customOpenInfo.setFailType(FailStatusType.UN_KNOW.getCode());
         customOpenInfo.setCaStatus(CaStatus.NONE.getCode());
+        customOpenInfo.setCaValidId(null);
 
         customOpenInfo.setPushErrCount(0);
         customOpenInfo.setIsPushed(false);
@@ -579,6 +580,7 @@ public class OpenAccountOnlineServiceImpl extends BaseBeanFactory implements Ope
 
                 if (openStatusPojo.getPendingStatusType().equals(PendingStatusType.CA)) {
                     localOpenInfo.setCaStatus(CaStatus.IS_NEED_VERIFY.getCode());
+                    localOpenInfo.setCaValidId(null);
                 }
 
                 String openAccountFilrUrl = bpmOpenInfoCallbackVo.getOpenAccountFileUrl();

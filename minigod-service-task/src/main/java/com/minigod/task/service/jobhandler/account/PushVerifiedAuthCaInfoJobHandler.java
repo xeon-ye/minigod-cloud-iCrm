@@ -80,7 +80,7 @@ public class PushVerifiedAuthCaInfoJobHandler extends IJobHandler {
                 continue;
             }
 
-            VerifyAuthCa verifyAuthCa = verifyAuthCaMapper.selectOneByIdCard(customOpenInfo.getIdCard());
+            VerifyAuthCa verifyAuthCa = verifyAuthCaMapper.selectByPrimaryKey(customOpenInfo.getCaValidId());
             // 开启认证，且认证为空（标识未认证，数据异常）
             if (IS_VERIFY_WITH_CA && verifyAuthCa == null) {
                 log.error("*********************【客户CA证书上传】CA认证数据为空**************************");

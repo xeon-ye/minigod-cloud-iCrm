@@ -104,6 +104,11 @@ public class CustomOpenInfo implements Serializable {
     private Integer caStatus;
 
     /**
+     * 认证CA_id
+     */
+    private Integer caValidId;
+
+    /**
      * 开户日期
      */
     private Date openDate;

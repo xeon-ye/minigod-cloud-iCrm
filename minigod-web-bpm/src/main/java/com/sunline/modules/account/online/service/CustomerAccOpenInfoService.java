@@ -65,7 +65,7 @@ public interface CustomerAccOpenInfoService {
      * @param customerAccountOpenInfo
      * @return
      */
-    int setTradeAccount(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
+    int updateClientId(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
 
     /**
      * 更新margin信息

@@ -15,7 +15,7 @@
 <body>
 <div class="main-container" id="main-container">
     <!--隐藏图片-->
-    <div hidden id="imageList">
+    <%--<div hidden id="imageList">
         <ul class="docs-pictures">
         </ul>
     </div>
@@ -53,42 +53,50 @@
             </div>
             </br></br>
         </div>
-    </div>
+    </div>--%>
 
     <div id="div7" v-cloak>
         <div v-show="!showList" class="panel panel-default">
             <div class="panel-heading"><b style="color: #368763">退回理由</b></div>
 
-            <div style="margin-left: 5%;height: 1300px;">
+            <div style="margin-left: 5%;height: 200px;">
 
-                <c:forEach var="codeEntity" items="${customerAccountOpenContentTypes}" varStatus="i">
+                <%-- <c:forEach var="codeEntity" items="${customerAccountOpenContentTypes}" varStatus="i">
 
-                    <c:if test="${codeEntity.value>=53}">
+                     <c:if test="${codeEntity.value>=53}">
 
-                        <c:if test="${((i.index % 2) eq 0) && i.index==0}">
-                            </br>
-                        </c:if>
+                         <c:if test="${((i.index % 2) eq 0) && i.index==0}">
+                             </br>
+                         </c:if>
 
-                        <c:if test="${((i.index % 2) eq 1) && i.index >0}">
-                            </br></br>
-                        </c:if>
-                        <span class="col-xs-11 block input-icon input-icon-right">
-                            <input type="checkbox" name="errorContentTypes" id="errorContentTypes_${codeEntity.value}"
-                                   value="${codeEntity.value}" onclick="onChange(this.value)"/>${codeEntity.name}
-                        </span>
-                    </c:if>
-                    <c:if test="${codeEntity.value==17}">
-                        </br></br>
-                        <span class="col-xs-4 block input-icon input-icon-right">
-                        <input type="checkbox" name="errorContentTypes" id="errorContentTypes_${codeEntity.value}"
-                               value="${codeEntity.value}" onclick="onChange(this.value)"/>${codeEntity.name}
-                        </span>
-                        <span class="col-xs-6 block input-icon input-icon-right">
-                                <input class="form-control" name="otherReasons" id="otherReasons" type="text"
-                                       placeholder="告诉客户（选填）"/>
-                            </span>
-                    </c:if>
-                </c:forEach>
+                         <c:if test="${((i.index % 2) eq 1) && i.index >0}">
+                             </br></br>
+                         </c:if>
+                         <span class="col-xs-11 block input-icon input-icon-right">
+                             <input type="checkbox" name="errorContentTypes" id="errorContentTypes_${codeEntity.value}"
+                                    value="${codeEntity.value}" onclick="onChange(this.value)"/>${codeEntity.name}
+                         </span>
+                     </c:if>
+                     <c:if test="${codeEntity.value==17}">
+                         </br></br>
+                         <span class="col-xs-4 block input-icon input-icon-right">
+                         <input type="checkbox" name="errorContentTypes" id="errorContentTypes_${codeEntity.value}"
+                                value="${codeEntity.value}" onclick="onChange(this.value)"/>${codeEntity.name}
+                         </span>
+                         <span class="col-xs-6 block input-icon input-icon-right">
+                                 <input class="form-control" name="otherReasons" id="otherReasons" type="text"
+                                        placeholder="告诉客户（选填）"/>
+                             </span>
+                     </c:if>
+                 </c:forEach>--%>
+
+                <span style="display: none">
+                     <input type="checkbox" name="errorContentTypes" value="17" checked readonly/>
+                </span>
+                <span class="col-sm 6 block input-icon input-icon-right" style="padding-top: 20px">
+                    <textarea class="form-control" name="otherReasons" id="otherReasons" rows="3"
+                              placeholder="告诉客户（选填）"></textarea>
+                </span>
             </div>
             </br>
         </div>
@@ -201,9 +209,9 @@
             var errorImages = $(this).val();
             errorImagesArray.push(errorImages);
             backReasonTypeArray.push(errorImages.substring(2, errorImages.length))
-
-
         });
+
+
         if (backReasonTypeArray == "") {
             alertMsg("请勾选退回理由");
             return;
@@ -249,24 +257,24 @@
     }
 
     function replaceLikeVal() {
-        var otherReasons=$("#otherReasons").val();
+        var otherReasons = $("#otherReasons").val();
         if (otherReasons.indexOf("'") != -1 || otherReasons.indexOf("\"") != -1) {
             var patt1 = new RegExp("/\\'/g");
             var patt2 = new RegExp("/\\\"/g");
-            if (patt1.test(otherReasons)==false || patt2.test(otherReasons)==false) {
-                var replaceValue=$("#otherReasons").val().replace(/\'/g,"").replace(/\"/g,"");
+            if (patt1.test(otherReasons) == false || patt2.test(otherReasons) == false) {
+                var replaceValue = $("#otherReasons").val().replace(/\'/g, "").replace(/\"/g, "");
                 $("#otherReasons").val(replaceValue);
             }
         }
     }
 
-    $("#otherReasons").blur(function(){
-        var otherReasons=$("#otherReasons").val();
+    $("#otherReasons").blur(function () {
+        var otherReasons = $("#otherReasons").val();
         if (otherReasons.indexOf("'") != -1 || otherReasons.indexOf("\"") != -1) {
             var patt1 = new RegExp("/\\'/g");
             var patt2 = new RegExp("/\\\"/g");
-            if (patt1.test(otherReasons)==false || patt2.test(otherReasons)==false) {
-                var replaceValue=$("#otherReasons").val().replace(/\'/g,"").replace(/\"/g,"");
+            if (patt1.test(otherReasons) == false || patt2.test(otherReasons) == false) {
+                var replaceValue = $("#otherReasons").val().replace(/\'/g, "").replace(/\"/g, "");
                 $("#otherReasons").val(replaceValue);
             }
         }

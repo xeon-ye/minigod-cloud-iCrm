@@ -43,7 +43,7 @@ public interface CustomerAccountOpenInfoDao extends BaseDao<CustomerAccountOpenI
 
     List<CustomerAccountOpenInfoEntity> queryListByApplicationId(Map<String, Object> map);
 
-    int setTradeAccount(CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity);
+    int updateClientId(CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity);
 
     int updateMarginInfo(CustomerAccountOpenInfoEntity customerAccountOpenInfo);
 

@@ -118,9 +118,9 @@ public class CustomerAccOpenInfoServiceImpl implements CustomerAccOpenInfoServic
     }
 
     @Override
-    public int setTradeAccount(CustomerAccountOpenInfoEntity customerAccountOpenInfo) {
+    public int updateClientId(CustomerAccountOpenInfoEntity customerAccountOpenInfo) {
         DataSourceContextHolder.setDataSourceType(DataSourceEnum.DATA_SOURCE_MASTER);
-        return customerAccountOpenInfoDao.setTradeAccount(customerAccountOpenInfo);
+        return customerAccountOpenInfoDao.updateClientId(customerAccountOpenInfo);
     }
 
     @Override
