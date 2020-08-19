@@ -814,7 +814,6 @@ public class CustomerAccountOpenController {
     public @ResponseBody
     Result editCustomerAccountOpenInfo(@RequestBody CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity, HttpServletRequest request) {
         try {
-
             //验证交易帐号（靓号）是否已被申请
             if (customerAccountOpenInfoEntity.getClientId() != null && !"".equals(customerAccountOpenInfoEntity.getClientId())) {
                 int tradeAccountNumber = customerAccountOpenInfoService.validateTradeAccount(customerAccountOpenInfoEntity);
@@ -2526,4 +2525,84 @@ public class CustomerAccountOpenController {
             }
         }
     }
+
+    //开户编辑无要求
+    @RequestMapping("/haha")
+    public @ResponseBody
+    Result haha(@RequestBody String Cus, HttpServletRequest request, Model model, AccountOpenApplyQuery queryCondition) {
+        try {
+            //转对象
+            CustomerAccountOpenInfoEntity customerAccountOpenInfoEntity = JSONObject.parseObject(Cus,CustomerAccountOpenInfoEntity.class);
+            //查询customerAccountOpenInfoEntity对象
+            //要判断id不为空
+            CustomerAccountOpenInfoEntity cu2 = customerAccountOpenInfoService.queryByApplicationId(customerAccountOpenInfoEntity.getApplicationId());
+            //将数据赋给对象
+            cu2.setAccountType(customerAccountOpenInfoEntity.getAccountType());//证券账户类型
+            cu2.setOptionsAccUsageScenarios(customerAccountOpenInfoEntity.getOptionsAccUsageScenarios());
+            cu2.setFundAccountType(customerAccountOpenInfoEntity.getFundAccountType());
+            cu2.setIsOpenOptions(customerAccountOpenInfoEntity.getIsOpenOptions());
+            cu2.setIsOpenFutures(customerAccountOpenInfoEntity.getIsOpenFutures());
+            cu2.setFuturesAccUsageScenarios(customerAccountOpenInfoEntity.getFuturesAccUsageScenarios());
+            cu2.setIdKind(customerAccountOpenInfoEntity.getIdKind());
+            cu2.setNationality(customerAccountOpenInfoEntity.getNationality());//国家
+            cu2.setClientName(customerAccountOpenInfoEntity.getClientName());
+            cu2.setClientNameSpell(customerAccountOpenInfoEntity.getClientNameSpell());//英文名
+            cu2.setNation(customerAccountOpenInfoEntity.getNation());
+            cu2.setIdNo(customerAccountOpenInfoEntity.getIdNo());
+            cu2.setBirthday(customerAccountOpenInfoEntity.getBirthday());
+            cu2.setSigningOrganization(customerAccountOpenInfoEntity.getSigningOrganization());
+            cu2.setIdCardValidDateEnd(customerAccountOpenInfoEntity.getIdCardValidDateEnd());
+            cu2.setIdCardAddress(customerAccountOpenInfoEntity.getIdCardAddress());
+            cu2.setIdCardValidDateEnd(customerAccountOpenInfoEntity.getIdCardValidDateEnd());
+            cu2.setIdCardAddress(customerAccountOpenInfoEntity.getIdCardAddress());
+            cu2.setSex(customerAccountOpenInfoEntity.getSex());
+            cu2.setPhoneNumber(customerAccountOpenInfoEntity.getPhoneNumber());
+            cu2.setEmail(customerAccountOpenInfoEntity.getEmail());
+            cu2.setEducationLevel(customerAccountOpenInfoEntity.getEducationLevel());
+            cu2.setFamilyPhone(customerAccountOpenInfoEntity.getFamilyPhone());
+            cu2.setContactPhone(customerAccountOpenInfoEntity.getContactPhone());
+            cu2.setFamilyAddress(customerAccountOpenInfoEntity.getFamilyAddress());
+            cu2.setJobPosition(customerAccountOpenInfoEntity.getJobPosition());
+            cu2.setCompanyPhoneNumber(customerAccountOpenInfoEntity.getCompanyPhoneNumber());
+            cu2.setCompanyAddress(customerAccountOpenInfoEntity.getCompanyAddress());
+            cu2.setInvestmentHorizon(customerAccountOpenInfoEntity.getInvestmentHorizon());
+            cu2.setBankNo(customerAccountOpenInfoEntity.getBankNo());
+            cu2.setBankAccountName(customerAccountOpenInfoEntity.getBankAccountName());
+            cu2.setBankCurrency(customerAccountOpenInfoEntity.getBankCurrency());
+            cu2.setBankType(customerAccountOpenInfoEntity.getBankType());//账户类型
+            cu2.setProfessionCode(customerAccountOpenInfoEntity.getProfessionCode());
+            cu2.setOtherProfession(customerAccountOpenInfoEntity.getOtherProfession());
+            cu2.setWorkingSeniority(customerAccountOpenInfoEntity.getWorkingSeniority());
+            cu2.setCompanyName(customerAccountOpenInfoEntity.getCompanyName());
+            cu2.setIndustryRange(customerAccountOpenInfoEntity.getIndustryRange());
+            cu2.setCapitalSource(customerAccountOpenInfoEntity.getCapitalSource());
+            cu2.setInvestTarget(customerAccountOpenInfoEntity.getInvestTarget());
+            cu2.setInvestTargetOther(customerAccountOpenInfoEntity.getInvestTargetOther());
+            cu2.setStocksInvestmentExperienceType(customerAccountOpenInfoEntity.getStocksInvestmentExperienceType());
+            cu2.setTradeStockFrequency(customerAccountOpenInfoEntity.getTradeStockFrequency());
+            cu2.setWarrantsInvestmentExperienceType(customerAccountOpenInfoEntity.getWarrantsInvestmentExperienceType());
+            cu2.setTradeWarrantsFrequency(customerAccountOpenInfoEntity.getTradeWarrantsFrequency());
+            cu2.setOptionsExperience(customerAccountOpenInfoEntity.getOptionsExperience());
+            cu2.setTradeOptionsFrequency(customerAccountOpenInfoEntity.getTradeOptionsFrequency());
+            cu2.setFuturesInvestmentExperienceType(customerAccountOpenInfoEntity.getFuturesInvestmentExperienceType());
+            cu2.setTradeFuturesFrequency(customerAccountOpenInfoEntity.getTradeFuturesFrequency());
+            cu2.setUnitTrustsExperience(customerAccountOpenInfoEntity.getUnitTrustsExperience());
+            cu2.setTradeUnitTrustsFrequency(customerAccountOpenInfoEntity.getTradeUnitTrustsFrequency());
+            cu2.setOtherProductsExperience(customerAccountOpenInfoEntity.getOtherProductsExperience());
+            cu2.setTradeOtherProductsFrequency(customerAccountOpenInfoEntity.getTradeOtherProductsFrequency());
+            cu2.setIsKnowDerivativeProducts(customerAccountOpenInfoEntity.getIsKnowDerivativeProducts());
+            cu2.setDerivativeProductsStudyType(customerAccountOpenInfoEntity.getDerivativeProductsStudyType());
+            cu2.setFinancingInstitutionWorkExperienceType(customerAccountOpenInfoEntity.getFinancingInstitutionWorkExperienceType());
+            cu2.setIsTradedDerivativeProducts(customerAccountOpenInfoEntity.getIsTradedDerivativeProducts());
+            cu2.setClientId(customerAccountOpenInfoEntity.getClientId());
+            cu2.setAcceptRisk(customerAccountOpenInfoEntity.getAcceptRisk());
+            //进行修改
+            customerAccountOpenInfoService.update(cu2);
+        }catch (Exception e){
+            return Result.error("数据处理失败!");
+        }
+        return Result.ok();
+
+    }
+
 }
